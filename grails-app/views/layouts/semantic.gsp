@@ -7,23 +7,75 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title><g:layoutTitle default="Grails Base"/></title>
+		<title><g:layoutTitle default="Engine"/></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js" charset="utf-8"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.6/semantic.min.js" charset="utf-8"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.min.js" charset="utf-8"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.6/semantic.min.css" type="text/css">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/0.5.0/sweet-alert.css" type="text/css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.4/semantic.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.4/semantic.min.css" type="text/css">
+		<link rel="stylesheet" href="${resource(dir: 'static/css', file: 'custom.css')}" type="text/css">
+
 		<g:layoutHead/>
-		<g:javascript library="application"/>
 		<r:layoutResources />
 	</head>
+
 	<body>
 		<div class="ui segment">
-			<div id="grailsLogo" role="banner"><a href="http://theconnman.com"><img src="${resource(dir: 'images', file: 'grails_logo.png')}" alt="Grails"/></a></div>
+			<div class="ui two column grid">
+				<div class="column">
+					<a href="/">
+						<img class="ui image" src="${resource(dir: 'static/images', file: 'grails_logo.png')}" style="max-height: 80px;" />
+					</a>
+				</div>
+			</div>
 		</div>
-		<g:layoutBody/>
-		<div class="footer"></div>
+		<div class="menu-wrapper">
+			<div class="ui menu">
+				<a class="item menu-home" href="/">
+					<i class="icon home"></i>
+					Home
+				</a>
+				<sec:ifAllGranted roles="ROLE_ADMIN">
+					<div class="ui dropdown item">
+						<i class="icon setting"></i>
+						Admin Actions<i class="icon dropdown"></i>
+						<div class="menu">
+						   <a class="item" href="/controllers">Internal Controllers</a>
+						</div>
+					</div>
+				</sec:ifAllGranted>
+				<div class="right menu">
+					<sec:ifLoggedIn>
+						<div class="item">
+							 <sec:username/>
+						</div>
+						<aw:avatar class="ui circular image" style="width: 35px; float: right;" />
+					</sec:ifLoggedIn>
+					<sec:ifNotLoggedIn>
+						<oauth:connect provider="github" class="item">Log In With GitHub</oauth:connect>
+					</sec:ifNotLoggedIn>
+				</div>
+			</div>
+		</div>
+
+		<div class="content">
+			<g:layoutBody/>
+		</div>
+
+		<div class="menu-wrapper">
+			<div class="ui segment" style="margin-bottom: 15px;">
+				<b>AugurWorks Engine ${ grailsApplication.metadata['app.version'] }</b>
+			</div>
+		</div>
+
+		<g:javascript library="application"/>
 		<r:layoutResources />
+		<script>
+			$(function() {
+				$('.ui.dropdown').dropdown({
+					on: 'hover'
+				});
+			});
+		</script>
 	</body>
 </html>

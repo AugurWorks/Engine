@@ -120,6 +120,7 @@ log4j = {
 		'grails.app.conf.com.augurworks.engine',
 		'grails.app.domain.com.augurworks.engine'
 	]
+	off 'org.grails.plugin.resource.ResourceMeta'
 }
 
 grails.app.context = '/'
