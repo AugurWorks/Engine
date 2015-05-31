@@ -4,16 +4,14 @@ class AlgorithmRequest {
 
 	Date startDate
 	Date endDate
+	Date dateCreated
 
 	static hasMany = [requestDataSets: RequestDataSet]
 
 	static constraints = {
 		startDate()
 		endDate()
-	}
-
-	static mapping = {
-		autoTimestamp true
+		dateCreated()
 	}
 
 	String toString() {
