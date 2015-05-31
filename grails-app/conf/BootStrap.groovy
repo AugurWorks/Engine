@@ -18,6 +18,7 @@ class BootStrap {
 		createUser('TheConnMan', adminRole);
 
 		dataGeneratorService.importQuandlDataSets();
+		dataGeneratorService.generateRequest(5);
     }
 
     def destroy = {
