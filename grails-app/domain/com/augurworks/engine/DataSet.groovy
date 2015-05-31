@@ -9,7 +9,7 @@ class DataSet {
 
 	static constraints = {
 		ticker()
-		name()
+		name unique: true
 		code()
 		dataColumn min: 0
 	}

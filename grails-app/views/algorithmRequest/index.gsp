@@ -7,8 +7,9 @@
 	</head>
 	<body>
 		<div class="ui segment">
-			<h1 class="ui header">Algorithm Requests</h1>
-			<div class="ui four doubling cards">
+			<h1 class="ui floated left header">Algorithm Requests</h1>
+			<g:link controller="algorithmRequest" action="create" class="ui primary button" style="float: right;">New Request</g:link>
+			<div class="ui four doubling cards" style="clear: both;">
 				<g:each in="${ requests }" var="request">
 					<g:link controller="algorithmRequest" action="show" id="${ request.id }" class="card">
 						<div class="content">
