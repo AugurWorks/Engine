@@ -103,6 +103,7 @@ augurworks {
 	quandl {
 		key = localConfig.augurworks.quandlKey
 	}
+	dateFormat = 'yyyy-MM-dd'
 }
 
 // log4j configuration
