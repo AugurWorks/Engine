@@ -24,7 +24,7 @@ class DataRetrievalService {
 			return rawData[(startIndex + offset)..(endIndex + offset)];
 		} else {
 			String dateFormat = grailsApplication.config.augurworks.dateFormat;
-			log.warn 'Invalid date range, ' + startDate.format(dateFormat) + '-' + endDate.format(dateFormat)
+			log.warn 'Invalid date range for ' + dataSet.name + ': ' + startDate.format(dateFormat) + '-' + endDate.format(dateFormat)
 			return [];
 		}
 	}
