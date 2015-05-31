@@ -43,6 +43,17 @@
 						   <a class="item" href="/controllers">Internal Controllers</a>
 						</div>
 					</div>
+					<div class="ui dropdown item">
+						<i class="icon cubes"></i>
+						Scaffolding <i class="icon dropdown"></i>
+						<div class="menu">
+						   <g:link controller="algorithmRequest" class="item">Algorithm Request</g:link>
+						   <g:link controller="algorithmResult" class="item">Algorithm Result</g:link>
+						   <g:link controller="dataSet" class="item">Data Set</g:link>
+						   <g:link controller="predictedValue" class="item">Predicted Value</g:link>
+						   <g:link controller="requestdataset" class="item">Request Data Set</g:link>
+						</div>
+					</div>
 				</sec:ifAllGranted>
 				<div class="right menu">
 					<sec:ifLoggedIn>
