@@ -51,7 +51,7 @@
 						   <g:link controller="algorithmResult" class="item">Algorithm Result</g:link>
 						   <g:link controller="dataSet" class="item">Data Set</g:link>
 						   <g:link controller="predictedValue" class="item">Predicted Value</g:link>
-						   <g:link controller="requestdataset" class="item">Request Data Set</g:link>
+						   <g:link controller="requestDataSet" class="item">Request Data Set</g:link>
 						</div>
 					</div>
 				</sec:ifAllGranted>
