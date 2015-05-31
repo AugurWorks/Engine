@@ -53,6 +53,7 @@ grails.project.dependency.resolution = {
         // runtime 'mysql:mysql-connector-java:5.1.27'
         // runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
 		runtime 'com.amazonaws:aws-java-sdk:1.8.9.1'
+		compile "org.codehaus.gpars:gpars:1.1.0"
     }
 
     plugins {

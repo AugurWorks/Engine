@@ -1,6 +1,7 @@
 package com.augurworks.engine
 
 import grails.transaction.Transactional
+import groovyx.gpars.GParsPool
 
 @Transactional
 class DataRetrievalService {
@@ -8,11 +9,13 @@ class DataRetrievalService {
 	def grailsApplication
 
 	Collection getRequestValues(AlgorithmRequest algorithmRequest) {
-		return algorithmRequest.requestDataSets.collect { RequestDataSet requestDataSet ->
-			return [
-				name: requestDataSet.dataSet.name,
-				values: getDataSetValues(requestDataSet.dataSet, algorithmRequest.startDate, algorithmRequest.endDate, requestDataSet.offset)
-			];
+		GParsPool.withPool(algorithmRequest.requestDataSets.size()) {
+			return algorithmRequest.requestDataSets.collectParallel { RequestDataSet requestDataSet ->
+				return [
+					name: requestDataSet.dataSet.name,
+					values: getDataSetValues(requestDataSet.dataSet, algorithmRequest.startDate, algorithmRequest.endDate, requestDataSet.offset)
+				];
+			}
 		}
 	}
 

@@ -18,7 +18,7 @@ class DataGeneratorService {
 		Collection<DataSet> dataSets = DataSet.list();
 		(1..requestNumber).each { int requestCount ->
 			Random rand = new Random();
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy', '2010'), endDate: Date.parse('yyyy', '2015')).save();
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2010/02'), endDate: Date.parse('yyyy/MM', '2015/04')).save();
 			(0..4).each {
 				new RequestDataSet(
 					dataSet: dataSets[rand.nextInt(dataSets.size())],
