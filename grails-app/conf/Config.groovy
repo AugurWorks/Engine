@@ -154,7 +154,12 @@ grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.augurworks.en
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.augurworks.engine.UserRole'
 grails.plugin.springsecurity.authority.className = 'com.augurworks.engine.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
-	'/**':								['permitAll']
+	'/**':								['permitAll'],
+	'/algorithmRequest/**':				['ROLE_ADMIN'],
+	'/algorithmResult/**':				['ROLE_ADMIN'],
+	'/dataSet/**':						['ROLE_ADMIN'],
+	'/predictedValue/**':				['ROLE_ADMIN'],
+	'/requestDataSet/**':				['ROLE_ADMIN']
 ]
 
 grails.plugin.springsecurity.logout.postOnly = false
