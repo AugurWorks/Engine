@@ -71,5 +71,6 @@ grails.project.dependency.resolution = {
 		compile ":spring-security-core:2.0-RC2"
 
 		runtime ':mail:1.0.1'
+		compile ":slack-logger:1.0.1"
     }
 }

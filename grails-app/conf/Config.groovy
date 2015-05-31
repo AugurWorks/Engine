@@ -1,3 +1,5 @@
+import com.theconnman.slacklogger.SlackAppender
+
 def loc = ['../UserConfig.groovy', 'webapps/ROOT/Jenkins.groovy'].grep { new File(it).exists() }.first();
 def localConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(loc).toURI().toURL())
 
@@ -105,6 +107,18 @@ log4j = {
 		console name: 'stdout', threshold: org.apache.log4j.Level.ERROR
 		rollingFile name: 'info', file: 'logs/info.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.INFO
 		rollingFile name: 'warn', file: 'logs/warn.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.WARN
+		appender new SlackAppender(name: 'slackAppender', layout: pattern(conversionPattern: '%c{2} - %m%n'), threshold: org.apache.log4j.Level.ERROR)
+	}
+
+	environments {
+		production {
+			error 'appender': [
+				'grails.app.controllers.com.augurworks.engine',
+				'grails.app.services.com.augurworks.engine',
+				'grails.app.conf.com.augurworks.engine',
+				'grails.app.domain.com.augurworks.engine'
+			]
+		}
 	}
 
 	warn 'warn': [
@@ -124,6 +138,16 @@ log4j = {
 }
 
 grails.app.context = '/'
+
+grails {
+	plugin {
+		slacklogger {
+			webhook = localConfig.augurworks.slacklogger.webhook
+			botName = 'Engine Errors'
+			channel = '#engine-errors'
+		}
+	}
+}
 
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.augurworks.engine.User'
