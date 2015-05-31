@@ -7,6 +7,15 @@ class DataRetrievalService {
 
 	def grailsApplication
 
+	Collection getRequestValues(AlgorithmRequest algorithmRequest) {
+		return algorithmRequest.requestDataSets.collect { RequestDataSet requestDataSet ->
+			return [
+				name: requestDataSet.dataSet.name,
+				values: getDataSetValues(requestDataSet.dataSet, algorithmRequest.startDate, algorithmRequest.endDate, requestDataSet.offset)
+			];
+		}
+	}
+
 	Collection getDataSetValues(DataSet dataSet, Date startDate, Date endDate, int offset) {
 		Collection rawData = getQuandlData(dataSet.code, dataSet.dataColumn);
 		int startIndex = rawData.findIndexOf { it[0] == startDate };
