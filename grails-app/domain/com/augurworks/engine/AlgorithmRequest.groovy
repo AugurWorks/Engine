@@ -15,4 +15,8 @@ class AlgorithmRequest {
 	static mapping = {
 		autoTimestamp true
 	}
+
+	String toString() {
+		'Request ' + startDate.format('dd/MM/yy') + '-' + endDate.format('dd/MM/yy') + ': ' + requestDataSets*.dataSet*.ticker.join(', ')
+	}
 }

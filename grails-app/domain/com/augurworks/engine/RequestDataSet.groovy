@@ -11,4 +11,8 @@ class RequestDataSet {
 		dataSet()
 		offset()
 	}
+
+	String toString() {
+		dataSet.name + ', ' + offset + ' day offset'
+	}
 }

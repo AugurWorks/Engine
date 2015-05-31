@@ -13,4 +13,8 @@ class DataSet {
 		code()
 		dataColumn min: 0
 	}
+
+	String toString() {
+		name
+	}
 }
