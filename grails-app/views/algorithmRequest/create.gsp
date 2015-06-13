@@ -9,17 +9,23 @@
 	</head>
 	<body>
 		<div class="ui segment">
-			<h1 class="ui header">Create Algorithm Request</h1>
+			<g:if test="${ algorithmRequest }">
+				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
+			</g:if>
+			<g:else>
+				<h1 class="ui header">Create Algorithm Request</h1>
+			</g:else>
 			<div class="ui form">
 				<h3 class="ui dividing header">Boundary Dates</h3>
+				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
 				<div class="two fields">
 					<div class="field">
 						<label>Start Date</label>
-						<g:field type="date" name="startDate" value="${ use (groovy.time.TimeCategory) { (new Date() - 2.months).format('yyyy-MM-dd') } }" />
+						<g:field type="date" name="startDate" value="${ use (groovy.time.TimeCategory) { (algorithmRequest?.startDate ?: new Date() - 2.months).format('yyyy-MM-dd') } }" />
 					</div>
 					<div class="field">
 						<label>End Date</label>
-						<g:field type="date" name="endDate" value="${ new Date().format('yyyy-MM-dd') }" />
+						<g:field type="date" name="endDate" value="${ (algorithmRequest?.endDate ?: new Date()).format('yyyy-MM-dd') }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>
@@ -38,7 +44,7 @@
 					</div>
 					<div class="field">
 						<label>Submit</label>
-						<button onclick="submitRequest()" class="ui green button">Submit Request</button>
+						<button onclick="submitRequest()" class="ui green button">${ algorithmRequest ? 'Update' : 'Create' } Request</button>
 					</div>
 				</div>
 				<h3 class="ui dividing header">Data Sets</h3>
@@ -50,7 +56,15 @@
 							<th>Remove</th>
 						</tr>
 					</thead>
-					<tbody></tbody>
+					<tbody>
+						<g:each in="${ algorithmRequest?.requestDataSets }" var="requestDataSet">
+							<tr>
+								<td class="stock">${ requestDataSet.dataSet.toString() }</td>
+								<td class="offset">${ requestDataSet.offset }</td>
+								<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>
+							</tr>
+						</g:each>
+					</tbody>
 				</table>
 			</div>
 		</div>

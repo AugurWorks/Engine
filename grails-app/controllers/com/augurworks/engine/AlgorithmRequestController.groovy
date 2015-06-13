@@ -10,21 +10,24 @@ class AlgorithmRequestController {
 		[requests: AlgorithmRequest.list()]
 	}
 
-	def create() {
-		[dataSets: DataSet.list()*.name]
+	def create(AlgorithmRequest algorithmRequest) {
+		[dataSets: DataSet.list()*.toString(), algorithmRequest: algorithmRequest]
 	}
 
 	def submitRequest() {
 		Date startDate = Date.parse('yyyy-MM-dd', params.startDate);
 		Date endDate = Date.parse('yyyy-MM-dd', params.endDate);
 		Collection<Map> dataSets = JSON.parse(params.dataSets);
-		AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: startDate, endDate: endDate).save();
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(params.id) ?: new AlgorithmRequest(startDate: startDate, endDate: endDate).save();
+		algorithmRequest.requestDataSets*.id.each { long requestDataSetId ->
+			algorithmRequest.removeFromRequestDataSets(RequestDataSet.get(requestDataSetId));
+		}
 		dataSets.each { Map dataSet ->
 			algorithmRequest.addToRequestDataSets(
-				dataSet: DataSet.findByName(dataSet.name),
+				dataSet: DataSet.findByTicker(dataSet.name.split(' - ')[0]),
 				offset: dataSet.offset
 			);
 		}
-		render([success: true] as JSON)
+		render([success: true, id: algorithmRequest.id] as JSON)
 	}
 }

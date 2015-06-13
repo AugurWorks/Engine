@@ -11,7 +11,7 @@
 			<g:link controller="algorithmRequest" action="create" class="ui primary button" style="float: right;">New Request</g:link>
 			<div class="ui four doubling cards" style="clear: both;">
 				<g:each in="${ requests }" var="request">
-					<g:link controller="algorithmRequest" action="show" id="${ request.id }" class="card">
+					<g:link controller="algorithmRequest" action="create" id="${ request.id }" class="card">
 						<div class="content">
 							<div class="header">Request ${ request.id }</div>
 							<div class="meta">

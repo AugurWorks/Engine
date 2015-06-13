@@ -15,13 +15,14 @@ function submitRequest() {
 	$.ajax({
 		url: '/algorithmRequest/submitRequest',
 		data: {
+			id: $('#id').val(),
 			dataSets: JSON.stringify(getDataSets()),
 			startDate: $('#startDate').val(),
 			endDate: $('#endDate').val()
 		},
 		success: function(data) {
 			if (data.success) {
-				swal('Success', 'Your request was successfully created', 'success');
+				window.location.href = '/algorithmRequest/create/' + data.id
 			}
 		}
 	});

@@ -15,6 +15,6 @@ class DataSet {
 	}
 
 	String toString() {
-		name
+		ticker + ' - ' + name
 	}
 }
