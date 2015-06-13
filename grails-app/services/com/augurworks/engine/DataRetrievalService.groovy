@@ -8,7 +8,7 @@ class DataRetrievalService {
 
 	def grailsApplication
 
-	Collection getRequestValues(AlgorithmRequest algorithmRequest) {
+	Collection<Map> getRequestValues(AlgorithmRequest algorithmRequest) {
 		GParsPool.withPool(algorithmRequest.requestDataSets.size()) {
 			return algorithmRequest.requestDataSets.collectParallel { RequestDataSet requestDataSet ->
 				return [
