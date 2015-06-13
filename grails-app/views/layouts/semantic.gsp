@@ -19,11 +19,11 @@
 	</head>
 
 	<body>
-		<div class="ui segment">
+		<div class="ui inverted blue segment">
 			<div class="ui two column grid">
 				<div class="column">
 					<a href="/">
-						<img class="ui image" src="${resource(dir: 'static/images', file: 'grails_logo.png')}" style="max-height: 80px;" />
+						<img class="ui image" src="${resource(dir: 'static/images', file: 'augurworks_logo.png')}" style="max-height: 60px;" />
 					</a>
 				</div>
 			</div>
