@@ -35,6 +35,9 @@
 					Home
 				</a>
 				<sec:ifAllGranted roles="ROLE_ADMIN">
+					<g:link controller="algorithmRequest" class="item">
+				   		<i class="icon cubes"></i> List Data Sets
+				   	</g:link>
 					<div class="ui dropdown item">
 						<i class="icon setting"></i>
 						Admin Actions<i class="icon dropdown"></i>
@@ -43,10 +46,9 @@
 						</div>
 					</div>
 					<div class="ui dropdown item">
-						<i class="icon cubes"></i>
+						<i class="building outline icon"></i>
 						Scaffolding <i class="icon dropdown"></i>
 						<div class="menu">
-						   <g:link controller="algorithmRequest" class="item">Algorithm Request</g:link>
 						   <g:link controller="algorithmResult" class="item">Algorithm Result</g:link>
 						   <g:link controller="dataSet" class="item">Data Set</g:link>
 						   <g:link controller="predictedValue" class="item">Predicted Value</g:link>
@@ -62,7 +64,10 @@
 						<aw:avatar class="ui circular image" style="width: 35px; float: right;" />
 					</sec:ifLoggedIn>
 					<sec:ifNotLoggedIn>
-						<oauth:connect provider="github" class="item">Log In With GitHub</oauth:connect>
+						<oauth:connect provider="github" class="item">
+							<i class="github square icon"></i>
+							Log In With GitHub
+						</oauth:connect>
 					</sec:ifNotLoggedIn>
 				</div>
 			</div>
