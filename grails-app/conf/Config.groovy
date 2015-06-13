@@ -79,10 +79,20 @@ environments {
 	development {
 		grails.logging.jul.usebridge = true
 		grails.serverURL = "http://localhost:8080"
+		oauth.providers.github.key = localConfig.oauth.github.key
+		oauth.providers.github.secret = localConfig.oauth.github.secret
+	}
+	devdeploy {
+		grails.logging.jul.usebridge = false
+		grails.serverURL = "http://engine-dev.elasticbeanstalk.com"
+		oauth.providers.github.key = localConfig.oauth.github.key.devdeploy
+		oauth.providers.github.secret = localConfig.oauth.github.secret.devdeploy
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		// TODO: grails.serverURL = "http://www.changeme.com"
+		grails.serverURL = "http://engine.elasticbeanstalk.com"
+		oauth.providers.github.key = localConfig.oauth.github.key.prod
+		oauth.providers.github.secret = localConfig.oauth.github.secret.prod
 	}
 }
 
@@ -90,8 +100,6 @@ oauth {
 	providers {
 		github {
 			api = com.theconnman.GitHubApi
-			key = localConfig.oauth.github.key
-			secret = localConfig.oauth.github.secret
 			successUri = '/github'
 			failureUri = '/error'
 			callback = "${ grails.serverURL }/oauth/github/callback"
