@@ -21,8 +21,8 @@ class DataRetrievalService {
 
 	Collection getDataSetValues(DataSet dataSet, Date startDate, Date endDate, int offset) {
 		Collection rawData = getQuandlData(dataSet.code, dataSet.dataColumn);
-		int startIndex = rawData.findIndexOf { it[0] == startDate };
-		int endIndex = rawData.findIndexOf { it[0] == endDate };
+		int startIndex = rawData.findIndexOf { it[0] == startDate.format('yyyy-MM-dd') };
+		int endIndex = rawData.findIndexOf { it[0] == endDate.format('yyyy-MM-dd') };
 		if (startIndex != -1 && endIndex != -1 && startIndex + offset >= 0 && endIndex <= rawData.size()) {
 			return rawData[(startIndex + offset)..(endIndex + offset)];
 		} else {
@@ -39,7 +39,7 @@ class DataRetrievalService {
 		String url = quandlPre + quandlCode + quandlPost;
 		return new URL(url).getText().split('\n').tail().reverse().collect { String line ->
 			Collection<String> lineValues = line.split(',');
-			return [Date.parse('yyyy-MM-dd', lineValues[0]), lineValues[dataColumn]];
+			return [lineValues[0], lineValues[dataColumn]];
 		}
 	}
 }
