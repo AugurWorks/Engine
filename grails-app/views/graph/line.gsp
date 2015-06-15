@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<div class="ui segment">
-			<h1 class="ui header">Line Graph - ${ algorithmRequest.toString() }</h1>
+			<h1 class="ui header">Line Graph - <g:select name="id" from="${ requests }" value="${ algorithmRequest?.id }" noSelection="${ ['null': 'Select a Request'] }" optionKey="id" optionValue="name"></g:select></h1>
 			<h1 class="ui center aligned icon header pending">
 				<i class="loading notched circle icon"></i>
 				<div class="content">
@@ -21,7 +21,10 @@
 		</div>
 		<script>
 			$(function() {
-				getData(${ algorithmRequest.id }, lineGraph);
+				$('#id').change(function() {
+					getData($('#id').val(), lineGraph);
+				});
+				$('#id').trigger('change');
 			});
 		</script>
 	</body>

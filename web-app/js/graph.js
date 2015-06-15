@@ -1,8 +1,10 @@
 function getData(id, success) {
+	$('.pending').show();
+	$('#chart').html('');
 	$.ajax({
 		url: '/graph/getData/' + id,
 		success: function() {
-			$('.pending').remove();
+			$('.pending').hide();
 			success.apply(this, arguments);
 		}
 	});

@@ -7,15 +7,15 @@ class GraphController {
 	def dataRetrievalService
 
 	def line(AlgorithmRequest algorithmRequest) {
-		if (algorithmRequest) {
-			[algorithmRequest: algorithmRequest]
-		} else {
-			render(view: '404')
-		}
+		[algorithmRequest: algorithmRequest, requests: AlgorithmRequest.list()]
 	}
 
 	def getData(AlgorithmRequest algorithmRequest) {
-		Collection<Map> data = dataRetrievalService.getRequestValues(algorithmRequest);
-		render([success: true, data: data] as JSON)
+		if (algorithmRequest) {
+			Collection<Map> data = dataRetrievalService.getRequestValues(algorithmRequest);
+			render([success: true, data: data] as JSON)
+		} else {
+			render([success: true, data: []] as JSON)
+		}
 	}
 }

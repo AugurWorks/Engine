@@ -19,6 +19,10 @@ class AlgorithmRequest {
 	}
 
 	String toString() {
-		'Request ' + startDate.format('dd/MM/yy') + '-' + endDate.format('dd/MM/yy') + ': ' + requestDataSets*.dataSet*.ticker.join(', ')
+		requestDataSets*.dataSet*.ticker.join(', ')
+	}
+
+	String getName() {
+		return this.toString();
 	}
 }
