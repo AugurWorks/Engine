@@ -39,8 +39,15 @@
 				   		<i class="icon cubes"></i> List Data Sets
 				   	</g:link>
 					<div class="ui dropdown item">
+						<i class="icon line chart"></i>
+						Graphs <i class="icon dropdown"></i>
+						<div class="menu">
+							<g:link class="item" controller="graph" action="line">Line Graph</g:link>
+						</div>
+					</div>
+					<div class="ui dropdown item">
 						<i class="icon setting"></i>
-						Admin Actions<i class="icon dropdown"></i>
+						Admin Actions <i class="icon dropdown"></i>
 						<div class="menu">
 						   <a class="item" href="/controllers">Internal Controllers</a>
 						</div>
