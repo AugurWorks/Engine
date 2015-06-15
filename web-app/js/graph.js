@@ -10,13 +10,15 @@ function getData(id, success) {
 
 function lineGraph(result) {
 	var data = result.data;
+	var dates = mergeDates(data);
+	var columns = data.map(function(dataSet) {
+		return createDataColumn(dataSet, dates);
+	});
+	columns.unshift(['x'].concat(dates));
 	var chart = c3.generate({
 		data: {
-			x: data[0].name + '-x',
-			columns: [
-				createDataColumn(data[0], true),
-				createDataColumn(data[0], false)
-			]
+			x: 'x',
+			columns: columns
 		},
 		axis: {
 			x: {
@@ -29,10 +31,24 @@ function lineGraph(result) {
 	});
 }
 
-function createDataColumn(dataSetObject, isXAxis) {
-	var values = dataSetObject.values.map(function(d) {
-		return d[isXAxis ? 0 : 1];
+function createDataColumn(dataSetObject, dates) {
+	var dateMap = dataSetObject.values.reduce(function(map, cur) {
+		map[cur[0]] = cur[1];
+		return map;
+	}, {});
+	var values = dates.map(function(d) {
+		var val = dateMap[d];
+		return val ? val : 0;
 	});
-	values.unshift(dataSetObject.name + (isXAxis ? '-x' : ''));
+	values.unshift(dataSetObject.name);
 	return values;
+}
+
+function mergeDates(allData) {
+	return allData.reduce(function(allDates, dataSet) {
+		var mergedDates = dataSet.values.map(function(row) {
+			return row[0];
+		}).concat(allDates);
+		return $.unique(mergedDates);
+	}, []);
 }
