@@ -11,11 +11,13 @@
 	<body>
 		<div class="ui segment">
 			<h1 class="ui header">Line Graph - ${ algorithmRequest.toString() }</h1>
-			<div id="chart">
-				<div class="loader" style="text-align: center;">
-					<i style="margin: 0 auto;" class="huge loading notched circle icon"></i>
+			<h1 class="ui center aligned icon header pending">
+				<i class="loading notched circle icon"></i>
+				<div class="content">
+					Loading Data...
 				</div>
-			</div>
+			</h1>
+			<div id="chart"></div>
 		</div>
 		<script>
 			$(function() {

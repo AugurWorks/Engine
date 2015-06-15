@@ -2,7 +2,7 @@ function getData(id, success) {
 	$.ajax({
 		url: '/graph/getData/' + id,
 		success: function() {
-			$('.loader').remove();
+			$('.pending').remove();
 			success.apply(this, arguments);
 		}
 	});
