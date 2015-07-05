@@ -4,7 +4,7 @@
 		<title>Create Algorithm Request</title>
 		<meta name="layout" content="semantic">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.0.1/sweetalert.min.js"></script>
-		<script src="${ resource(dir: 'static/js', file: 'algorithmRequest.js') }"></script>
+		<asset:javascript src="algorithmRequest.js" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.0.1/sweetalert.min.css" type="text/css">
 	</head>
 	<body>
