@@ -5,8 +5,8 @@
 		<meta name="layout" content="semantic">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
-		<script src="${resource(dir: 'static/js', file: 'graph.js')}"></script>
-		<link rel="stylesheet" href="${resource(dir: 'static/css', file: 'c3.css')}" type="text/css">
+		<asset:javascript src="graph.js" />
+		<asset:stylesheet href="c3.css" />
 	</head>
 	<body>
 		<div class="ui segment">
