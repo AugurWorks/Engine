@@ -26,9 +26,13 @@ function lineGraph(result) {
 			x: {
 				type: 'timeseries',
 				tick: {
-					format: '%Y-%m-%d'
+					format: '%Y-%m-%d',
+					count: 20
 				}
 			}
+		},
+		point: {
+			show: false
 		}
 	});
 }
