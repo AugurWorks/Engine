@@ -59,6 +59,7 @@
 				<table id="dataSets" class="ui table">
 					<thead>
 						<tr>
+							<th>Dependant</th>
 							<th>Stock</th>
 							<th>Day Offset</th>
 							<th>Remove</th>
@@ -67,6 +68,7 @@
 					<tbody>
 						<g:each in="${ algorithmRequest?.requestDataSets }" var="requestDataSet">
 							<tr>
+								<td class="ui radio checkbox"><g:field type="radio" name="dependant" checked="${ algorithmRequest.dependantDataSet == requestDataSet.dataSet }" value="${ requestDataSet.dataSet.id }" /></td>
 								<td class="stock">${ requestDataSet.dataSet.toString() }</td>
 								<td class="offset">${ requestDataSet.offset }</td>
 								<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>
@@ -78,6 +80,9 @@
 		</div>
 		<script>
 			var dataSets = [];
+			$(function() {
+				$('.ui.radio.checkbox').checkbox();
+			});
 		</script>
 	</body>
 </html>

@@ -5,6 +5,7 @@ class AlgorithmRequest {
 	Date startDate
 	Date endDate
 	Date dateCreated
+	DataSet dependantDataSet
 
 	static hasMany = [requestDataSets: RequestDataSet]
 
@@ -12,6 +13,7 @@ class AlgorithmRequest {
 		startDate()
 		endDate()
 		dateCreated()
+		dependantDataSet()
 	}
 
 	static mapping = {

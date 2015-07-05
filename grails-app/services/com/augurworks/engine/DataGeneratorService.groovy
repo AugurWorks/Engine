@@ -15,16 +15,19 @@ class DataGeneratorService {
 	}
 
 	void generateRequest(int requestNumber) {
-		Collection<DataSet> dataSets = DataSet.list();
+		Collection<DataSet> dataSets = DataSet.list()
 		(1..requestNumber).each { int requestCount ->
-			Random rand = new Random();
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2010/02'), endDate: Date.parse('yyyy/MM', '2015/04')).save();
-			(0..4).each {
+			Random rand = new Random()
+			Collection<DataSet> algorithmRequestDataSets = (0..4).collect {
+				return dataSets[rand.nextInt(dataSets.size())]
+			}
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2010/02'), endDate: Date.parse('yyyy/MM', '2015/04'), dependantDataSet: algorithmRequestDataSets[0]).save()
+			algorithmRequestDataSets.each { DataSet dataSet ->
 				new RequestDataSet(
-					dataSet: dataSets[rand.nextInt(dataSets.size())],
+					dataSet: dataSet,
 					offset: 0,
 					algorithmRequest: algorithmRequest
-				).save();
+				).save()
 			}
 		}
 	}
