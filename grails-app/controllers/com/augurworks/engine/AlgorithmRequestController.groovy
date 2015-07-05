@@ -30,4 +30,15 @@ class AlgorithmRequestController {
 		}
 		render([success: true, id: algorithmRequest.id] as JSON)
 	}
+
+	def deleteRequest() {
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(params.id);
+		try {
+			algorithmRequest.delete()
+			render([success: true] as JSON)
+		} catch(e) {
+			log.error e.message
+			render([success: false] as JSON)
+		}
+	}
 }

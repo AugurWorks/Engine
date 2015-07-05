@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>
-				<div class="four fields">
+				<div class="three fields">
 					<div class="field">
 						<label>Stock</label>
 						<g:select from="${ dataSets }" name="stock" class="ui search dropdown" />
@@ -42,10 +42,18 @@
 						<label>Add Data Set</label>
 						<button onclick="addDataSet()" class="ui primary button">Add Data Set</button>
 					</div>
+				</div>
+				<div class="fields">
 					<div class="field">
 						<label>Submit</label>
-						<button onclick="submitRequest()" class="ui green button">${ algorithmRequest ? 'Update' : 'Create' } Request</button>
+						<button onclick="submitRequest()" class="ui positive button">${ algorithmRequest ? 'Update' : 'Create' } Request</button>
 					</div>
+					<g:if test="${ algorithmRequest }">
+						<div class="field">
+							<label>Delete</label>
+							<button onclick="deleteRequest()" class="ui negative button">Delete Request</button>
+						</div>
+					</g:if>
 				</div>
 				<h3 class="ui dividing header">Data Sets</h3>
 				<table id="dataSets" class="ui table">

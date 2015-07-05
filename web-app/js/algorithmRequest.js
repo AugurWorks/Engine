@@ -28,6 +28,22 @@ function submitRequest() {
 	});
 }
 
+function deleteRequest() {
+	$.ajax({
+		url: '/algorithmRequest/deleteRequest',
+		data: {
+			id: $('#id').val()
+		},
+		success: function(data) {
+			if (data.success) {
+				window.location.href = '/algorithmRequest/'
+			} else {
+				swal('Error', 'There was an error deleting the algorithm. The error has been logged.', 'error');
+			}
+		}
+	});
+}
+
 function getDataSets() {
 	return $('#dataSets tbody > tr').toArray().map(function(d) {
 		return {
