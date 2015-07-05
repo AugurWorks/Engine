@@ -18,7 +18,15 @@ class AlgorithmRequestController {
 		Date startDate = Date.parse('yyyy-MM-dd', params.startDate);
 		Date endDate = Date.parse('yyyy-MM-dd', params.endDate);
 		Collection<Map> dataSets = JSON.parse(params.dataSets);
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(params.id) ?: new AlgorithmRequest(startDate: startDate, endDate: endDate).save();
+		Map dependantDataSetMap = dataSets.grep { it.dependant }.first();
+		DataSet dependantDataSet = DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(params.id) ?: new AlgorithmRequest(startDate: startDate, endDate: endDate, dependantDataSet: dependantDataSet).save();
+		if (params.id && params.id.toLong() == algorithmRequest.id) {
+			algorithmRequest.startDate = startDate
+			algorithmRequest.endDate = endDate
+			algorithmRequest.dependantDataSet = dependantDataSet
+			algorithmRequest.save()
+		}
 		algorithmRequest.requestDataSets*.id.each { long requestDataSetId ->
 			algorithmRequest.removeFromRequestDataSets(RequestDataSet.get(requestDataSetId));
 		}
