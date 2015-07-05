@@ -58,20 +58,19 @@ grails.project.dependency.resolution = {
 
 	plugins {
 		// plugins for the build system only
-		build ":tomcat:7.0.50.1"
+		build ":tomcat:7.0.54"
 
 		// plugins for the compile step
-		compile ":scaffolding:2.0.2"
-		compile ':cache:1.1.1'
+		compile ":scaffolding:2.1.2"
+		compile ":cache:1.1.1"
 		compile ":quartz:1.0.1"
 		compile ":oauth:2.6.1"
 
 		// plugins needed at runtime but not for compilation
-		runtime ":hibernate:3.6.10.8" // or ":hibernate4:4.3.1.1"
-		runtime ":resources:1.2.1"
-		compile ":spring-security-core:2.0-RC2"
+		runtime ":hibernate4:4.3.8.1"
+		compile ":asset-pipeline:2.3.2"
+		compile ":spring-security-core:2.0-RC5"
 
-		runtime ':mail:1.0.1'
 		compile ":slack-logger:1.0.1"
 	}
 }
