@@ -10,21 +10,22 @@ class RequestValueSetSpec extends Specification {
 	static final String DATE_FORMAT = 'yyyy-MM-dd'
 	static final Collection<String> TEST_DATES = ['2014-01-01', '2014-01-02', '2014-01-03']
 
-	RequestValueSet validRequestValueSet(int valueCount) {
+	RequestValueSet validRequestValueSet(int valueCount, int offset = 0) {
 		Collection<String> dates = generateDates(valueCount)
-		return validRequestValueSet(dates)
+		return validRequestValueSet(dates, offset)
 	}
 
-	RequestValueSet validRequestValueSet(Collection<String> dates) {
+	RequestValueSet validRequestValueSet(Collection<String> dates, int offset = 0) {
 		int i = -1
 		Map validParams = [
 			name: 'Test Set',
+			offset: offset,
 			values: dates.collect { String date ->
 				i++
 				return new DataSetValue(date, i.toString())
 			}
 		]
-		return new RequestValueSet(validParams.name, validParams.values)
+		return new RequestValueSet(validParams.name, validParams.offset, validParams.values)
 	}
 
 	Collection<String> generateDates(int valueCount) {
@@ -119,10 +120,10 @@ class RequestValueSetSpec extends Specification {
 		setup:
 		Date startDate = Date.parse(DATE_FORMAT, start)
 		Date endDate = Date.parse(DATE_FORMAT, end)
-		RequestValueSet set = validRequestValueSet(10)
+		RequestValueSet set = validRequestValueSet(10, offset)
 
 		when:
-		Collection<String> dates = set.reduceValueRange(startDate, endDate, offset).dates
+		Collection<String> dates = set.reduceValueRange(startDate, endDate).dates
 
 		then:
 		dates.size() == size

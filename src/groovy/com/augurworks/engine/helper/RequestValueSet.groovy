@@ -6,15 +6,21 @@ import java.util.Date;
 class RequestValueSet {
 
 	String name
+	int offset
 	Collection<DataSetValue> values
 
-	RequestValueSet(String name, Collection<DataSetValue> values) {
+	RequestValueSet(String name, int offset, Collection<DataSetValue> values) {
 		this.name = name
+		this.offset = offset
 		this.values = values
 	}
 
 	String getName() {
 		return name
+	}
+
+	String getOffset() {
+		return offset
 	}
 
 	Collection<DataSetValue> getValues() {
@@ -53,7 +59,7 @@ class RequestValueSet {
 		return this
 	}
 
-	RequestValueSet reduceValueRange(Date startDate, Date endDate, int offset) {
-		return this.filterValues(startDate, endDate, offset, offset)
+	RequestValueSet reduceValueRange(Date startDate, Date endDate) {
+		return this.filterValues(startDate, endDate, this.offset, this.offset)
 	}
 }
