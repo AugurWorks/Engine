@@ -114,4 +114,26 @@ class RequestValueSetSpec extends Specification {
 		then:
 		thrown(AugurWorksException)
 	}
+
+	void "test reduce value range"() {
+		setup:
+		Date startDate = Date.parse(DATE_FORMAT, start)
+		Date endDate = Date.parse(DATE_FORMAT, end)
+		RequestValueSet set = validRequestValueSet(10)
+
+		when:
+		Collection<String> dates = set.reduceValueRange(startDate, endDate, offset).dates
+
+		then:
+		dates.size() == size
+		dates.first() == first
+		dates.last() == last
+
+		where:
+		start        | end          | offset | size | first        | last
+		'2014-01-01' | '2014-01-10' | 0      | 10   | '2014-01-01' | '2014-01-10'
+		'2014-01-01' | '2014-01-09' | 1      | 9    | '2014-01-02' | '2014-01-10'
+		'2014-01-02' | '2014-01-10' | -1     | 9    | '2014-01-01' | '2014-01-09'
+		'2014-01-02' | '2014-01-05' | 5      | 4    | '2014-01-07' | '2014-01-10'
+	}
 }

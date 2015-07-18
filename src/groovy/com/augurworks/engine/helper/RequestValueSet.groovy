@@ -52,4 +52,8 @@ class RequestValueSet {
 		this.values = values
 		return this
 	}
+
+	RequestValueSet reduceValueRange(Date startDate, Date endDate, int offset) {
+		return this.filterValues(startDate, endDate, offset, offset)
+	}
 }
