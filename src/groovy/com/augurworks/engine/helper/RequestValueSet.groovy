@@ -21,6 +21,10 @@ class RequestValueSet {
 		return values
 	}
 
+	Collection<String> getDates() {
+		return this.values*.date
+	}
+
 	RequestValueSet filterValues(Date startDate, Date endDate, int minOffset, int maxOffset) {
 		Collection<DataSetValue> values = this.values
 		int startIndex = values.findIndexOf { it.date == startDate.format('yyyy-MM-dd') }
