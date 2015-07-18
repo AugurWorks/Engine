@@ -39,7 +39,7 @@ function lineGraph(result) {
 
 function createDataColumn(dataSetObject, dates) {
 	var dateMap = dataSetObject.values.reduce(function(map, cur) {
-		map[cur[0]] = cur[1];
+		map[cur.date] = cur.value;
 		return map;
 	}, {});
 	var values = dates.map(function(d) {
@@ -53,7 +53,7 @@ function createDataColumn(dataSetObject, dates) {
 function mergeDates(allData) {
 	return allData.reduce(function(allDates, dataSet) {
 		var mergedDates = dataSet.values.map(function(row) {
-			return row[0];
+			return row.date;
 		}).concat(allDates);
 		return $.unique(mergedDates);
 	}, []);
