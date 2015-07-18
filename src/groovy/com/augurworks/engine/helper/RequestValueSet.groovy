@@ -35,4 +35,21 @@ class RequestValueSet {
 		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)]
 		return this
 	}
+
+	RequestValueSet fillOutValues(Collection<String> allDates) {
+		Collection<DataSetValue> values = this.values
+		if (values.size() == 0 || allDates.size() == 0 || values.first().date != allDates.first()) {
+			throw new AugurWorksException('Invalid fill out values parameters')
+		}
+		allDates[1..-1].eachWithIndex { String date, int index ->
+			DataSetValue dataSetValue = values[index + 1]
+			if (!dataSetValue || dataSetValue.date != date) {
+				DataSetValue oldDataSetValue = values[index]
+				DataSetValue newDataSetValue = new DataSetValue(date, oldDataSetValue.value.toString())
+				values = values.plus(index + 1, newDataSetValue)
+			}
+		}
+		this.values = values
+		return this
+	}
 }

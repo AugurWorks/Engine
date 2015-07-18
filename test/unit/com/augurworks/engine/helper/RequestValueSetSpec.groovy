@@ -8,35 +8,47 @@ import com.augurworks.engine.AugurWorksException
 class RequestValueSetSpec extends Specification {
 
 	static final String DATE_FORMAT = 'yyyy-MM-dd'
+	static final Collection<String> TEST_DATES = ['2014-01-01', '2014-01-02', '2014-01-03']
 
-	Map validRequestValueSetParams(int valueCount) {
-		return [
+	RequestValueSet validRequestValueSet(int valueCount) {
+		Collection<String> dates = generateDates(valueCount)
+		return validRequestValueSet(dates)
+	}
+
+	RequestValueSet validRequestValueSet(Collection<String> dates) {
+		int i = -1
+		Map validParams = [
 			name: 'Test Set',
-			values: (0..(valueCount - 1)).collect { int i ->
-				Date startDate = Date.parse(DATE_FORMAT, '2014-01-01')
-				Date currentDate = use(TimeCategory) {
-					startDate + i.days
-				}
-				return new DataSetValue(currentDate.format('yyyy-MM-dd'), i.toString())
+			values: dates.collect { String date ->
+				i++
+				return new DataSetValue(date, i.toString())
 			}
 		]
+		return new RequestValueSet(validParams.name, validParams.values)
+	}
+
+	Collection<String> generateDates(int valueCount) {
+		return (0..(valueCount - 1)).collect { int i ->
+			Date startDate = Date.parse(DATE_FORMAT, '2014-01-01')
+			return use(TimeCategory) {
+				startDate + i.days
+			}.format('yyyy-MM-dd')
+		}
 	}
 
 	void "test get dates"() {
 		setup:
-		Map validParams = validRequestValueSetParams(3)
-		RequestValueSet set = new RequestValueSet(validParams.name, validParams.values)
+		RequestValueSet set = validRequestValueSet(3)
 
 		expect:
-		set.dates == ['2014-01-01', '2014-01-02', '2014-01-03']
+		set.dates == TEST_DATES
 	}
 
 	void "test filter values"() {
 		setup:
-		Map validParams = validRequestValueSetParams(10)
 		Date startDate = Date.parse(DATE_FORMAT, start)
 		Date endDate = Date.parse(DATE_FORMAT, end)
-		RequestValueSet set = new RequestValueSet(validParams.name, validParams.values).filterValues(startDate, endDate, minOffset, maxOffset)
+		RequestValueSet set = validRequestValueSet(10).filterValues(startDate, endDate, minOffset, maxOffset)
 
 		expect:
 		set.values.size() == size
@@ -50,10 +62,9 @@ class RequestValueSetSpec extends Specification {
 
 	void "test filter values exception"() {
 		setup:
-		Map validParams = validRequestValueSetParams(10)
 		Date startDate = Date.parse(DATE_FORMAT, start)
 		Date endDate = Date.parse(DATE_FORMAT, end)
-		RequestValueSet set = new RequestValueSet(validParams.name, validParams.values)
+		RequestValueSet set = validRequestValueSet(10)
 
 		when:
 		set.filterValues(startDate, endDate, minOffset, maxOffset)
@@ -66,5 +77,41 @@ class RequestValueSetSpec extends Specification {
 		'2014-01-01' | '2014-01-10' | -1        | 0
 		'2014-01-01' | '2014-01-10' | 0         | 1
 		'2014-01-01' | '2014-01-10' | -1        | 1
+	}
+
+	void "test fill out values"() {
+		setup:
+		Collection<String> dates = TEST_DATES - TEST_DATES[1..1]
+		RequestValueSet set = validRequestValueSet(dates)
+
+		when:
+		Collection<DataSetValue> values = set.fillOutValues(TEST_DATES).values
+
+		then:
+		values.size() == TEST_DATES.size()
+		values*.value == [0, 0, 1]
+	}
+
+	void "test fill out values exception"() {
+		setup:
+		Collection<String> dates = TEST_DATES - TEST_DATES[0..0]
+		RequestValueSet set = validRequestValueSet(dates)
+
+		when:
+		set.fillOutValues(TEST_DATES)
+
+		then:
+		thrown(AugurWorksException)
+	}
+
+	void "test fill out values exception empty dates"() {
+		setup:
+		RequestValueSet set = validRequestValueSet(TEST_DATES)
+
+		when:
+		set.fillOutValues([])
+
+		then:
+		thrown(AugurWorksException)
 	}
 }
