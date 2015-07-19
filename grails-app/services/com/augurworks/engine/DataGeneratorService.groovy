@@ -5,6 +5,18 @@ import grails.transaction.Transactional
 @Transactional
 class DataGeneratorService {
 
+	static final VALID_TICKERS = [
+		'AAPL',
+		'GOOGL',
+		'JPM',
+		'USO',
+		'AMZN',
+		'FB',
+		'TWTR',
+		'YHOO',
+		'MSFT'
+	]
+
 	void importQuandlDataSets() {
 		new URL('https://s3.amazonaws.com/quandl-static-content/quandl-stock-code-list.csv').getText().split('\n').tail().each { String line ->
 			Collection<String> row = line.split(',');
@@ -18,10 +30,11 @@ class DataGeneratorService {
 		Collection<DataSet> dataSets = DataSet.list()
 		(1..requestNumber).each { int requestCount ->
 			Random rand = new Random()
-			Collection<DataSet> algorithmRequestDataSets = (0..4).collect {
-				return dataSets[rand.nextInt(dataSets.size())]
+			Collection<DataSet> algorithmRequestDataSets = (0..2).collect {
+				String ticker = VALID_TICKERS[rand.nextInt(VALID_TICKERS.size())]
+				return DataSet.findByTicker(ticker)
 			}
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2010/02'), endDate: Date.parse('yyyy/MM', '2015/04'), dependantDataSet: algorithmRequestDataSets[0]).save()
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2014/12'), endDate: Date.parse('yyyy/MM', '2015/06'), dependantDataSet: algorithmRequestDataSets[0]).save()
 			algorithmRequestDataSets.each { DataSet dataSet ->
 				new RequestDataSet(
 					dataSet: dataSet,
