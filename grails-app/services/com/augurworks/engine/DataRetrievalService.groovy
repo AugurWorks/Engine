@@ -10,13 +10,19 @@ class DataRetrievalService {
 
 	def grailsApplication
 
+	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest) {
+		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest)
+		Collection<String> allDates = rawRequestValues*.dates.flatten().unique()
+		return rawRequestValues*.fillOutValues(allDates)*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate)
+	}
+
 	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest) {
 		int minOffset = algorithmRequest.requestDataSets*.offset.min()
 		int maxOffset = algorithmRequest.requestDataSets*.offset.max()
 		GParsPool.withPool(algorithmRequest.requestDataSets.size()) {
 			return algorithmRequest.requestDataSets.collectParallel { RequestDataSet requestDataSet ->
 				Collection<DataSetValue> values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
-				return new RequestValueSet(requestDataSet.dataSet.name, values).filterValues(algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
+				return new RequestValueSet(requestDataSet.dataSet.name, requestDataSet.offset, values).filterValues(algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
 			}
 		}
 	}
