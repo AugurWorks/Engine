@@ -10,7 +10,9 @@ class MachineLearningService {
 
 	File requestToCsv(AlgorithmRequest algorithmRequest) {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
-		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest)
+		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+			return (requestValueSetB.name == algorithmRequest.dependantDataSet.name) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.name) ?: requestValueSetA.name <=> requestValueSetB.name
+		}
 		int rowNumber = dataSets*.values*.size().max()
 		if (!areDataSetsCorrectlySized(dataSets, rowNumber)) {
 			throw new AugurWorksException('Request datasets aren\'t all the same length.')
