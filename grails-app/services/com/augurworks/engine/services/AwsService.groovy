@@ -36,6 +36,12 @@ class AwsService {
 		return path
 	}
 
+	void deleteFromS3(String path) {
+		AmazonS3Client s3 = new AmazonS3Client()
+		String bucket = bucket()
+		s3.deleteObject(bucket, path)
+	}
+
 	String bucket() {
 		return grailsApplication.config.aws.bucket
 	}
