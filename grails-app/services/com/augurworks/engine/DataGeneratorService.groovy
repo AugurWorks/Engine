@@ -5,7 +5,7 @@ import grails.transaction.Transactional
 @Transactional
 class DataGeneratorService {
 
-	static final VALID_TICKERS = [
+	static final Collection<String> VALID_TICKERS = [
 		'AAPL',
 		'GOOGL',
 		'JPM',
@@ -30,8 +30,11 @@ class DataGeneratorService {
 		Collection<DataSet> dataSets = DataSet.list()
 		(1..requestNumber).each { int requestCount ->
 			Random rand = new Random()
-			Collection<DataSet> algorithmRequestDataSets = (0..2).collect {
-				String ticker = VALID_TICKERS[rand.nextInt(VALID_TICKERS.size())]
+			Collection<String> tickers = VALID_TICKERS
+			Collection<DataSet> algorithmRequestDataSets = (0..3).collect {
+				
+				String ticker = tickers[rand.nextInt(tickers.size())]
+				tickers -= ticker
 				return DataSet.findByTicker(ticker)
 			}
 			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2014/12'), endDate: Date.parse('yyyy/MM', '2015/06'), dependantDataSet: algorithmRequestDataSets[0]).save()
