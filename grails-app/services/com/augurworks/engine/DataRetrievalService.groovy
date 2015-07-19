@@ -22,7 +22,7 @@ class DataRetrievalService {
 		GParsPool.withPool(algorithmRequest.requestDataSets.size()) {
 			return algorithmRequest.requestDataSets.collectParallel { RequestDataSet requestDataSet ->
 				Collection<DataSetValue> values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
-				return new RequestValueSet(requestDataSet.dataSet.name, requestDataSet.offset, values).filterValues(algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
+				return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).filterValues(algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
 			}
 		}
 	}
