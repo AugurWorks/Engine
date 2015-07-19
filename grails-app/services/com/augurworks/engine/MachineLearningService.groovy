@@ -1,12 +1,20 @@
 package com.augurworks.engine
 
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.services.AwsService
 import grails.transaction.Transactional
 
 @Transactional
 class MachineLearningService {
 
-	def dataRetrievalService
+	DataRetrievalService dataRetrievalService
+	AwsService awsService
+
+	void createAlgorithm(algorithmRequest) {
+		File file = requestToCsv(algorithmRequest)
+		awsService.uploadToS3(file)
+		file.delete()
+	}
 
 	File requestToCsv(AlgorithmRequest algorithmRequest) {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')

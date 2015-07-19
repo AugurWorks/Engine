@@ -77,18 +77,21 @@ environments {
 		grails.serverURL = "http://localhost:8080"
 		oauth.providers.github.key = localConfig.oauth.github.key
 		oauth.providers.github.secret = localConfig.oauth.github.secret
+		aws.bucket = 'aw-files-dev'
 	}
 	devdeploy {
 		grails.logging.jul.usebridge = false
 		grails.serverURL = "http://engine-dev.elasticbeanstalk.com"
 		oauth.providers.github.key = localConfig.oauth.github.key.devdeploy
 		oauth.providers.github.secret = localConfig.oauth.github.secret.devdeploy
+		aws.bucket = 'aw-files-devdeploy'
 	}
 	production {
 		grails.logging.jul.usebridge = false
 		grails.serverURL = "http://engine.elasticbeanstalk.com"
 		oauth.providers.github.key = localConfig.oauth.github.key.prod
 		oauth.providers.github.secret = localConfig.oauth.github.secret.prod
+		aws.bucket = 'aw-files'
 	}
 }
 
@@ -108,6 +111,7 @@ augurworks {
 		key = localConfig.augurworks.quandlKey
 	}
 	dateFormat = 'MM/dd/yyyy'
+	datePathFormat = 'yyyy/MM/dd/'
 }
 
 // log4j configuration
