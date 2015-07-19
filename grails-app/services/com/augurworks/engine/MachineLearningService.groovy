@@ -14,9 +14,10 @@ class MachineLearningService {
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		File file = requestToCsv(algorithmRequest)
 		String path = awsService.uploadToS3(file)
+		file.delete()
 		String dataSchema = createDataSchema(algorithmRequest)
 		String dataSourceId = awsService.createDataSource(path, dataSchema)
-		file.delete()
+		awsService.createMLModel(dataSourceId)
 	}
 
 	File requestToCsv(AlgorithmRequest algorithmRequest) {
