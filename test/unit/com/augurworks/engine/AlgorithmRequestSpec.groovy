@@ -58,4 +58,50 @@ class AlgorithmRequestSpec extends Specification {
 		AlgorithmRequest.count() == 1
 		algorithmRequest.requestDataSets.size() == 4
 	}
+
+	void "test update fields algorithm request"() {
+		given:
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		DataSet dataSet = new DataSet(dataSetParams(1)).save()
+		Map parameters = [
+			endDate: Date.parse(DATE_FORMAT, end),
+			dependantDataSet: dataSet
+		]
+
+		when:
+		algorithmRequest.updateFields(parameters)
+
+		then:
+		algorithmRequest.endDate.format(DATE_FORMAT) == end
+		algorithmRequest.dependantDataSet.id == dataSet.id
+
+		where:
+		end          | dataSetCount
+		'2015-02-01' | 4
+		'2015-02-01' | 7
+		'2014-02-01' | 4
+	}
+
+	void "test update data sets to algorithm request"() {
+		given:
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		Collection<DataSet> dataSets = (0..(dataSetCount - 1)).collect { int id ->
+			return new DataSet(dataSetParams(id)).save()
+		}
+		Collection<Map> dataSetMaps = dataSets.collect { DataSet dataSet ->
+			return [
+				name: dataSet.ticker,
+				offset: 0
+			]
+		}
+
+		when:
+		algorithmRequest.updateDataSets(dataSetMaps)
+
+		then:
+		algorithmRequest.requestDataSets.size() == dataSetCount
+
+		where:
+		dataSetCount << [4, 7, 3]
+	}
 }

@@ -15,27 +15,18 @@ class AlgorithmRequestController {
 	}
 
 	def submitRequest() {
-		Date startDate = Date.parse('yyyy-MM-dd', params.startDate);
-		Date endDate = Date.parse('yyyy-MM-dd', params.endDate);
-		Collection<Map> dataSets = JSON.parse(params.dataSets);
-		Map dependantDataSetMap = dataSets.grep { it.dependant }.first();
-		DataSet dependantDataSet = DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(params.id) ?: new AlgorithmRequest(startDate: startDate, endDate: endDate, dependantDataSet: dependantDataSet).save();
-		if (params.id && params.id.toLong() == algorithmRequest.id) {
-			algorithmRequest.startDate = startDate
-			algorithmRequest.endDate = endDate
-			algorithmRequest.dependantDataSet = dependantDataSet
-			algorithmRequest.save()
+		Collection<Map> dataSets = JSON.parse(params.dataSets)
+		Map dependantDataSetMap = dataSets.grep { it.dependant }.first()
+		Map parameters = [
+			startDate: Date.parse('yyyy-MM-dd', params.startDate),
+			endDate: Date.parse('yyyy-MM-dd', params.endDate),
+			dependantDataSet: DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
+		]
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(params.id) ?: new AlgorithmRequest(parameters).save();
+		if (params.id == algorithmRequest.id.toString()) {
+			algorithmRequest.updateFields(parameters)
 		}
-		algorithmRequest.requestDataSets*.id.each { long requestDataSetId ->
-			algorithmRequest.removeFromRequestDataSets(RequestDataSet.get(requestDataSetId));
-		}
-		dataSets.each { Map dataSet ->
-			algorithmRequest.addToRequestDataSets(
-				dataSet: DataSet.findByTicker(dataSet.name.split(' - ')[0]),
-				offset: dataSet.offset
-			);
-		}
+		algorithmRequest.updateDataSets(dataSets)
 		render([success: true, id: algorithmRequest.id] as JSON)
 	}
 
