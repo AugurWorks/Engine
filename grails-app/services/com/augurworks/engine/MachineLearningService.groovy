@@ -2,6 +2,7 @@ package com.augurworks.engine
 
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.services.AwsService
+import grails.converters.JSON
 import grails.transaction.Transactional
 
 @Transactional
@@ -10,9 +11,11 @@ class MachineLearningService {
 	DataRetrievalService dataRetrievalService
 	AwsService awsService
 
-	void createAlgorithm(algorithmRequest) {
+	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		File file = requestToCsv(algorithmRequest)
-		awsService.uploadToS3(file)
+		String path = awsService.uploadToS3(file)
+		String dataSchema = createDataSchema(algorithmRequest)
+		String dataSourceId = awsService.createDataSource(path, dataSchema)
 		file.delete()
 	}
 
@@ -30,6 +33,22 @@ class MachineLearningService {
 			csv << dataSets*.values.collect { it[row].value }.join(',') + '\n'
 		}
 		return csv
+	}
+
+	String createDataSchema(AlgorithmRequest algorithmRequest) {
+		Map schema = [
+			version: '1.0',
+			targetAttributeName: algorithmRequest.dependantDataSet.ticker,
+			dataFormat: 'CSV',
+			dataFileContainsHeader: true,
+			attributes: algorithmRequest.requestDataSets*.dataSet.collect { DataSet dataSet ->
+				return [
+					attributeName: dataSet.ticker,
+					attributeType: 'NUMERIC'
+				]
+			}
+		]
+		return schema as JSON
 	}
 
 	boolean areDataSetsCorrectlySized(Collection<Map> dataSets, int rowNumber) {
