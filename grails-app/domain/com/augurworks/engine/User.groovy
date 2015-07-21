@@ -1,5 +1,7 @@
 package com.augurworks.engine
 
+import java.security.SecureRandom
+
 class User {
 
 	transient springSecurityService
@@ -15,8 +17,8 @@ class User {
 	static transients = ['springSecurityService']
 
 	static constraints = {
-		username blank: false, unique: true
-		password blank: false
+		username unique: true
+		password()
 		avatarUrl nullable: true
 	}
 
@@ -25,7 +27,7 @@ class User {
 	}
 
 	Set<Role> getAuthorities() {
-		UserRole.findAllByUser(this).collect { it.role } as Set
+		UserRole.findAllByUser(this)*.role as Set
 	}
 
 	def beforeInsert() {
@@ -43,8 +45,8 @@ class User {
 	}
 
 	String generator(int len = 20) {
-		Random rand = new Random();
-		String alpha = (('A'..'Z') + ('a'..'z') + ('0'..'9')).join();
-		return (1..len).collect { alpha[rand.nextInt(alpha.length())] }.join();
+		SecureRandom rand = new SecureRandom()
+		String alpha = (('A'..'Z') + ('a'..'z') + ('0'..'9')).join()
+		return (1..len).collect { alpha[rand.nextInt(alpha.length())] }.join()
 	}
 }

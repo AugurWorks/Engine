@@ -25,6 +25,6 @@ class AlgorithmRequest {
 	}
 
 	String getName() {
-		return this.toString();
+		return this.toString()
 	}
 }

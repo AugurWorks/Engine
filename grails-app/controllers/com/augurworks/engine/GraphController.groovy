@@ -12,7 +12,7 @@ class GraphController {
 
 	def getData(AlgorithmRequest algorithmRequest) {
 		if (algorithmRequest) {
-			Collection<Map> data = dataRetrievalService.getRequestValues(algorithmRequest);
+			Collection<Map> data = dataRetrievalService.getRequestValues(algorithmRequest)
 			render([success: true, data: data] as JSON)
 		} else {
 			render([success: true, data: []] as JSON)

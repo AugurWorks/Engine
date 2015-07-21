@@ -13,22 +13,23 @@ class UserRole implements Serializable {
 		if (!(other instanceof UserRole)) {
 			return false
 		}
-
-		other.user?.id == user?.id &&
-			other.role?.id == role?.id
+		other.user?.id == user?.id && other.role?.id == role?.id
 	}
 
 	int hashCode() {
-		def builder = new HashCodeBuilder()
-		if (user) builder.append(user.id)
-		if (role) builder.append(role.id)
+		HashCodeBuilder builder = new HashCodeBuilder()
+		if (user) {
+			builder.append(user.id)
+		}
+		if (role) {
+			builder.append(role.id)
+		}
 		builder.toHashCode()
 	}
 
 	static UserRole get(long userId, long roleId) {
 		UserRole.where {
-			user == User.load(userId) &&
-			role == Role.load(roleId)
+			user == User.load(userId) && role == Role.load(roleId)
 		}.get()
 	}
 
@@ -37,12 +38,9 @@ class UserRole implements Serializable {
 	}
 
 	static boolean remove(User u, Role r, boolean flush = false) {
-
 		int rowCount = UserRole.where {
-			user == User.load(u.id) &&
-			role == Role.load(r.id)
+			user == User.load(u.id) && role == Role.load(r.id)
 		}.deleteAll()
-
 		rowCount > 0
 	}
 
