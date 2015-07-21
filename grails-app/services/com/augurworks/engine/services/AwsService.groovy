@@ -7,6 +7,7 @@ import com.amazonaws.services.machinelearning.model.CreateDataSourceFromS3Result
 import com.amazonaws.services.machinelearning.model.CreateMLModelRequest
 import com.amazonaws.services.machinelearning.model.S3DataSpec
 import com.amazonaws.services.machinelearning.model.MLModelType
+import com.amazonaws.services.machinelearning.model.CreateMLModelResult
 import grails.transaction.Transactional
 
 @Transactional
@@ -25,7 +26,8 @@ class AwsService {
 	String createMLModel(String dataSourceId) {
 		AmazonMachineLearningClient ml = new AmazonMachineLearningClient()
 		CreateMLModelRequest mlRequest = new CreateMLModelRequest().withTrainingDataSourceId(dataSourceId).withMLModelType(MLModelType.REGRESSION)
-		ml.createMLModel(mlRequest)
+		CreateMLModelResult mlResult= ml.createMLModel(mlRequest)
+		return mlResult.getMLModelId()
 	}
 
 	String uploadToS3(File file) {

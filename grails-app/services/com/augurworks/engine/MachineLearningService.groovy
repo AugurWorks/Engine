@@ -17,7 +17,8 @@ class MachineLearningService {
 		file.delete()
 		String dataSchema = createDataSchema(algorithmRequest)
 		String dataSourceId = awsService.createDataSource(path, dataSchema)
-		awsService.createMLModel(dataSourceId)
+		String modelId = awsService.createMLModel(dataSourceId)
+		createAlgorithmResult(algorithmRequest, modelId)
 	}
 
 	File requestToCsv(AlgorithmRequest algorithmRequest) {
@@ -54,5 +55,13 @@ class MachineLearningService {
 
 	boolean areDataSetsCorrectlySized(Collection<Map> dataSets, int rowNumber) {
 		return dataSets*.values*.size().every { it == rowNumber }
+	}
+
+	void createAlgorithmResult(AlgorithmRequest algorithmRequest, String modelId) {
+		AlgorithmResult algorithmResult = new AlgorithmResult([
+			name: algorithmRequest.stringify(),
+			modelId: modelId
+		])
+		algorithmResult.save();
 	}
 }
