@@ -29,7 +29,7 @@ class GithubController {
 			new UserRole(user: user, role: userRole).save();
 		}
 		user.avatarUrl = json.avatar_url;
-		user.save();
+		user.save(flush: true);
 		authenticate(json.login);
 		redirect(uri: '/')
 	}
