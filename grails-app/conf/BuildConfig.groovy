@@ -72,5 +72,25 @@ grails.project.dependency.resolution = {
 		compile ":spring-security-core:2.0-RC5"
 
 		compile ":slack-logger:1.0.1"
+
+		test ":codenarc:0.22"
 	}
+}
+codenarc.reports = {
+	MyXmlReport('xml') {
+		outputFile = 'target/CodeNarcReport.xml'
+		title = 'Engine XML Report'
+	}
+	MyHtmlReport('html') {
+		outputFile = 'target/CodeNarcReport.html'
+		title = 'Engine HTML Report'
+	}
+}
+codenarc.ruleSetFiles="file:test/CodeNarcRules.groovy"
+codenarc.processViews = true
+
+codenarc.systemExitOnBuildException = false
+
+coverage {
+	enabledByDefault = false
 }
