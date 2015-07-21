@@ -242,15 +242,6 @@ ruleset {
 	}
 
 	rule(IllegalRegexRule) {
-		name = 'NoInlineStylingAttributes'
-		regex = /style=/
-		description = 'Do not use the inline styling attributes in tags in GSPs.'
-		priority = 2
-		applyToFilesMatching = /.*grails-app\/views\/.*/
-		applyToFileNames = "*.gsp"
-	}
-
-	rule(IllegalRegexRule) {
 		name = 'NoBlankConstraintDomainClass'
 		regex = /blank\:/
 		description = 'Since upgrade to Grails 2.3.5 handles blanks coming in from web, we do not need blank constraints in command objects anymore.'
