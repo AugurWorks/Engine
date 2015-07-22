@@ -2,6 +2,8 @@ package com.augurworks.engine
 
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.services.AwsService
+import com.amazonaws.services.machinelearning.model.GetMLModelResult
+
 import grails.converters.JSON
 import grails.transaction.Transactional
 
@@ -57,11 +59,30 @@ class MachineLearningService {
 		return dataSets*.values*.size().every { it == rowNumber }
 	}
 
+	void checkIncompleteAlgorithms() {
+		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.list().grep { !it.complete }
+		algorithmResults.each { AlgorithmResult algorithmResult ->
+			checkAlgorithm(algorithmResult)
+		}
+	}
+
 	void createAlgorithmResult(AlgorithmRequest algorithmRequest, String modelId) {
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			name: algorithmRequest.stringify(),
 			modelId: modelId
 		])
 		algorithmResult.save();
+	}
+
+	void checkAlgorithm(AlgorithmResult algorithmResult) {
+		if (algorithmResult.machineLearning) {
+			checkMachineLearningAlgorithm(algorithmResult)
+		}
+	}
+
+	void checkMachineLearningAlgorithm(AlgorithmResult algorithmResult) {
+		GetMLModelResult mlModel = awsService.getMLModel(algorithmResult.modelId)
+		algorithmResult.modelStatus = mlModel.getStatus()
+		algorithmResult.save()
 	}
 }
