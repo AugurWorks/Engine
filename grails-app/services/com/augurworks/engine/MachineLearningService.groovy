@@ -14,16 +14,20 @@ class MachineLearningService {
 	AwsService awsService
 
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
-		File file = requestToCsv(algorithmRequest)
-		String path = awsService.uploadToS3(file)
-		file.delete()
-		String dataSchema = createDataSchema(algorithmRequest)
-		String dataSourceId = awsService.createDataSource(path, dataSchema)
+		String dataSourceId = createRequestDataSource(algorithmRequest, false)
 		String modelId = awsService.createMLModel(dataSourceId)
 		createAlgorithmResult(algorithmRequest, modelId)
 	}
 
-	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction = false) {
+	String createRequestDataSource(AlgorithmRequest algorithmRequest, boolean prediction) {
+		File file = requestToCsv(algorithmRequest, prediction)
+		String path = awsService.uploadToS3(file)
+		file.delete()
+		String dataSchema = createDataSchema(algorithmRequest, prediction)
+		return awsService.createDataSource(path, dataSchema)
+	}
+
+	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction) {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
 		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, prediction).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
@@ -39,19 +43,22 @@ class MachineLearningService {
 		return csv
 	}
 
-	String createDataSchema(AlgorithmRequest algorithmRequest) {
+	String createDataSchema(AlgorithmRequest algorithmRequest, boolean prediction) {
+		Collection<RequestDataSet> requestDataSets = prediction ? algorithmRequest.independentRequestDataSets : algorithmRequest.requestDataSets
 		Map schema = [
 			version: '1.0',
-			targetAttributeName: algorithmRequest.dependantDataSet.ticker,
 			dataFormat: 'CSV',
 			dataFileContainsHeader: true,
-			attributes: algorithmRequest.requestDataSets*.dataSet.collect { DataSet dataSet ->
+			attributes: requestDataSets*.dataSet.collect { DataSet dataSet ->
 				return [
 					attributeName: dataSet.ticker,
 					attributeType: 'NUMERIC'
 				]
 			}
 		]
+		if (!prediction) {
+			schema.targetAttributeName = algorithmRequest.dependantDataSet.ticker
+		}
 		return schema as JSON
 	}
 
@@ -84,5 +91,13 @@ class MachineLearningService {
 		GetMLModelResult mlModel = awsService.getMLModel(algorithmResult.modelId)
 		algorithmResult.modelStatus = mlModel.getStatus()
 		algorithmResult.save()
+		if (algorithmResult.complete) {
+			generateMachineLearningResult(algorithmResult)
+		}
+	}
+
+	void generateMachineLearningResult(AlgorithmResult algorithmResult) {
+		String dataSourceId = createRequestDataSource(algorithmResult.algorithmRequest, true)
+		String batchPredictionId = awsService.createBatchPrediction(dataSourceId, algorithmResult.modelId)
 	}
 }
