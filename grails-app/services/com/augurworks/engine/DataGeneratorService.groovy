@@ -31,17 +31,16 @@ class DataGeneratorService {
 		(1..requestNumber).each { int requestCount ->
 			Random rand = new Random()
 			Collection<String> tickers = VALID_TICKERS
-			Collection<DataSet> algorithmRequestDataSets = (0..3).collect {
-				
+			Collection<DataSet> algorithmRequestDataSets = (0..5).collect {
 				String ticker = tickers[rand.nextInt(tickers.size())]
 				tickers -= ticker
 				return DataSet.findByTicker(ticker)
 			}
 			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2014/12'), endDate: Date.parse('yyyy/MM', '2015/06'), dependantDataSet: algorithmRequestDataSets[0]).save()
-			algorithmRequestDataSets.each { DataSet dataSet ->
+			algorithmRequestDataSets.eachWithIndex { DataSet dataSet, int counter ->
 				new RequestDataSet(
 					dataSet: dataSet,
-					offset: 0,
+					offset: counter == 0 ? 0 : -1,
 					algorithmRequest: algorithmRequest
 				).save()
 			}
