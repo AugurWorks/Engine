@@ -4,8 +4,8 @@ class AlgorithmResult {
 
 	Date dateCreated
 	String modelId
-	String modelStatus
-	String evaluationId
+	String batchPredictionId
+	String outputUri
 
 	static hasMany = [predictedValues: PredictedValue]
 
@@ -14,8 +14,8 @@ class AlgorithmResult {
 	static constraints = {
 		dateCreated()
 		modelId nullable: true
-		modelStatus nullable: true
-		evaluationId nullable: true
+		batchPredictionId nullable: true
+		outputUri nullable: true
 	}
 
 	static mapping = {
@@ -27,7 +27,6 @@ class AlgorithmResult {
 	}
 
 	boolean isComplete() {
-		Collection<String> completeStatuses = ['FAILED', 'COMPLETED', 'DELETED']
-		return this.machineLearning && modelStatus in completeStatuses
+		return this.machineLearning && this.outputUri
 	}
 }

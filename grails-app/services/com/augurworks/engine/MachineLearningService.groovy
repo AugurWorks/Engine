@@ -13,6 +13,8 @@ class MachineLearningService {
 	DataRetrievalService dataRetrievalService
 	AwsService awsService
 
+	static final MODEL_COMPLETE_STATUS = 'COMPLETED'
+
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		String dataSourceId = createRequestDataSource(algorithmRequest, false)
 		String modelId = awsService.createMLModel(dataSourceId)
@@ -88,16 +90,22 @@ class MachineLearningService {
 	}
 
 	void checkMachineLearningAlgorithm(AlgorithmResult algorithmResult) {
-		GetMLModelResult mlModel = awsService.getMLModel(algorithmResult.modelId)
-		algorithmResult.modelStatus = mlModel.getStatus()
-		algorithmResult.save()
-		if (algorithmResult.complete) {
-			generateMachineLearningResult(algorithmResult)
+		if (algorithmResult.batchPredictionId) {
+			checkMachineLearningModel(algorithmResult)
 		}
 	}
 
-	void generateMachineLearningResult(AlgorithmResult algorithmResult) {
+	void checkMachineLearningModel(AlgorithmResult algorithmResult) {
+		GetMLModelResult mlModel = awsService.getMLModel(algorithmResult.modelId)
+		if (mlModel.getStatus() == MODEL_COMPLETE_STATUS) {
+			String batchPredictionId = generateMachineLearningResult(algorithmResult)
+			algorithmResult.batchPredictionId = batchPredictionId
+			algorithmResult.save()
+		}
+	}
+
+	String generateMachineLearningResult(AlgorithmResult algorithmResult) {
 		String dataSourceId = createRequestDataSource(algorithmResult.algorithmRequest, true)
-		String batchPredictionId = awsService.createBatchPrediction(dataSourceId, algorithmResult.modelId)
+		return awsService.createBatchPrediction(dataSourceId, algorithmResult.modelId)
 	}
 }
