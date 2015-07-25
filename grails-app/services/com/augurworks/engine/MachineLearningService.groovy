@@ -68,7 +68,7 @@ class MachineLearningService {
 
 	void createAlgorithmResult(AlgorithmRequest algorithmRequest, String modelId) {
 		AlgorithmResult algorithmResult = new AlgorithmResult([
-			name: algorithmRequest.stringify(),
+			algorithmRequest: algorithmRequest,
 			modelId: modelId
 		])
 		algorithmResult.save();

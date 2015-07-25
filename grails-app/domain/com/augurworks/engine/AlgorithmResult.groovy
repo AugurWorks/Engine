@@ -2,7 +2,6 @@ package com.augurworks.engine
 
 class AlgorithmResult {
 
-	String name
 	Date dateCreated
 	String modelId
 	String modelStatus
@@ -10,12 +9,17 @@ class AlgorithmResult {
 
 	static hasMany = [predictedValues: PredictedValue]
 
+	static belongsTo = [algorithmRequest: AlgorithmRequest]
+
 	static constraints = {
-		name
 		dateCreated()
 		modelId nullable: true
 		modelStatus nullable: true
 		evaluationId nullable: true
+	}
+
+	static mapping = {
+		predictedValues cascade: 'all-delete-orphan'
 	}
 
 	boolean isMachineLearning() {

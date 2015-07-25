@@ -7,7 +7,7 @@ class AlgorithmRequest {
 	Date dateCreated
 	DataSet dependantDataSet
 
-	static hasMany = [requestDataSets: RequestDataSet]
+	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult]
 
 	static constraints = {
 		startDate()
@@ -18,6 +18,7 @@ class AlgorithmRequest {
 
 	static mapping = {
 		requestDataSets cascade: 'all-delete-orphan'
+		algorithmResults cascade: 'all-delete-orphan'
 	}
 
 	String toString() {
