@@ -70,7 +70,7 @@ class MachineLearningService {
 	}
 
 	void checkIncompleteAlgorithms() {
-		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.list().grep { !it.complete }
+		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByComplete(false)
 		algorithmResults.each { AlgorithmResult algorithmResult ->
 			checkAlgorithm(algorithmResult)
 		}
@@ -116,7 +116,7 @@ class MachineLearningService {
 		GetBatchPredictionResult batchPrediction = awsService.getBatchPrediction(algorithmResult.batchPredictionId)
 		if (batchPrediction.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
 			String batchPredictionId = generateMachineLearningResult(algorithmResult)
-			algorithmResult.outputUri = batchPrediction.getOutputUri()
+			algorithmResult.complete = true
 			algorithmResult.save()
 		}
 	}

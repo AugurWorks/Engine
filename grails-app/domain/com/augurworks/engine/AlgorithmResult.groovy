@@ -3,9 +3,9 @@ package com.augurworks.engine
 class AlgorithmResult {
 
 	Date dateCreated
+	boolean complete = false
 	String modelId
 	String batchPredictionId
-	String outputUri
 
 	static hasMany = [predictedValues: PredictedValue]
 
@@ -13,9 +13,9 @@ class AlgorithmResult {
 
 	static constraints = {
 		dateCreated()
+		complete()
 		modelId nullable: true
 		batchPredictionId nullable: true
-		outputUri nullable: true
 	}
 
 	static mapping = {
@@ -24,9 +24,5 @@ class AlgorithmResult {
 
 	boolean isMachineLearning() {
 		return modelId
-	}
-
-	boolean isComplete() {
-		return this.machineLearning && this.outputUri
 	}
 }
