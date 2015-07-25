@@ -39,10 +39,10 @@ class AlgorithmRequestSpec extends Specification {
 			dependantDataSet: dataSets.first()
 		)
 		algorithmRequest.save()
-		dataSets.each { DataSet dataSet ->
+		dataSets.eachWithIndex { DataSet dataSet, int counter ->
 			new RequestDataSet(
 				dataSet: dataSet,
-				offset: 0,
+				offset: counter,
 				algorithmRequest: algorithmRequest
 			).save()
 		}
@@ -103,5 +103,42 @@ class AlgorithmRequestSpec extends Specification {
 
 		where:
 		dataSetCount << [4, 7, 3]
+	}
+
+	void "test get independent request data sets"() {
+		given:
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..(size - 1)))
+		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
+
+		when:
+		algorithmRequest.dependantDataSet = requestDataSet.dataSet
+		algorithmRequest.save()
+
+		then:
+		algorithmRequest.independentRequestDataSets.size() == size - 1
+		!(requestDataSet in algorithmRequest.independentRequestDataSets)
+
+		where:
+		requestDataSetNum | size
+		0                 | 1
+		0                 | 2
+		1                 | 2
+	}
+
+	void "test get prediction offset"() {
+		given:
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
+		int predictionOffset = requestDataSet.offset
+
+		when:
+		algorithmRequest.dependantDataSet = requestDataSet.dataSet
+		algorithmRequest.save()
+
+		then:
+		predictionOffset == algorithmRequest.predictionOffset
+
+		where:
+		requestDataSetNum << [0, 1, 2, 3]
 	}
 }

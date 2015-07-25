@@ -55,4 +55,21 @@ class AlgorithmRequest {
 		}
 		this.save(flush: true)
 	}
+
+	Collection<RequestDataSet> getIndependentRequestDataSets() {
+		Collection<RequestDataSet> matching = this.requestDataSets.grep { RequestDataSet requestDataSet ->
+			return requestDataSet.dataSet == this.dependantDataSet
+		}
+		return this.requestDataSets - matching
+	}
+
+	int getPredictionOffset() {
+		Collection<RequestDataSet> matching = this.requestDataSets.grep { RequestDataSet requestDataSet ->
+			return requestDataSet.dataSet == this.dependantDataSet
+		}
+		if (matching.size() != 1) {
+			throw new AugurWorksException('Prediction data set not found')
+		}
+		return matching.first().offset
+	}
 }
