@@ -1,6 +1,7 @@
 package com.augurworks.engine.services
 
 import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.S3Object
 import com.amazonaws.services.machinelearning.AmazonMachineLearningClient
 import com.amazonaws.services.machinelearning.model.CreateDataSourceFromS3Request
 import com.amazonaws.services.machinelearning.model.CreateDataSourceFromS3Result
@@ -15,9 +16,12 @@ import com.amazonaws.services.machinelearning.model.CreateBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionRequest
 import grails.transaction.Transactional
+import java.util.zip.GZIPInputStream
 
 @Transactional
 class AwsService {
+
+	static final String BATCH_PREDICTION_URI = 'predictions'
 
 	def grailsApplication
 
@@ -44,7 +48,7 @@ class AwsService {
 
 	String createBatchPrediction(String dataSourceId, String modelId) {
 		AmazonMachineLearningClient ml = new AmazonMachineLearningClient()
-		String outputUri = 's3://' + bucket() + '/predictions/AlgorithmResult-' + modelId
+		String outputUri = 's3://' + bucket() + '/' + BATCH_PREDICTION_URI
 		CreateBatchPredictionRequest batchPredictionRequest = new CreateBatchPredictionRequest().withBatchPredictionDataSourceId(dataSourceId).withMLModelId(modelId).withOutputUri(outputUri)
 		CreateBatchPredictionResult batchPredictionResult = ml.createBatchPrediction(batchPredictionRequest)
 		return batchPredictionResult.getBatchPredictionId()
@@ -56,12 +60,41 @@ class AwsService {
 		return ml.getBatchPrediction(batchPredictionRequest)
 	}
 
+	File getBatchPredictionResults(String batchPredictionId) {
+		GetBatchPredictionResult batchPredictionResult = getBatchPrediction(batchPredictionId)
+		String path = getBatchPredictionUri(batchPredictionResult)
+		File zippedResults = downloadFromS3(path)
+		File unzippedResults = unzipFile(zippedResults)
+		zippedResults.delete()
+		return unzippedResults
+	}
+
 	String uploadToS3(File file) {
 		AmazonS3Client s3 = new AmazonS3Client()
 		String bucket = bucket()
 		String path = new Date().format(dateFormat()) + file.name
 		s3.putObject(bucket, path, file)
 		return path
+	}
+
+	File downloadFromS3(String path) {
+		AmazonS3Client s3 = new AmazonS3Client()
+		String bucket = bucket()
+		S3Object object = s3.getObject(bucket, path)
+		File file = File.createTempFile('ZippedFile', '.csv.gz')
+		InputStream input = object.getObjectContent();
+		byte[] buf = new byte[1024]
+		OutputStream out = new FileOutputStream(file)
+		int count = 0
+		while((count = input.read(buf)) != -1) {
+			if(Thread.interrupted()) {
+				throw new InterruptedException()
+			}
+			out.write(buf, 0, count)
+		}
+		out.close()
+		input.close()
+		return file
 	}
 
 	void deleteFromS3(String path) {
@@ -76,5 +109,28 @@ class AwsService {
 
 	String dateFormat() {
 		return grailsApplication.config.augurworks.datePathFormat
+	}
+
+	String getBatchPredictionUri(GetBatchPredictionResult batchPredictionResult) {
+		String dataSourceName = batchPredictionResult.getInputDataLocationS3().split('/').last()
+		return BATCH_PREDICTION_URI + '/batch-prediction/result/' + batchPredictionResult.getBatchPredictionId() + '-' + dataSourceName + '.gz'
+	}
+
+	File unzipFile(File zippedFile) {
+		File unzippedFile = File.createTempFile('UnzippedFile', '.csv')
+		byte[] buffer = new byte[1024]
+		try {
+			GZIPInputStream gzis =  new GZIPInputStream(new FileInputStream(zippedFile))
+			FileOutputStream out = new FileOutputStream(unzippedFile)
+			int len
+			while ((len = gzis.read(buffer)) > 0) {
+				out.write(buffer, 0, len)
+			}
+			gzis.close()
+			out.close()
+		} catch(IOException e){
+			e.printStackTrace()
+		}
+		return unzippedFile
 	}
 }
