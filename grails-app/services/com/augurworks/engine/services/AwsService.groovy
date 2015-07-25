@@ -12,6 +12,8 @@ import com.amazonaws.services.machinelearning.model.GetMLModelRequest
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
 import com.amazonaws.services.machinelearning.model.CreateBatchPredictionRequest
 import com.amazonaws.services.machinelearning.model.CreateBatchPredictionResult
+import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
+import com.amazonaws.services.machinelearning.model.GetBatchPredictionRequest
 import grails.transaction.Transactional
 
 @Transactional
@@ -46,6 +48,12 @@ class AwsService {
 		CreateBatchPredictionRequest batchPredictionRequest = new CreateBatchPredictionRequest().withBatchPredictionDataSourceId(dataSourceId).withMLModelId(modelId).withOutputUri(outputUri)
 		CreateBatchPredictionResult batchPredictionResult = ml.createBatchPrediction(batchPredictionRequest)
 		return batchPredictionResult.getBatchPredictionId()
+	}
+
+	GetBatchPredictionResult getBatchPrediction(String batchPredictionId) {
+		AmazonMachineLearningClient ml = new AmazonMachineLearningClient()
+		GetBatchPredictionRequest batchPredictionRequest = new GetBatchPredictionRequest().withBatchPredictionId(batchPredictionId)
+		return ml.getBatchPrediction(batchPredictionRequest)
 	}
 
 	String uploadToS3(File file) {
