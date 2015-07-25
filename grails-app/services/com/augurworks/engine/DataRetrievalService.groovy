@@ -10,17 +10,23 @@ class DataRetrievalService {
 
 	def grailsApplication
 
-	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest) {
-		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest)
+	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean prediction) {
+		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, prediction)
 		Collection<String> allDates = rawRequestValues*.dates.flatten().unique()
-		return rawRequestValues*.fillOutValues(allDates)*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate)
+		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
+		if (prediction) {
+			int predictionOffset = algorithmRequest.predictionOffset
+			return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate, predictionOffset)
+		}
+		return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate)
 	}
 
-	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest) {
+	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest, boolean prediction) {
 		int minOffset = algorithmRequest.requestDataSets*.offset.min()
 		int maxOffset = algorithmRequest.requestDataSets*.offset.max()
-		GParsPool.withPool(algorithmRequest.requestDataSets.size()) {
-			return algorithmRequest.requestDataSets.collectParallel { RequestDataSet requestDataSet ->
+		Collection<RequestDataSet> requestDataSets = prediction ? algorithmRequest.independentRequestDataSets : algorithmRequest.requestDataSets
+		GParsPool.withPool(requestDataSets.size()) {
+			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
 				Collection<DataSetValue> values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
 				return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).filterValues(algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
 			}

@@ -23,9 +23,9 @@ class MachineLearningService {
 		createAlgorithmResult(algorithmRequest, modelId)
 	}
 
-	File requestToCsv(AlgorithmRequest algorithmRequest) {
+	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction = false) {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
-		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, prediction).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
