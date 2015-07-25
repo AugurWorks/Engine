@@ -59,6 +59,12 @@ class RequestValueSet {
 		return this
 	}
 
+	RequestValueSet reduceValueRange(Date startDate, Date endDate, int predictionOffset) {
+		int minOffset = Math.min(this.offset, predictionOffset)
+		int maxOffset = Math.max(this.offset, predictionOffset)
+		return this.filterValues(startDate, endDate, minOffset, maxOffset)
+	}
+
 	RequestValueSet reduceValueRange(Date startDate, Date endDate) {
 		return this.filterValues(startDate, endDate, this.offset, this.offset)
 	}

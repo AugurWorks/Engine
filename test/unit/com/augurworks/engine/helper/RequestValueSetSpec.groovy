@@ -116,6 +116,28 @@ class RequestValueSetSpec extends Specification {
 		thrown(AugurWorksException)
 	}
 
+	void "test reduce value range with prediction"() {
+		setup:
+		Date startDate = Date.parse(DATE_FORMAT, start)
+		Date endDate = Date.parse(DATE_FORMAT, end)
+		RequestValueSet set = validRequestValueSet(10, offset)
+
+		when:
+		Collection<String> dates = set.reduceValueRange(startDate, endDate, predictionOffset).dates
+
+		then:
+		dates.size() == size
+		dates.first() == first
+		dates.last() == last
+
+		where:
+		start        | end          | offset | predictionOffset | size | first        | last
+		'2014-01-01' | '2014-01-10' | 0      | 0                | 10   | '2014-01-01' | '2014-01-10'
+		'2014-01-02' | '2014-01-09' | 1      | -1               | 10   | '2014-01-01' | '2014-01-10'
+		'2014-01-02' | '2014-01-09' | -1     | 0                | 9    | '2014-01-01' | '2014-01-09'
+		'2014-01-03' | '2014-01-05' | 5      | -2               | 10   | '2014-01-01' | '2014-01-10'
+	}
+
 	void "test reduce value range"() {
 		setup:
 		Date startDate = Date.parse(DATE_FORMAT, start)
