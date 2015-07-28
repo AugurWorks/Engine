@@ -33,8 +33,8 @@ class RequestValueSet {
 
 	RequestValueSet filterValues(Date startDate, Date endDate, int minOffset, int maxOffset) {
 		Collection<DataSetValue> values = this.values
-		int startIndex = values.findIndexOf { it.date == startDate.format('yyyy-MM-dd') }
-		int endIndex = values.findIndexOf { it.date == endDate.format('yyyy-MM-dd') }
+		int startIndex = values.findIndexOf { it.date == startDate.format(Global.DATE_FORMAT) }
+		int endIndex = values.findIndexOf { it.date == endDate.format(Global.DATE_FORMAT) }
 		if (startIndex == -1 || endIndex == -1 || startIndex + minOffset < 0 || endIndex + maxOffset > values.size() - 1) {
 			throw new AugurWorksException(this.name + ' does not contain data for the requested range ')
 		}

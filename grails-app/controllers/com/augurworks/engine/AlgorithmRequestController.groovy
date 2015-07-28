@@ -1,5 +1,6 @@
 package com.augurworks.engine
 
+import com.augurworks.engine.helper.Global
 import grails.converters.JSON
 
 class AlgorithmRequestController {
@@ -18,8 +19,8 @@ class AlgorithmRequestController {
 		Collection<Map> dataSets = JSON.parse(params.dataSets)
 		Map dependantDataSetMap = dataSets.grep { it.dependant }.first()
 		Map parameters = [
-			startDate: Date.parse('yyyy-MM-dd', params.startDate),
-			endDate: Date.parse('yyyy-MM-dd', params.endDate),
+			startDate: Date.parse(Global.DATE_FORMAT, params.startDate),
+			endDate: Date.parse(Global.DATE_FORMAT, params.endDate),
 			dependantDataSet: DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
 		]
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(params.id) ?: new AlgorithmRequest(parameters).save();

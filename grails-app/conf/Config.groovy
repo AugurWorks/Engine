@@ -110,7 +110,6 @@ augurworks {
 	quandl {
 		key = localConfig.augurworks.quandlKey
 	}
-	dateFormat = 'MM/dd/yyyy'
 	datePathFormat = 'yyyy/MM/dd/'
 }
 

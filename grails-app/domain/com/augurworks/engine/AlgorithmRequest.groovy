@@ -1,5 +1,7 @@
 package com.augurworks.engine
 
+import com.augurworks.engine.helper.Global
+
 class AlgorithmRequest {
 
 	Date startDate
@@ -30,11 +32,10 @@ class AlgorithmRequest {
 	}
 
 	String stringify() {
-		String dateFormat = 'M/d/yyyy'
 		String dataSetString = this.requestDataSets.sort { it.dataSet.ticker }.collect { RequestDataSet requestDataSet ->
 			return requestDataSet.dataSet.ticker + (requestDataSet.offset >= 0 ? '+' : '') + requestDataSet.offset
 		}.join(', ')
-		return this.startDate.format(dateFormat) + ' - ' + this.endDate.format(dateFormat) + ': ' + dataSetString
+		return this.startDate.format(Global.DATE_FORMAT) + ' - ' + this.endDate.format(Global.DATE_FORMAT) + ': ' + dataSetString
 	}
 
 	void updateFields(Map parameters) {

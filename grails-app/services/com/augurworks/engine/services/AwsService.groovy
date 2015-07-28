@@ -15,6 +15,7 @@ import com.amazonaws.services.machinelearning.model.CreateBatchPredictionRequest
 import com.amazonaws.services.machinelearning.model.CreateBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionRequest
+import com.augurworks.engine.helper.Global
 import grails.transaction.Transactional
 import java.util.zip.GZIPInputStream
 
@@ -72,7 +73,7 @@ class AwsService {
 	String uploadToS3(File file) {
 		AmazonS3Client s3 = new AmazonS3Client()
 		String bucket = bucket()
-		String path = new Date().format(dateFormat()) + file.name
+		String path = new Date().format(Global.DATE_FORMAT) + file.name
 		s3.putObject(bucket, path, file)
 		return path
 	}
@@ -105,10 +106,6 @@ class AwsService {
 
 	String bucket() {
 		return grailsApplication.config.aws.bucket
-	}
-
-	String dateFormat() {
-		return grailsApplication.config.augurworks.datePathFormat
 	}
 
 	String getBatchPredictionUri(GetBatchPredictionResult batchPredictionResult) {
