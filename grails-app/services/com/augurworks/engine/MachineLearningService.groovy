@@ -70,7 +70,7 @@ class MachineLearningService {
 	}
 
 	void checkIncompleteAlgorithms() {
-		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.list().findAllByComplete(false)
+		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByComplete(false)
 		algorithmResults.each { AlgorithmResult algorithmResult ->
 			checkAlgorithm(algorithmResult)
 		}
