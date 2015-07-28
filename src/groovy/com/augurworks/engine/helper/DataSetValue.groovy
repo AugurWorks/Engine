@@ -17,4 +17,8 @@ class DataSetValue {
 	double getValue() {
 		return value
 	}
+
+	String toString() {
+		return this.date + ': ' + this.value
+	}
 }
