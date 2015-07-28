@@ -1,5 +1,6 @@
 package com.augurworks.engine
 
+import com.augurworks.engine.helper.RequestValueSet
 import grails.converters.JSON
 
 class GraphController {
@@ -12,7 +13,7 @@ class GraphController {
 
 	def getData(AlgorithmRequest algorithmRequest) {
 		if (algorithmRequest) {
-			Collection<Map> data = dataRetrievalService.getRequestValues(algorithmRequest)
+			Collection<RequestValueSet> data = dataRetrievalService.smartSpline(algorithmRequest)
 			render([success: true, data: data] as JSON)
 		} else {
 			render([success: true, data: []] as JSON)

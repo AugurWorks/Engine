@@ -1,5 +1,7 @@
 package com.augurworks.engine
 
+import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.helper.RequestValueSet
 import grails.transaction.Transactional
 import groovyx.gpars.GParsPool
 
@@ -8,37 +10,31 @@ class DataRetrievalService {
 
 	def grailsApplication
 
-	Collection<Map> getRequestValues(AlgorithmRequest algorithmRequest) {
+	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest) {
+		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest)
+		Collection<String> allDates = rawRequestValues*.dates.flatten().unique()
+		return rawRequestValues*.fillOutValues(allDates)*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate)
+	}
+
+	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest) {
+		int minOffset = algorithmRequest.requestDataSets*.offset.min()
+		int maxOffset = algorithmRequest.requestDataSets*.offset.max()
 		GParsPool.withPool(algorithmRequest.requestDataSets.size()) {
 			return algorithmRequest.requestDataSets.collectParallel { RequestDataSet requestDataSet ->
-				return [
-					name: requestDataSet.dataSet.name,
-					values: getDataSetValues(requestDataSet.dataSet, algorithmRequest.startDate, algorithmRequest.endDate, requestDataSet.offset)
-				]
+				Collection<DataSetValue> values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
+				return new RequestValueSet(requestDataSet.dataSet.name, requestDataSet.offset, values).filterValues(algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
 			}
 		}
 	}
 
-	Collection getDataSetValues(DataSet dataSet, Date startDate, Date endDate, int offset) {
-		Collection rawData = getQuandlData(dataSet.code, dataSet.dataColumn)
-		int startIndex = rawData.findIndexOf { it[0] == startDate.format('yyyy-MM-dd') }
-		int endIndex = rawData.findIndexOf { it[0] == endDate.format('yyyy-MM-dd') }
-		if (startIndex != -1 && endIndex != -1 && startIndex + offset >= 0 && endIndex <= rawData.size()) {
-			return rawData[(startIndex + offset)..(endIndex + offset)]
-		}
-		String dateFormat = grailsApplication.config.augurworks.dateFormat
-		log.warn 'Invalid date range for ' + dataSet.name + ': ' + startDate.format(dateFormat) + '-' + endDate.format(dateFormat)
-		return []
-	}
-
-	Collection getQuandlData(String quandlCode, int dataColumn) {
+	Collection<DataSetValue> getQuandlData(String quandlCode, int dataColumn) {
 		String quandlKey = grailsApplication.config.augurworks.quandl.key
 		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
 		String quandlPost = '.csv?auth_token=' + quandlKey
 		String url = quandlPre + quandlCode + quandlPost
 		return new URL(url).getText().split('\n').tail().reverse().collect { String line ->
 			Collection<String> lineValues = line.split(',')
-			return [lineValues[0], lineValues[dataColumn]]
+			return new DataSetValue(lineValues[0], lineValues[dataColumn])
 		}
 	}
 }
