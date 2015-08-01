@@ -173,7 +173,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/algorithmResult/**':				['ROLE_ADMIN'],
 	'/dataSet/**':						['ROLE_ADMIN'],
 	'/predictedValue/**':				['ROLE_ADMIN'],
-	'/requestDataSet/**':				['ROLE_ADMIN']
+	'/requestDataSet/**':				['ROLE_ADMIN'],
+	'/machineLearningModel/**':			['ROLE_ADMIN']
 ]
 
 grails.plugin.springsecurity.logout.postOnly = false

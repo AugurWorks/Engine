@@ -4,8 +4,7 @@ class AlgorithmResult {
 
 	Date dateCreated
 	boolean complete = false
-	String modelId
-	String batchPredictionId
+	MachineLearningModel machineLearningModel
 
 	static hasMany = [predictedValues: PredictedValue]
 
@@ -14,15 +13,10 @@ class AlgorithmResult {
 	static constraints = {
 		dateCreated()
 		complete()
-		modelId nullable: true
-		batchPredictionId nullable: true
+		machineLearningModel nullable: true
 	}
 
 	static mapping = {
 		predictedValues cascade: 'all-delete-orphan'
-	}
-
-	boolean isMachineLearning() {
-		return modelId
 	}
 }

@@ -20,7 +20,7 @@ class MachineLearningService {
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		String dataSourceId = createRequestDataSource(algorithmRequest, false)
 		String modelId = awsService.createMLModel(dataSourceId)
-		createAlgorithmResult(algorithmRequest, modelId)
+		createAlgorithmResult(algorithmRequest, modelId, dataSourceId)
 	}
 
 	String createRequestDataSource(AlgorithmRequest algorithmRequest, boolean prediction) {
@@ -77,22 +77,27 @@ class MachineLearningService {
 		}
 	}
 
-	void createAlgorithmResult(AlgorithmRequest algorithmRequest, String modelId) {
+	void createAlgorithmResult(AlgorithmRequest algorithmRequest, String modelId, String dataSourceId) {
+		MachineLearningModel model = new MachineLearningModel(
+			trainingDataSourceId: dataSourceId,
+			modelId: modelId
+		)
+		model.save()
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
-			modelId: modelId
+			machineLearningModel: model
 		])
 		algorithmResult.save();
 	}
 
 	void checkAlgorithm(AlgorithmResult algorithmResult) {
-		if (algorithmResult.machineLearning) {
+		if (algorithmResult.machineLearningModel) {
 			checkMachineLearningAlgorithm(algorithmResult)
 		}
 	}
 
 	void checkMachineLearningAlgorithm(AlgorithmResult algorithmResult) {
-		if (algorithmResult.batchPredictionId) {
+		if (algorithmResult.machineLearningModel.batchPredictionId) {
 			checkMachineLearningPrediction(algorithmResult)
 		} else {
 			checkMachineLearningModel(algorithmResult)
@@ -100,25 +105,28 @@ class MachineLearningService {
 	}
 
 	void checkMachineLearningModel(AlgorithmResult algorithmResult) {
-		GetMLModelResult mlModel = awsService.getMLModel(algorithmResult.modelId)
+		GetMLModelResult mlModel = awsService.getMLModel(algorithmResult.machineLearningModel.modelId)
 		if (mlModel.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
 			log.info 'Machine learning model complete, generating batch prediction'
-			String batchPredictionId = generateMachineLearningResult(algorithmResult)
-			algorithmResult.batchPredictionId = batchPredictionId
-			algorithmResult.save()
+			generateMachineLearningResult(algorithmResult)
 		}
 	}
 
-	String generateMachineLearningResult(AlgorithmResult algorithmResult) {
+	void generateMachineLearningResult(AlgorithmResult algorithmResult) {
 		String dataSourceId = createRequestDataSource(algorithmResult.algorithmRequest, true)
-		return awsService.createBatchPrediction(dataSourceId, algorithmResult.modelId)
+		String batchPredictionId = awsService.createBatchPrediction(dataSourceId, algorithmResult.machineLearningModel.modelId)
+		MachineLearningModel model = algorithmResult.machineLearningModel
+		model.predictionDataSourceId = dataSourceId
+		model.batchPredictionId = batchPredictionId
+		model.save()
+		algorithmResult.save()
 	}
 
 	void checkMachineLearningPrediction(AlgorithmResult algorithmResult) {
-		GetBatchPredictionResult batchPrediction = awsService.getBatchPrediction(algorithmResult.batchPredictionId)
+		GetBatchPredictionResult batchPrediction = awsService.getBatchPrediction(algorithmResult.machineLearningModel.batchPredictionId)
 		if (batchPrediction.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
 			log.info 'Machine learning batch prediction complete'
-			File resultsFile = awsService.getBatchPredictionResults(algorithmResult.batchPredictionId)
+			File resultsFile = awsService.getBatchPredictionResults(algorithmResult.machineLearningModel.batchPredictionId)
 			Collection<Double> predictions = parsePredictionOutputFile(resultsFile)
 			addPredictionsToAlgorithmResult(algorithmResult, predictions)
 			algorithmResult.complete = true
