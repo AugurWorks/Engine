@@ -1,23 +1,28 @@
 package com.augurworks.engine.services
 
-import com.amazonaws.services.s3.AmazonS3Client
-import com.amazonaws.services.s3.model.S3Object
+import grails.transaction.Transactional
+
+import java.util.zip.GZIPInputStream
+
 import com.amazonaws.services.machinelearning.AmazonMachineLearningClient
+import com.amazonaws.services.machinelearning.model.CreateBatchPredictionRequest
+import com.amazonaws.services.machinelearning.model.CreateBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.CreateDataSourceFromS3Request
 import com.amazonaws.services.machinelearning.model.CreateDataSourceFromS3Result
 import com.amazonaws.services.machinelearning.model.CreateMLModelRequest
-import com.amazonaws.services.machinelearning.model.S3DataSpec
-import com.amazonaws.services.machinelearning.model.MLModelType
 import com.amazonaws.services.machinelearning.model.CreateMLModelResult
+import com.amazonaws.services.machinelearning.model.DeleteBatchPredictionRequest
+import com.amazonaws.services.machinelearning.model.DeleteDataSourceRequest
+import com.amazonaws.services.machinelearning.model.DeleteMLModelRequest
+import com.amazonaws.services.machinelearning.model.GetBatchPredictionRequest
+import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetMLModelRequest
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
-import com.amazonaws.services.machinelearning.model.CreateBatchPredictionRequest
-import com.amazonaws.services.machinelearning.model.CreateBatchPredictionResult
-import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
-import com.amazonaws.services.machinelearning.model.GetBatchPredictionRequest
+import com.amazonaws.services.machinelearning.model.MLModelType
+import com.amazonaws.services.machinelearning.model.S3DataSpec
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.S3Object
 import com.augurworks.engine.helper.Global
-import grails.transaction.Transactional
-import java.util.zip.GZIPInputStream
 
 @Transactional
 class AwsService {
@@ -102,6 +107,24 @@ class AwsService {
 		AmazonS3Client s3 = new AmazonS3Client()
 		String bucket = bucket()
 		s3.deleteObject(bucket, path)
+	}
+
+	void deleteDatasource(String dataSourceId) {
+		AmazonMachineLearningClient ml = new AmazonMachineLearningClient()
+		DeleteDataSourceRequest deleteRequest = new DeleteDataSourceRequest().withDataSourceId(dataSourceId)
+		ml.deleteDataSource(deleteRequest)
+	}
+
+	void deleteModel(String modelId) {
+		AmazonMachineLearningClient ml = new AmazonMachineLearningClient()
+		DeleteMLModelRequest deleteRequest = new DeleteMLModelRequest().withMLModelId(modelId)
+		ml.deleteMLModel(deleteRequest)
+	}
+
+	void deleteBatchPrediction(String batchPredictionId) {
+		AmazonMachineLearningClient ml = new AmazonMachineLearningClient()
+		DeleteBatchPredictionRequest deleteRequest = new DeleteBatchPredictionRequest().withBatchPredictionId(batchPredictionId)
+		ml.deleteBatchPrediction(deleteRequest)
 	}
 
 	String bucket() {
