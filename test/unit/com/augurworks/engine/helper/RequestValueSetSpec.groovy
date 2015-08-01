@@ -1,14 +1,13 @@
 package com.augurworks.engine.helper
 
-import grails.test.mixin.TestFor
-import spock.lang.Specification
 import groovy.time.TimeCategory
+import spock.lang.Specification
+
 import com.augurworks.engine.AugurWorksException
 
 class RequestValueSetSpec extends Specification {
 
-	static final String DATE_FORMAT = 'yyyy-MM-dd'
-	static final Collection<String> TEST_DATES = ['2014-01-01', '2014-01-02', '2014-01-03']
+	static final Collection<String> TEST_DATES = ['01/01/2014', '01/02/2014', '01/03/2014']
 
 	RequestValueSet validRequestValueSet(int valueCount, int offset = 0) {
 		Collection<String> dates = generateDates(valueCount)
@@ -30,10 +29,10 @@ class RequestValueSetSpec extends Specification {
 
 	Collection<String> generateDates(int valueCount) {
 		return (0..(valueCount - 1)).collect { int i ->
-			Date startDate = Date.parse(DATE_FORMAT, '2014-01-01')
+			Date startDate = Date.parse(Global.DATE_FORMAT, '01/01/2014')
 			return use(TimeCategory) {
 				startDate + i.days
-			}.format('yyyy-MM-dd')
+			}.format(Global.DATE_FORMAT)
 		}
 	}
 
@@ -47,8 +46,8 @@ class RequestValueSetSpec extends Specification {
 
 	void "test filter values"() {
 		setup:
-		Date startDate = Date.parse(DATE_FORMAT, start)
-		Date endDate = Date.parse(DATE_FORMAT, end)
+		Date startDate = Date.parse(Global.DATE_FORMAT, start)
+		Date endDate = Date.parse(Global.DATE_FORMAT, end)
 		RequestValueSet set = validRequestValueSet(10).filterValues(startDate, endDate, minOffset, maxOffset)
 
 		expect:
@@ -56,15 +55,15 @@ class RequestValueSetSpec extends Specification {
 
 		where:
 		start        | end          | minOffset | maxOffset | size
-		'2014-01-01' | '2014-01-09' | 0         | 0         | 9
-		'2014-01-01' | '2014-01-01' | 0         | 0         | 1
-		'2014-01-02' | '2014-01-09' | -1        | 1         | 10
+		'01/01/2014' | '01/09/2014' | 0         | 0         | 9
+		'01/01/2014' | '01/01/2014' | 0         | 0         | 1
+		'01/02/2014' | '01/09/2014' | -1        | 1         | 10
 	}
 
 	void "test filter values exception"() {
 		setup:
-		Date startDate = Date.parse(DATE_FORMAT, start)
-		Date endDate = Date.parse(DATE_FORMAT, end)
+		Date startDate = Date.parse(Global.DATE_FORMAT, start)
+		Date endDate = Date.parse(Global.DATE_FORMAT, end)
 		RequestValueSet set = validRequestValueSet(10)
 
 		when:
@@ -75,9 +74,9 @@ class RequestValueSetSpec extends Specification {
 
 		where:
 		start        | end          | minOffset | maxOffset
-		'2014-01-01' | '2014-01-10' | -1        | 0
-		'2014-01-01' | '2014-01-10' | 0         | 1
-		'2014-01-01' | '2014-01-10' | -1        | 1
+		'01/01/2014' | '01/10/2014' | -1        | 0
+		'01/01/2014' | '01/10/2014' | 0         | 1
+		'01/01/2014' | '01/10/2014' | -1        | 1
 	}
 
 	void "test fill out values"() {
@@ -118,8 +117,8 @@ class RequestValueSetSpec extends Specification {
 
 	void "test reduce value range with prediction"() {
 		setup:
-		Date startDate = Date.parse(DATE_FORMAT, start)
-		Date endDate = Date.parse(DATE_FORMAT, end)
+		Date startDate = Date.parse(Global.DATE_FORMAT, start)
+		Date endDate = Date.parse(Global.DATE_FORMAT, end)
 		RequestValueSet set = validRequestValueSet(10, offset)
 
 		when:
@@ -132,16 +131,16 @@ class RequestValueSetSpec extends Specification {
 
 		where:
 		start        | end          | offset | predictionOffset | size | first        | last
-		'2014-01-01' | '2014-01-10' | 0      | 0                | 10   | '2014-01-01' | '2014-01-10'
-		'2014-01-02' | '2014-01-09' | 1      | -1               | 10   | '2014-01-01' | '2014-01-10'
-		'2014-01-02' | '2014-01-09' | -1     | 0                | 9    | '2014-01-01' | '2014-01-09'
-		'2014-01-03' | '2014-01-05' | 5      | -2               | 10   | '2014-01-01' | '2014-01-10'
+		'01/01/2014' | '01/10/2014' | 0      | 0                | 10   | '01/01/2014' | '01/10/2014'
+		'01/02/2014' | '01/09/2014' | 1      | -1               | 10   | '01/01/2014' | '01/10/2014'
+		'01/02/2014' | '01/09/2014' | -1     | 0                | 9    | '01/01/2014' | '01/09/2014'
+		'01/03/2014' | '01/05/2014' | 5      | -2               | 10   | '01/01/2014' | '01/10/2014'
 	}
 
 	void "test reduce value range"() {
 		setup:
-		Date startDate = Date.parse(DATE_FORMAT, start)
-		Date endDate = Date.parse(DATE_FORMAT, end)
+		Date startDate = Date.parse(Global.DATE_FORMAT, start)
+		Date endDate = Date.parse(Global.DATE_FORMAT, end)
 		RequestValueSet set = validRequestValueSet(10, offset)
 
 		when:
@@ -154,9 +153,9 @@ class RequestValueSetSpec extends Specification {
 
 		where:
 		start        | end          | offset | size | first        | last
-		'2014-01-01' | '2014-01-10' | 0      | 10   | '2014-01-01' | '2014-01-10'
-		'2014-01-01' | '2014-01-09' | 1      | 9    | '2014-01-02' | '2014-01-10'
-		'2014-01-02' | '2014-01-10' | -1     | 9    | '2014-01-01' | '2014-01-09'
-		'2014-01-02' | '2014-01-05' | 5      | 4    | '2014-01-07' | '2014-01-10'
+		'01/01/2014' | '01/10/2014' | 0      | 10   | '01/01/2014' | '01/10/2014'
+		'01/01/2014' | '01/09/2014' | 1      | 9    | '01/02/2014' | '01/10/2014'
+		'01/02/2014' | '01/10/2014' | -1     | 9    | '01/01/2014' | '01/09/2014'
+		'01/02/2014' | '01/05/2014' | 5      | 4    | '01/07/2014' | '01/10/2014'
 	}
 }
