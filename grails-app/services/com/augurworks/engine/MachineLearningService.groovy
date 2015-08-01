@@ -102,6 +102,7 @@ class MachineLearningService {
 	void checkMachineLearningModel(AlgorithmResult algorithmResult) {
 		GetMLModelResult mlModel = awsService.getMLModel(algorithmResult.modelId)
 		if (mlModel.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
+			log.info 'Machine learning model complete, generating batch prediction'
 			String batchPredictionId = generateMachineLearningResult(algorithmResult)
 			algorithmResult.batchPredictionId = batchPredictionId
 			algorithmResult.save()
@@ -116,7 +117,10 @@ class MachineLearningService {
 	void checkMachineLearningPrediction(AlgorithmResult algorithmResult) {
 		GetBatchPredictionResult batchPrediction = awsService.getBatchPrediction(algorithmResult.batchPredictionId)
 		if (batchPrediction.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
+			log.info 'Machine learning batch prediction complete'
 			File resultsFile = awsService.getBatchPredictionResults(algorithmResult.batchPredictionId)
+			Collection<Double> predictions = parsePredictionOutputFile(resultsFile)
+			addPredictionsToAlgorithmResult(algorithmResult, predictions)
 			algorithmResult.complete = true
 			algorithmResult.save()
 		}
@@ -130,6 +134,13 @@ class MachineLearningService {
 			}
 		}
 		return predictions
+	}
+
+	void addPredictionsToAlgorithmResult(AlgorithmResult algorithmResult, Collection<Double> predictions) {
+		RequestDataSet predictionSet = algorithmResult.algorithmRequest.dependentRequestDataSet
+		RequestValueSet requestValueSet = dataRetrievalService.getSingleRequestValues(predictionSet, algorithmResult.algorithmRequest.startDate, algorithmResult.algorithmRequest.endDate, predictionSet.offset, predictionSet.offset)
+		Collection<Date> predictionDates = requestValueSet.dates
+		createPredictedValues(algorithmResult, predictionDates, predictions)
 	}
 
 	void createPredictedValues(AlgorithmResult algorithmResult, Collection<Date> predictionDates, Collection<Double> predictions) {
