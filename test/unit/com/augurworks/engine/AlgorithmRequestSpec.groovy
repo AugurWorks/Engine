@@ -107,16 +107,20 @@ class AlgorithmRequestSpec extends Specification {
 
 	void "test get independent request data sets"() {
 		given:
+		int counter = 0
 		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..(size - 1)))
 		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
+		algorithmRequest.metaClass.getDependentRequestDataSet = { counter++; return requestDataSet }
 
 		when:
 		algorithmRequest.dependantDataSet = requestDataSet.dataSet
 		algorithmRequest.save()
+		Collection<RequestDataSet> independent = algorithmRequest.independentRequestDataSets
 
 		then:
-		algorithmRequest.independentRequestDataSets.size() == size - 1
-		!(requestDataSet in algorithmRequest.independentRequestDataSets)
+		independent.size() == size - 1
+		!(requestDataSet in independent)
+		counter == 1
 
 		where:
 		requestDataSetNum | size
@@ -127,16 +131,32 @@ class AlgorithmRequestSpec extends Specification {
 
 	void "test get prediction offset"() {
 		given:
+		int counter = 0
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		algorithmRequest.metaClass.getDependentRequestDataSet = { counter++; return [offset: 10] }
+
+		when:
+		int offset = algorithmRequest.predictionOffset
+
+		then:
+		offset == 10
+		counter == 1
+
+		where:
+		requestDataSetNum << [0, 1, 2, 3]
+	}
+
+	void "get dependent request data set"() {
+		given:
 		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
 		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
-		int predictionOffset = requestDataSet.offset
 
 		when:
 		algorithmRequest.dependantDataSet = requestDataSet.dataSet
 		algorithmRequest.save()
 
 		then:
-		predictionOffset == algorithmRequest.predictionOffset
+		requestDataSet == algorithmRequest.dependentRequestDataSet
 
 		where:
 		requestDataSetNum << [0, 1, 2, 3]
