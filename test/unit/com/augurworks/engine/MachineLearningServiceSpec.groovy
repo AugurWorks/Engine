@@ -1,8 +1,13 @@
 package com.augurworks.engine
 
+import grails.buildtestdata.mixin.Build
 import grails.test.mixin.*
 import spock.lang.Specification
 
+import com.augurworks.engine.helper.Global
+
+@Build([AlgorithmResult])
+@Mock([AlgorithmResult, PredictedValue])
 @TestFor(MachineLearningService)
 class MachineLearningServiceSpec extends Specification {
 
@@ -16,5 +21,23 @@ class MachineLearningServiceSpec extends Specification {
 		then:
 		predictions.size() == 126
 		predictions.collect { it != 0 }.every()
+	}
+
+	void "test create predicted values"() {
+		given:
+		AlgorithmResult algorithmResult = AlgorithmResult.build()
+		Collection<Date> predictionDates = ['01/01/2014', '01/02/2014', '01/03/2014'].collect { String date ->
+			return Date.parse(Global.DATE_FORMAT, date)
+		}
+		Collection<Double> predictions = [1.0, 1.0, 1.0, 1.0]
+
+		when:
+		service.createPredictedValues(algorithmResult, predictionDates, predictions)
+		Collection<PredictedValue> predictedValues = algorithmResult.predictedValues
+
+		then:
+		predictedValues.size() == 4
+		predictedValues*.value.sort() == predictions.sort()
+		predictedValues*.date*.format(Global.DATE_FORMAT).contains('01/04/2014')
 	}
 }

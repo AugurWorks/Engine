@@ -1,12 +1,13 @@
 package com.augurworks.engine
 
-import com.augurworks.engine.helper.RequestValueSet
-import com.augurworks.engine.services.AwsService
-import com.amazonaws.services.machinelearning.model.GetMLModelResult
-import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
-
 import grails.converters.JSON
 import grails.transaction.Transactional
+
+import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
+import com.amazonaws.services.machinelearning.model.GetMLModelResult
+import com.augurworks.engine.helper.Common
+import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.services.AwsService
 
 @Transactional
 class MachineLearningService {
@@ -129,5 +130,12 @@ class MachineLearningService {
 			}
 		}
 		return predictions
+	}
+
+	void createPredictedValues(AlgorithmResult algorithmResult, Collection<Date> predictionDates, Collection<Double> predictions) {
+		predictions.eachWithIndex { Double prediction, int index ->
+			Date date = index < predictionDates.size() ? predictionDates[index] : Common.addDaysToDate(predictionDates.last(), index - predictionDates.size() + 1)
+			new PredictedValue(date: date, value: prediction, algorithmResult: algorithmResult).save()
+		}
 	}
 }
