@@ -1,5 +1,7 @@
 package com.augurworks.engine
 
+import com.augurworks.engine.helper.Global
+
 class PredictedValue {
 
 	Date date
@@ -10,5 +12,9 @@ class PredictedValue {
 	static constraints = {
 		date()
 		value()
+	}
+
+	String toString() {
+		return date.format(Global.DATE_FORMAT) + ': ' + value.round(4)
 	}
 }
