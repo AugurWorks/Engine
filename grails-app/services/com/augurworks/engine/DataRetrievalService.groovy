@@ -8,11 +8,13 @@ import groovyx.gpars.GParsPool
 @Transactional
 class DataRetrievalService {
 
+	static final String QUANDL_DATE_FORMAT = 'yyyy-MM-dd'
+
 	def grailsApplication
 
 	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean prediction) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, prediction)
-		Collection<String> allDates = rawRequestValues*.dates.flatten().unique()
+		Collection<Date> allDates = rawRequestValues*.dates.flatten().unique()
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (prediction) {
 			int predictionOffset = algorithmRequest.predictionOffset
@@ -44,7 +46,7 @@ class DataRetrievalService {
 		String url = quandlPre + quandlCode + quandlPost
 		return new URL(url).getText().split('\n').tail().reverse().collect { String line ->
 			Collection<String> lineValues = line.split(',')
-			return new DataSetValue(lineValues[0], lineValues[dataColumn])
+			return new DataSetValue(Date.parse(QUANDL_DATE_FORMAT, lineValues[0]), lineValues[dataColumn].toDouble())
 		}
 	}
 }
