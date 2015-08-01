@@ -129,6 +129,7 @@ class MachineLearningService {
 			File resultsFile = awsService.getBatchPredictionResults(algorithmResult.machineLearningModel.batchPredictionId)
 			Collection<Double> predictions = parsePredictionOutputFile(resultsFile)
 			addPredictionsToAlgorithmResult(algorithmResult, predictions)
+			cleanupMachineLearning(algorithmResult)
 			algorithmResult.complete = true
 			algorithmResult.save()
 		}
@@ -156,5 +157,16 @@ class MachineLearningService {
 			Date date = index < predictionDates.size() ? predictionDates[index] : Common.addDaysToDate(predictionDates.last(), index - predictionDates.size() + 1)
 			new PredictedValue(date: date, value: prediction, algorithmResult: algorithmResult).save()
 		}
+	}
+
+	void cleanupMachineLearning(AlgorithmResult algorithmResult) {
+		MachineLearningModel model = algorithmResult.machineLearningModel
+		awsService.deleteDatasource(model.trainingDataSourceId)
+		awsService.deleteModel(model.modelId)
+		awsService.deleteDatasource(model.predictionDataSourceId)
+		awsService.deleteBatchPrediction(model.batchPredictionId)
+		algorithmResult.machineLearningModel = null
+		algorithmResult.save()
+		model.delete()
 	}
 }
