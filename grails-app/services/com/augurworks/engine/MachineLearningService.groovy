@@ -120,4 +120,14 @@ class MachineLearningService {
 			algorithmResult.save()
 		}
 	}
+
+	Collection<Double> parsePredictionOutputFile(File predictionFile) {
+		Collection<Double> predictions = []
+		predictionFile.eachLine { String line, int num ->
+			if (num != 1) {
+				predictions << line.toDouble()
+			}
+		}
+		return predictions
+	}
 }
