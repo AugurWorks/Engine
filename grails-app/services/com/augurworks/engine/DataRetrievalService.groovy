@@ -27,10 +27,14 @@ class DataRetrievalService {
 		Collection<RequestDataSet> requestDataSets = prediction ? algorithmRequest.independentRequestDataSets : algorithmRequest.requestDataSets
 		GParsPool.withPool(requestDataSets.size()) {
 			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
-				Collection<DataSetValue> values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
-				return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).filterValues(algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
+				return getSingleRequestValues(requestDataSet, algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
 			}
 		}
+	}
+
+	RequestValueSet getSingleRequestValues(RequestDataSet requestDataSet, Date startDate, Date endDate, int minOffset, int maxOffset) {
+		Collection<DataSetValue> values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
+		return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).filterValues(startDate, endDate, minOffset, maxOffset)
 	}
 
 	Collection<DataSetValue> getQuandlData(String quandlCode, int dataColumn) {
