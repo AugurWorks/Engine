@@ -14,7 +14,7 @@ class GraphController {
 	def getData(AlgorithmRequest algorithmRequest) {
 		if (algorithmRequest) {
 			Collection<RequestValueSet> data = dataRetrievalService.smartSpline(algorithmRequest, false)
-			render([success: true, data: data] as JSON)
+			render([success: true, data: data*.toMap()] as JSON)
 		} else {
 			render([success: true, data: []] as JSON)
 		}

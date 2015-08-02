@@ -68,4 +68,12 @@ class RequestValueSet {
 	RequestValueSet reduceValueRange(Date startDate, Date endDate) {
 		return this.filterValues(startDate, endDate, this.offset, this.offset)
 	}
+
+	Map toMap() {
+		return [
+			name: name,
+			offset: offset,
+			values: values*.toMap()
+		]
+	}
 }

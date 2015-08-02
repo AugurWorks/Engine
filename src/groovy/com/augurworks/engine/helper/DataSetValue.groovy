@@ -17,4 +17,11 @@ class DataSetValue {
 	double getValue() {
 		return value
 	}
+
+	Map toMap() {
+		return [
+			date: date.format(Global.C3_DATE_FORMAT),
+			value: value
+		]
+	}
 }
