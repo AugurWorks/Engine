@@ -46,7 +46,7 @@ function createDataColumn(dataSetObject, dates) {
 	}, {});
 	var values = dates.map(function(d) {
 		var val = dateMap[d];
-		return val ? val : 0;
+		return val ? val : null;
 	});
 	values.unshift(dataSetObject.name);
 	return values;

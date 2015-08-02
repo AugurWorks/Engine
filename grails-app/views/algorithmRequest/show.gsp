@@ -16,7 +16,7 @@
 			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button" style="float: right;">Edit Request</g:link>
 			<g:link controller="algorithmRequest" action="run" id="${ algorithm.id }" class="ui primary button" style="float: right;">Kick Off Evaluation</g:link>
 			<h2 class="ui header" style="clear: both;">Results</h2>
-			<div class="ui two cards">
+			<div class="ui one cards">
 				<g:each in="${ algorithm.algorithmResults.sort { it.dateCreated }.reverse() }" var="result">
 					<g:set var="complete" value="${ !result.machineLearningModel }" />
 					<div id="result-${ result.id }" class="ui raised card">
