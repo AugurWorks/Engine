@@ -5,10 +5,19 @@ import grails.converters.JSON
 
 class AlgorithmRequestController {
 
-	static scaffold = true
+	def machineLearningService
 
 	def index() {
 		[requests: AlgorithmRequest.list()]
+	}
+
+	def show(AlgorithmRequest algorithmRequest) {
+		[algorithm: algorithmRequest]
+	}
+
+	def run(AlgorithmRequest algorithmRequest) {
+		machineLearningService.createAlgorithm(algorithmRequest)
+		redirect(action: 'show', id: algorithmRequest.id)
 	}
 
 	def create(AlgorithmRequest algorithmRequest) {
