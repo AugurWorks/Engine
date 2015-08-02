@@ -1,7 +1,6 @@
 package com.augurworks.engine.helper
 
 import com.augurworks.engine.AugurWorksException
-import java.util.Date;
 
 class RequestValueSet {
 

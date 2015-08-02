@@ -28,7 +28,6 @@ class DataGeneratorService {
 	}
 
 	void generateRequest(int requestNumber) {
-		Collection<DataSet> dataSets = DataSet.list()
 		(1..requestNumber).each { int requestCount ->
 			SecureRandom rand = new SecureRandom()
 			Collection<String> tickers = VALID_TICKERS

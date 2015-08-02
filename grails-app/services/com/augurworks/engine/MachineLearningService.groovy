@@ -81,13 +81,13 @@ class MachineLearningService {
 		MachineLearningModel model = new MachineLearningModel(
 			trainingDataSourceId: dataSourceId,
 			modelId: modelId
-		)
+			)
 		model.save()
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
 			machineLearningModel: model
 		])
-		algorithmResult.save();
+		algorithmResult.save()
 	}
 
 	void checkAlgorithm(AlgorithmResult algorithmResult) {

@@ -1,20 +1,9 @@
 package com.augurworks.engine
 
-import grails.test.mixin.TestFor
+import grails.test.mixin.*
 import spock.lang.Specification
 
-/**
- * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
- */
 @TestFor(DataGeneratorService)
 class DataGeneratorServiceSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
-    void "test something"() {
-    }
 }

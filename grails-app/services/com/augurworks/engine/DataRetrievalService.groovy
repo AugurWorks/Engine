@@ -1,16 +1,19 @@
 package com.augurworks.engine
 
-import com.augurworks.engine.helper.DataSetValue
-import com.augurworks.engine.helper.RequestValueSet
 import grails.transaction.Transactional
 import groovyx.gpars.GParsPool
+
+import org.codehaus.groovy.grails.commons.GrailsApplication
+
+import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.helper.RequestValueSet
 
 @Transactional
 class DataRetrievalService {
 
 	static final String QUANDL_DATE_FORMAT = 'yyyy-MM-dd'
 
-	def grailsApplication
+	GrailsApplication grailsApplication
 
 	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean prediction) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, prediction)

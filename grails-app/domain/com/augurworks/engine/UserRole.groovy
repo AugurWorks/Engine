@@ -37,7 +37,7 @@ class UserRole implements Serializable {
 		new UserRole(user: user, role: role).save(flush: flush, insert: true)
 	}
 
-	static boolean remove(User u, Role r, boolean flush = false) {
+	static boolean remove(User u, Role r) {
 		int rowCount = UserRole.where {
 			user == User.load(u.id) && role == Role.load(r.id)
 		}.deleteAll()

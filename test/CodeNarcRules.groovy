@@ -27,7 +27,10 @@ ruleset {
 
 	ruleset('rulesets/design.xml') {
 		'Instanceof' {
-			doNotApplyToFileNames = "*Tests.groovy,*Specification.groovy,*Spec.groovy"
+			enabled = false
+		}
+		'BuilderMethodWithSideEffects' {
+			enabled = false
 		}
 	}
 
@@ -118,6 +121,9 @@ ruleset {
 		'GrailsDomainReservedSqlKeywordName' {
 			enabled = false
 		}
+		'GrailsDomainWithServiceReference' {
+			enabled = false
+		}
 	}
 
 	ruleset('rulesets/groovyism.xml') {
@@ -172,7 +178,14 @@ ruleset {
 		}
 	}
 
-	ruleset("rulesets/security.xml")
+	ruleset("rulesets/security.xml") {
+		'FileCreateTempFile' {
+			enabled = false
+		}
+		'JavaIoPackageAccess' {
+			enabled = false
+		}
+	}
 
 	ruleset("rulesets/serialization.xml") {
 		'SerializableClassMustDefineSerialVersionUID' {
@@ -216,30 +229,15 @@ ruleset {
 		'UnnecessaryGString' {
 			enabled = false
 		}
+		'UnnecessaryTransientModifier' {
+			enabled = false
+		}
 		'UnnecessarySemicolon' {
 			doNotApplyToFileNames = '*.gsp'
 		}
 	}
 
 	ruleset('rulesets/unused.xml')
-
-	rule(RequiredRegexRule) {
-		name = 'GrailsDomainHasToString'
-		regex = /(@ToString|enum)/
-		description = 'Domain classes must have an ToString annotation.'
-		priority = 2
-		applyToFilesMatching = /.*grails-app\/domain\/.*/
-		doNotApplyToFileNames = "*Code.groovy"
-	}
-
-	rule(RequiredRegexRule) {
-		name = 'GrailsDomainEqualsHashCode'
-		regex = /(@EqualsAndHashCode|enum)/
-		description = 'Domain classes must have an EqualsAndHashCode annotation.'
-		priority = 2
-		applyToFilesMatching = /.*grails-app\/domain\/.*/
-		doNotApplyToFileNames = "*Code.groovy"
-	}
 
 	rule(IllegalRegexRule) {
 		name = 'NoBlankConstraintDomainClass'

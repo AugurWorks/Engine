@@ -32,7 +32,7 @@ class AlgorithmRequestController {
 			endDate: Date.parse(Global.FORM_DATE_FORMAT, endDate),
 			dependantDataSet: DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
 		]
-		AlgorithmRequest algorithmRequest = new AlgorithmRequest(parameters).save();
+		AlgorithmRequest algorithmRequest = new AlgorithmRequest(parameters).save()
 		algorithmRequest.updateDataSets(dataSets)
 		render([success: true, id: algorithmRequest.id] as JSON)
 	}

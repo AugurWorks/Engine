@@ -6,5 +6,4 @@ import spock.lang.Specification
 @TestFor(MachineLearningModel)
 class MachineLearningModelSpec extends Specification {
 
-
 }

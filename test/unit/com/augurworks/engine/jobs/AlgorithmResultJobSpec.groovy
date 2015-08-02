@@ -7,15 +7,4 @@ import spock.lang.Specification
 @TestMixin(GrailsUnitTestMixin)
 class AlgorithmResultJobSpec extends Specification {
 
-	def setup() {
-		
-	}
-
-	def cleanup() {
-		
-	}
-
-	void "test something"() {
-		
-	}
 }

@@ -4,6 +4,8 @@ import grails.transaction.Transactional
 
 import java.util.zip.GZIPInputStream
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
+
 import com.amazonaws.services.machinelearning.AmazonMachineLearningClient
 import com.amazonaws.services.machinelearning.model.CreateBatchPredictionRequest
 import com.amazonaws.services.machinelearning.model.CreateBatchPredictionResult
@@ -29,7 +31,7 @@ class AwsService {
 
 	static final String BATCH_PREDICTION_URI = 'predictions'
 
-	def grailsApplication
+	GrailsApplication grailsApplication
 
 	String createDataSource(String path, String dataSchema) {
 		AmazonMachineLearningClient ml = new AmazonMachineLearningClient()
@@ -88,7 +90,7 @@ class AwsService {
 		String bucket = bucket()
 		S3Object object = s3.getObject(bucket, path)
 		File file = File.createTempFile('ZippedFile', '.csv.gz')
-		InputStream input = object.getObjectContent();
+		InputStream input = object.getObjectContent()
 		byte[] buf = new byte[1024]
 		OutputStream out = new FileOutputStream(file)
 		int count = 0
@@ -149,7 +151,7 @@ class AwsService {
 			gzis.close()
 			out.close()
 		} catch(IOException e){
-			e.printStackTrace()
+			log.error e.getMessage()
 		}
 		return unzippedFile
 	}
