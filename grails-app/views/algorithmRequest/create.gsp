@@ -8,7 +8,6 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.0.1/sweetalert.min.css" type="text/css">
 	</head>
 	<body>
-		<%@ page import="com.augurworks.engine.helper.Global" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
 				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
@@ -22,11 +21,11 @@
 				<div class="two fields">
 					<div class="field">
 						<label>Start Date</label>
-						<g:field type="date" name="startDate" value="${ use (groovy.time.TimeCategory) { (algorithmRequest?.startDate ?: new Date() - 2.months).format(Global.DATE_FORMAT) } }" />
+						<g:field type="date" name="startDate" value="${ use (groovy.time.TimeCategory) { (algorithmRequest?.startDate ?: new Date() - 2.months).format('yyyy-MM-dd') } }" />
 					</div>
 					<div class="field">
 						<label>End Date</label>
-						<g:field type="date" name="endDate" value="${ (algorithmRequest?.endDate ?: new Date()).format(Global.DATE_FORMAT) }" />
+						<g:field type="date" name="endDate" value="${ (algorithmRequest?.endDate ?: new Date()).format('yyyy-MM-dd') }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>
