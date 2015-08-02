@@ -22,7 +22,7 @@
 		<script>
 			$(function() {
 				$('#id').change(function() {
-					getData($('#id').val(), lineGraph);
+					getData($('#id').val(), lineGraph, '#chart', '.pending');
 				});
 				$('#id').trigger('change');
 			});
