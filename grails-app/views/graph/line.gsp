@@ -17,7 +17,7 @@
 		<script>
 			$(function() {
 				$('#id').change(function() {
-					getData($('#id').val(), lineGraph, '#chart', '.pending');
+					getData($('#id').val(), lineGraph, '#chart', '.pending', false);
 				});
 				$('#id').trigger('change');
 			});

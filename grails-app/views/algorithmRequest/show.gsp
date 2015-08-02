@@ -44,7 +44,7 @@
 				});
 				$('.data-chart').toArray().forEach(function(me) {
 					var id = $(me).attr('id').split('-')[1];
-					getData(id, lineGraph, '#chart-' + id, '#pending-' + id);
+					getData(id, lineGraph, '#chart-' + id, '#pending-' + id, true);
 				});
 			});
 		</script>

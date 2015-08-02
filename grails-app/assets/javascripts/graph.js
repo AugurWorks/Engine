@@ -1,8 +1,9 @@
-function getData(id, success, selector, pending) {
+function getData(id, success, selector, pending, prediction) {
+	var uri = prediction ? '/graph/getResultData/' : '/graph/getData/'
 	$(pending).show();
 	$(selector).html('');
 	$.ajax({
-		url: '/graph/getData/' + id,
+		url: uri + id,
 		success: function(result) {
 			$(pending).hide();
 			success(result, selector);

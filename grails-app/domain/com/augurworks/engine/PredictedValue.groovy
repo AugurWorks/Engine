@@ -17,4 +17,11 @@ class PredictedValue {
 	String toString() {
 		return date.format(Global.DATE_FORMAT) + ': ' + value.round(4)
 	}
+
+	Map toMap() {
+		return [
+			date: date.format(Global.C3_DATE_FORMAT),
+			value: value
+		]
+	}
 }
