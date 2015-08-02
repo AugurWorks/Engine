@@ -3,18 +3,105 @@ package com.augurworks.engine
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
-/**
- * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
- */
 @TestFor(AlgorithmRequest)
+@Mock([DataSet, RequestDataSet])
 class AlgorithmRequestSpec extends Specification {
 
-    def setup() {
-    }
+	static final String DATE_FORMAT = 'yyyy-MM-dd'
 
-    def cleanup() {
-    }
+	Map dataSetParams(int num) {
+		return [
+			ticker: 'XX' + num + 'XX',
+			name: 'Stock ' + num,
+			code: 'xxxx',
+			dataColumn: 4
+		]
+	}
 
-    void "test something"() {
-    }
+	Map requestDataSetParams(int num) {
+		return [
+			dataSet: DataSet.get(num),
+			offset: num
+		]
+	}
+
+	AlgorithmRequest validAlgorithmRequest(Collection<Integer> requestDataSetRange) {
+		Date startDate = Date.parse(DATE_FORMAT, '2014-01-01')
+		Date endDate = Date.parse(DATE_FORMAT, '2015-01-01')
+		Date dateCreated = Date.parse(DATE_FORMAT, '2015-01-01')
+		Collection<DataSet> dataSets = requestDataSetRange.collect { int id ->
+			return new DataSet(dataSetParams(id)).save()
+		}
+		AlgorithmRequest algorithmRequest = new AlgorithmRequest(
+			startDate: startDate,
+			endDate: endDate,
+			dateCreated: dateCreated,
+			dependantDataSet: dataSets.first()
+		)
+		algorithmRequest.save()
+		dataSets.each { DataSet dataSet ->
+			new RequestDataSet(
+				dataSet: dataSet,
+				offset: 0,
+				algorithmRequest: algorithmRequest
+			).save()
+		}
+		return algorithmRequest
+	}
+
+	void "test create algorithm request"() {
+		when:
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+
+		then:
+		algorithmRequest.id == 1
+		AlgorithmRequest.count() == 1
+		algorithmRequest.requestDataSets.size() == 4
+	}
+
+	void "test update fields algorithm request"() {
+		given:
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		DataSet dataSet = new DataSet(dataSetParams(1)).save()
+		Map parameters = [
+			endDate: Date.parse(DATE_FORMAT, end),
+			dependantDataSet: dataSet
+		]
+
+		when:
+		algorithmRequest.updateFields(parameters)
+
+		then:
+		algorithmRequest.endDate.format(DATE_FORMAT) == end
+		algorithmRequest.dependantDataSet.id == dataSet.id
+
+		where:
+		end          | dataSetCount
+		'2015-02-01' | 4
+		'2015-02-01' | 7
+		'2014-02-01' | 4
+	}
+
+	void "test update data sets to algorithm request"() {
+		given:
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		Collection<DataSet> dataSets = (0..(dataSetCount - 1)).collect { int id ->
+			return new DataSet(dataSetParams(id)).save()
+		}
+		Collection<Map> dataSetMaps = dataSets.collect { DataSet dataSet ->
+			return [
+				name: dataSet.ticker,
+				offset: 0
+			]
+		}
+
+		when:
+		algorithmRequest.updateDataSets(dataSetMaps)
+
+		then:
+		algorithmRequest.requestDataSets.size() == dataSetCount
+
+		where:
+		dataSetCount << [4, 7, 3]
+	}
 }
