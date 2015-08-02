@@ -3,6 +3,10 @@
 	<head>
 		<title>Requests</title>
 		<meta name="layout" content="semantic">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+		<asset:javascript src="graph.js" />
+		<asset:stylesheet href="c3.css" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.1/jquery.timeago.min.js"></script>
 	</head>
 	<body>
@@ -15,7 +19,7 @@
 			<div class="ui two cards">
 				<g:each in="${ algorithm.algorithmResults.sort { it.dateCreated }.reverse() }" var="result">
 					<g:set var="complete" value="${ !result.machineLearningModel }" />
-					<div class="ui raised card">
+					<div id="result-${ result.id }" class="ui raised card">
 						<div class="content">
 							<span class="ui ${ complete ? 'green' : 'yellow' } right corner label"><i class="${ complete ? 'check mark' : 'refresh' } icon"></i></span>
 							<div class="header">${ result.dateCreated.format(Global.DATE_FORMAT) }</div>
@@ -23,6 +27,10 @@
 								<span data-title="Date Created"><i class="plus icon"></i> <abbr class="timeago" title="${ result.dateCreated }"></abbr></span>
 								<span data-title="Number of Predicted Values"><i class="cubes icon"></i> ${ result.predictedValues.size() }</span>
 							</div>
+							<g:if test="${ complete }">
+								<g:render template="/layouts/pending" model="${ [id: 'pending-' + result.id] }" />
+								<div id="chart-${ result.id }" class="data-chart"></div>
+							</g:if>
 						</div>
 					</div>
 				</g:each>
@@ -33,6 +41,10 @@
 				$('.timeago').timeago();
 				$('span[data-title]').popup({
 					position: 'top center'
+				});
+				$('.data-chart').toArray().forEach(function(me) {
+					var id = $(me).attr('id').split('-')[1];
+					getData(id, lineGraph, '#chart-' + id, '#pending-' + id);
 				});
 			});
 		</script>
