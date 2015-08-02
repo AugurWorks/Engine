@@ -39,10 +39,10 @@ class AlgorithmRequestSpec extends Specification {
 			dependantDataSet: dataSets.first()
 		)
 		algorithmRequest.save()
-		dataSets.each { DataSet dataSet ->
+		dataSets.eachWithIndex { DataSet dataSet, int counter ->
 			new RequestDataSet(
 				dataSet: dataSet,
-				offset: 0,
+				offset: counter,
 				algorithmRequest: algorithmRequest
 			).save()
 		}
@@ -103,5 +103,62 @@ class AlgorithmRequestSpec extends Specification {
 
 		where:
 		dataSetCount << [4, 7, 3]
+	}
+
+	void "test get independent request data sets"() {
+		given:
+		int counter = 0
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..(size - 1)))
+		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
+		algorithmRequest.metaClass.getDependentRequestDataSet = { counter++; return requestDataSet }
+
+		when:
+		algorithmRequest.dependantDataSet = requestDataSet.dataSet
+		algorithmRequest.save()
+		Collection<RequestDataSet> independent = algorithmRequest.independentRequestDataSets
+
+		then:
+		independent.size() == size - 1
+		!(requestDataSet in independent)
+		counter == 1
+
+		where:
+		requestDataSetNum | size
+		0                 | 1
+		0                 | 2
+		1                 | 2
+	}
+
+	void "test get prediction offset"() {
+		given:
+		int counter = 0
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		algorithmRequest.metaClass.getDependentRequestDataSet = { counter++; return [offset: 10] }
+
+		when:
+		int offset = algorithmRequest.predictionOffset
+
+		then:
+		offset == 10
+		counter == 1
+
+		where:
+		requestDataSetNum << [0, 1, 2, 3]
+	}
+
+	void "get dependent request data set"() {
+		given:
+		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
+
+		when:
+		algorithmRequest.dependantDataSet = requestDataSet.dataSet
+		algorithmRequest.save()
+
+		then:
+		requestDataSet == algorithmRequest.dependentRequestDataSet
+
+		where:
+		requestDataSetNum << [0, 1, 2, 3]
 	}
 }

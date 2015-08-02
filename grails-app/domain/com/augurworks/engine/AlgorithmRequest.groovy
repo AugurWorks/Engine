@@ -1,5 +1,7 @@
 package com.augurworks.engine
 
+import com.augurworks.engine.helper.Global
+
 class AlgorithmRequest {
 
 	Date startDate
@@ -7,7 +9,7 @@ class AlgorithmRequest {
 	Date dateCreated
 	DataSet dependantDataSet
 
-	static hasMany = [requestDataSets: RequestDataSet]
+	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult]
 
 	static constraints = {
 		startDate()
@@ -18,14 +20,22 @@ class AlgorithmRequest {
 
 	static mapping = {
 		requestDataSets cascade: 'all-delete-orphan'
+		algorithmResults cascade: 'all-delete-orphan'
 	}
 
 	String toString() {
-		requestDataSets*.dataSet*.ticker.join(', ')
+		requestDataSets*.toString().sort().join(', ')
 	}
 
 	String getName() {
 		return this.toString()
+	}
+
+	String stringify() {
+		String dataSetString = this.requestDataSets.sort { it.dataSet.ticker }.collect { RequestDataSet requestDataSet ->
+			return requestDataSet.dataSet.ticker + (requestDataSet.offset >= 0 ? '+' : '') + requestDataSet.offset
+		}.join(', ')
+		return this.startDate.format(Global.DATE_FORMAT) + ' - ' + this.endDate.format(Global.DATE_FORMAT) + ': ' + dataSetString
 	}
 
 	void updateFields(Map parameters) {
@@ -45,5 +55,23 @@ class AlgorithmRequest {
 			requestDataSet.save()
 		}
 		this.save(flush: true)
+	}
+
+	Collection<RequestDataSet> getIndependentRequestDataSets() {
+		return this.requestDataSets - [this.dependentRequestDataSet]
+	}
+
+	int getPredictionOffset() {
+		return this.dependentRequestDataSet.offset
+	}
+
+	RequestDataSet getDependentRequestDataSet() {
+		Collection<RequestDataSet> matching = this.requestDataSets.grep { RequestDataSet requestDataSet ->
+			return requestDataSet.dataSet == this.dependantDataSet
+		}
+		if (matching.size() != 1) {
+			throw new AugurWorksException('Prediction data set not found')
+		}
+		return matching.first()
 	}
 }

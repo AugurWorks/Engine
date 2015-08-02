@@ -1,39 +1,47 @@
 package com.augurworks.engine.helper
 
-import grails.test.mixin.TestFor
-import spock.lang.Specification
 import groovy.time.TimeCategory
+import spock.lang.Specification
+
 import com.augurworks.engine.AugurWorksException
 
 class RequestValueSetSpec extends Specification {
 
-	static final String DATE_FORMAT = 'yyyy-MM-dd'
-	static final Collection<String> TEST_DATES = ['2014-01-01', '2014-01-02', '2014-01-03']
+	static final Collection<String> TEST_DATES = ['01/01/2014', '01/02/2014', '01/03/2014']
 
 	RequestValueSet validRequestValueSet(int valueCount, int offset = 0) {
-		Collection<String> dates = generateDates(valueCount)
+		Collection<String> dates = generateDates(valueCount)*.format(Global.DATE_FORMAT)
 		return validRequestValueSet(dates, offset)
 	}
 
 	RequestValueSet validRequestValueSet(Collection<String> dates, int offset = 0) {
+		Collection<Date> nonStringDates = dates.collect { String date ->
+			return Date.parse(Global.DATE_FORMAT, date)
+		}
 		int i = -1
 		Map validParams = [
 			name: 'Test Set',
 			offset: offset,
-			values: dates.collect { String date ->
+			values: nonStringDates.collect { Date date ->
 				i++
-				return new DataSetValue(date, i.toString())
+				return new DataSetValue(date, i.toString().toDouble())
 			}
 		]
 		return new RequestValueSet(validParams.name, validParams.offset, validParams.values)
 	}
 
-	Collection<String> generateDates(int valueCount) {
+	Collection<Date> generateDates(int valueCount) {
 		return (0..(valueCount - 1)).collect { int i ->
-			Date startDate = Date.parse(DATE_FORMAT, '2014-01-01')
-			return use(TimeCategory) {
-				startDate + i.days
-			}.format('yyyy-MM-dd')
+			Date startDate = Date.parse(Global.DATE_FORMAT, '01/01/2014')
+			use(TimeCategory) {
+				return startDate + i.days
+			}
+		}
+	}
+
+	Collection<Date> stringsToDates(Collection<String> dates) {
+		return dates.collect { String date ->
+			return Date.parse(Global.DATE_FORMAT, date)
 		}
 	}
 
@@ -42,13 +50,13 @@ class RequestValueSetSpec extends Specification {
 		RequestValueSet set = validRequestValueSet(3)
 
 		expect:
-		set.dates == TEST_DATES
+		set.dates*.format(Global.DATE_FORMAT) == TEST_DATES
 	}
 
 	void "test filter values"() {
 		setup:
-		Date startDate = Date.parse(DATE_FORMAT, start)
-		Date endDate = Date.parse(DATE_FORMAT, end)
+		Date startDate = Date.parse(Global.DATE_FORMAT, start)
+		Date endDate = Date.parse(Global.DATE_FORMAT, end)
 		RequestValueSet set = validRequestValueSet(10).filterValues(startDate, endDate, minOffset, maxOffset)
 
 		expect:
@@ -56,15 +64,15 @@ class RequestValueSetSpec extends Specification {
 
 		where:
 		start        | end          | minOffset | maxOffset | size
-		'2014-01-01' | '2014-01-09' | 0         | 0         | 9
-		'2014-01-01' | '2014-01-01' | 0         | 0         | 1
-		'2014-01-02' | '2014-01-09' | -1        | 1         | 10
+		'01/01/2014' | '01/09/2014' | 0         | 0         | 9
+		'01/01/2014' | '01/01/2014' | 0         | 0         | 1
+		'01/02/2014' | '01/09/2014' | -1        | 1         | 10
 	}
 
 	void "test filter values exception"() {
 		setup:
-		Date startDate = Date.parse(DATE_FORMAT, start)
-		Date endDate = Date.parse(DATE_FORMAT, end)
+		Date startDate = Date.parse(Global.DATE_FORMAT, start)
+		Date endDate = Date.parse(Global.DATE_FORMAT, end)
 		RequestValueSet set = validRequestValueSet(10)
 
 		when:
@@ -75,9 +83,9 @@ class RequestValueSetSpec extends Specification {
 
 		where:
 		start        | end          | minOffset | maxOffset
-		'2014-01-01' | '2014-01-10' | -1        | 0
-		'2014-01-01' | '2014-01-10' | 0         | 1
-		'2014-01-01' | '2014-01-10' | -1        | 1
+		'01/01/2014' | '01/10/2014' | -1        | 0
+		'01/01/2014' | '01/10/2014' | 0         | 1
+		'01/01/2014' | '01/10/2014' | -1        | 1
 	}
 
 	void "test fill out values"() {
@@ -86,7 +94,7 @@ class RequestValueSetSpec extends Specification {
 		RequestValueSet set = validRequestValueSet(dates)
 
 		when:
-		Collection<DataSetValue> values = set.fillOutValues(TEST_DATES).values
+		Collection<DataSetValue> values = set.fillOutValues(stringsToDates(TEST_DATES)).values
 
 		then:
 		values.size() == TEST_DATES.size()
@@ -99,7 +107,7 @@ class RequestValueSetSpec extends Specification {
 		RequestValueSet set = validRequestValueSet(dates)
 
 		when:
-		set.fillOutValues(TEST_DATES)
+		set.fillOutValues(stringsToDates(TEST_DATES))
 
 		then:
 		thrown(AugurWorksException)
@@ -116,25 +124,47 @@ class RequestValueSetSpec extends Specification {
 		thrown(AugurWorksException)
 	}
 
-	void "test reduce value range"() {
+	void "test reduce value range with prediction"() {
 		setup:
-		Date startDate = Date.parse(DATE_FORMAT, start)
-		Date endDate = Date.parse(DATE_FORMAT, end)
+		Date startDate = Date.parse(Global.DATE_FORMAT, start)
+		Date endDate = Date.parse(Global.DATE_FORMAT, end)
 		RequestValueSet set = validRequestValueSet(10, offset)
 
 		when:
-		Collection<String> dates = set.reduceValueRange(startDate, endDate).dates
+		Collection<Date> dates = set.reduceValueRange(startDate, endDate, predictionOffset).dates
 
 		then:
 		dates.size() == size
-		dates.first() == first
-		dates.last() == last
+		dates.first().format(Global.DATE_FORMAT) == first
+		dates.last().format(Global.DATE_FORMAT) == last
+
+		where:
+		start        | end          | offset | predictionOffset | size | first        | last
+		'01/01/2014' | '01/10/2014' | 0      | 0                | 10   | '01/01/2014' | '01/10/2014'
+		'01/02/2014' | '01/09/2014' | 1      | -1               | 10   | '01/01/2014' | '01/10/2014'
+		'01/02/2014' | '01/09/2014' | -1     | 0                | 9    | '01/01/2014' | '01/09/2014'
+		'01/03/2014' | '01/05/2014' | 5      | -2               | 10   | '01/01/2014' | '01/10/2014'
+	}
+
+	void "test reduce value range"() {
+		setup:
+		Date startDate = Date.parse(Global.DATE_FORMAT, start)
+		Date endDate = Date.parse(Global.DATE_FORMAT, end)
+		RequestValueSet set = validRequestValueSet(10, offset)
+
+		when:
+		Collection<Date> dates = set.reduceValueRange(startDate, endDate).dates
+
+		then:
+		dates.size() == size
+		dates.first().format(Global.DATE_FORMAT) == first
+		dates.last().format(Global.DATE_FORMAT) == last
 
 		where:
 		start        | end          | offset | size | first        | last
-		'2014-01-01' | '2014-01-10' | 0      | 10   | '2014-01-01' | '2014-01-10'
-		'2014-01-01' | '2014-01-09' | 1      | 9    | '2014-01-02' | '2014-01-10'
-		'2014-01-02' | '2014-01-10' | -1     | 9    | '2014-01-01' | '2014-01-09'
-		'2014-01-02' | '2014-01-05' | 5      | 4    | '2014-01-07' | '2014-01-10'
+		'01/01/2014' | '01/10/2014' | 0      | 10   | '01/01/2014' | '01/10/2014'
+		'01/01/2014' | '01/09/2014' | 1      | 9    | '01/02/2014' | '01/10/2014'
+		'01/02/2014' | '01/10/2014' | -1     | 9    | '01/01/2014' | '01/09/2014'
+		'01/02/2014' | '01/05/2014' | 5      | 4    | '01/07/2014' | '01/10/2014'
 	}
 }

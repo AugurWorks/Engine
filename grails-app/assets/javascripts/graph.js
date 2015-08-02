@@ -1,16 +1,17 @@
-function getData(id, success) {
-	$('.pending').show();
-	$('#chart').html('');
+function getData(id, success, selector, pending, prediction) {
+	var uri = prediction ? '/graph/getResultData/' : '/graph/getData/'
+	$(pending).show();
+	$(selector).html('');
 	$.ajax({
-		url: '/graph/getData/' + id,
-		success: function() {
-			$('.pending').hide();
-			success.apply(this, arguments);
+		url: uri + id,
+		success: function(result) {
+			$(pending).hide();
+			success(result, selector);
 		}
 	});
 }
 
-function lineGraph(result) {
+function lineGraph(result, selector) {
 	var data = result.data;
 	var dates = mergeDates(data);
 	var columns = data.map(function(dataSet) {
@@ -18,6 +19,7 @@ function lineGraph(result) {
 	});
 	columns.unshift(['x'].concat(dates));
 	var chart = c3.generate({
+		bindto: selector,
 		data: {
 			x: 'x',
 			columns: columns
@@ -44,7 +46,7 @@ function createDataColumn(dataSetObject, dates) {
 	}, {});
 	var values = dates.map(function(d) {
 		var val = dateMap[d];
-		return val ? val : 0;
+		return val ? val : null;
 	});
 	values.unshift(dataSetObject.name);
 	return values;

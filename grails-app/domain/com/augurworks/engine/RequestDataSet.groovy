@@ -13,6 +13,6 @@ class RequestDataSet {
 	}
 
 	String toString() {
-		dataSet.name + ', ' + offset + ' day offset'
+		dataSet.ticker + (offset >= 0 ? '+' : '') + offset
 	}
 }

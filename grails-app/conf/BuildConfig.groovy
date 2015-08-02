@@ -52,7 +52,7 @@ grails.project.dependency.resolution = {
 		// specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 		// runtime 'mysql:mysql-connector-java:5.1.27'
 		// runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
-		runtime 'com.amazonaws:aws-java-sdk:1.8.9.1'
+		runtime 'com.amazonaws:aws-java-sdk:1.10.6'
 		compile "org.codehaus.gpars:gpars:1.1.0"
 	}
 
@@ -72,6 +72,7 @@ grails.project.dependency.resolution = {
 		compile ":spring-security-core:2.0-RC5"
 
 		compile ":slack-logger:1.0.1"
+		compile ":build-test-data:2.4.0"
 
 		test ":codenarc:0.22"
 	}

@@ -2,15 +2,15 @@ package com.augurworks.engine.helper
 
 class DataSetValue {
 
-	String date
+	Date date
 	double value
 
-	DataSetValue(String date, String value) {
+	DataSetValue(Date date, Double value) {
 		this.date = date
-		this.value = value.toDouble()
+		this.value = value
 	}
 
-	String getDate() {
+	Date getDate() {
 		return date
 	}
 
@@ -20,5 +20,12 @@ class DataSetValue {
 
 	String toString() {
 		return this.date + ': ' + this.value
+	}
+
+	Map toMap() {
+		return [
+			date: date.format(Global.C3_DATE_FORMAT),
+			value: value
+		]
 	}
 }

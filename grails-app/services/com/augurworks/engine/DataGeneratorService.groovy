@@ -6,6 +6,18 @@ import java.security.SecureRandom
 @Transactional
 class DataGeneratorService {
 
+	static final Collection<String> VALID_TICKERS = [
+		'AAPL',
+		'GOOGL',
+		'JPM',
+		'USO',
+		'AMZN',
+		'FB',
+		'TWTR',
+		'YHOO',
+		'MSFT'
+	]
+
 	void importQuandlDataSets() {
 		new URL('https://s3.amazonaws.com/quandl-static-content/quandl-stock-code-list.csv').getText().split('\n').tail().each { String line ->
 			Collection<String> row = line.split(',')
@@ -19,14 +31,17 @@ class DataGeneratorService {
 		Collection<DataSet> dataSets = DataSet.list()
 		(1..requestNumber).each { int requestCount ->
 			SecureRandom rand = new SecureRandom()
-			Collection<DataSet> algorithmRequestDataSets = (0..4).collect {
-				return dataSets[rand.nextInt(dataSets.size())]
+			Collection<String> tickers = VALID_TICKERS
+			Collection<DataSet> algorithmRequestDataSets = (0..5).collect {
+				String ticker = tickers[rand.nextInt(tickers.size())]
+				tickers -= ticker
+				return DataSet.findByTicker(ticker)
 			}
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2010/02'), endDate: Date.parse('yyyy/MM', '2015/04'), dependantDataSet: algorithmRequestDataSets[0]).save()
-			algorithmRequestDataSets.each { DataSet dataSet ->
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2014/12'), endDate: Date.parse('yyyy/MM', '2015/06'), dependantDataSet: algorithmRequestDataSets[0]).save()
+			algorithmRequestDataSets.eachWithIndex { DataSet dataSet, int counter ->
 				new RequestDataSet(
 					dataSet: dataSet,
-					offset: 0,
+					offset: counter == 0 ? 0 : -1,
 					algorithmRequest: algorithmRequest
 				).save()
 			}
