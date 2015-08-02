@@ -24,7 +24,7 @@ class AlgorithmRequest {
 	}
 
 	String toString() {
-		requestDataSets*.dataSet*.ticker.sort().join(', ')
+		requestDataSets*.toString().sort().join(', ')
 	}
 
 	String getName() {

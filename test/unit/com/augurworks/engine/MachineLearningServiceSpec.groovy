@@ -21,6 +21,8 @@ class MachineLearningServiceSpec extends Specification {
 		then:
 		predictions.size() == 126
 		predictions.collect { it != 0 }.every()
+		predictions[0].value.round() == 355
+		predictions[10].value.round() == 364
 	}
 
 	void "test create predicted values"() {
