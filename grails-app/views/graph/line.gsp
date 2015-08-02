@@ -11,12 +11,7 @@
 	<body>
 		<div class="ui segment">
 			<h1 class="ui header">Line Graph - <g:select name="id" from="${ requests }" value="${ algorithmRequest?.id }" noSelection="${ ['null': 'Select a Request'] }" optionKey="id" optionValue="name"></g:select></h1>
-			<h1 class="ui center aligned icon header pending">
-				<i class="loading notched circle icon"></i>
-				<div class="content">
-					Loading Data...
-				</div>
-			</h1>
+			<g:render template="/layouts/pending" />
 			<div id="chart"></div>
 		</div>
 		<script>
