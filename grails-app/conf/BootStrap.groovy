@@ -17,6 +17,8 @@ class BootStrap {
 		def adminRole = new Role(authority: "ROLE_ADMIN").save()
 		def userRole = new Role(authority: "ROLE_USER").save()
 		createUser('TheConnMan', adminRole)
+		createUser('safreiberg', adminRole)
+		createUser('augurworks1', adminRole)
 
 		dataGeneratorService.importQuandlDataSets()
 		dataGeneratorService.generateRequest(5)
