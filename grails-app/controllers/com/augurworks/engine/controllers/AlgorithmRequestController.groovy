@@ -20,7 +20,7 @@ class AlgorithmRequestController {
 
 	def run(AlgorithmRequest algorithmRequest) {
 		machineLearningService.createAlgorithm(algorithmRequest)
-		redirect(action: 'show', id: algorithmRequest.id)
+		render([ok: true] as JSON)
 	}
 
 	def create(AlgorithmRequest algorithmRequest) {
