@@ -1,5 +1,6 @@
 package com.augurworks.engine.helper
 
+import grails.test.mixin.*
 import groovy.time.TimeCategory
 import spock.lang.Specification
 

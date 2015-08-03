@@ -163,9 +163,9 @@ grails {
 }
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.augurworks.engine.User'
-grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.augurworks.engine.UserRole'
-grails.plugin.springsecurity.authority.className = 'com.augurworks.engine.Role'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.augurworks.engine.domains.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.augurworks.engine.domains.UserRole'
+grails.plugin.springsecurity.authority.className = 'com.augurworks.engine.domains.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/**':								['permitAll'],
 	'/graph/**':						['ROLE_ADMIN'],
