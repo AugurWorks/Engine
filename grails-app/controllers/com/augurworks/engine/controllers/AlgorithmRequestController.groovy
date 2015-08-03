@@ -3,6 +3,7 @@ package com.augurworks.engine.controllers
 import grails.converters.JSON
 
 import com.augurworks.engine.domains.AlgorithmRequest
+import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.helper.Global
 
@@ -21,6 +22,10 @@ class AlgorithmRequestController {
 	def run(AlgorithmRequest algorithmRequest) {
 		machineLearningService.createAlgorithm(algorithmRequest)
 		render([ok: true] as JSON)
+	}
+
+	def resultCard(AlgorithmResult algorithmResult) {
+		render(template: '/layouts/resultCard', model: [result: algorithmResult])
 	}
 
 	def create(AlgorithmRequest algorithmRequest) {
