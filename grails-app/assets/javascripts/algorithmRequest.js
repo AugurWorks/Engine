@@ -23,8 +23,10 @@ function submitRequest() {
 			endDate: $('#endDate').val()
 		},
 		success: function(data) {
-			if (data.success) {
+			if (data.ok) {
 				window.location.href = '/algorithmRequest/create/' + data.id
+			} else {
+				swal('Error', data.error, 'error');
 			}
 		}
 	});
@@ -37,7 +39,7 @@ function deleteRequest() {
 			id: $('#id').val()
 		},
 		success: function(data) {
-			if (data.success) {
+			if (data.ok) {
 				window.location.href = '/algorithmRequest/'
 			} else {
 				swal('Error', 'There was an error deleting the algorithm. The error has been logged.', 'error');

@@ -12,6 +12,9 @@ function kickOff(me, id) {
 		success: function(data) {
 			if (data.ok) {
 				window.location.reload();
+			} else {
+				$(me).removeClass('loading');
+				swal('Error', data.error, 'error');
 			}
 		}
 	});
