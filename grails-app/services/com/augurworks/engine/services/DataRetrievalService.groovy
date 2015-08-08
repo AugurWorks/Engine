@@ -49,7 +49,10 @@ class DataRetrievalService {
 		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
 		String quandlPost = '.csv?auth_token=' + quandlKey
 		String url = quandlPre + quandlCode + quandlPost
-		return new URL(url).getText().split('\n').tail().reverse().collect { String line ->
+		return new URL(url).getText().split('\n').tail().reverse().grep { String line ->
+			Collection<String> lineValues = line.split(',')
+			return lineValues[dataColumn].size() != 0
+		}.collect { String line ->
 			Collection<String> lineValues = line.split(',')
 			return new DataSetValue(Date.parse(QUANDL_DATE_FORMAT, lineValues[0]), lineValues[dataColumn].toDouble())
 		}
