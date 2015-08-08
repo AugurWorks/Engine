@@ -21,8 +21,16 @@ class AlgorithmRequestController {
 	}
 
 	def run(AlgorithmRequest algorithmRequest) {
-		machineLearningService.createAlgorithm(algorithmRequest)
-		render([ok: true] as JSON)
+		try {
+			machineLearningService.createAlgorithm(algorithmRequest)
+			render([ok: true] as JSON)
+		} catch (AugurWorksException e) {
+			log.warn e.getMessage()
+			render([ok: false, error: e.getMessage()] as JSON)
+		} catch (e) {
+			log.error e.getMessage()
+			render([ok: false, error: e.getMessage()] as JSON)
+		}
 	}
 
 	def resultCard(AlgorithmResult algorithmResult) {
