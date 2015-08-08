@@ -5,7 +5,7 @@ class DataSetValue {
 	Date date
 	double value
 
-	DataSetValue(Date date, Double value) {
+	DataSetValue(Date date, double value) {
 		this.date = date
 		this.value = value
 	}
