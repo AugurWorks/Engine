@@ -30,6 +30,21 @@ class RequestValueSet {
 		return this.values*.date
 	}
 
+	RequestValueSet aggregateValues(String aggregationType) {
+		Collection<DataSetValue> values = this.values
+		Collection<DataSetValue> newValues = []
+		for (int i = 0; i < values.size(); i++) {
+			Double previousValue = i == 0 ? null : values[i - 1].value
+			DataSetValue current = values[i]
+			Double newValue = Aggregation.aggregate(aggregationType, previousValue, current.value)
+			if (newValue != null) {
+				newValues.push(new DataSetValue(current.date, newValue))
+			}
+		}
+		this.values = newValues
+		return this
+	}
+
 	RequestValueSet filterValues(Date startDate, Date endDate, int minOffset, int maxOffset) {
 		Collection<DataSetValue> values = this.values
 		int startIndex = values.findIndexOf { it.date == startDate }
