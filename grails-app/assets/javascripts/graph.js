@@ -5,8 +5,14 @@ function getData(id, success, selector, pending, prediction) {
 	$.ajax({
 		url: uri + id,
 		success: function(result) {
+			if (result.ok) {
+				success(result, selector);
+			} else {
+				swal('Error', result.error, 'error');
+			}
+		},
+		complete: function() {
 			$(pending).hide();
-			success(result, selector);
 		}
 	});
 }
