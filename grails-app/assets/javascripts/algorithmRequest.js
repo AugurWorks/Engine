@@ -24,7 +24,7 @@ function submitRequest() {
 		},
 		success: function(data) {
 			if (data.ok) {
-				window.location.href = '/algorithmRequest/create/' + data.id
+				window.location.href = '/algorithmRequest/show/' + data.id
 			} else {
 				swal('Error', data.error, 'error');
 			}
