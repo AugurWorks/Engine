@@ -36,7 +36,7 @@ class RequestValueSet {
 		for (int i = 0; i < values.size(); i++) {
 			Double previousValue = i == 0 ? null : values[i - 1].value
 			DataSetValue current = values[i]
-			Double newValue = Aggregation.aggregate(aggregationType, previousValue, current.value)?.round(3)
+			Double newValue = Aggregations.aggregate(aggregationType, previousValue, current.value)?.round(3)
 			if (newValue != null) {
 				newValues.push(new DataSetValue(current.date, newValue))
 			}

@@ -7,7 +7,7 @@ import java.security.SecureRandom
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.RequestDataSet
-import com.augurworks.engine.helper.Aggregation
+import com.augurworks.engine.helper.Aggregations
 
 @Transactional
 class DataGeneratorService {
@@ -47,7 +47,7 @@ class DataGeneratorService {
 				new RequestDataSet(
 					dataSet: dataSet,
 					offset: counter == 0 ? 0 : -1,
-					aggregation: Aggregation.TYPES[rand.nextInt(Aggregation.TYPES.size())],
+					aggregation: Aggregations.TYPES[rand.nextInt(Aggregations.TYPES.size())],
 					algorithmRequest: algorithmRequest
 				).save()
 			}

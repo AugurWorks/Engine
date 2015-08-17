@@ -2,11 +2,11 @@ package com.augurworks.engine.helper
 
 import com.augurworks.engine.AugurWorksException
 
-class Aggregation {
+class Aggregations {
 
 	static final Collection<String> TYPES = ['Value', 'Period Change', 'Period Percent Change']
 
-	private Aggregation() { }
+	private Aggregations() { }
 
 	static Double aggregate(String type, Double previousValue, double currentValue) {
 		switch(type) {
