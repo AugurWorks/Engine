@@ -6,6 +6,8 @@ class Aggregation {
 
 	static final Collection<String> TYPES = ['Value', 'Period Change', 'Period Percent Change']
 
+	private Aggregation() { }
+
 	static Double aggregate(String type, Double previousValue, double currentValue) {
 		switch(type) {
 			case 'Value':
