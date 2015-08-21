@@ -3,6 +3,7 @@ function addDataSet() {
 	html += '<td><div class="ui radio checkbox"><input type="radio" name="dependant"' + ($('#dataSets tbody tr').length ? '' : 'checked') + ' /></div></td>'
 	html += '<td class="stock">' + $('#stock').val() + '</td>';
 	html += '<td class="offset">' + $('#offset').val() + '</td>';
+	html += '<td class="aggregation">' + $('#aggregation').val() + '</td>';
 	html += '<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>';
 	html += '</tr>';
 	$('#dataSets tbody').append(html);
@@ -53,6 +54,7 @@ function getDataSets() {
 		return {
 			name: $(d).children('.stock').text(),
 			offset: $(d).children('.offset').text(),
+			aggregation: $(d).children('.aggregation').text(),
 			dependant: $(d).find('input[name=dependant]').is(':checked')
 		}
 	});

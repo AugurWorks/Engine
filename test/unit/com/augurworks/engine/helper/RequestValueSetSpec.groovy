@@ -19,7 +19,7 @@ class RequestValueSetSpec extends Specification {
 		Collection<Date> nonStringDates = dates.collect { String date ->
 			return Date.parse(Global.DATE_FORMAT, date)
 		}
-		int i = -1
+		int i = 0
 		Map validParams = [
 			name: 'Test Set',
 			offset: offset,
@@ -52,6 +52,23 @@ class RequestValueSetSpec extends Specification {
 
 		expect:
 		set.dates*.format(Global.DATE_FORMAT) == TEST_DATES
+	}
+
+	void "test aggregate values"() {
+		given:
+		RequestValueSet set = validRequestValueSet(10)
+
+		when:
+		set.aggregateValues(aggregationType)
+
+		then:
+		set.values.size() == valuesSize
+
+		where:
+		aggregationType         | valuesSize
+		'Value'                 | 10
+		'Period Change'         | 9
+		'Period Percent Change' | 9
 	}
 
 	void "test filter values"() {
@@ -99,7 +116,7 @@ class RequestValueSetSpec extends Specification {
 
 		then:
 		values.size() == TEST_DATES.size()
-		values*.value == [0, 0, 1]
+		values*.value == [1, 1, 2]
 	}
 
 	void "test fill out values exception"() {

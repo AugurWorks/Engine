@@ -3,6 +3,8 @@ package com.augurworks.engine.domains
 import grails.test.mixin.*
 import spock.lang.Specification
 
+import com.augurworks.engine.helper.Aggregations
+
 @TestFor(AlgorithmRequest)
 @Mock([DataSet, RequestDataSet])
 class AlgorithmRequestSpec extends Specification {
@@ -43,6 +45,7 @@ class AlgorithmRequestSpec extends Specification {
 			new RequestDataSet(
 				dataSet: dataSet,
 				offset: counter,
+				aggregation: Aggregations.TYPES[0],
 				algorithmRequest: algorithmRequest
 			).save()
 		}
@@ -91,6 +94,7 @@ class AlgorithmRequestSpec extends Specification {
 		Collection<Map> dataSetMaps = dataSets.collect { DataSet dataSet ->
 			return [
 				name: dataSet.ticker,
+				aggregation: Aggregations.TYPES[0],
 				offset: 0
 			]
 		}

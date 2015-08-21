@@ -51,6 +51,7 @@ class AlgorithmRequest {
 			RequestDataSet requestDataSet = new RequestDataSet([
 				dataSet: DataSet.findByTicker(dataSet.name.split(' - ').first()),
 				offset: dataSet.offset,
+				aggregation: dataSet.aggregation,
 				algorithmRequest: this
 			])
 			requestDataSet.save()

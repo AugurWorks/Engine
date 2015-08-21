@@ -41,7 +41,7 @@ class DataRetrievalService {
 
 	RequestValueSet getSingleRequestValues(RequestDataSet requestDataSet, Date startDate, Date endDate, int minOffset, int maxOffset) {
 		Collection<DataSetValue> values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
-		return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).filterValues(startDate, endDate, minOffset, maxOffset)
+		return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).aggregateValues(requestDataSet.aggregation).filterValues(startDate, endDate, minOffset, maxOffset)
 	}
 
 	Collection<DataSetValue> getQuandlData(String quandlCode, int dataColumn) {

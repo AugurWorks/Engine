@@ -6,6 +6,7 @@
 		<asset:javascript src="algorithmRequest.js" />
 	</head>
 	<body>
+		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
 				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
@@ -27,7 +28,7 @@
 					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>
-				<div class="three fields">
+				<div class="four fields">
 					<div class="field">
 						<label>Stock</label>
 						<g:select from="${ dataSets }" name="stock" class="ui search dropdown" />
@@ -35,6 +36,10 @@
 					<div class="field">
 						<label>Day Offset</label>
 						<g:field type="number" name="offset" value="0" />
+					</div>
+					<div class="field">
+						<label>Aggregation</label>
+						<g:select from="${ Aggregation.TYPES }" name="aggregation" class="ui search dropdown" value="Period Percent Change" />
 					</div>
 					<div class="field">
 						<label>Add Data Set</label>
@@ -60,6 +65,7 @@
 							<th>Dependant</th>
 							<th>Stock</th>
 							<th>Day Offset</th>
+							<th>Aggregation</th>
 							<th>Remove</th>
 						</tr>
 					</thead>
@@ -69,6 +75,7 @@
 								<td class="ui radio checkbox"><g:field type="radio" name="dependant" checked="${ algorithmRequest.dependantDataSet == requestDataSet.dataSet }" value="${ requestDataSet.dataSet.id }" /></td>
 								<td class="stock">${ requestDataSet.dataSet.toString() }</td>
 								<td class="offset">${ requestDataSet.offset }</td>
+								<td class="aggregation">${ requestDataSet.aggregation }</td>
 								<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>
 							</tr>
 						</g:each>
