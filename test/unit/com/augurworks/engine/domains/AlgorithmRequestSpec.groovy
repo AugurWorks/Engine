@@ -59,7 +59,6 @@ class AlgorithmRequestSpec extends Specification {
 		then:
 		algorithmRequest.id == 1
 		AlgorithmRequest.count() == 1
-		algorithmRequest.requestDataSets.size() == 4
 	}
 
 	void "test update fields algorithm request"() {
