@@ -74,7 +74,7 @@ grails.hibernate.cache.queries = false
 environments {
 	development {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = "http://localhost:8080"
+		grails.serverURL = (localConfig.local.ip ?: 'http://localhost') + ':8080'
 		oauth.providers.github.key = localConfig.oauth.github.key
 		oauth.providers.github.secret = localConfig.oauth.github.secret
 		aws.bucket = 'aw-files-dev'
