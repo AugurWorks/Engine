@@ -41,13 +41,13 @@ class AlgorithmRequestController {
 		[dataSets: DataSet.list()*.toString(), algorithmRequest: algorithmRequest]
 	}
 
-	def submitRequest(String startDate, String endDate) {
+	def submitRequest(int startOffset, int endOffset) {
 		try {
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
 			Map dependantDataSetMap = dataSets.grep { it.dependant }.first()
 			Map parameters = [
-				startDate: Date.parse(Global.FORM_DATE_FORMAT, startDate),
-				endDate: Date.parse(Global.FORM_DATE_FORMAT, endDate),
+				startOffset: startOffset,
+				endOffset: endOffset,
 				dependantDataSet: DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
 			]
 			AlgorithmRequest algorithmRequest = new AlgorithmRequest(parameters).save()

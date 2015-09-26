@@ -2,6 +2,8 @@ package com.augurworks.engine.domains
 
 import groovy.time.TimeCategory
 
+import org.apache.commons.lang.time.DateUtils
+
 import com.augurworks.engine.AugurWorksException
 
 class AlgorithmRequest {
@@ -34,11 +36,11 @@ class AlgorithmRequest {
 	}
 
 	Date getStartDate() {
-		return use(TimeCategory) { new Date() + this.startOffset.days }
+		return use(TimeCategory) { DateUtils.round(new Date(), Calendar.DATE) + this.startOffset.days }
 	}
 
 	Date getEndDate() {
-		return use(TimeCategory) { new Date() + this.endOffset.days }
+		return use(TimeCategory) { DateUtils.round(new Date(), Calendar.DATE) + this.endOffset.days }
 	}
 
 	String stringify() {

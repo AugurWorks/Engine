@@ -20,8 +20,8 @@ function submitRequest() {
 		data: {
 			id: $('#id').val(),
 			dataSets: JSON.stringify(getDataSets()),
-			startDate: $('#startDate').val(),
-			endDate: $('#endDate').val()
+			startOffset: $('#startOffset').val(),
+			endOffset: $('#endOffset').val()
 		},
 		success: function(data) {
 			if (data.ok) {
