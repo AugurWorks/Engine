@@ -72,7 +72,11 @@
 					<tbody>
 						<g:each in="${ algorithmRequest?.requestDataSets }" var="requestDataSet">
 							<tr>
-								<td class="ui radio checkbox"><g:field type="radio" name="dependant" checked="${ algorithmRequest.dependantDataSet == requestDataSet.dataSet }" value="${ requestDataSet.dataSet.id }" /></td>
+								<td>
+									<div class="ui radio checkbox">
+										<g:field type="radio" name="dependant" checked="${ algorithmRequest.dependantDataSet == requestDataSet.dataSet }" value="${ requestDataSet.dataSet.id }" />
+									</div>
+								</td>
 								<td class="stock">${ requestDataSet.dataSet.toString() }</td>
 								<td class="offset">${ requestDataSet.offset }</td>
 								<td class="aggregation">${ requestDataSet.aggregation }</td>
