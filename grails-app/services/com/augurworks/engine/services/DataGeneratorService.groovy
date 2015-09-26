@@ -1,6 +1,7 @@
 package com.augurworks.engine.services
 
 import grails.transaction.Transactional
+import groovy.time.TimeCategory
 
 import java.security.SecureRandom
 
@@ -42,7 +43,8 @@ class DataGeneratorService {
 				tickers -= ticker
 				return DataSet.findByTicker(ticker)
 			}
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startDate: Date.parse('yyyy/MM', '2014/12'), endDate: Date.parse('yyyy/MM', '2015/06'), dependantDataSet: algorithmRequestDataSets[0]).save()
+			int startOffset = use(TimeCategory) { (Date.parse('yyyy/MM', '2015/06') - new Date()).days }
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startOffset: startOffset, endOffset: startOffset + 28, dependantDataSet: algorithmRequestDataSets[0]).save()
 			algorithmRequestDataSets.eachWithIndex { DataSet dataSet, int counter ->
 				new RequestDataSet(
 					dataSet: dataSet,

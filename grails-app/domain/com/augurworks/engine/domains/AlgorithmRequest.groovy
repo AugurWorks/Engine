@@ -1,7 +1,8 @@
 package com.augurworks.engine.domains
 
+import groovy.time.TimeCategory
+
 import com.augurworks.engine.AugurWorksException
-import com.augurworks.engine.helper.Global
 
 class AlgorithmRequest {
 
@@ -30,6 +31,14 @@ class AlgorithmRequest {
 
 	String getName() {
 		return this.toString()
+	}
+
+	Date getStartDate() {
+		return use(TimeCategory) { new Date() + this.startOffset.days }
+	}
+
+	Date getEndDate() {
+		return use(TimeCategory) { new Date() + this.endOffset.days }
 	}
 
 	String stringify() {
