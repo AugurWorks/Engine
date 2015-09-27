@@ -6,7 +6,6 @@ import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.DataSet
-import com.augurworks.engine.helper.Global
 
 class AlgorithmRequestController {
 
