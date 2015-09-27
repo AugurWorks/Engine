@@ -1,6 +1,7 @@
 package com.augurworks.engine.domains
 
 import grails.test.mixin.*
+import groovy.time.TimeCategory
 import spock.lang.Specification
 
 import com.augurworks.engine.helper.Aggregations
@@ -28,15 +29,15 @@ class AlgorithmRequestSpec extends Specification {
 	}
 
 	AlgorithmRequest validAlgorithmRequest(Collection<Integer> requestDataSetRange) {
-		Date startDate = Date.parse(DATE_FORMAT, '2014-01-01')
-		Date endDate = Date.parse(DATE_FORMAT, '2015-01-01')
+		int startOffset = dateToOffset('2014-01-01')
+		int endOffset = dateToOffset('2015-01-01')
 		Date dateCreated = Date.parse(DATE_FORMAT, '2015-01-01')
 		Collection<DataSet> dataSets = requestDataSetRange.collect { int id ->
 			return new DataSet(dataSetParams(id)).save()
 		}
 		AlgorithmRequest algorithmRequest = new AlgorithmRequest(
-			startDate: startDate,
-			endDate: endDate,
+			startOffset: startOffset,
+			endOffset: endOffset,
 			dateCreated: dateCreated,
 			dependantDataSet: dataSets.first()
 		)
@@ -50,6 +51,14 @@ class AlgorithmRequestSpec extends Specification {
 			).save()
 		}
 		return algorithmRequest
+	}
+
+	int dateToOffset(String dateString) {
+		return dateToOffset(Date.parse(DATE_FORMAT, dateString))
+	}
+
+	int dateToOffset(Date date) {
+		return use(TimeCategory) { (date - new Date()).days }
 	}
 
 	void "test create algorithm request"() {
@@ -66,7 +75,7 @@ class AlgorithmRequestSpec extends Specification {
 		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
 		DataSet dataSet = new DataSet(dataSetParams(1)).save()
 		Map parameters = [
-			endDate: Date.parse(DATE_FORMAT, end),
+			endOffset: end,
 			dependantDataSet: dataSet
 		]
 
@@ -74,14 +83,14 @@ class AlgorithmRequestSpec extends Specification {
 		algorithmRequest.updateFields(parameters)
 
 		then:
-		algorithmRequest.endDate.format(DATE_FORMAT) == end
+		algorithmRequest.endOffset == end
 		algorithmRequest.dependantDataSet.id == dataSet.id
 
 		where:
-		end          | dataSetCount
-		'2015-02-01' | 4
-		'2015-02-01' | 7
-		'2014-02-01' | 4
+		end  | dataSetCount
+		-23  | 4
+		-55  | 7
+		-100 | 4
 	}
 
 	void "test update data sets to algorithm request"() {
