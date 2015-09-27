@@ -25,9 +25,9 @@ class AlgorithmResult {
 	}
 
 	PredictedValue getFutureValue() {
-		Date tomorrow = DateUtils.ceiling(new Date(), Calendar.DATE)
+		Date endDate = this.algorithmRequest.endDate
 		Collection<PredictedValue> filtered = this.predictedValues.sort { it.date }.grep { PredictedValue value ->
-			value.date >= tomorrow
+			value.date >= endDate
 		}
 		if (filtered.size() >= 1) {
 			return filtered.first()
