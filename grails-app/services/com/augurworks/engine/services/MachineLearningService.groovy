@@ -87,10 +87,12 @@ class MachineLearningService {
 		MachineLearningModel model = new MachineLearningModel(
 			trainingDataSourceId: dataSourceId,
 			modelId: modelId
-			)
+		)
 		model.save()
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
+			startDate: algorithmRequest.startDate,
+			endDate: algorithmRequest.endDate,
 			machineLearningModel: model
 		])
 		algorithmResult.save()

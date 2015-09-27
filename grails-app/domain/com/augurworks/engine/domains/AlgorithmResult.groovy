@@ -3,6 +3,8 @@ package com.augurworks.engine.domains
 class AlgorithmResult {
 
 	Date dateCreated
+	Date startDate
+	Date endDate
 	boolean complete = false
 	MachineLearningModel machineLearningModel
 
@@ -12,6 +14,8 @@ class AlgorithmResult {
 
 	static constraints = {
 		dateCreated()
+		startDate()
+		endDate()
 		complete()
 		machineLearningModel nullable: true
 	}

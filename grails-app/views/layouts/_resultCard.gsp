@@ -5,6 +5,8 @@
 		<span class="ui ${ complete ? 'green' : 'yellow' } right corner label"><i class="${ complete ? 'check mark' : 'refresh' } icon"></i></span>
 		<div class="header">${ result.dateCreated.format(Global.DATE_FORMAT) }</div>
 		<div class="meta">
+			<span data-title="Start Date"><i class="green calendar outline icon"></i>${ result.startDate.format(Global.DATE_FORMAT) }</span>
+			<span data-title="End Date"><i class="red calendar outline icon"></i>${ result.endDate.format(Global.DATE_FORMAT) }</span>
 			<span data-title="Date Created"><i class="plus icon"></i> <abbr class="timeago" title="${ result.dateCreated }"></abbr></span>
 			<span data-title="Number of Predicted Values"><i class="cubes icon"></i> ${ result.predictedValues.size() }</span>
 		</div>
