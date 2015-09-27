@@ -15,22 +15,11 @@ ruleset {
 			enabled = false
 		}
 		'IfStatementCouldBeTernary' {
-			// Ok in case of controllers because of CommandObject constraint blocks
 			doNotApplyToFileNames = "*Controller*,*Command*"
 		}
 		'NoDef' {
-			// Some defs are expected in Grails
 			doNotApplyToFileNames = "*Tests.groovy,*Specification.groovy,*Spec.groovy,*Controller.groovy,*TagLib.groovy"
 			excludeRegex = /(beforeInsert|afterInsert|beforeUpdate|afterUpdate|beforeDelete|afterDelete|beforeValidate|onLoad)/
-		}
-	}
-
-	ruleset('rulesets/design.xml') {
-		'Instanceof' {
-			enabled = false
-		}
-		'BuilderMethodWithSideEffects' {
-			enabled = false
 		}
 	}
 
@@ -42,7 +31,6 @@ ruleset {
 		'LineLength' {
 			enabled = false
 		}
-		// Rules turned off in formatting ruleset
 		'SpaceBeforeOpeningBrace' {
 			enabled = false
 		}
@@ -91,10 +79,6 @@ ruleset {
 		'FileEndsWithoutNewline' {
 			enabled = false
 		}
-		'TrailingWhitespace' {
-			enabled = false
-		}
-
 	}
 
 	ruleset('rulesets/generic.xml') {
@@ -109,7 +93,6 @@ ruleset {
 			priority = 1
 		}
 		'GrailsPublicControllerMethod' {
-			// In Grails2, actions are public methods instead of closures
 			enabled = false
 		}
 		'GrailsDomainHasToString' {
@@ -131,7 +114,6 @@ ruleset {
 			ignoreThisReference = true
 		}
 		'GStringExpressionWithinString' {
-			// Ok in case of tag tests because of we need " s to construct the tag
 			doNotApplyToFileNames = "*Tag*Tests*"
 		}
 	}
@@ -247,7 +229,6 @@ ruleset {
 		applyToFilesMatching = /.*grails-app\/(controllers|domain)\/.*/
 	}
 
-	// Will only catch a single annotation that is placed right above the private method.
 	rule(IllegalRegexRule) {
 		name = 'NoRequiresPermissionsAnnotationOnPrivateMethod'
 		regex = /@RequiresPermissions\(.*\).*\s*private/
@@ -256,12 +237,19 @@ ruleset {
 		applyToFilesMatching = /.*grails-app\/services\/.*/
 	}
 
-	// Will only catch a single annotation that is placed right above the private method.
 	rule(IllegalRegexRule) {
 		name = 'NoTransactionalAnnotationOnPrivateMethod'
 		regex = /@Transactional\(.*\).*\s*private/
 		description = 'Transactional annotations on private service methods are not intercepted.  These are programming errors.'
 		priority = 2
 		applyToFilesMatching = /.*grails-app\/services\/.*/
+	}
+
+	rule(IllegalRegexRule) {
+		name = 'NoTrailingWhitespace'
+		regex = /(\t| )(\n|\r|$)/
+		description = 'Whitespace at the end of a line is unnecessary and dirties the file.'
+		priority = 2
+		applyToFilesMatching = /.*/
 	}
 }

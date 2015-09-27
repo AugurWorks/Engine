@@ -3,7 +3,7 @@ package com.augurworks.engine.domains
 import com.augurworks.engine.helper.Aggregations
 
 class RequestDataSet {
-	
+
 	DataSet dataSet
 	int offset
 	String aggregation
