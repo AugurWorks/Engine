@@ -32,9 +32,10 @@ class PredictedValue {
 		String name = this.algorithmResult.algorithmRequest.dependantDataSet.name
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation
 		String message = 'Tomorrows prediction for ' + name + '(' + aggregation + ') is ' + this.value.round(4)
+		String channel = Holders.config.augurworks.predictions.channel
 		String title = this.algorithmResult.algorithmRequest.stringify()
 		String link = Holders.config.grails.serverURL + '/algorithmRequest/show/' + this.algorithmResult.algorithmRequest.id
 		String color = this.value >=0 ? '#4DBD33' : '#ff4444'
-		new SlackMessage(message, '#engine-predictions').withBotName('Engine Predictions').withColor(color).withTitle(title).withLink(link).send()
+		new SlackMessage(message, channel).withBotName('Engine Predictions').withColor(color).withTitle(title).withLink(link).send()
 	}
 }
