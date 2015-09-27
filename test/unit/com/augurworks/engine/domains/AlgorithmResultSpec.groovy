@@ -18,9 +18,10 @@ class AlgorithmResultSpec extends Specification {
 		AlgorithmResult result = AlgorithmResult.build()
 		PredictedValue.build(algorithmResult: result, date: DateUtils.truncate(new Date(), Calendar.DATE))
 		PredictedValue tomorrow = PredictedValue.build(algorithmResult: result, date: DateUtils.ceiling(new Date(), Calendar.DATE))
+		PredictedValue.build(algorithmResult: result, date: use(TimeCategory) { DateUtils.ceiling(new Date(), Calendar.DATE) + 1.days })
 
 		when:
-		PredictedValue actual = result.tomorrowsValue
+		PredictedValue actual = result.futureValue
 
 		then:
 		actual == tomorrow
@@ -32,7 +33,7 @@ class AlgorithmResultSpec extends Specification {
 		PredictedValue.build(algorithmResult: result, date: DateUtils.truncate(new Date(), Calendar.DATE))
 
 		when:
-		PredictedValue actual = result.tomorrowsValue
+		PredictedValue actual = result.futureValue
 
 		then:
 		actual == null

@@ -24,12 +24,12 @@ class AlgorithmResult {
 		predictedValues cascade: 'all-delete-orphan'
 	}
 
-	PredictedValue getTomorrowsValue() {
+	PredictedValue getFutureValue() {
 		Date tomorrow = DateUtils.ceiling(new Date(), Calendar.DATE)
-		Collection<PredictedValue> filtered = this.predictedValues.grep { PredictedValue value ->
-			value.date == tomorrow
+		Collection<PredictedValue> filtered = this.predictedValues.sort { it.date }.grep { PredictedValue value ->
+			value.date >= tomorrow
 		}
-		if (filtered.size() == 1) {
+		if (filtered.size() >= 1) {
 			return filtered.first()
 		}
 		return null

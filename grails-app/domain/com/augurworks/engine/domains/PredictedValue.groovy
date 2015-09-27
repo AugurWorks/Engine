@@ -31,7 +31,7 @@ class PredictedValue {
 	void sendToSlack() {
 		String name = this.algorithmResult.algorithmRequest.dependantDataSet.name
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation
-		String message = 'Tomorrows prediction for ' + name + '(' + aggregation + ') is ' + this.value.round(4)
+		String message = 'The prediction for ' + name + '(' + aggregation + ') on ' + this.date.format(Global.DATE_FORMAT) + ' is ' + this.value.round(4)
 		String channel = Holders.config.augurworks.predictions.channel
 		String title = this.algorithmResult.algorithmRequest.stringify()
 		String link = Holders.config.grails.serverURL + '/algorithmRequest/show/' + this.algorithmResult.algorithmRequest.id
