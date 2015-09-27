@@ -1,7 +1,5 @@
 package com.augurworks.engine.helper
 
-import java.util.Date;
-
 import groovy.time.TimeCategory
 
 class Common {

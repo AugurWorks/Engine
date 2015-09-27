@@ -1,9 +1,5 @@
 package com.augurworks.engine.domains
 
-import groovy.time.TimeCategory
-
-import org.apache.commons.lang.time.DateUtils
-
 class AlgorithmResult {
 
 	Date dateCreated
