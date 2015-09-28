@@ -36,11 +36,11 @@ class AlgorithmRequest {
 	}
 
 	Date getStartDate() {
-		return use(TimeCategory) { DateUtils.round(new Date(), Calendar.DATE) + this.startOffset.days }
+		return use(TimeCategory) { DateUtils.truncate(new Date(), Calendar.DATE) + this.startOffset.days }
 	}
 
 	Date getEndDate() {
-		return use(TimeCategory) { DateUtils.round(new Date(), Calendar.DATE) + this.endOffset.days }
+		return use(TimeCategory) { DateUtils.truncate(new Date(), Calendar.DATE) + this.endOffset.days }
 	}
 
 	String stringify() {
