@@ -23,4 +23,21 @@ class CommonSpec extends Specification {
 		'01/02/2014' | '01/01/2014' | -1
 		'01/01/2014' | '01/11/2014' | 10
 	}
+
+	void "test next weekday"() {
+		given:
+		Date startDate = Date.parse('MM/dd/yyyy', start)
+
+		when:
+		Date nextWeekdayDate = Common.nextWeekday(startDate)
+
+		then:
+		nextWeekdayDate.format('MM/dd/yyyy') == nextWeekday
+
+		where:
+		start        | nextWeekday
+		'09/19/2015' | '09/21/2015'
+		'09/20/2015' | '09/21/2015'
+		'09/21/2015' | '09/21/2015'
+	}
 }

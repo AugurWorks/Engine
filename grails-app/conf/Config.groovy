@@ -78,6 +78,7 @@ environments {
 		oauth.providers.github.key = localConfig.oauth.github.key
 		oauth.providers.github.secret = localConfig.oauth.github.secret
 		aws.bucket = 'aw-files-dev'
+		augurworks.predictions.channel = '#testing'
 	}
 	devdeploy {
 		grails.logging.jul.usebridge = false
@@ -85,6 +86,7 @@ environments {
 		oauth.providers.github.key = localConfig.oauth.github.key.devdeploy
 		oauth.providers.github.secret = localConfig.oauth.github.secret.devdeploy
 		aws.bucket = 'aw-files-devdeploy'
+		augurworks.predictions.channel = '#testing'
 	}
 	production {
 		grails.logging.jul.usebridge = false
@@ -92,6 +94,7 @@ environments {
 		oauth.providers.github.key = localConfig.oauth.github.key.prod
 		oauth.providers.github.secret = localConfig.oauth.github.secret.prod
 		aws.bucket = 'aw-files'
+		augurworks.predictions.channel = '#engine-predictions'
 	}
 }
 
