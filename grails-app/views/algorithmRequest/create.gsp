@@ -19,12 +19,12 @@
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
 				<div class="two fields">
 					<div class="field">
-						<label>Start Date</label>
-						<g:field type="date" name="startDate" value="${ use (groovy.time.TimeCategory) { (algorithmRequest?.startDate ?: new Date() - 2.months).format('yyyy-MM-dd') } }" />
+						<label>Start Offset</label>
+						<g:field type="number" name="startOffset" value="${ algorithmRequest?.startOffset ?: -14 }" />
 					</div>
 					<div class="field">
-						<label>End Date</label>
-						<g:field type="date" name="endDate" value="${ (algorithmRequest?.endDate ?: new Date()).format('yyyy-MM-dd') }" />
+						<label>End Offset</label>
+						<g:field type="number" name="endOffset" value="${ algorithmRequest?.endOffset ?: 0 }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>

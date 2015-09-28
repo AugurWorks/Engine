@@ -1,20 +1,23 @@
 package com.augurworks.engine.domains
 
+import groovy.time.TimeCategory
+
+import org.apache.commons.lang.time.DateUtils
+
 import com.augurworks.engine.AugurWorksException
-import com.augurworks.engine.helper.Global
 
 class AlgorithmRequest {
 
-	Date startDate
-	Date endDate
+	int startOffset
+	int endOffset
 	Date dateCreated
 	DataSet dependantDataSet
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult]
 
 	static constraints = {
-		startDate()
-		endDate()
+		startOffset()
+		endOffset()
 		dateCreated()
 		dependantDataSet()
 	}
@@ -32,11 +35,19 @@ class AlgorithmRequest {
 		return this.toString()
 	}
 
+	Date getStartDate() {
+		return use(TimeCategory) { DateUtils.round(new Date(), Calendar.DATE) + this.startOffset.days }
+	}
+
+	Date getEndDate() {
+		return use(TimeCategory) { DateUtils.round(new Date(), Calendar.DATE) + this.endOffset.days }
+	}
+
 	String stringify() {
 		String dataSetString = this.requestDataSets.sort { it.dataSet.ticker }.collect { RequestDataSet requestDataSet ->
 			return requestDataSet.dataSet.ticker + (requestDataSet.offset >= 0 ? '+' : '') + requestDataSet.offset
 		}.join(', ')
-		return this.startDate.format(Global.DATE_FORMAT) + ' - ' + this.endDate.format(Global.DATE_FORMAT) + ': ' + dataSetString
+		return (-1 * this.startOffset) + ' to ' + (-1 * this.endOffset) + ' days ago: ' + dataSetString
 	}
 
 	void updateFields(Map parameters) {

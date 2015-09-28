@@ -23,6 +23,17 @@ class MachineLearningService {
 
 	static final MACHINE_LEARNING_COMPLETE_STATUS = 'COMPLETED'
 
+	void runAllAlgorithms() {
+		log.info 'Running all algorithms'
+		AlgorithmRequest.list().each { AlgorithmRequest req ->
+			try {
+				createAlgorithm(req)
+			} catch (e) {
+				log.error 'Error submitting ' + req + ': ' + e.message
+			}
+		}
+	}
+
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		String dataSourceId = createRequestDataSource(algorithmRequest, false)
 		String modelId = awsService.createMLModel(dataSourceId)
@@ -87,10 +98,12 @@ class MachineLearningService {
 		MachineLearningModel model = new MachineLearningModel(
 			trainingDataSourceId: dataSourceId,
 			modelId: modelId
-			)
+		)
 		model.save()
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
+			startDate: algorithmRequest.startDate,
+			endDate: algorithmRequest.endDate,
 			machineLearningModel: model
 		])
 		algorithmResult.save()
