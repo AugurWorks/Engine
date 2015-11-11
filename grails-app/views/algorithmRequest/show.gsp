@@ -8,11 +8,14 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.1/jquery.timeago.min.js"></script>
 		<asset:javascript src="graph.js" />
 		<asset:javascript src="algorithm/show.js" />
+		<asset:javascript src="algorithmRequest.js" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" type="text/css">
 	</head>
 	<body>
 		<div class="ui segment">
+			<input type="hidden" id="id" value="${ algorithm.id }" />
 			<h1 class="ui floated left header">${ algorithm.name }</h1>
+			<button onclick="deleteRequest()" class="ui negative button" style="float: right;">Delete Request</button>
 			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button" style="float: right;">Edit Request</g:link>
 			<button class="ui primary button" onclick="kickOff(this, ${ algorithm.id })" style="float: right;">Kick Off Evaluation</button>
 			<h2 class="ui header" style="clear: both;">Results</h2>
