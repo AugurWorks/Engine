@@ -5,6 +5,8 @@ import groovy.time.TimeCategory
 
 import java.security.SecureRandom
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
+
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.RequestDataSet
@@ -12,6 +14,8 @@ import com.augurworks.engine.helper.Aggregations
 
 @Transactional
 class DataGeneratorService {
+
+	GrailsApplication grailsApplication
 
 	static final Collection<String> VALID_TICKERS = [
 		'AAPL',
@@ -31,6 +35,13 @@ class DataGeneratorService {
 			if (row[2] != 'NA' && row[4] == 'Active') {
 				new DataSet(ticker: row[0], name: row[1], code: row[2], dataColumn: 4).save()
 			}
+		}
+	}
+
+	void importLocalDataSets() {
+		grailsApplication.mainContext.getResource('data/Extra-Data-Sources.csv').file.text.split('\n').tail().each { String line ->
+			Collection<String> row = line.split(',')
+			new DataSet(ticker: row[0], name: row[1], code: row[2], dataColumn: row[3]).save()
 		}
 	}
 

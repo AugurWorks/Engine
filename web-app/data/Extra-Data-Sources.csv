@@ -1,0 +1,24 @@
+Symbol,Name,Code,Col
+USA30Y,US Govt 30 Year Bond Yield,YC/USA30Y,1
+CL1,WTI Crude Oil Futures #1,CHRIS/CME_CL1,6
+CL2,WTI Crude Oil Futures #2,CHRIS/CME_CL2,6
+GOLD,Gold Price (USD),EOD/GOLD,4
+USDEUR,USD vs Euro Exchange rate,BNP/USDEUR,1
+SSEC,Shanghai Composite,YAHOO/INDEX_SSEC,4
+DB,Deutsche Bank AG,EOD/DB,4
+TNX,CBOE Interest Rate 10-Year T-Note Index,YAHOO/INDEX_TNX,4
+TYX,Treasury Yield 30 Years Index,YAHOO/INDEX_TYX,4
+FVX,Treasury Yield 5 Years Index,YAHOO/INDEX_FVX,4
+NDX,Nasdaq Index,NASDAQOMX/NDX,1
+TLT,Barclay's 20+ year Treasury Bond,EOD/TLT,4
+USA10Y,US 10Y Bond Yield,YC/USA10Y,1
+DEU10Y,German 10Y Bond Yield,YC/DEU10Y,1
+CHN10Y,Chinese 10Y Bond Yield,YC/CHN10Y,1
+GRC10Y,Greek 10Y Bond Yield,YC/GRC10Y,1
+GBR10Y,UK 10Y Bond Yield,YC/GBR10Y,1
+ESP10Y,Spain 10Y Bond Yield,YC/ESP10Y,1
+RUS,Russian Short-Term Yield Curve,YC/RUS,1
+VIX,CBOE S&P 500 Volatility Index,YAHOO/INDEX_VIX,4
+DJIA,Dow Jones Industrial Average,BCB/UDJIAD1,1
+USO,United States Oil,EOD/USO,4
+GSPC,S&P 500 Index,YAHOO/INDEX_GSPC,4

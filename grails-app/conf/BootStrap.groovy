@@ -21,6 +21,7 @@ class BootStrap {
 		createUser('augurworks1', adminRole)
 
 		dataGeneratorService.importQuandlDataSets()
+		dataGeneratorService.importLocalDataSets()
 		dataGeneratorService.generateRequest(5)
 	}
 }
