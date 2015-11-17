@@ -22,3 +22,17 @@ VIX,CBOE S&P 500 Volatility Index,YAHOO/INDEX_VIX,4
 DJIA,Dow Jones Industrial Average,BCB/UDJIAD1,1
 USO,United States Oil,EOD/USO,4
 GSPC,S&P 500 Index,YAHOO/INDEX_GSPC,4
+UCO,ProShares Ultra Bloomberg Crude Oil,EOD/UCO,4
+OIL,iPath Goldman Sachs Crude Oil TR Idx ETN,EOD/OIL,4
+UWTI,VS 3X WTI CRUDE,EOD/UWTI,4
+SCO,ProShares UltraShort Bloomberg Crude Oil,EOD/SCO,4
+BNO,US Brent Oil Fund LP,EOD/BNO,4
+DBO,PowerShares DB Oil ETF,EOD/DBO,4
+DWTI,VS 3X INV WTI CRUDE,EOD/DWTI,4
+DTO,DB Crude Oil Double Short ETN,EOD/DTO,4
+USL,United States 12 Month Oil Fund LP,EOD/USL,4
+DNO,United States Short Oil,EOD/DNO,4
+OLO,DB Crude Oil Long ETN,EOD/OLO,4
+SZO,DB Crude Oil Short ETN,EOD/SZO,4
+OLEM,iPath Pure Beta Crude Oil ETN,EOD/OLEM,4
+VVIX,CBOE VIX of VIX,CBOE/VVIX,1
