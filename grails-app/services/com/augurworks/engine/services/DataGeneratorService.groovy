@@ -11,6 +11,7 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregations
+import com.augurworks.engine.helper.DataSetValue
 
 @Transactional
 class DataGeneratorService {
@@ -65,5 +66,32 @@ class DataGeneratorService {
 				).save()
 			}
 		}
+	}
+
+	Collection<DataSetValue> generateIntraDayData(String ticker, Date startDate, int days, int intervalLength) {
+		double currentPrice = ticker.size() * 10
+		long seed = generateRandomSeed(ticker)
+		SecureRandom random = new SecureRandom()
+		random.setSeed(seed)
+		return (0..(days - 1)).collect { int dayOffset ->
+			Date currentDate = use (TimeCategory) { startDate + dayOffset.days }
+			currentDate.set(hourOfDay: 9, minute: 30, second: 0, millisecond: 0)
+			Collection<DataSetValue> values = []
+			while (currentDate.getAt(Calendar.HOUR_OF_DAY) < 16 || (currentDate.getAt(Calendar.HOUR_OF_DAY) == 16 && currentDate.getAt(Calendar.MINUTE) == 0)) {
+				currentPrice *= 1 + (random.nextDouble() * 0.2 - 0.1)
+				values.push(new DataSetValue(currentDate, currentPrice))
+				currentDate = use (TimeCategory) { currentDate + intervalLength.minutes }
+			}
+			return values
+		}.flatten()
+	}
+
+	long generateRandomSeed(String ticker) {
+		String alphabet = ('A'..'Z').join('')
+		String stringSeed = ticker.collect { String letter ->
+			int index = alphabet.indexOf(letter.toUpperCase()) + 1
+			return index <= 9 ? '0' + index : index
+		}.join('')
+		return stringSeed.toLong()
 	}
 }
