@@ -12,6 +12,7 @@ import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregations
 import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.helper.RequestValueSet
 
 @Transactional
 class DataGeneratorService {
@@ -66,6 +67,13 @@ class DataGeneratorService {
 				).save()
 			}
 		}
+	}
+
+	RequestValueSet generateRequestSet(String ticker) {
+		int days = 5
+		Date startDate = use (TimeCategory) { new Date() - days.days }
+		Collection<DataSetValue> values = generateIntraDayData(ticker, startDate, days, 15)
+		return new RequestValueSet(ticker, 0, values)
 	}
 
 	Collection<DataSetValue> generateIntraDayData(String ticker, Date startDate, int days, int intervalLength) {
