@@ -78,8 +78,8 @@ class DataGeneratorService {
 			currentDate.set(hourOfDay: 9, minute: 30, second: 0, millisecond: 0)
 			Collection<DataSetValue> values = []
 			while (currentDate.getAt(Calendar.HOUR_OF_DAY) < 16 || (currentDate.getAt(Calendar.HOUR_OF_DAY) == 16 && currentDate.getAt(Calendar.MINUTE) == 0)) {
-				currentPrice *= 1 + (random.nextDouble() * 0.2 - 0.1)
 				values.push(new DataSetValue(currentDate, currentPrice))
+				currentPrice = ((1 + (random.nextDouble() * 0.2 - 0.1)) * currentPrice).round(2)
 				currentDate = use (TimeCategory) { currentDate + intervalLength.minutes }
 			}
 			return values
