@@ -14,10 +14,10 @@
 	<body>
 		<div class="ui segment">
 			<input type="hidden" id="id" value="${ algorithm.id }" />
-			<h1 class="ui floated left header">${ algorithm.name }</h1>
-			<button onclick="deleteRequest()" class="ui negative button" style="float: right;">Delete Request</button>
-			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button" style="float: right;">Edit Request</g:link>
-			<button class="ui primary button" onclick="kickOff(this, ${ algorithm.id })" style="float: right;">Kick Off Evaluation</button>
+			<h1 class="ui header">${ algorithm.name }</h1>
+			<button class="ui primary button" onclick="kickOff(this, ${ algorithm.id })">Kick Off Evaluation</button>
+			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button">Edit Request</g:link>
+			<button onclick="deleteRequest()" class="ui negative button">Delete Request</button>
 			<h2 class="ui header" style="clear: both;">Results</h2>
 			<div class="ui one cards">
 				<g:each in="${ algorithm.algorithmResults.sort { it.dateCreated }.reverse() }" var="result">
