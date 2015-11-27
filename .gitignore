@@ -2,7 +2,5 @@
 /target
 /target-eclipse
 /.settings
-/.classpath
-/.project
 /logs
 cobertura.ser
