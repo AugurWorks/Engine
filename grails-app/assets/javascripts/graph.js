@@ -28,13 +28,14 @@ function lineGraph(result, selector) {
 		bindto: selector,
 		data: {
 			x: 'x',
+			xFormat: '%Y-%m-%d %H:%M',
 			columns: columns
 		},
 		axis: {
 			x: {
 				type: 'timeseries',
 				tick: {
-					format: '%Y-%m-%d',
+					format: '%Y-%m-%d %H:%M',
 					count: 20
 				}
 			}
