@@ -122,14 +122,16 @@ log4j = {
 		'grails.app.controllers.com.augurworks.engine',
 		'grails.app.services.com.augurworks.engine',
 		'grails.app.conf.com.augurworks.engine',
-		'grails.app.domain.com.augurworks.engine'
+		'grails.app.domain.com.augurworks.engine',
+		'com.augurworks.engine.helper'
 	]
 
 	info 'info': [
 		'grails.app.controllers.com.augurworks.engine',
 		'grails.app.services.com.augurworks.engine',
 		'grails.app.conf.com.augurworks.engine',
-		'grails.app.domain.com.augurworks.engine'
+		'grails.app.domain.com.augurworks.engine',
+		'com.augurworks.engine.helper'
 	]
 }
 

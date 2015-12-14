@@ -49,6 +49,13 @@ class RequestValueSet {
 		Collection<DataSetValue> values = this.values
 		int startIndex = values.findIndexOf { it.date == startDate }
 		int endIndex = values.findIndexOf { it.date == endDate }
+		log.info '------------------------------'
+		log.info 'Getting data for ' + this.name
+		log.info 'Start date: ' + startDate
+		log.info 'Start index: ' + startIndex
+		log.info 'End date: ' + endDate
+		log.info 'End index: ' + endIndex
+		log.info 'Last date: ' + values.last().date
 		if (startIndex == -1 || endIndex == -1 || startIndex + minOffset < 0 || endIndex + maxOffset > values.size() - 1) {
 			throw new AugurWorksException(this.name + ' does not contain data for the requested range ')
 		}
