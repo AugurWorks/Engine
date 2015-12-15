@@ -19,6 +19,23 @@ class DataGeneratorService {
 
 	GrailsApplication grailsApplication
 
+	static final Collection<Map> defaultRequests = [[
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
+		dependent: 'GSPC',
+		startOffset: -15,
+		endOffset: -1
+	], [
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
+		dependent: 'GSPC',
+		startOffset: -22,
+		endOffset: -1
+	], [
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
+		dependent: 'GSPC',
+		startOffset: -29,
+		endOffset: -1
+	]];
+
 	static final Collection<String> VALID_TICKERS = [
 		'AAPL',
 		'GOOGL',
@@ -44,6 +61,23 @@ class DataGeneratorService {
 		grailsApplication.mainContext.getResource('data/Extra-Data-Sources.csv').file.text.split('\n').tail().each { String line ->
 			Collection<String> row = line.split(',')
 			new DataSet(ticker: row[0], name: row[1], code: row[2], dataColumn: row[3]).save()
+		}
+	}
+
+	void bootstrapDefaultRequests() {
+		defaultRequests.each { Map requestMap ->
+			Collection<DataSet> algorithmRequestDataSets = requestMap.tickers.collect { String ticker ->
+				return DataSet.findByTicker(ticker)
+			}
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startOffset: requestMap.startOffset, endOffset: requestMap.endOffset, dependantDataSet: DataSet.findByTicker(requestMap.dependent)).save()
+			algorithmRequestDataSets.each { DataSet dataSet ->
+				new RequestDataSet(
+					dataSet: dataSet,
+					offset: dataSet.ticker == requestMap.dependent ? 0 : -1,
+					aggregation: 'Period Percent Change',
+					algorithmRequest: algorithmRequest
+				).save()
+			}
 		}
 	}
 

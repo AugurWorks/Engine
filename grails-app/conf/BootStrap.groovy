@@ -22,6 +22,6 @@ class BootStrap {
 
 		dataGeneratorService.importQuandlDataSets()
 		dataGeneratorService.importLocalDataSets()
-		dataGeneratorService.generateRequest(5)
+		dataGeneratorService.bootstrapDefaultRequests()
 	}
 }
