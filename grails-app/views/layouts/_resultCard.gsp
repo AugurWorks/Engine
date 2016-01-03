@@ -3,7 +3,7 @@
 <div id="result-${ result.id }" class="ui raised card ${ !complete ? 'incomplete' : '' }">
 	<div class="content">
 		<span class="ui ${ complete ? 'green' : 'yellow' } right corner label"><i class="${ complete ? 'check mark' : 'refresh' } icon"></i></span>
-		<div class="header">${ result.dateCreated.format(Global.DATE_FORMAT) }</div>
+		<div class="header">${ (title ? result.algorithmRequest.toString() + ' - ' : '') + result.dateCreated.format(Global.DATE_FORMAT) }</div>
 		<div class="meta">
 			<span data-title="Start Date"><i class="green calendar outline icon"></i>${ result.startDate.format(Global.DATE_FORMAT) }</span>
 			<span data-title="End Date"><i class="red calendar outline icon"></i>${ result.endDate.format(Global.DATE_FORMAT) }</span>
