@@ -12,6 +12,7 @@ class AlgorithmRequest {
 	int endOffset
 	Date dateCreated
 	DataSet dependantDataSet
+	String unit = 'Day'
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult]
 
@@ -20,6 +21,7 @@ class AlgorithmRequest {
 		endOffset()
 		dateCreated()
 		dependantDataSet()
+		unit inList: ['Day', 'Hour']
 	}
 
 	static mapping = {
@@ -36,11 +38,22 @@ class AlgorithmRequest {
 	}
 
 	Date getStartDate() {
-		return use(TimeCategory) { DateUtils.truncate(new Date(), Calendar.DATE) + this.startOffset.days }
+		return truncateDate('startOffset')
 	}
 
 	Date getEndDate() {
-		return use(TimeCategory) { DateUtils.truncate(new Date(), Calendar.DATE) + this.endOffset.days }
+		return truncateDate('endOffset')
+	}
+
+	Date truncateDate(String field) {
+		use(TimeCategory) {
+			switch (this.unit) {
+				case 'Day':
+					return DateUtils.truncate(new Date(), Calendar.DATE) + this[field].days
+				case 'Hour':
+					return DateUtils.truncate(new Date(), Calendar.HOUR) + this[field].hours
+			}
+		}
 	}
 
 	String stringify() {

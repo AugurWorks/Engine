@@ -26,6 +26,10 @@
 						<label>End Offset</label>
 						<g:field type="number" name="endOffset" value="${ algorithmRequest?.endOffset ?: 0 }" />
 					</div>
+					<div class="field">
+						<label>Time Period</label>
+						<g:select name="unit" from="${ ['Day', 'Hour'] }" value="${ algorithmRequest.unit }" />
+					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>
 				<div class="four fields">
