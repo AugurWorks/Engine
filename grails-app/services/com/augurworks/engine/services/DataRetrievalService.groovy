@@ -1,6 +1,7 @@
 package com.augurworks.engine.services
 
 import grails.transaction.Transactional
+import groovy.time.TimeCategory
 import groovyx.gpars.GParsPool
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
@@ -16,6 +17,7 @@ class DataRetrievalService {
 	static final String QUANDL_DATE_FORMAT = 'yyyy-MM-dd'
 
 	GrailsApplication grailsApplication
+	DataGeneratorService dataGeneratorService
 
 	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean prediction) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, prediction)
@@ -34,13 +36,23 @@ class DataRetrievalService {
 		Collection<RequestDataSet> requestDataSets = prediction ? algorithmRequest.independentRequestDataSets : algorithmRequest.requestDataSets
 		GParsPool.withPool(requestDataSets.size()) {
 			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
-				return getSingleRequestValues(requestDataSet, algorithmRequest.startDate, algorithmRequest.endDate, minOffset, maxOffset)
+				return getSingleRequestValues(requestDataSet, algorithmRequest.startDate, algorithmRequest.endDate, algorithmRequest.unit, minOffset, maxOffset)
 			}
 		}
 	}
 
-	RequestValueSet getSingleRequestValues(RequestDataSet requestDataSet, Date startDate, Date endDate, int minOffset, int maxOffset) {
-		Collection<DataSetValue> values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
+	RequestValueSet getSingleRequestValues(RequestDataSet requestDataSet, Date startDate, Date endDate, String unit, int minOffset, int maxOffset) {
+		Collection<DataSetValue> values = []
+		switch (unit) {
+			case 'Day':
+				values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
+				break
+			case 'Hour':
+				Date minStartDate = use(TimeCategory) { startDate - 1.days }
+				int dayCount = use(TimeCategory) { (endDate - minStartDate).days } + 1
+				values = dataGeneratorService.generateIntraDayData(requestDataSet.dataSet.ticker, minStartDate, dayCount, 30)
+				break
+		}
 		return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).aggregateValues(requestDataSet.aggregation).filterValues(startDate, endDate, minOffset, maxOffset)
 	}
 
