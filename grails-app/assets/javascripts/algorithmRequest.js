@@ -21,7 +21,8 @@ function submitRequest() {
 			id: $('#id').val(),
 			dataSets: JSON.stringify(getDataSets()),
 			startOffset: $('#startOffset').val(),
-			endOffset: $('#endOffset').val()
+			endOffset: $('#endOffset').val(),
+			unit: $('#unit').val()
 		},
 		success: function(data) {
 			if (data.ok) {

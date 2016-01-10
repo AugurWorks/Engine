@@ -20,6 +20,7 @@
 								<span data-title="Request Start Date"><i class="green calendar icon"></i> ${ request.startDate.format(Global.DATE_FORMAT) }</span>
 								<span data-title="Request End Date"><i class="red calendar icon"></i> ${ request.endDate.format(Global.DATE_FORMAT) }</span>
 								<span data-title="Result Set Count"><i class="cubes icon"></i> ${ request.algorithmResults.size() }</span>
+								<span data-title="Time Period"><i class="wait icon"></i> ${ request.unit }</span>
 							</div>
 						</div>
 						<div class="extra content">
