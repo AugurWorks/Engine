@@ -56,8 +56,17 @@ class RequestValueSet {
 		log.info 'End date: ' + endDate
 		log.info 'End index: ' + endIndex
 		log.info 'Last date: ' + values.last().date
-		if (startIndex == -1 || endIndex == -1 || startIndex + minOffset < 0 || endIndex + maxOffset > values.size() - 1) {
-			throw new AugurWorksException(this.name + ' does not contain data for the requested range ')
+		if (startIndex == -1) {
+			throw new AugurWorksException(this.name + ' does not contain data for the start date, ' + startDate.format(Global.ERROR_DATE_FORMAT))
+		}
+		if (endIndex == -1) {
+			throw new AugurWorksException(this.name + ' does not contain data for the end date, ' + endDate.format(Global.ERROR_DATE_FORMAT))
+		}
+		if (startIndex + minOffset < 0) {
+			throw new AugurWorksException(this.name + ' does not contain data all offsets before the start date')
+		}
+		if (endIndex + maxOffset > values.size() - 1) {
+			throw new AugurWorksException(this.name + ' does not contain data all offsets after the end date')
 		}
 		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)]
 		return this
