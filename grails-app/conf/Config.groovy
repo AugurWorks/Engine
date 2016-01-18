@@ -54,6 +54,8 @@ grails.exceptionresolver.params.exclude = ['password']
 
 grails.hibernate.cache.queries = false
 
+alfred.url = (localConfig.alfred.url ?: 'http://localhost:8080')
+
 environments {
 	development {
 		grails.logging.jul.usebridge = true
