@@ -9,6 +9,9 @@ function kickOff(me, id) {
 	$(me).addClass('loading');
 	$.ajax({
 		url: '/algorithmRequest/run/' + id,
+		data: {
+			type: $('#modelType').val()
+		},
 		success: function(data) {
 			if (data.ok) {
 				window.location.reload();

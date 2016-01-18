@@ -6,6 +6,7 @@ import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.DataSet
+import com.augurworks.engine.helper.Global
 
 class AlgorithmRequestController {
 
@@ -19,9 +20,11 @@ class AlgorithmRequestController {
 		[algorithm: algorithmRequest]
 	}
 
-	def run(AlgorithmRequest algorithmRequest) {
+	def run(AlgorithmRequest algorithmRequest, String type) {
 		try {
-			machineLearningService.createAlgorithm(algorithmRequest)
+			if (type == Global.MODEL_TYPES[0]) {
+				machineLearningService.createAlgorithm(algorithmRequest)
+			}
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
 			log.warn e.getMessage()
