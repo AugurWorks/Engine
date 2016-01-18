@@ -1,12 +1,16 @@
 package com.augurworks.engine.domains
 
+import com.augurworks.engine.helper.Global
+
 class AlgorithmResult {
 
 	Date dateCreated
 	Date startDate
 	Date endDate
 	boolean complete = false
+	String modelType
 	MachineLearningModel machineLearningModel
+	String alfredModelId
 
 	static hasMany = [predictedValues: PredictedValue]
 
@@ -17,7 +21,9 @@ class AlgorithmResult {
 		startDate()
 		endDate()
 		complete()
+		modelType inList: Global.MODEL_TYPES
 		machineLearningModel nullable: true
+		alfredModelId nullable: true
 	}
 
 	static mapping = {

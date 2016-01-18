@@ -13,6 +13,7 @@ import com.augurworks.engine.domains.MachineLearningModel
 import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Common
+import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
 
 @Transactional
@@ -104,7 +105,8 @@ class MachineLearningService {
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
 			endDate: algorithmRequest.endDate,
-			machineLearningModel: model
+			machineLearningModel: model,
+			modelType: Global.MODEL_TYPES[0]
 		])
 		algorithmResult.save()
 	}
