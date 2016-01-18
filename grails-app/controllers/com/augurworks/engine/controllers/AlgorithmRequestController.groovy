@@ -7,10 +7,13 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.helper.Global
+import com.augurworks.engine.services.AlfredService
+import com.augurworks.engine.services.MachineLearningService
 
 class AlgorithmRequestController {
 
-	def machineLearningService
+	MachineLearningService machineLearningService
+	AlfredService alfredService
 
 	def index() {
 		[requests: AlgorithmRequest.list()]
@@ -24,6 +27,8 @@ class AlgorithmRequestController {
 		try {
 			if (type == Global.MODEL_TYPES[0]) {
 				machineLearningService.createAlgorithm(algorithmRequest)
+			} else if (type == Global.MODEL_TYPES[1]) {
+				alfredService.createAlgorithm(algorithmRequest)
 			}
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
