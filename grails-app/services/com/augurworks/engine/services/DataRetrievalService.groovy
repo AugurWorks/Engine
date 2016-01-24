@@ -27,9 +27,9 @@ class DataRetrievalService {
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (prediction) {
 			int predictionOffset = algorithmRequest.predictionOffset
-			return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate, predictionOffset)
+			return expandedRequestValues
 		}
-		return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate)
+		return expandedRequestValues
 	}
 
 	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest, boolean prediction) {
@@ -50,9 +50,7 @@ class DataRetrievalService {
 				values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
 				break
 			case 'Hour':
-				Date minStartDate = use(TimeCategory) { startDate - 1.days }
-				int dayCount = use(TimeCategory) { (endDate - minStartDate).days } + 1
-				values = dataGeneratorService.generateIntraDayData(requestDataSet.dataSet.ticker, minStartDate, dayCount, 30)
+				values = getGoogleData(requestDataSet.dataSet.ticker, startDate, 30)
 				break
 		}
 		return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).aggregateValues(requestDataSet.aggregation).filterValues(startDate, endDate, minOffset, maxOffset)
