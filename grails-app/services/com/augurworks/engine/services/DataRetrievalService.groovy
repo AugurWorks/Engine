@@ -71,8 +71,28 @@ class DataRetrievalService {
 		}
 	}
 
+
+	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, Date endDate) {
+		URL url = new URL(constructGoogleUrl(ticker, startDate, endDate, 60))
+		Collection<String> vals = url.getText().split('\n')
+		int openMinute = vals[1].split('=')[1].toInteger()
+		startDate.set(minute: openMinute)
+		int interval = vals[3].split('=')[1].toInteger() / 60
+		Collection<String> data = vals[7..(vals.size() - 1)]
+		return data.collect { String rawString ->
+			return parseGoogleData(startDate, 60, rawString)
+		}
+	}
+
 	String constructGoogleUrl(String ticker, Date startDate, Date endDate, int intervalMinutes) {
 		int period = use(TimeCategory) { (endDate - startDate).days + 1 }
 		return GOOGLE_API_ROOT + 'q=' + ticker + '&p=' + period + 'd&i=' + (intervalMinutes * 60) + '&f=d,c'
+	}
+
+	DataSetValue parseGoogleData(Date startDate, int intervalMinutes, String googleRow) {
+		Collection<String> cols = googleRow.split(',')
+		int offset = (cols[0].isInteger() ? cols[0].toInteger() : 0) * intervalMinutes
+		Date date = use(TimeCategory) { startDate + offset.minutes }
+		return new DataSetValue(date, cols[1].toDouble())
 	}
 }
