@@ -15,6 +15,7 @@ import com.augurworks.engine.helper.RequestValueSet
 class DataRetrievalService {
 
 	static final String QUANDL_DATE_FORMAT = 'yyyy-MM-dd'
+	static final String GOOGLE_API_ROOT = 'http://www.google.com/finance/getprices?'
 
 	GrailsApplication grailsApplication
 	DataGeneratorService dataGeneratorService
@@ -68,5 +69,10 @@ class DataRetrievalService {
 			Collection<String> lineValues = line.split(',')
 			return new DataSetValue(Date.parse(QUANDL_DATE_FORMAT, lineValues[0]), lineValues[dataColumn].toDouble())
 		}
+	}
+
+	String constructGoogleUrl(String ticker, Date startDate, Date endDate, int intervalMinutes) {
+		int period = use(TimeCategory) { (endDate - startDate).days + 1 }
+		return GOOGLE_API_ROOT + 'q=' + ticker + '&p=' + period + 'd&i=' + (intervalMinutes * 60) + '&f=d,c'
 	}
 }
