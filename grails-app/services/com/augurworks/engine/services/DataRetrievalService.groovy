@@ -6,6 +6,7 @@ import groovyx.gpars.GParsPool
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
+import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.DataSetValue
@@ -75,6 +76,9 @@ class DataRetrievalService {
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
 		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
 		Collection<String> vals = url.getText().split('\n')
+		if (vals.size() == 6) {
+			throw new AugurWorksException('No intra-day data available for ' + ticker)
+		}
 		int openMinute = vals[1].split('=')[1].toInteger()
 		startDate.set(minute: openMinute)
 		int interval = vals[3].split('=')[1].toInteger() / intervalMinutes
