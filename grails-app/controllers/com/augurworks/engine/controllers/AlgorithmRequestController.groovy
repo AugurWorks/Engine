@@ -62,7 +62,6 @@ class AlgorithmRequestController {
 			dataRetrievalService.smartSpline(algorithmRequest, false)
 			render([ok: true] as JSON)
 		} catch (e) {
-			log.error e.getMessage()
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}

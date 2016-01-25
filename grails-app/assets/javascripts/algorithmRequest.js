@@ -34,6 +34,29 @@ function submitRequest() {
 	});
 }
 
+function checkRequest() {
+	$('.ui.message').hide();
+	$('#checking').show();
+	$.ajax({
+		url: '/algorithmRequest/checkRequest',
+		data: {
+			dataSets: JSON.stringify(getDataSets()),
+			startOffset: $('#startOffset').val(),
+			endOffset: $('#endOffset').val(),
+			unit: $('#unit').val()
+		},
+		success: function(data) {
+			$('#checking').hide();
+			if (data.ok) {
+				$('#valid').show();
+			} else {
+				$('#invalid').show();
+				$('#invalid p').text(data.error);
+			}
+		}
+	});
+}
+
 function deleteRequest() {
 	$.ajax({
 		url: '/algorithmRequest/deleteRequest',

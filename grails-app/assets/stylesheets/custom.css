@@ -1,6 +1,6 @@
 /* General */
 
-.content, .menu-wrapper {
+body > .content, .menu-wrapper {
 	 max-width: 1000px;
 	 margin: 15px auto;
 	 padding: 0 1rem;
