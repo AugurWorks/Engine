@@ -1,5 +1,5 @@
 <%@ page import="com.augurworks.engine.helper.Global" %>
-<g:set var="complete" value="${ !result.machineLearningModel }" />
+<g:set var="complete" value="${ result.complete }" />
 <g:set var="dateFormat" value="${ result.algorithmRequest.unit == 'Day' ? Global.DATE_FORMAT : Global.DATE_TIME_FORMAT }" />
 <div id="result-${ result.id }" class="ui raised card ${ !complete ? 'incomplete' : '' }">
 	<div class="content">

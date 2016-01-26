@@ -89,7 +89,7 @@ class MachineLearningService {
 	}
 
 	void checkIncompleteAlgorithms() {
-		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByComplete(false)
+		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, Global.MODEL_TYPES[0])
 		algorithmResults.each { AlgorithmResult algorithmResult ->
 			checkAlgorithm(algorithmResult)
 		}
