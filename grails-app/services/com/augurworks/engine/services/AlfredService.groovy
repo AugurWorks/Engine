@@ -61,4 +61,21 @@ class AlfredService {
 			throw new AugurWorksException('Alfred was not able to process the submitted request')
 		}
 	}
+
+	void checkIncompleteAlgorithms() {
+		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, Global.MODEL_TYPES[1])
+		algorithmResults.each { AlgorithmResult algorithmResult ->
+			checkAlgorithm(algorithmResult)
+		}
+	}
+
+	void checkAlgorithm(AlgorithmResult algorithmResult) {
+		String url = grailsApplication.config.alfred.url
+		RestResponse resp = new RestBuilder().get(url + '/get/' + algorithmResult.alfredModelId)
+		if (resp.status == 200) {
+			println resp.text
+		} else {
+			throw new AugurWorksException('Alfred was not able to process the submitted request')
+		}
+	}
 }
