@@ -69,18 +69,18 @@ class AlgorithmRequest {
 		}
 	}
 
-	void updateDataSets(Collection<Map> dataSets) {
+	void updateDataSets(Collection<Map> dataSets, boolean persist = true) {
 		this.requestDataSets?.clear()
 		dataSets.each { Map dataSet ->
-			RequestDataSet requestDataSet = new RequestDataSet([
+			this.addToRequestDataSets([
 				dataSet: DataSet.findByTicker(dataSet.name.split(' - ').first()),
 				offset: dataSet.offset,
-				aggregation: dataSet.aggregation,
-				algorithmRequest: this
+				aggregation: dataSet.aggregation
 			])
-			requestDataSet.save()
 		}
-		this.save(flush: true)
+		if (persist) {
+			this.save(flush: true)
+		}
 	}
 
 	Collection<RequestDataSet> getIndependentRequestDataSets() {

@@ -14,6 +14,27 @@
 			<g:else>
 				<h1 class="ui header">Create Algorithm Request</h1>
 			</g:else>
+			<div id="checking" class="ui icon message" style="display: none;">
+				<i class="notched circle loading icon"></i>
+				<div class="content">
+					<div class="header">Checking Request Validity</div>
+					<p>Checking to see if the new Algorithm Request has valid data</p>
+				</div>
+			</div>
+			<div id="valid" class="ui positive icon message" style="display: none;">
+				<i class="positive check icon"></i>
+				<div class="content">
+					<div class="header">Valid</div>
+					<p>The current request contains valid data for the selected input and date range</p>
+				</div>
+			</div>
+			<div id="invalid" class="ui negative icon message" style="display: none;">
+				<i class="negative remove icon"></i>
+				<div class="content">
+					<div class="header">Invalid</div>
+					<p></p>
+				</div>
+			</div>
 			<div class="ui form">
 				<h3 class="ui dividing header">Boundary Dates</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
@@ -61,6 +82,10 @@
 							<button onclick="deleteRequest()" class="ui negative button">Delete Request</button>
 						</div>
 					</g:if>
+					<div class="field">
+						<label>Check Request Validity</label>
+						<button onclick="checkRequest()" class="ui button">Check Validity</button>
+					</div>
 				</div>
 				<h3 class="ui dividing header">Data Sets</h3>
 				<table id="dataSets" class="ui table">
