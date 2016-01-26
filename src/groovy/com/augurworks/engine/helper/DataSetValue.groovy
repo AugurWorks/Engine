@@ -19,7 +19,7 @@ class DataSetValue {
 	}
 
 	String toString() {
-		return this.date + ': ' + this.value
+		return this.date.toString() + ': ' + this.value
 	}
 
 	Map toMap() {
