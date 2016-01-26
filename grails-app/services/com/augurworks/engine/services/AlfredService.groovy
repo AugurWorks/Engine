@@ -44,7 +44,7 @@ class AlfredService {
 		}
 		Collection<String> lines = [
 			'net ' + (dataSets.size() - 1) + ',4',
-			'train 1,1000,0.3,500,0.1',
+			'train 1,1000,0.3,500,0.00001',
 			'TITLES ' + dataSets.tail()*.name.join(',')
 		] + (0..(rowNumber - 1)).collect { int row ->
 			// TO-DO: Will not work for predictions of more than one period
