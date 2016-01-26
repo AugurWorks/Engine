@@ -13,8 +13,8 @@
 	</head>
 	<body>
 		<div class="ui segment">
-			<input type="hidden" id="id" value="${ algorithm.id }" />
 			<h1 class="ui header">${ algorithm.name }</h1>
+			<input type="hidden" id="id" value="${ algorithm.id }" />
 			<button class="ui primary button" onclick="kickOff(this, ${ algorithm.id })">Kick Off Evaluation</button>
 			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button">Edit Request</g:link>
 			<button onclick="deleteRequest()" class="ui negative button">Delete Request</button>
