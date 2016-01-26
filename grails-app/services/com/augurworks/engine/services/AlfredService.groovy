@@ -9,6 +9,7 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
+import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
 
@@ -72,10 +73,27 @@ class AlfredService {
 	void checkAlgorithm(AlgorithmResult algorithmResult) {
 		String url = grailsApplication.config.alfred.url
 		RestResponse resp = new RestBuilder().get(url + '/get/' + algorithmResult.alfredModelId)
-		if (resp.status == 200) {
-			println resp.text
-		} else {
+		if (resp.status == 200 && resp.text != 'IN_PROGRESS') {
+			algorithmResult.complete = true
+			if (resp.text != 'UNKNOWN') {
+				processResponse(algorithmResult, resp.text)
+			}
+			algorithmResult.save()
+		} else if (resp.status == 500) {
 			throw new AugurWorksException('Alfred was not able to process the submitted request')
+		}
+	}
+
+	void processResponse(AlgorithmResult algorithmResult, String text) {
+		String dateFormat = algorithmResult.algorithmRequest.unit == 'Day' ? Global.DATE_FORMAT : Global.DATE_TIME_FORMAT
+		Collection<String> lines = text.split('\n')
+		lines[4..(lines.size() - 1)].each { String line ->
+			Collection<String> cols = line.split(' ')
+			new PredictedValue(
+				date: Date.parse(dateFormat, cols[0]),
+				value: cols[2].toDouble(),
+				algorithmResult: algorithmResult
+			).save()
 		}
 	}
 }
