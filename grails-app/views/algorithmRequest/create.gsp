@@ -59,7 +59,7 @@
 						<g:select from="${ dataSets }" name="stock" class="ui search dropdown" />
 					</div>
 					<div class="field">
-						<label>Day Offset</label>
+						<label>Interval Offset</label>
 						<g:field type="number" name="offset" value="0" />
 					</div>
 					<div class="field">
@@ -93,7 +93,7 @@
 						<tr>
 							<th>Dependant</th>
 							<th>Stock</th>
-							<th>Day Offset</th>
+							<th>Interval Offset</th>
 							<th>Aggregation</th>
 							<th>Remove</th>
 						</tr>
