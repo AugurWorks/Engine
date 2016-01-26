@@ -32,7 +32,8 @@ class PredictedValue {
 		String dateFormat = this.algorithmResult.algorithmRequest.unit == 'Day' ? Global.DATE_FORMAT : Global.DATE_TIME_FORMAT
 		String name = this.algorithmResult.algorithmRequest.dependantDataSet.name
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation
-		String message = 'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' is ' + this.value.round(4)
+		String modelType = this.algorithmResult.modelType
+		String message = 'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType + ' is ' + this.value.round(4)
 		String channel = Holders.config.augurworks.predictions.channel
 		String title = this.algorithmResult.algorithmRequest.stringify()
 		String link = Holders.config.grails.serverURL + '/algorithmRequest/show/' + this.algorithmResult.algorithmRequest.id
