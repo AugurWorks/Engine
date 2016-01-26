@@ -41,9 +41,9 @@ class AlfredService {
 			throw new AugurWorksException('Request datasets aren\'t all the same length.')
 		}
 		Collection<String> lines = [
-			'net ' + (rowNumber - 1) + ',4',
+			'net ' + (dataSets.size() - 1) + ',4',
 			'train 1,1000,0.3,500,0.1',
-			'TITLES ' + dataSets*.name.join(',')
+			'TITLES ' + dataSets.tail()*.name.join(',')
 		] + (0..(rowNumber - 1)).collect { int row ->
 			return dataSets*.values.first()[row].date.format(Global.DATE_FORMAT) + ' ' + dataSets.first().values[row].value + ' ' + dataSets*.values.tail().collect { it[row].value }.join(',')
 		}
@@ -53,7 +53,7 @@ class AlfredService {
 	String submitTraining(String postBody) {
 		String url = grailsApplication.config.alfred.url
 		RestResponse resp = new RestBuilder().post(url + '/train') {
-			postBody
+			body(postBody)
 		}
 		if (resp.status == 200) {
 			return resp.text
