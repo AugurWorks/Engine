@@ -49,9 +49,9 @@ class AlgorithmRequest {
 		use(TimeCategory) {
 			switch (this.unit) {
 				case 'Day':
-					return DateUtils.truncate(new Date(), Calendar.DATE) + this[field].days
+					return DateUtils.truncate(now(), Calendar.DATE) + this[field].days
 				case 'Hour':
-					return DateUtils.truncate(new Date(), Calendar.HOUR) + this[field].hours
+					return DateUtils.truncate(now(), Calendar.HOUR) + this[field].hours
 			}
 		}
 	}
@@ -99,5 +99,9 @@ class AlgorithmRequest {
 			throw new AugurWorksException('Prediction data set not found')
 		}
 		return matching.first()
+	}
+
+	Date now() {
+		return new Date()
 	}
 }
