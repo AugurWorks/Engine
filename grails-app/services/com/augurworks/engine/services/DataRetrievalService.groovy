@@ -50,7 +50,7 @@ class DataRetrievalService {
 				values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
 				break
 			case 'Hour':
-				values = getGoogleData(requestDataSet.dataSet.ticker, startDate, 30)
+				values = getGoogleData(requestDataSet.dataSet.ticker, startDate.clone(), 30)
 				break
 		}
 		return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).aggregateValues(requestDataSet.aggregation).filterValues(startDate, endDate, minOffset, maxOffset)
