@@ -19,7 +19,7 @@ class DataGeneratorService {
 
 	GrailsApplication grailsApplication
 
-	static final Collection<Map> defaultRequests = [[
+	static final Collection<Map> DEFAULT_REQUESTS = [[
 		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
 		dependent: 'GSPC',
 		startOffset: -15,
@@ -34,7 +34,7 @@ class DataGeneratorService {
 		dependent: 'GSPC',
 		startOffset: -29,
 		endOffset: -1
-	]];
+	]]
 
 	static final Collection<String> VALID_TICKERS = [
 		'AAPL',
@@ -65,7 +65,7 @@ class DataGeneratorService {
 	}
 
 	void bootstrapDefaultRequests() {
-		defaultRequests.each { Map requestMap ->
+		DEFAULT_REQUESTS.each { Map requestMap ->
 			Collection<DataSet> algorithmRequestDataSets = requestMap.tickers.collect { String ticker ->
 				return DataSet.findByTicker(ticker)
 			}
@@ -115,17 +115,17 @@ class DataGeneratorService {
 		long seed = generateRandomSeed(ticker)
 		SecureRandom random = new SecureRandom()
 		random.setSeed(seed)
-		return (0..(days - 1)).collect { int dayOffset ->
+		return (0..(days - 1)).collectMany { int dayOffset ->
 			Date currentDate = use (TimeCategory) { startDate + dayOffset.days }
 			currentDate.set(hourOfDay: 9, minute: 30, second: 0, millisecond: 0)
 			Collection<DataSetValue> values = []
-			while (currentDate.getAt(Calendar.HOUR_OF_DAY) < 16 || (currentDate.getAt(Calendar.HOUR_OF_DAY) == 16 && currentDate.getAt(Calendar.MINUTE) == 0)) {
+			while (currentDate[Calendar.HOUR_OF_DAY] < 16 || (currentDate[Calendar.HOUR_OF_DAY] == 16 && currentDate[Calendar.MINUTE] == 0)) {
 				values.push(new DataSetValue(currentDate, currentPrice))
 				currentPrice = ((1 + (random.nextDouble() * 0.2 - 0.1)) * currentPrice).round(2)
 				currentDate = use (TimeCategory) { currentDate + intervalLength.minutes }
 			}
 			return values
-		}.flatten()
+		}
 	}
 
 	long generateRandomSeed(String ticker) {

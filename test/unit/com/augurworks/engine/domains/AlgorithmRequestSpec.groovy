@@ -11,7 +11,7 @@ import com.augurworks.engine.helper.Aggregations
 @Build([AlgorithmRequest])
 @Mock([DataSet, RequestDataSet])
 class AlgorithmRequestSpec extends Specification {
-	
+
 	static final String DATE_FORMAT = 'yyyy-MM-dd'
 	static final String DATE_TIME_FORMAT = 'yyyy-MM-dd HH:mm'
 
