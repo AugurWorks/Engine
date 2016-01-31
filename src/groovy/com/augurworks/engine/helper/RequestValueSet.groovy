@@ -74,8 +74,11 @@ class RequestValueSet {
 
 	RequestValueSet fillOutValues(Collection<Date> allDates) {
 		Collection<DataSetValue> values = this.values
-		if (values.size() == 0 || allDates.size() == 0 || values.first().date != allDates.first()) {
-			throw new AugurWorksException('Invalid fill out values parameters')
+		if (values.size() == 0) {
+			throw new AugurWorksException(this.name + ' does not contain any values for the given range')
+		}
+		if (allDates.size() == 0) {
+			throw new AugurWorksException('The date range provided for ' + this.name + ' does not contain any dates')
 		}
 		allDates[1..-1].eachWithIndex { Date date, int index ->
 			DataSetValue dataSetValue = values[index + 1]
