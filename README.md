@@ -13,3 +13,9 @@ After cloning the repo copy **UserConfig.groovy.example** to **UserConfig.groovy
 
 ### Running
 Run the application with `grails run-app`. After the app starts go to [http://[local-machine-IP]:8080](http://[local-machine-IP]:8080), authorize the GitHub OAuth application, then you'll be redirected back to the running application.
+
+## Running with Alfred
+**Alfred** is most easily run locally using Docker. Follow the steps below to configure **Alfred**:
+- Run **Alfred** locally using the [Platform](https://github.com/AugurWorks/Platform) repo **Run Without Building** steps
+- Add the `alfred.url` config item with the appropriate URL
+- Run the application normally

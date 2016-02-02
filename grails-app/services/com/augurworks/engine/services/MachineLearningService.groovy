@@ -13,6 +13,7 @@ import com.augurworks.engine.domains.MachineLearningModel
 import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Common
+import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
 
 @Transactional
@@ -50,7 +51,7 @@ class MachineLearningService {
 
 	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction) {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
-		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, prediction).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, prediction, !prediction).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
@@ -88,7 +89,7 @@ class MachineLearningService {
 	}
 
 	void checkIncompleteAlgorithms() {
-		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByComplete(false)
+		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, Global.MODEL_TYPES[0])
 		algorithmResults.each { AlgorithmResult algorithmResult ->
 			checkAlgorithm(algorithmResult)
 		}
@@ -104,7 +105,8 @@ class MachineLearningService {
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
 			endDate: algorithmRequest.endDate,
-			machineLearningModel: model
+			machineLearningModel: model,
+			modelType: Global.MODEL_TYPES[0]
 		])
 		algorithmResult.save()
 	}

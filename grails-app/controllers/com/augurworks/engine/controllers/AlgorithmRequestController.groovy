@@ -6,11 +6,15 @@ import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.DataSet
+import com.augurworks.engine.helper.Global
+import com.augurworks.engine.services.AlfredService
 import com.augurworks.engine.services.DataRetrievalService
+import com.augurworks.engine.services.MachineLearningService
 
 class AlgorithmRequestController {
 
-	def machineLearningService
+	MachineLearningService machineLearningService
+	AlfredService alfredService
 	DataRetrievalService dataRetrievalService
 
 	def index() {
@@ -21,9 +25,13 @@ class AlgorithmRequestController {
 		[algorithm: algorithmRequest]
 	}
 
-	def run(AlgorithmRequest algorithmRequest) {
+	def run(AlgorithmRequest algorithmRequest, String type) {
 		try {
-			machineLearningService.createAlgorithm(algorithmRequest)
+			if (type == Global.MODEL_TYPES[0]) {
+				machineLearningService.createAlgorithm(algorithmRequest)
+			} else if (type == Global.MODEL_TYPES[1]) {
+				alfredService.createAlgorithm(algorithmRequest)
+			}
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
 			log.warn e.getMessage()
