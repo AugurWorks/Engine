@@ -119,18 +119,6 @@ class RequestValueSetSpec extends Specification {
 		values*.value == [1, 1, 2]
 	}
 
-	void "test fill out values exception"() {
-		setup:
-		Collection<String> dates = TEST_DATES - TEST_DATES[0..0]
-		RequestValueSet set = validRequestValueSet(dates)
-
-		when:
-		set.fillOutValues(stringsToDates(TEST_DATES))
-
-		then:
-		thrown(AugurWorksException)
-	}
-
 	void "test fill out values exception empty dates"() {
 		setup:
 		RequestValueSet set = validRequestValueSet(TEST_DATES)
