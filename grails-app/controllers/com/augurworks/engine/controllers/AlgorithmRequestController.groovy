@@ -67,7 +67,7 @@ class AlgorithmRequestController {
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
 			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(startOffset, endOffset, unit, dataSets)
 			algorithmRequest.updateDataSets(dataSets, false)
-			dataRetrievalService.smartSpline(algorithmRequest, false)
+			dataRetrievalService.smartSpline(algorithmRequest, false, true)
 			render([ok: true] as JSON)
 		} catch (e) {
 			render([ok: false, error: e.getMessage()] as JSON)
