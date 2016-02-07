@@ -6,10 +6,12 @@ import groovyx.gpars.GParsPool
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
+import com.amazonaws.services.s3.AmazonS3Client
 import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
 
 @Transactional
@@ -73,6 +75,9 @@ class DataRetrievalService {
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
 		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
 		Collection<String> vals = url.getText().split('\n')
+		if (grailsApplication.config.logging.files) {
+			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + vals).join('\n'))
+		}
 		if (vals.size() == 6) {
 			throw new AugurWorksException('No intra-day data available for ' + ticker)
 		}
@@ -95,5 +100,16 @@ class DataRetrievalService {
 		int offset = (cols[0].isInteger() ? cols[0].toInteger() : 0) * intervalMinutes
 		Date date = use(TimeCategory) { startDate + offset.minutes }
 		return new DataSetValue(date, cols[1].toDouble())
+	}
+
+	void logStringToS3(String filename, String text) {
+		File file = File.createTempFile(filename, '.txt')
+		file.write(text)
+		AmazonS3Client s3 = new AmazonS3Client()
+		String bucket = grailsApplication.config.aws.bucket
+		Date date = new Date()
+		String path = 'logs/' + date.format(Global.S3_DATE_FORMAT) + filename + '.txt'
+		s3.putObject(bucket, path, file)
+		file.delete()
 	}
 }

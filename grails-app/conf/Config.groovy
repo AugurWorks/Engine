@@ -55,6 +55,7 @@ grails.exceptionresolver.params.exclude = ['password']
 grails.hibernate.cache.queries = false
 
 alfred.url = (localConfig.alfred.url ?: 'http://localhost:8080')
+logging.files = System.getProperty('ENGINE_LOGGING_FILES') ?: false
 
 environments {
 	development {
