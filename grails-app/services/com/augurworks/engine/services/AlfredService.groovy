@@ -61,9 +61,8 @@ class AlfredService {
 		}
 		if (resp.status == 200) {
 			return resp.text
-		} else {
-			throw new AugurWorksException('Alfred was not able to process the submitted request')
 		}
+		throw new AugurWorksException('Alfred was not able to process the submitted request')
 	}
 
 	void checkIncompleteAlgorithms() {

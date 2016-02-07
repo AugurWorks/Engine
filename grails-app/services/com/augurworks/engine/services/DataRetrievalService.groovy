@@ -24,7 +24,7 @@ class DataRetrievalService {
 	DataGeneratorService dataGeneratorService
 
 	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean prediction, boolean includeDependent) {
-		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, prediction, includeDependent)
+		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, includeDependent)
 		Collection<Date> allDates = rawRequestValues*.dates.flatten().unique()
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (prediction) {
@@ -33,10 +33,10 @@ class DataRetrievalService {
 		return expandedRequestValues
 	}
 
-	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest, boolean prediction, boolean includeDependent) {
+	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest, boolean includeDependent) {
 		int minOffset = algorithmRequest.requestDataSets*.offset.min()
 		int maxOffset = algorithmRequest.requestDataSets*.offset.max()
-		Collection<RequestDataSet> requestDataSets = !includeDependent ? algorithmRequest.independentRequestDataSets : algorithmRequest.requestDataSets
+		Collection<RequestDataSet> requestDataSets = includeDependent ? algorithmRequest.requestDataSets : algorithmRequest.independentRequestDataSets
 		GParsPool.withPool(requestDataSets.size()) {
 			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
 				return getSingleRequestValues(requestDataSet, algorithmRequest.startDate, algorithmRequest.endDate, algorithmRequest.unit, minOffset, maxOffset)
