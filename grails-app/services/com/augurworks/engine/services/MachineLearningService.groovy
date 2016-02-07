@@ -51,7 +51,7 @@ class MachineLearningService {
 
 	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction) {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
-		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, prediction, !prediction).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, !prediction).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()

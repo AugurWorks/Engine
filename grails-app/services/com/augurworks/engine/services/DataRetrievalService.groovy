@@ -23,13 +23,10 @@ class DataRetrievalService {
 	GrailsApplication grailsApplication
 	DataGeneratorService dataGeneratorService
 
-	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean prediction, boolean includeDependent) {
+	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean includeDependent) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, includeDependent)
 		Collection<Date> allDates = rawRequestValues*.dates.flatten().unique()
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
-		if (prediction) {
-			return expandedRequestValues
-		}
 		return expandedRequestValues
 	}
 

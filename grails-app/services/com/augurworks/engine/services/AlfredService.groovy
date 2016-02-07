@@ -35,7 +35,7 @@ class AlfredService {
 	}
 
 	String constructPostBody(AlgorithmRequest algorithmRequest) {
-		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, true, true).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, true).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()

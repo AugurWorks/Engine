@@ -18,7 +18,7 @@ class GraphController {
 	def getData(AlgorithmRequest algorithmRequest) {
 		if (algorithmRequest) {
 			try {
-				Collection<RequestValueSet> data = dataRetrievalService.smartSpline(algorithmRequest, false, true)
+				Collection<RequestValueSet> data = dataRetrievalService.smartSpline(algorithmRequest, true)
 				render([ok: true, data: data*.toMap()] as JSON)
 			} catch (AugurWorksException e) {
 				log.warn e.getMessage()
@@ -36,7 +36,7 @@ class GraphController {
 		if (algorithmResult) {
 			try {
 				AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
-				Collection<Map> data = dataRetrievalService.smartSpline(algorithmRequest, false, true)*.toMap()
+				Collection<Map> data = dataRetrievalService.smartSpline(algorithmRequest, true)*.toMap()
 				String key = algorithmRequest.dependantDataSet.ticker + ' - Prediction'
 				Map prediction = [
 					name: key,
