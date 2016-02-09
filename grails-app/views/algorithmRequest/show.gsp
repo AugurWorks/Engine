@@ -18,8 +18,9 @@
 			<input type="hidden" id="id" value="${ algorithm.id }" />
 			<g:select name="modelType" class="ui dropdown" from="${ Global.MODEL_TYPES }"></g:select>
 			<button class="ui primary button" onclick="kickOff(this, ${ algorithm.id })">Kick Off Evaluation</button>
-			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button">Edit Request</g:link>
-			<button onclick="deleteRequest()" class="ui negative button">Delete Request</button>
+			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button">Edit</g:link>
+			<button onclick="deleteRequest()" class="ui negative button">Delete</button>
+			<g:link controller="graph" action="line" id="${ algorithm.id }" class="ui button">Graph</g:link>
 			<h2 class="ui header" style="clear: both;">Results</h2>
 			<div class="ui one cards">
 				<g:each in="${ algorithm.algorithmResults.sort { it.dateCreated }.reverse() }" var="result">
