@@ -88,7 +88,7 @@ class DataRetrievalService {
 	}
 
 	String constructGoogleUrl(String ticker, Date startDate, int intervalMinutes) {
-		int period = use(TimeCategory) { (new Date() - startDate).days + 1 }
+		int period = use(TimeCategory) { (new Date() - startDate).days + 3 }
 		return GOOGLE_API_ROOT + 'q=' + ticker + '&p=' + period + 'd&i=' + (intervalMinutes * 60) + '&f=d,c'
 	}
 
