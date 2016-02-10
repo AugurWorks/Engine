@@ -26,7 +26,7 @@
 		<link>
 			<name>.link_to_grails_plugins</name>
 			<type>2</type>
-			<location>D:/Users/TheConnMan/git/augurworks/Engine/target/work/plugins</location>
+			<location>./target/work/plugins</location>
 		</link>
 	</linkedResources>
 </projectDescription>
