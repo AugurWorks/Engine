@@ -51,7 +51,11 @@ class AlgorithmRequest {
 				case 'Day':
 					return DateUtils.truncate(now(), Calendar.DATE) + this[field].days
 				case 'Hour':
-					return DateUtils.truncate(now(), Calendar.HOUR) + this[field].hours
+					Date date = DateUtils.truncate(now(), Calendar.HOUR) + this[field].hours
+					if (now()[Calendar.MINUTE] >= 30) {
+						date[Calendar.MINUTE] = 30
+					}
+					return date
 			}
 		}
 	}

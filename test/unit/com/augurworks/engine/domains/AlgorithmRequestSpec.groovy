@@ -75,7 +75,7 @@ class AlgorithmRequestSpec extends Specification {
 
 	void "test truncate date (hour)"() {
 		given:
-		Date mockTime = Date.parse(DATE_TIME_FORMAT, '2016-01-10 14:00')
+		Date mockTime = Date.parse(DATE_TIME_FORMAT, startTime)
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: 'Hour')
 		algorithmRequest.metaClass.now = { return mockTime }
 
@@ -86,12 +86,14 @@ class AlgorithmRequestSpec extends Specification {
 		startDate == Date.parse(DATE_TIME_FORMAT, expectedTime)
 
 		where:
-		offset | expectedTime
-		0      | '2016-01-10 14:00'
-		-5     | '2016-01-10 09:00'
-		-7     | '2016-01-10 07:00'
-		-13    | '2016-01-10 01:00'
-		5      | '2016-01-10 19:00'
+		startTime          | offset | expectedTime
+		'2016-01-10 14:00' | 0      | '2016-01-10 14:00'
+		'2016-01-10 14:00' | -5     | '2016-01-10 09:00'
+		'2016-01-10 14:29' | -7     | '2016-01-10 07:00'
+		'2016-01-10 14:00' | -13    | '2016-01-10 01:00'
+		'2016-01-10 14:00' | 5      | '2016-01-10 19:00'
+		'2016-01-10 14:40' | 5      | '2016-01-10 19:30'
+		'2016-01-10 14:30' | -4     | '2016-01-10 10:30'
 	}
 
 	void "test truncate date (day)"() {
