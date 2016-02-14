@@ -36,7 +36,7 @@ OLO,DB Crude Oil Long ETN,EOD/OLO,4
 SZO,DB Crude Oil Short ETN,EOD/SZO,4
 OLEM,iPath Pure Beta Crude Oil ETN,EOD/OLEM,4
 VVIX,CBOE VIX of VIX,CBOE/VVIX,1
-.INX,S&P 500 Hourly,N/A,0
+.INX,S&P 500 Hourly,YAHOO/INDEX_GSPC,4
 DAX,German Index,N/A,0
 SX5E,STOXX 50,N/A,0
 000001,Shanghai Composite Hourly,N/A,0

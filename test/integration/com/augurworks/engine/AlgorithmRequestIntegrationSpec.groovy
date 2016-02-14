@@ -54,4 +54,28 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 			-6          | -4        | '16:30'    | 5
 			-5          | -1        | '15:30'    | 7
 	}
+
+	void "test day algorithm request retrieval"() {
+		given:
+			AlgorithmRequest dayRequest = createAlgorithmRequest(startOffset, endOffset, '.INX', 'Day')
+			AlgorithmRequest.metaClass.now = { return Date.parse('MM/dd/yyyy', dateString) }
+			DataRetrievalService.metaClass.getQuandlAPIText = { String quandlCode ->
+				return new File('test/resources/daily-data/' + quandlCode.split('/').join('-') + '.csv').text
+			}
+
+		when:
+			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(dayRequest, true)
+
+		then:
+			notThrown AugurWorksException
+			requestValueSet.size() == 6
+			requestValueSet*.values*.size().max() == valuesSize
+
+		where:
+			startOffset | endOffset | dateString   | valuesSize
+			-14         | -1        | '02/12/2016' | 11
+			-8          | -1        | '02/12/2016' | 7
+			-17         | -1        | '02/12/2016' | 14
+			-11         | -8        | '02/12/2016' | 5
+	}
 }
