@@ -56,11 +56,7 @@ class DataRetrievalService {
 	}
 
 	Collection<DataSetValue> getQuandlData(String quandlCode, int dataColumn) {
-		String quandlKey = grailsApplication.config.augurworks.quandl.key
-		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
-		String quandlPost = '.csv?auth_token=' + quandlKey
-		String url = quandlPre + quandlCode + quandlPost
-		return new URL(url).getText().split('\n').tail().reverse().grep { String line ->
+		return getQuandlAPIText(quandlCode).split('\n').tail().reverse().grep { String line ->
 			Collection<String> lineValues = line.split(',')
 			return lineValues[dataColumn].size() != 0
 		}.collect { String line ->
@@ -69,11 +65,17 @@ class DataRetrievalService {
 		}
 	}
 
+	String getQuandlAPIText(String quandlCode) {
+		String quandlKey = grailsApplication.config.augurworks.quandl.key
+		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
+		String quandlPost = '.csv?auth_token=' + quandlKey
+		String url = quandlPre + quandlCode + quandlPost
+		return new URL(url).getText()
+	}
 
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
 		int apiIntervalMinutes = Math.min(intervalMinutes, 30)
-		URL url = new URL(constructGoogleUrl(ticker, startDate, apiIntervalMinutes))
-		Collection<String> vals = url.getText().split('\n')
+		Collection<String> vals = getGoogleAPIText(ticker, startDate, apiIntervalMinutes).split('\n')
 		if (grailsApplication.config.logging.files) {
 			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + vals).join('\n'))
 		}
@@ -92,6 +94,11 @@ class DataRetrievalService {
 				return timeSinceStart.minutes % intervalMinutes == 0
 			}
 		}
+	}
+
+	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
+		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
+		return url.getText()
 	}
 
 	String constructGoogleUrl(String ticker, Date startDate, int intervalMinutes) {

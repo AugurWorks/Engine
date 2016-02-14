@@ -66,6 +66,14 @@ environments {
 		aws.bucket = 'aw-files-dev'
 		augurworks.predictions.channel = '#testing'
 	}
+	test {
+		grails.logging.jul.usebridge = true
+		grails.serverURL = (localConfig.local.ip ?: 'http://localhost') + ':8080'
+		oauth.providers.github.key = localConfig.oauth.github.key
+		oauth.providers.github.secret = localConfig.oauth.github.secret
+		aws.bucket = 'aw-files-test'
+		augurworks.predictions.channel = '#testing'
+	}
 	devdeploy {
 		grails.logging.jul.usebridge = false
 		grails.serverURL = "http://engine-dev.elasticbeanstalk.com"
