@@ -30,4 +30,23 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 		algorithmRequest.save(flush: true)
 		return algorithmRequest
 	}
+
+	void "test hourly algorithm request retrieval"() {
+		given:
+			AlgorithmRequest hourRequest = createAlgorithmRequest(startOffset, endOffset, '.INX', 'Hour')
+			AlgorithmRequest.metaClass.now = { return Date.parse('MM/dd/yyyy HH:mm', '02/12/2016 ' + timeString) }
+			DataRetrievalService.metaClass.getGoogleAPIText = { String ticker, Date startDate, int intervalMinutes ->
+				return new File('test/resources/hourly-data/Hourly-' + ticker + '.txt').text
+			}
+
+		when:
+			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(hourRequest, true)
+
+		then:
+			notThrown AugurWorksException
+
+		where:
+			startOffset | endOffset | timeString
+			-4          | -1        | '14:30'
+	}
 }
