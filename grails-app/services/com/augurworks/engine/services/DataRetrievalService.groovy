@@ -55,11 +55,7 @@ class DataRetrievalService {
 	}
 
 	Collection<DataSetValue> getQuandlData(String quandlCode, int dataColumn) {
-		String quandlKey = grailsApplication.config.augurworks.quandl.key
-		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
-		String quandlPost = '.csv?auth_token=' + quandlKey
-		String url = quandlPre + quandlCode + quandlPost
-		return new URL(url).getText().split('\n').tail().reverse().grep { String line ->
+		return getQuandlAPIText(quandlCode).split('\n').tail().reverse().grep { String line ->
 			Collection<String> lineValues = line.split(',')
 			return lineValues[dataColumn].size() != 0
 		}.collect { String line ->
@@ -68,6 +64,13 @@ class DataRetrievalService {
 		}
 	}
 
+	String getQuandlAPIText(String quandlCode) {
+		String quandlKey = grailsApplication.config.augurworks.quandl.key
+		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
+		String quandlPost = '.csv?auth_token=' + quandlKey
+		String url = quandlPre + quandlCode + quandlPost
+		return new URL(url).getText()
+	}
 
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
 		Collection<String> vals = getGoogleAPIText(ticker, startDate, intervalMinutes).split('\n')
