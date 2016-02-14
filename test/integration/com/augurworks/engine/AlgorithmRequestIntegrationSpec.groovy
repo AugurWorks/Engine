@@ -44,9 +44,14 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 
 		then:
 			notThrown AugurWorksException
+			requestValueSet.size() == 6
+			requestValueSet*.values*.size().max() == valuesSize
 
 		where:
-			startOffset | endOffset | timeString
-			-4          | -1        | '14:30'
+			startOffset | endOffset | timeString | valuesSize
+			-4          | -1        | '14:30'    | 6
+			-4          | -1        | '15:30'    | 5
+			-6          | -4        | '16:30'    | 5
+			-5          | -1        | '15:30'    | 7
 	}
 }
