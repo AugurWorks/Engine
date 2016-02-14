@@ -2,6 +2,7 @@ package com.augurworks.engine.services
 
 import grails.transaction.Transactional
 import groovy.time.TimeCategory
+import groovy.time.TimeDuration
 import groovyx.gpars.GParsPool
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
@@ -70,7 +71,8 @@ class DataRetrievalService {
 
 
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
-		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
+		int apiIntervalMinutes = Math.min(intervalMinutes, 30)
+		URL url = new URL(constructGoogleUrl(ticker, startDate, apiIntervalMinutes))
 		Collection<String> vals = url.getText().split('\n')
 		if (grailsApplication.config.logging.files) {
 			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + vals).join('\n'))
@@ -83,7 +85,12 @@ class DataRetrievalService {
 		Collection<String> data = vals[7..(vals.size() - 1)]
 		Date actualStart = new Date((data[0].split(',')[0] - 'a').toLong() * 1000)
 		return data.collect { String rawString ->
-			return parseGoogleData(actualStart, intervalMinutes, rawString)
+			return parseGoogleData(actualStart, apiIntervalMinutes, rawString)
+		}.grep { DataSetValue dataSetValue ->
+			use (TimeCategory) {
+				TimeDuration timeSinceStart = dataSetValue.date - startDate
+				return timeSinceStart.minutes % intervalMinutes == 0
+			}
 		}
 	}
 
