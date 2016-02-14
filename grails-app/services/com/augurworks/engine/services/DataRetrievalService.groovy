@@ -70,8 +70,7 @@ class DataRetrievalService {
 
 
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
-		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
-		Collection<String> vals = url.getText().split('\n')
+		Collection<String> vals = getGoogleAPIText(ticker, startDate, intervalMinutes).split('\n')
 		if (grailsApplication.config.logging.files) {
 			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + vals).join('\n'))
 		}
@@ -85,6 +84,11 @@ class DataRetrievalService {
 		return data.collect { String rawString ->
 			return parseGoogleData(actualStart, intervalMinutes, rawString)
 		}
+	}
+
+	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
+		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
+		return url.getText()
 	}
 
 	String constructGoogleUrl(String ticker, Date startDate, int intervalMinutes) {
