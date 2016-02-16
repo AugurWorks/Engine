@@ -77,7 +77,7 @@ class AlfredService {
 
 	void checkAlgorithm(AlgorithmResult algorithmResult) {
 		String url = grailsApplication.config.alfred.url
-		RestResponse resp = new RestBuilder().get(url + '/get/' + algorithmResult.alfredModelId)
+		RestResponse resp = new RestBuilder().get(url + '/result/' + algorithmResult.alfredModelId)
 		if (resp.status == 200 && resp.text != 'IN_PROGRESS') {
 			algorithmResult.complete = true
 			if (resp.text != 'UNKNOWN') {
