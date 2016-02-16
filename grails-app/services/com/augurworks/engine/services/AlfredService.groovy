@@ -39,9 +39,12 @@ class AlfredService {
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
-		if (!machineLearningService.areDataSetsCorrectlySized(dataSets.tail(), rowNumber) || dataSets.first().values.size() != rowNumber - 1) {
-			throw new AugurWorksException('Request datasets aren\'t all the same length.')
+		if (!machineLearningService.areDataSetsCorrectlySized(dataSets.tail(), rowNumber)) {
+			throw new AugurWorksException('Request datasets aren\'t all the same length')
 		}
+		/*if (dataSets.first().values.size() != rowNumber - 1) {
+			throw new AugurWorksException('Dependant data set not sized correctly compared to independant data sets')
+		}*/
 		Collection<String> lines = [
 			'net ' + (dataSets.size() - 1) + ',4',
 			'train 1,1000,0.3,500,0.00001',
