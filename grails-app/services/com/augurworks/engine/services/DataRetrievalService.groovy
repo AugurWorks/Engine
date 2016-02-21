@@ -29,9 +29,10 @@ class DataRetrievalService {
 		Collection<Date> allDates = rawRequestValues*.dates.flatten().unique()
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (prediction) {
-			return expandedRequestValues
+			int predictionOffset = algorithmRequest.predictionOffset
+			return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate, predictionOffset)
 		}
-		return expandedRequestValues
+		return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate)
 	}
 
 	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest, boolean includeDependent) {
