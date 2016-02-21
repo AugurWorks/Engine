@@ -83,8 +83,6 @@ class DataRetrievalService {
 		if (vals.size() == 6) {
 			throw new AugurWorksException('No intra-day data available for ' + ticker)
 		}
-		int openMinute = vals[1].split('=')[1].toInteger()
-		startDate.set(minute: openMinute)
 		Collection<String> data = vals[7..(vals.size() - 1)]
 		Date actualStart = new Date((data[0].split(',')[0] - 'a').toLong() * 1000)
 		return data.collect { String rawString ->
