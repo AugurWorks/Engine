@@ -10,6 +10,12 @@ class Common {
 		}
 	}
 
+	static Date addHoursToDate(Date date, int offset) {
+		use (TimeCategory) {
+			return date + offset.hours
+		}
+	}
+
 	static Date nextWeekday(Date date) {
 		if (date[Calendar.DAY_OF_WEEK] == Calendar.SATURDAY) {
 			return use(TimeCategory) { date + 2.day }
