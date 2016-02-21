@@ -80,9 +80,6 @@ class DataRetrievalService {
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
 		int apiIntervalMinutes = Math.min(intervalMinutes, 30)
 		Collection<String> vals = getGoogleAPIText(ticker, startDate, apiIntervalMinutes).split('\n')
-		if (grailsApplication.config.logging.files) {
-			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + vals).join('\n'))
-		}
 		if (vals.size() == 6) {
 			throw new AugurWorksException('No intra-day data available for ' + ticker)
 		}
@@ -102,7 +99,11 @@ class DataRetrievalService {
 
 	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
 		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
-		return url.getText()
+		String text = url.getText()
+		if (grailsApplication.config.logging.files) {
+			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + text.split('\n')).join('\n'))
+		}
+		return text
 	}
 
 	String constructGoogleUrl(String ticker, Date startDate, int intervalMinutes) {
