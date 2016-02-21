@@ -40,19 +40,24 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 			}
 
 		when:
-			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(hourRequest, true)
+			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(hourRequest, prediction, true)
 
 		then:
 			notThrown AugurWorksException
 			requestValueSet.size() == 6
-			requestValueSet*.values*.size().max() == valuesSize
+			requestValueSet*.values*.size().max() == maxValuesSize
+			requestValueSet*.values*.size().min() == minValuesSize
 
 		where:
-			startOffset | endOffset | timeString | valuesSize
-			-4          | -1        | '14:30'    | 6
-			-4          | -1        | '15:30'    | 5
-			-6          | -4        | '16:30'    | 5
-			-5          | -1        | '15:30'    | 7
+			startOffset | endOffset | timeString | prediction | maxValuesSize | minValuesSize
+			-4          | -1        | '14:30'    | false      | 4             | 4
+			-4          | -1        | '15:30'    | false      | 4             | 4
+			-6          | -4        | '16:30'    | false      | 3             | 3
+			-5          | -1        | '15:30'    | false      | 5             | 5
+			-4          | -1        | '14:30'    | true       | 5             | 4
+			-4          | -1        | '15:30'    | true       | 5             | 4
+			-6          | -4        | '16:30'    | true       | 4             | 3
+			-5          | -1        | '15:30'    | true       | 6             | 5
 	}
 
 	void "test day algorithm request retrieval"() {
@@ -64,18 +69,23 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 			}
 
 		when:
-			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(dayRequest, true)
+			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(dayRequest, prediction, true)
 
 		then:
 			notThrown AugurWorksException
 			requestValueSet.size() == 6
-			requestValueSet*.values*.size().max() == valuesSize
+			requestValueSet*.values*.size().max() == maxValuesSize
+			requestValueSet*.values*.size().min() == minValuesSize
 
 		where:
-			startOffset | endOffset | dateString   | valuesSize
-			-14         | -1        | '02/12/2016' | 11
-			-8          | -1        | '02/12/2016' | 7
-			-17         | -1        | '02/12/2016' | 14
-			-11         | -8        | '02/12/2016' | 5
+			startOffset | endOffset | dateString   | prediction | maxValuesSize | minValuesSize
+			-14         | -1        | '02/12/2016' | false      | 10            | 10
+			-8          | -1        | '02/12/2016' | false      | 6             | 6
+			-17         | -1        | '02/12/2016' | false      | 13            | 13
+			-11         | -8        | '02/12/2016' | false      | 4             | 4
+			-14         | -1        | '02/12/2016' | true       | 11            | 10
+			-8          | -1        | '02/12/2016' | true       | 7             | 6
+			-17         | -1        | '02/12/2016' | true       | 14            | 13
+			-11         | -8        | '02/12/2016' | true       | 5             | 4
 	}
 }

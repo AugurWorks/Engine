@@ -24,11 +24,15 @@ class DataRetrievalService {
 	GrailsApplication grailsApplication
 	DataGeneratorService dataGeneratorService
 
-	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean includeDependent) {
+	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean prediction, boolean includeDependent) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, includeDependent)
 		Collection<Date> allDates = rawRequestValues*.dates.flatten().unique()
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
-		return expandedRequestValues
+		if (prediction) {
+			int predictionOffset = algorithmRequest.predictionOffset
+			return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate, predictionOffset)
+		}
+		return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate)
 	}
 
 	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest, boolean includeDependent) {
@@ -76,14 +80,9 @@ class DataRetrievalService {
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
 		int apiIntervalMinutes = Math.min(intervalMinutes, 30)
 		Collection<String> vals = getGoogleAPIText(ticker, startDate, apiIntervalMinutes).split('\n')
-		if (grailsApplication.config.logging.files) {
-			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + vals).join('\n'))
-		}
 		if (vals.size() == 6) {
 			throw new AugurWorksException('No intra-day data available for ' + ticker)
 		}
-		int openMinute = vals[1].split('=')[1].toInteger()
-		startDate.set(minute: openMinute)
 		Collection<String> data = vals[7..(vals.size() - 1)]
 		Date actualStart = new Date((data[0].split(',')[0] - 'a').toLong() * 1000)
 		return data.collect { String rawString ->
@@ -98,7 +97,11 @@ class DataRetrievalService {
 
 	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
 		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
-		return url.getText()
+		String text = url.getText()
+		if (grailsApplication.config.logging.files) {
+			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + text.split('\n')).join('\n'))
+		}
+		return text
 	}
 
 	String constructGoogleUrl(String ticker, Date startDate, int intervalMinutes) {

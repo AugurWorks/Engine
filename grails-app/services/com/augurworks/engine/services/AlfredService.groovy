@@ -35,7 +35,7 @@ class AlfredService {
 	}
 
 	String constructPostBody(AlgorithmRequest algorithmRequest) {
-		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, true).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, true, true).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
@@ -51,8 +51,8 @@ class AlfredService {
 			'TITLES ' + dataSets.tail()*.name.join(',')
 		] + (0..(rowNumber - 1)).collect { int row ->
 			// TO-DO: Will not work for predictions of more than one period
-			Date date = dataSets*.values.first()[row]?.date ?: Common.addDaysToDate(dataSets*.values.first()[row - 1].date, 1)
-			return date.format(Global.DATE_FORMAT) + ' ' + (dataSets.first().values[row]?.value ?: 'NULL') + ' ' + dataSets.tail()*.values.collect { it[row].value }.join(',')
+			Date date = dataSets*.values.first()[row]?.date ?: calculatePredictionDate(algorithmRequest.unit, dataSets*.values.first()[row - 1].date, 1)
+			return date.format(Global.ALFRED_DATE_FORMAT) + ' ' + (dataSets.first().values[row]?.value ?: 'NULL') + ' ' + dataSets.tail()*.values.collect { it[row].value }.join(',')
 		}
 		return lines.join('\n')
 	}
@@ -91,15 +91,18 @@ class AlfredService {
 	}
 
 	void processResponse(AlgorithmResult algorithmResult, String text) {
-		String dateFormat = algorithmResult.algorithmRequest.unit == 'Day' ? Global.DATE_FORMAT : Global.DATE_TIME_FORMAT
 		Collection<String> lines = text.split('\n')
 		lines[4..(lines.size() - 1)].each { String line ->
 			Collection<String> cols = line.split(' ')
 			new PredictedValue(
-				date: Date.parse(dateFormat, cols[0]),
+				date: Date.parse(Global.ALFRED_DATE_FORMAT, cols[0]),
 				value: cols[2].toDouble(),
 				algorithmResult: algorithmResult
 			).save()
 		}
+	}
+
+	Date calculatePredictionDate(String unit, Date date, int offset) {
+		return unit == 'Day' ? Common.addDaysToDate(date, offset) : Common.addHoursToDate(date, offset)
 	}
 }
