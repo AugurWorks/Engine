@@ -14,14 +14,16 @@ class BootStrap {
 
 	def init = { servletContext ->
 		println 'Bootstrapping'
-		def adminRole = new Role(authority: "ROLE_ADMIN").save()
-		def userRole = new Role(authority: "ROLE_USER").save()
-		createUser('TheConnMan', adminRole)
-		createUser('safreiberg', adminRole)
-		createUser('augurworks1', adminRole)
+		if (Role.count() == 0) {
+			Role adminRole = new Role(authority: "ROLE_ADMIN").save()
+			Role userRole = new Role(authority: "ROLE_USER").save()
+			createUser('TheConnMan', adminRole)
+			createUser('safreiberg', adminRole)
+			createUser('augurworks1', adminRole)
 
-		dataGeneratorService.importQuandlDataSets()
-		dataGeneratorService.importLocalDataSets()
-		dataGeneratorService.bootstrapDefaultRequests()
+			dataGeneratorService.importQuandlDataSets()
+			dataGeneratorService.importLocalDataSets()
+			dataGeneratorService.bootstrapDefaultRequests()
+		}
 	}
 }
