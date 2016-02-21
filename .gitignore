@@ -5,3 +5,5 @@
 /logs
 cobertura.ser
 UserConfig.groovy
+*.db
+*.db.old
