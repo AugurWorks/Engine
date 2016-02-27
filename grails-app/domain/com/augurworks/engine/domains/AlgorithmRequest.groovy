@@ -37,22 +37,22 @@ class AlgorithmRequest {
 		return this.toString()
 	}
 
-	Date getStartDate() {
-		return truncateDate('startOffset')
+	Date getStartDate(Date now = new Date()) {
+		return truncateDate('startOffset', now)
 	}
 
-	Date getEndDate() {
-		return truncateDate('endOffset')
+	Date getEndDate(Date now = new Date()) {
+		return truncateDate('endOffset', now)
 	}
 
-	Date truncateDate(String field) {
+	Date truncateDate(String field, Date now) {
 		use(TimeCategory) {
 			switch (this.unit) {
 				case 'Day':
-					return DateUtils.truncate(now(), Calendar.DATE) + this[field].days
+					return DateUtils.truncate(now, Calendar.DATE) + this[field].days
 				case 'Hour':
-					Date date = DateUtils.truncate(now(), Calendar.HOUR) + this[field].hours
-					if (now()[Calendar.MINUTE] >= 30) {
+					Date date = DateUtils.truncate(now, Calendar.HOUR) + this[field].hours
+					if (now[Calendar.MINUTE] >= 30) {
 						date[Calendar.MINUTE] = 30
 					}
 					return date
@@ -103,9 +103,5 @@ class AlgorithmRequest {
 			throw new AugurWorksException('Prediction data set not found')
 		}
 		return matching.first()
-	}
-
-	Date now() {
-		return new Date()
 	}
 }

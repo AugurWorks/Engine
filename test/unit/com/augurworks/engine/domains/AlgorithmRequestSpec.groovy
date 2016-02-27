@@ -77,10 +77,9 @@ class AlgorithmRequestSpec extends Specification {
 		given:
 		Date mockTime = Date.parse(DATE_TIME_FORMAT, startTime)
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: 'Hour')
-		algorithmRequest.metaClass.now = { return mockTime }
 
 		when:
-		Date startDate = algorithmRequest.truncateDate('startOffset')
+		Date startDate = algorithmRequest.truncateDate('startOffset', mockTime)
 
 		then:
 		startDate == Date.parse(DATE_TIME_FORMAT, expectedTime)
@@ -100,10 +99,9 @@ class AlgorithmRequestSpec extends Specification {
 		given:
 		Date mockTime = Date.parse(DATE_FORMAT, '2016-01-10')
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: 'Day')
-		algorithmRequest.metaClass.now = { return mockTime }
 
 		when:
-		Date startDate = algorithmRequest.truncateDate('startOffset')
+		Date startDate = algorithmRequest.truncateDate('startOffset', mockTime)
 
 		then:
 		startDate == Date.parse(DATE_FORMAT, expectedTime)
