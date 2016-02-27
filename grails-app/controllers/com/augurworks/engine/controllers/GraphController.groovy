@@ -38,7 +38,7 @@ class GraphController {
 		if (algorithmResult) {
 			try {
 				AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
-				SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
+				SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, now: algorithmResult.dateCreated)
 				Collection<Map> data = dataRetrievalService.smartSpline(splineRequest)*.toMap()
 				String key = algorithmRequest.dependantDataSet.ticker + ' - Prediction'
 				Map prediction = [
