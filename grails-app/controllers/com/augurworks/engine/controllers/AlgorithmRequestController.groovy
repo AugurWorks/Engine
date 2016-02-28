@@ -35,9 +35,11 @@ class AlgorithmRequestController {
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
 			log.warn e.getMessage()
+			log.info e.getStackTrace().join('\n')
 			render([ok: false, error: e.getMessage()] as JSON)
 		} catch (e) {
 			log.error e.getMessage()
+			log.info e.getStackTrace().join('\n')
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -58,6 +60,7 @@ class AlgorithmRequestController {
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
 			log.error e.getMessage()
+			log.info e.getStackTrace().join('\n')
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -70,6 +73,8 @@ class AlgorithmRequestController {
 			dataRetrievalService.smartSpline(algorithmRequest, false, true)
 			render([ok: true] as JSON)
 		} catch (e) {
+			log.warn e.getMessage()
+			log.info e.getStackTrace().join('\n')
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -90,7 +95,8 @@ class AlgorithmRequestController {
 			algorithmRequest.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e.message
+			log.error e.getMessage()
+			log.info e.getStackTrace().join('\n')
 			render([ok: false] as JSON)
 		}
 	}

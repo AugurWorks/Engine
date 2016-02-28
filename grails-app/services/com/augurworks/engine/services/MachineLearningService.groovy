@@ -31,6 +31,7 @@ class MachineLearningService {
 				createAlgorithm(req)
 			} catch (e) {
 				log.error 'Error submitting ' + req + ': ' + e.message
+				log.info e.getStackTrace().join('\n')
 			}
 		}
 	}

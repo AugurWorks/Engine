@@ -22,9 +22,11 @@ class GraphController {
 				render([ok: true, data: data*.toMap()] as JSON)
 			} catch (AugurWorksException e) {
 				log.warn e.getMessage()
+				log.info e.getStackTrace().join('\n')
 				render([ok: false, error: e.getMessage()] as JSON)
 			} catch (e) {
 				log.error e.getMessage()
+				log.info e.getStackTrace().join('\n')
 				render([ok: false, error: e.getMessage()] as JSON)
 			}
 		} else {
@@ -47,9 +49,11 @@ class GraphController {
 				render([ok: true, data: data] as JSON)
 			} catch (AugurWorksException e) {
 				log.warn e.getMessage()
+				log.info e.getStackTrace().join('\n')
 				render([ok: false, error: e.getMessage()] as JSON)
 			} catch (e) {
 				log.error e.getMessage()
+				log.info e.getStackTrace().join('\n')
 				render([ok: false, error: e.getMessage()] as JSON)
 			}
 		} else {
