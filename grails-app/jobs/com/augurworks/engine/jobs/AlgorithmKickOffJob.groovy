@@ -1,17 +1,16 @@
 package com.augurworks.engine.jobs
 
-import com.augurworks.engine.domains.AlgorithmRequest
-import com.augurworks.engine.services.MachineLearningService
+import com.augurworks.engine.services.AutomatedService
 
 class AlgorithmKickOffJob {
 
-	MachineLearningService machineLearningService
+	AutomatedService automatedService
 
 	static triggers = {
-		cron cronExpression: '0 0 5 ? * MON-FRI'
+		cron cronExpression: '0 0 5 ? * *'
 	}
 
 	def execute() {
-		machineLearningService.runAllAlgorithms()
+		automatedService.runAllDailyAlgorithms()
 	}
 }
