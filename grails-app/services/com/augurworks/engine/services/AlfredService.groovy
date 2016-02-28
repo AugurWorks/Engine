@@ -13,6 +13,7 @@ import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SplineRequest
 
 @Transactional
 class AlfredService {
@@ -35,7 +36,8 @@ class AlfredService {
 	}
 
 	String constructPostBody(AlgorithmRequest algorithmRequest) {
-		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, true, true).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+		SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: true)
+		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(splineRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()

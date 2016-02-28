@@ -15,6 +15,7 @@ import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SplineRequest
 
 @Transactional
 class MachineLearningService {
@@ -52,7 +53,8 @@ class MachineLearningService {
 
 	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction) {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
-		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(algorithmRequest, prediction, !prediction).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+		SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: prediction, includeDependent: !prediction)
+		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(splineRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()

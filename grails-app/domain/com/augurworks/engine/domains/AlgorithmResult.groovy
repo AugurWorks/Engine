@@ -31,7 +31,7 @@ class AlgorithmResult {
 	}
 
 	PredictedValue getFutureValue() {
-		Date endDate = this.algorithmRequest.endDate
+		Date endDate = this.algorithmRequest.getEndDate(this.startDate)
 		Collection<PredictedValue> filtered = this.predictedValues.sort { it.date }.grep { PredictedValue value ->
 			value.date > endDate
 		}

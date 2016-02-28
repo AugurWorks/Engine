@@ -6,6 +6,7 @@ import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SplineRequest
 
 class GraphController {
 
@@ -18,7 +19,8 @@ class GraphController {
 	def getData(AlgorithmRequest algorithmRequest) {
 		if (algorithmRequest) {
 			try {
-				Collection<RequestValueSet> data = dataRetrievalService.smartSpline(algorithmRequest, false, true)
+				SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
+				Collection<RequestValueSet> data = dataRetrievalService.smartSpline(splineRequest)
 				render([ok: true, data: data*.toMap()] as JSON)
 			} catch (AugurWorksException e) {
 				log.warn e.getMessage()
@@ -38,7 +40,8 @@ class GraphController {
 		if (algorithmResult) {
 			try {
 				AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
-				Collection<Map> data = dataRetrievalService.smartSpline(algorithmRequest, false, true)*.toMap()
+				SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, now: algorithmResult.dateCreated)
+				Collection<Map> data = dataRetrievalService.smartSpline(splineRequest)*.toMap()
 				String key = algorithmRequest.dependantDataSet.ticker + ' - Prediction'
 				Map prediction = [
 					name: key,

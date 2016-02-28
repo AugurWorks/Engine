@@ -7,6 +7,7 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.helper.Global
+import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.services.AlfredService
 import com.augurworks.engine.services.DataRetrievalService
 import com.augurworks.engine.services.MachineLearningService
@@ -70,7 +71,8 @@ class AlgorithmRequestController {
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
 			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(startOffset, endOffset, unit, dataSets)
 			algorithmRequest.updateDataSets(dataSets, false)
-			dataRetrievalService.smartSpline(algorithmRequest, false, true)
+			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
+			dataRetrievalService.smartSpline(splineRequest)
 			render([ok: true] as JSON)
 		} catch (e) {
 			log.warn e.getMessage()

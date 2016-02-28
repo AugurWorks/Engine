@@ -9,11 +9,11 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import com.amazonaws.services.s3.AmazonS3Client
 import com.augurworks.engine.AugurWorksException
-import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SplineRequest
 
 @Transactional
 class DataRetrievalService {
@@ -24,24 +24,24 @@ class DataRetrievalService {
 	GrailsApplication grailsApplication
 	DataGeneratorService dataGeneratorService
 
-	Collection<RequestValueSet> smartSpline(AlgorithmRequest algorithmRequest, boolean prediction, boolean includeDependent) {
-		Collection<RequestValueSet> rawRequestValues = getRequestValues(algorithmRequest, includeDependent)
+	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
+		Collection<RequestValueSet> rawRequestValues = getRequestValues(splineRequest)
 		Collection<Date> allDates = rawRequestValues*.dates.flatten().unique()
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
-		if (prediction) {
-			int predictionOffset = algorithmRequest.predictionOffset
-			return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate, predictionOffset)
+		if (splineRequest.prediction) {
+			int predictionOffset = splineRequest.algorithmRequest.predictionOffset
+			return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate, predictionOffset)
 		}
-		return expandedRequestValues*.reduceValueRange(algorithmRequest.startDate, algorithmRequest.endDate)
+		return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate)
 	}
 
-	Collection<RequestValueSet> getRequestValues(AlgorithmRequest algorithmRequest, boolean includeDependent) {
-		int minOffset = algorithmRequest.requestDataSets*.offset.min()
-		int maxOffset = algorithmRequest.requestDataSets*.offset.max()
-		Collection<RequestDataSet> requestDataSets = includeDependent ? algorithmRequest.requestDataSets : algorithmRequest.independentRequestDataSets
+	Collection<RequestValueSet> getRequestValues(SplineRequest splineRequest) {
+		int minOffset = splineRequest.algorithmRequest.requestDataSets*.offset.min()
+		int maxOffset = splineRequest.algorithmRequest.requestDataSets*.offset.max()
+		Collection<RequestDataSet> requestDataSets = splineRequest.includeDependent ? splineRequest.algorithmRequest.requestDataSets : splineRequest.algorithmRequest.independentRequestDataSets
 		GParsPool.withPool(requestDataSets.size()) {
 			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
-				return getSingleRequestValues(requestDataSet, algorithmRequest.startDate, algorithmRequest.endDate, algorithmRequest.unit, minOffset, maxOffset)
+				return getSingleRequestValues(requestDataSet, splineRequest.startDate, splineRequest.endDate, splineRequest.algorithmRequest.unit, minOffset, maxOffset)
 			}
 		}
 	}

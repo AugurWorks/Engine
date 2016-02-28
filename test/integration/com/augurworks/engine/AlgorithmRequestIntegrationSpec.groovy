@@ -5,6 +5,7 @@ import grails.test.spock.IntegrationSpec
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.services.DataRetrievalService
 
 class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
@@ -34,13 +35,13 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 	void "test hourly algorithm request retrieval"() {
 		given:
 			AlgorithmRequest hourRequest = createAlgorithmRequest(startOffset, endOffset, '.INX', 'Hour')
-			AlgorithmRequest.metaClass.now = { return Date.parse('MM/dd/yyyy HH:mm', '02/12/2016 ' + timeString) }
 			DataRetrievalService.metaClass.getGoogleAPIText = { String ticker, Date startDate, int intervalMinutes ->
 				return new File('test/resources/hourly-data/Hourly-' + ticker + '.txt').text
 			}
 
 		when:
-			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(hourRequest, prediction, true)
+			SplineRequest splineRequest = new SplineRequest(algorithmRequest: hourRequest, prediction: prediction, now: Date.parse('MM/dd/yyyy HH:mm', '02/12/2016 ' + timeString))
+			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(splineRequest)
 
 		then:
 			notThrown AugurWorksException
@@ -63,13 +64,13 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 	void "test day algorithm request retrieval"() {
 		given:
 			AlgorithmRequest dayRequest = createAlgorithmRequest(startOffset, endOffset, '.INX', 'Day')
-			AlgorithmRequest.metaClass.now = { return Date.parse('MM/dd/yyyy', dateString) }
 			DataRetrievalService.metaClass.getQuandlAPIText = { String quandlCode ->
 				return new File('test/resources/daily-data/' + quandlCode.split('/').join('-') + '.csv').text
 			}
 
 		when:
-			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(dayRequest, prediction, true)
+			SplineRequest splineRequest = new SplineRequest(algorithmRequest: dayRequest, prediction: prediction, now: Date.parse('MM/dd/yyyy', dateString))
+			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(splineRequest)
 
 		then:
 			notThrown AugurWorksException
