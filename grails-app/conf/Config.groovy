@@ -80,7 +80,7 @@ environments {
 		oauth.providers.github.key = localConfig.oauth.github.key.devdeploy
 		oauth.providers.github.secret = localConfig.oauth.github.secret.devdeploy
 		aws.bucket = 'aw-files-devdeploy'
-		augurworks.predictions.channel = '#testing'
+		augurworks.predictions.channel = '#engine-predictions'
 	}
 	production {
 		grails.logging.jul.usebridge = false
