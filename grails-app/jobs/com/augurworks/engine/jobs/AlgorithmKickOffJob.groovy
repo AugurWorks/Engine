@@ -7,7 +7,7 @@ class AlgorithmKickOffJob {
 	AutomatedService automatedService
 
 	static triggers = {
-		cron cronExpression: '0 0 5 ? * *'
+		cron cronExpression: '0 0 3 ? * *'
 	}
 
 	def execute() {
