@@ -167,7 +167,7 @@ class MachineLearningService {
 
 	void createPredictedValues(AlgorithmResult algorithmResult, Collection<Date> predictionDates, Collection<Double> predictions) {
 		predictions.eachWithIndex { Double prediction, int index ->
-			Date date = index < predictionDates.size() ? predictionDates[index] : Common.addDaysToDate(predictionDates.last(), index - predictionDates.size() + 1)
+			Date date = index < predictionDates.size() ? predictionDates[index] : Common.calculatePredictionDate(algorithmResult.algorithmRequest.unit, predictionDates.last(), index - predictionDates.size() + 1)
 			new PredictedValue(date: date, value: prediction, algorithmResult: algorithmResult).save()
 		}
 	}

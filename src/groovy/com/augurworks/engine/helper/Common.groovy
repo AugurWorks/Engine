@@ -4,6 +4,10 @@ import groovy.time.TimeCategory
 
 class Common {
 
+	static Date calculatePredictionDate(String unit, Date date, int offset) {
+		return unit == 'Day' ? addDaysToDate(date, offset) : addHoursToDate(date, offset)
+	}
+
 	static Date addDaysToDate(Date date, int offset) {
 		use (TimeCategory) {
 			return date + offset.days
