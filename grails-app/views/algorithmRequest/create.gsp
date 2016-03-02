@@ -74,9 +74,13 @@
 				<div class="fields">
 					<div class="field">
 						<label>Submit</label>
-						<button onclick="submitRequest()" class="ui positive button">${ algorithmRequest ? 'Update' : 'Create' } Request</button>
+						<button onclick="submitRequest(false)" class="ui positive button">${ algorithmRequest ? 'Update' : 'Create' } Request</button>
 					</div>
 					<g:if test="${ algorithmRequest }">
+						<div class="field">
+							<label>Overwrite</label>
+							<button onclick="submitRequest(true)" class="ui primary button">Overwrite Request</button>
+						</div>
 						<div class="field">
 							<label>Delete</label>
 							<button onclick="deleteRequest()" class="ui negative button">Delete Request</button>

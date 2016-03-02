@@ -14,7 +14,7 @@ function removeRow(me) {
 	$(me).parents('tr').remove();
 }
 
-function submitRequest() {
+function submitRequest(overwrite) {
 	$.ajax({
 		url: '/algorithmRequest/submitRequest',
 		data: {
@@ -22,7 +22,8 @@ function submitRequest() {
 			dataSets: JSON.stringify(getDataSets()),
 			startOffset: $('#startOffset').val(),
 			endOffset: $('#endOffset').val(),
-			unit: $('#unit').val()
+			unit: $('#unit').val(),
+			overwrite: overwrite
 		},
 		success: function(data) {
 			if (data.ok) {
