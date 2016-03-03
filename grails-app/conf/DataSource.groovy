@@ -26,63 +26,26 @@ environments {
 			url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
 		}
 	}
-	devdeploy {
-		dataSource {
-			dbCreate = "update"
-			url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
-			properties {
-				jmxEnabled = true
-				initialSize = 5
-				maxActive = 50
-				minIdle = 5
-				maxIdle = 25
-				maxWait = 10000
-				maxAge = 10 * 60000
-				timeBetweenEvictionRunsMillis = 5000
-				minEvictableIdleTimeMillis = 60000
-				validationQuery = "SELECT 1"
-				validationQueryTimeout = 3
-				validationInterval = 15000
-				testOnBorrow = true
-				testWhileIdle = true
-				testOnReturn = false
-				ignoreExceptionOnPreLoad = true
-				jdbcInterceptors = "ConnectionState;StatementCache(max=200)"
-				defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
-				abandonWhenPercentageFull = 100
-				removeAbandonedTimeout = 120000
-				removeAbandoned = true
-				logAbandoned = false
-			}
-		}
-	}
 	production {
 		dataSource {
-			dbCreate = "update"
-			url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+			driverClassName = "com.mysql.jdbc.Driver"
+			dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
+			username = System.getProperty('RDS_USERNAME') ?: (System.getenv('RDS_USERNAME') ?: 'root')
+			password = System.getProperty('RDS_PASSWORD') ?: System.getenv('RDS_PASSWORD')
+			String host = System.getProperty('RDS_HOSTNAME') ?: System.getenv('RDS_HOSTNAME')
+			String port = System.getProperty('RDS_PORT') ?: (System.getenv('RDS_PORT') ?: '3306')
+			String dbName = System.getProperty('RDS_DB_NAME') ?: (System.getenv('RDS_DB_NAME') ?: 'engine')
+			url = "jdbc:mysql://$host:$port/$dbName?useUnicode=true&autoReconnect=true"
+			pooled = true
 			properties {
-				jmxEnabled = true
-				initialSize = 5
-				maxActive = 50
-				minIdle = 5
-				maxIdle = 25
-				maxWait = 10000
-				maxAge = 10 * 60000
-				timeBetweenEvictionRunsMillis = 5000
-				minEvictableIdleTimeMillis = 60000
-				validationQuery = "SELECT 1"
-				validationQueryTimeout = 3
-				validationInterval = 15000
-				testOnBorrow = true
-				testWhileIdle = true
-				testOnReturn = false
-				ignoreExceptionOnPreLoad = true
-				jdbcInterceptors = "ConnectionState;StatementCache(max=200)"
-				defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
-				abandonWhenPercentageFull = 100
-				removeAbandonedTimeout = 120000
-				removeAbandoned = true
-				logAbandoned = false
+				maxActive = -1
+				minEvictableIdleTimeMillis=1800000
+				timeBetweenEvictionRunsMillis=1800000
+				numTestsPerEvictionRun=3
+				testOnBorrow=true
+				testWhileIdle=true
+				testOnReturn=true
+				validationQuery="SELECT 1"
 			}
 		}
 	}

@@ -28,12 +28,14 @@ grails.project.dependency.resolution = {
 	dependencies {
 		runtime 'com.amazonaws:aws-java-sdk:1.10.6'
 		compile "org.codehaus.gpars:gpars:1.1.0"
+		runtime 'mysql:mysql-connector-java:5.1.22'
 	}
 
 	plugins {
 		build ":tomcat:7.0.54"
 
 		compile ":scaffolding:2.1.2"
+		runtime ":database-migration:1.4.1"
 		compile ":cache:1.1.1"
 		compile ":quartz:1.0.1"
 		compile ":oauth:2.6.1"
