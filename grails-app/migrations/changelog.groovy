@@ -263,36 +263,4 @@ databaseChangeLog = {
 			column(name: "username")
 		}
 	}
-
-	changeSet(author: "TheConnMan (generated)", id: "1456965619978-11") {
-		addForeignKeyConstraint(baseColumnNames: "dependant_data_set_id", baseTableName: "algorithm_request", baseTableSchemaName: "engine", constraintName: "FK_5vh8j9pc6pb65v5u5okrc3d", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "data_set", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
-	}
-
-	changeSet(author: "TheConnMan (generated)", id: "1456965619978-12") {
-		addForeignKeyConstraint(baseColumnNames: "algorithm_request_id", baseTableName: "algorithm_result", baseTableSchemaName: "engine", constraintName: "FK_ju10bk16m22xkb3l4cgch54eb", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "algorithm_request", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
-	}
-
-	changeSet(author: "TheConnMan (generated)", id: "1456965619978-13") {
-		addForeignKeyConstraint(baseColumnNames: "machine_learning_model_id", baseTableName: "algorithm_result", baseTableSchemaName: "engine", constraintName: "FK_lpq95003culfbjr8631x685xg", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "machine_learning_model", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
-	}
-
-	changeSet(author: "TheConnMan (generated)", id: "1456965619978-14") {
-		addForeignKeyConstraint(baseColumnNames: "algorithm_result_id", baseTableName: "predicted_value", baseTableSchemaName: "engine", constraintName: "FK_b19ndwm4s0wfw525je79qd46l", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "algorithm_result", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
-	}
-
-	changeSet(author: "TheConnMan (generated)", id: "1456965619978-15") {
-		addForeignKeyConstraint(baseColumnNames: "algorithm_request_id", baseTableName: "request_data_set", baseTableSchemaName: "engine", constraintName: "FK_cooqrowbpg2g86o80pu790ptb", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "algorithm_request", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
-	}
-
-	changeSet(author: "TheConnMan (generated)", id: "1456965619978-16") {
-		addForeignKeyConstraint(baseColumnNames: "data_set_id", baseTableName: "request_data_set", baseTableSchemaName: "engine", constraintName: "FK_j82t2mgnxmtcb86yqcpl7nbhj", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "data_set", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
-	}
-
-	changeSet(author: "TheConnMan (generated)", id: "1456965619978-17") {
-		addForeignKeyConstraint(baseColumnNames: "role_id", baseTableName: "user_role", baseTableSchemaName: "engine", constraintName: "FK_it77eq964jhfqtu54081ebtio", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "role", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
-	}
-
-	changeSet(author: "TheConnMan (generated)", id: "1456965619978-18") {
-		addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "user_role", baseTableSchemaName: "engine", constraintName: "FK_apcc8lxk2xnug8377fatvbn04", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
-	}
 }
