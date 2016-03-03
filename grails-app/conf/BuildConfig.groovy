@@ -35,6 +35,7 @@ grails.project.dependency.resolution = {
 		build ":tomcat:7.0.54"
 
 		compile ":scaffolding:2.1.2"
+		runtime ":database-migration:1.4.1"
 		compile ":cache:1.1.1"
 		compile ":quartz:1.0.1"
 		compile ":oauth:2.6.1"

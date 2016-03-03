@@ -54,6 +54,8 @@ grails.exceptionresolver.params.exclude = ['password']
 
 grails.hibernate.cache.queries = false
 
+grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
+
 alfred.url = (localConfig.alfred.url ?: 'http://localhost:8080')
 logging.files = System.getProperty('ENGINE_LOGGING_FILES') ?: false
 
@@ -81,6 +83,7 @@ environments {
 		oauth.providers.github.secret = localConfig.oauth.github.secret
 		aws.bucket = System.getProperty('BUCKET') ?: (System.getenv('BUCKET') ?: 'aw-files-dev')
 		augurworks.predictions.channel = System.getProperty('CHANNEL') ?: (System.getenv('CHANNEL') ?: '#testing')
+		grails.plugin.databasemigration.updateOnStart = true
 	}
 }
 
