@@ -263,4 +263,6 @@ databaseChangeLog = {
 			column(name: "username")
 		}
 	}
+
+	include file: 'half-hour-runs.groovy'
 }

@@ -21,7 +21,7 @@ class AlgorithmRequest {
 		endOffset()
 		dateCreated()
 		dependantDataSet()
-		unit inList: ['Day', 'Hour']
+		unit inList: ['Day', 'Hour', 'Half Hour']
 	}
 
 	static mapping = {
@@ -52,6 +52,12 @@ class AlgorithmRequest {
 					return DateUtils.truncate(now, Calendar.DATE) + this[field].days
 				case 'Hour':
 					Date date = DateUtils.truncate(now, Calendar.HOUR) + this[field].hours
+					if (now[Calendar.MINUTE] >= 30) {
+						date[Calendar.MINUTE] = 30
+					}
+					return date
+				case 'Half Hour':
+					Date date = DateUtils.truncate(now, Calendar.HOUR) + (30 * this[field]).minutes
 					if (now[Calendar.MINUTE] >= 30) {
 						date[Calendar.MINUTE] = 30
 					}

@@ -2,21 +2,22 @@ package com.augurworks.engine.helper
 
 import groovy.time.TimeCategory
 
+import com.augurworks.engine.AugurWorksException
+
 class Common {
 
 	static Date calculatePredictionDate(String unit, Date date, int offset) {
-		return unit == 'Day' ? addDaysToDate(date, offset) : addHoursToDate(date, offset)
-	}
-
-	static Date addDaysToDate(Date date, int offset) {
 		use (TimeCategory) {
-			return date + offset.days
-		}
-	}
-
-	static Date addHoursToDate(Date date, int offset) {
-		use (TimeCategory) {
-			return date + offset.hours
+			switch (unit) {
+				case 'Day':
+					return date + offset.days
+				case 'Hour':
+					return date + offset.hours
+				case 'Half Hour':
+					return date + (30 * offset).minutes
+				default:
+					throw new AugurWorksException('Unknown prediction date unit: ' + unit)
+			}
 		}
 	}
 

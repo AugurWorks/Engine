@@ -55,6 +55,11 @@ class DataRetrievalService {
 			case 'Hour':
 				values = getGoogleData(requestDataSet.dataSet.ticker, startDate.clone(), 60)
 				break
+			case 'Half Hour':
+				values = getGoogleData(requestDataSet.dataSet.ticker, startDate.clone(), 30)
+				break
+			default:
+				throw new AugurWorksException('Unknown prediction date unit: ' + unit)
 		}
 		return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).aggregateValues(requestDataSet.aggregation).filterValues(startDate, endDate, minOffset, maxOffset)
 	}
