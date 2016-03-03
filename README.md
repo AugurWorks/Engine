@@ -4,7 +4,7 @@ AugurWorks UI Engine 2.0
 ## Deployment
 A production environment can be built which uses environment variables for all customizable config values. The environment variables are listed below:
 
-- **SERVER_URL** - Full deployed application URL
+- **SERVER_URL** (default: http://[local-ip]:8080) - Full deployed application URL
 - **BUCKET** (default: aw-files-dev) - Bucket for log file placement
 - **CHANNEL** (default: #testing) - Slack channel for prediction output
 - **RDS_USERNAME** (default: root) - MySQL username
