@@ -74,21 +74,13 @@ environments {
 		aws.bucket = 'aw-files-test'
 		augurworks.predictions.channel = '#testing'
 	}
-	devdeploy {
-		grails.logging.jul.usebridge = false
-		grails.serverURL = "http://engine-dev.elasticbeanstalk.com"
-		oauth.providers.github.key = localConfig.oauth.github.key.devdeploy
-		oauth.providers.github.secret = localConfig.oauth.github.secret.devdeploy
-		aws.bucket = 'aw-files-devdeploy'
-		augurworks.predictions.channel = '#engine-predictions'
-	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = "http://engine.elasticbeanstalk.com"
-		oauth.providers.github.key = localConfig.oauth.github.key.prod
-		oauth.providers.github.secret = localConfig.oauth.github.secret.prod
-		aws.bucket = 'aw-files'
-		augurworks.predictions.channel = '#engine-predictions'
+		grails.serverURL = System.getProperty('SERVER_URL') ?: System.getenv('SERVER_URL')
+		oauth.providers.github.key = localConfig.oauth.github.key
+		oauth.providers.github.secret = localConfig.oauth.github.secret
+		aws.bucket = System.getProperty('BUCKET') ?: (System.getenv('BUCKET') ?: 'aw-files-dev')
+		augurworks.predictions.channel = System.getProperty('CHANNEL') ?: (System.getenv('CHANNEL') ?: '#testing')
 	}
 }
 
@@ -116,17 +108,6 @@ log4j = {
 		rollingFile name: 'info', file: 'logs/info.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.INFO
 		rollingFile name: 'warn', file: 'logs/warn.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.WARN
 		appender new SlackAppender(name: 'slackAppender', layout: pattern(conversionPattern: '%c{2} - %m%n'), threshold: org.apache.log4j.Level.ERROR)
-	}
-
-	environments {
-		production {
-			error 'appender': [
-				'grails.app.controllers.com.augurworks.engine',
-				'grails.app.services.com.augurworks.engine',
-				'grails.app.conf.com.augurworks.engine',
-				'grails.app.domain.com.augurworks.engine'
-			]
-		}
 	}
 
 	warn 'warn': [

@@ -1,6 +1,18 @@
 # Engine
 AugurWorks UI Engine 2.0
 
+## Deployment
+A production environment can be built which uses environment variables for all customizable config values. The environment variables are listed below:
+
+- **SERVER_URL** - Full deployed application URL
+- **BUCKET** (default: aw-files-dev) - Bucket for log file placement
+- **CHANNEL** (default: #testing) - Slack channel for prediction output
+- **RDS_USERNAME** (default: root) - MySQL username
+- **RDS_PASSWORD** - MySQL password
+- **RDS_HOSTNAME** - MySQL host
+- **RDS_PORT** (default: 3306) - MySQL port number
+- **RDS_DB_NAME** (default: engine) - MySQL DB name
+
 ## Local Development
 ### Dependencies
 - [Grails 2.4.5](https://grails.org/download.html) (SKDMAN! which is mentioned on that page is highly recommended)
@@ -10,6 +22,12 @@ AugurWorks UI Engine 2.0
 After cloning the repo copy **UserConfig.groovy.example** to **UserConfig.groovy** and move it one folder up from this project's root folder. Fill in the appropriate values. Optional config items are marked.
 
 **Engine** uses GitHub OAuth for authentication, so you'll need to set up a [new GitHub OAuth application](https://github.com/settings/applications/new) and place the keys in your **UserConfig.groovy**. The **Authorization callback URL** should be [http://[local-machine-IP]:8080/oauth/github/callback](http://[local-machine-IP]:8080/oauth/github/callback).
+
+### Database
+Run a local MySQL instance with Docker by running the following:
+```bash
+docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=docker mysql
+```
 
 ### Local Docker
 An example local Docker `run` command is:
