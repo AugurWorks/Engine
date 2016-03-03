@@ -49,7 +49,7 @@
 					</div>
 					<div class="field">
 						<label>Time Period</label>
-						<g:select name="unit" from="${ ['Day', 'Hour'] }" value="${ algorithmRequest?.unit }" />
+						<g:select name="unit" from="${ ['Day', 'Hour', 'Half Hour'] }" value="${ algorithmRequest?.unit }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>

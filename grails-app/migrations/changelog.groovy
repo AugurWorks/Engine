@@ -295,4 +295,6 @@ databaseChangeLog = {
 	changeSet(author: "TheConnMan (generated)", id: "1456965619978-18") {
 		addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "user_role", baseTableSchemaName: "engine", constraintName: "FK_apcc8lxk2xnug8377fatvbn04", deferrable: "false", initiallyDeferred: "false", onDelete: "NO ACTION", onUpdate: "NO ACTION", referencedColumnNames: "id", referencedTableName: "user", referencedTableSchemaName: "engine", referencesUniqueColumn: "false")
 	}
+
+	include file: 'half-hour-runs.groovy'
 }
