@@ -78,7 +78,7 @@ environments {
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: (localConfig.local.ip + ':8080'))
+		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: (localConfig.local.ip ? localConfig.local.ip + ':8080' : null))
 		oauth.providers.github.key = localConfig.oauth.github.key
 		oauth.providers.github.secret = localConfig.oauth.github.secret
 		aws.bucket = System.getProperty('BUCKET') ?: (System.getenv('BUCKET') ?: 'aw-files-dev')
