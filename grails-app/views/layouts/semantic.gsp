@@ -37,8 +37,8 @@
 				</a>
 				<sec:ifAllGranted roles="ROLE_ADMIN">
 					<g:link controller="algorithmRequest" class="item">
-				   		<i class="icon cubes"></i> List Data Sets
-				   	</g:link>
+						<i class="icon cubes"></i> List Data Sets
+					</g:link>
 					<div class="ui dropdown item">
 						<i class="icon line chart"></i>
 						Graphs <i class="icon dropdown"></i>
@@ -50,24 +50,24 @@
 						<i class="icon setting"></i>
 						Admin Actions <i class="icon dropdown"></i>
 						<div class="menu">
-						   <a class="item" href="/controllers">Internal Controllers</a>
+							<a class="item" href="/controllers">Internal Controllers</a>
 						</div>
 					</div>
 					<div class="ui dropdown item">
 						<i class="building outline icon"></i>
 						Scaffolding <i class="icon dropdown"></i>
 						<div class="menu">
-						   <g:link controller="algorithmResult" class="item">Algorithm Result</g:link>
-						   <g:link controller="dataSet" class="item">Data Set</g:link>
-						   <g:link controller="predictedValue" class="item">Predicted Value</g:link>
-						   <g:link controller="requestDataSet" class="item">Request Data Set</g:link>
+							<g:link controller="algorithmResult" class="item">Algorithm Result</g:link>
+							<g:link controller="dataSet" class="item">Data Set</g:link>
+							<g:link controller="predictedValue" class="item">Predicted Value</g:link>
+							<g:link controller="requestDataSet" class="item">Request Data Set</g:link>
 						</div>
 					</div>
 				</sec:ifAllGranted>
 				<div class="right menu">
 					<sec:ifLoggedIn>
 						<div class="item">
-							 <sec:username/>
+							 <sec:username />
 						</div>
 						<aw:avatar class="ui avatar circular image" style="width: 40px; height: 40px; float: right;" />
 					</sec:ifLoggedIn>
