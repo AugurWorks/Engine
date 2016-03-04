@@ -20,6 +20,7 @@ class BootStrap {
 			createUser('TheConnMan', adminRole)
 			createUser('safreiberg', adminRole)
 			createUser('augurworks1', adminRole)
+			createUser('gbcolema11', adminRole)
 
 			dataGeneratorService.importQuandlDataSets()
 			dataGeneratorService.importLocalDataSets()
