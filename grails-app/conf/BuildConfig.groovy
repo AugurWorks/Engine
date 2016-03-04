@@ -43,6 +43,7 @@ grails.project.dependency.resolution = {
 		runtime ":hibernate4:4.3.8.1"
 		compile ":asset-pipeline:2.3.2"
 		compile ":spring-security-core:2.0-RC5"
+		compile ":spring-security-ui:1.0-RC2"
 
 		compile ":slack-logger:1.0.1"
 		compile ":build-test-data:2.4.0"
