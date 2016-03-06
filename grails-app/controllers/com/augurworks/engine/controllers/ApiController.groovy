@@ -39,6 +39,17 @@ class ApiController {
 					}.join('\n')
 					slashMessage.withText('Algorithm Request List').withMessage(message)
 					break
+				case 'running':
+					String message = AlgorithmResult.findAllByComplete(false, [sort: 'dateCreated']).collect { AlgorithmResult algorithmResult ->
+						return [
+							algorithmResult.modelType + ' run of ',
+							algorithmResult.algorithmRequest.name + ' started at ',
+							algorithmResult.dateCreated.sort().first().format('MM/dd/yy HH:mm') + ' ',
+							'(<' + serverUrl + '/algorithmRequest/show/' + algorithmResult.algorithmRequest.id + '|View>)'
+						].join('')
+					}.join('\n') ?: 'No currently running requests'
+					slashMessage.withText('Running Request List').withMessage(message)
+					break
 				case 'ml':
 				case 'alfred':
 					String requestName = commands.tail().join(' ')
@@ -68,6 +79,7 @@ class ApiController {
 					String message = [
 						'help - This help message',
 						'list - List all existing requests and basic information about them',
+						'running - List all running requests',
 						'(run) alfred (for) [request name] - Kick off an Alfred run for a given request',
 						'(run) ml (for) [request name] - Kick off a Machine Learning run for a given request'
 					].join('\n')
