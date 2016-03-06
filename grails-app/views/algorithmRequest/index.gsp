@@ -14,7 +14,7 @@
 				<g:each in="${ requests }" var="request">
 					<g:link controller="algorithmRequest" action="show" id="${ request.id }" class="card">
 						<div class="content">
-							<div class="header">Request ${ request.id }</div>
+							<div class="header">${ request.toString() }</div>
 							<div class="meta">
 								<span data-title="Date Created"><i class="plus icon"></i> <abbr class="timeago" title="${ request.dateCreated }"></abbr></span>
 								<span data-title="Request Start Date"><i class="green calendar icon"></i> ${ request.startDate.format(Global.DATE_FORMAT) }</span>

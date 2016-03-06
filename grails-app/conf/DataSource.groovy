@@ -34,7 +34,7 @@ environments {
 			password = System.getProperty('RDS_PASSWORD') ?: System.getenv('RDS_PASSWORD')
 			String host = System.getProperty('RDS_HOSTNAME') ?: System.getenv('RDS_HOSTNAME')
 			String port = System.getProperty('RDS_PORT') ?: (System.getenv('RDS_PORT') ?: '3306')
-			String dbName = System.getProperty('RDS_DB_NAME') ?: (System.getenv('RDS_DB_NAME') ?: 'ebdb')
+			String dbName = System.getProperty('RDS_DB_NAME') ?: (System.getenv('RDS_DB_NAME') ?: 'engine')
 			url = "jdbc:mysql://$host:$port/$dbName?useUnicode=true&autoReconnect=true"
 			pooled = true
 			properties {

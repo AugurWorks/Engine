@@ -8,6 +8,7 @@ import com.augurworks.engine.AugurWorksException
 
 class AlgorithmRequest {
 
+	String name
 	int startOffset
 	int endOffset
 	Date dateCreated
@@ -17,6 +18,7 @@ class AlgorithmRequest {
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult]
 
 	static constraints = {
+		name unique: true
 		startOffset()
 		endOffset()
 		dateCreated()
@@ -30,7 +32,7 @@ class AlgorithmRequest {
 	}
 
 	String toString() {
-		requestDataSets*.toString().sort().join(', ')
+		name
 	}
 
 	String getName() {
@@ -70,7 +72,7 @@ class AlgorithmRequest {
 		String dataSetString = this.requestDataSets.sort { it.dataSet.ticker }.collect { RequestDataSet requestDataSet ->
 			return requestDataSet.dataSet.ticker + (requestDataSet.offset >= 0 ? '+' : '') + requestDataSet.offset
 		}.join(', ')
-		return (-1 * this.startOffset) + ' to ' + (-1 * this.endOffset) + ' ' + this.unit.toLowerCase() + '(s) ago: ' + dataSetString
+		return this.toString() + ': ' + (-1 * this.startOffset) + ' to ' + (-1 * this.endOffset) + ' ' + this.unit.toLowerCase() + '(s) ago'
 	}
 
 	void updateFields(Map parameters) {

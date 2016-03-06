@@ -36,9 +36,13 @@
 				</div>
 			</div>
 			<div class="ui form">
-				<h3 class="ui dividing header">Boundary Dates</h3>
+				<h3 class="ui dividing header">Name and Boundary Dates</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
-				<div class="two fields">
+				<div class="four fields">
+					<div class="field">
+						<label>Start Offset</label>
+						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
+					</div>
 					<div class="field">
 						<label>Start Offset</label>
 						<g:field type="number" name="startOffset" value="${ algorithmRequest?.startOffset ?: -14 }" />

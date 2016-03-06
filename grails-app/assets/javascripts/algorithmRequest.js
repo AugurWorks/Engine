@@ -19,6 +19,7 @@ function submitRequest(overwrite) {
 		url: '/algorithmRequest/submitRequest',
 		data: {
 			id: $('#id').val(),
+			name: $('#name').val(),
 			dataSets: JSON.stringify(getDataSets()),
 			startOffset: $('#startOffset').val(),
 			endOffset: $('#endOffset').val(),
