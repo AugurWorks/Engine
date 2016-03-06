@@ -105,6 +105,14 @@ augurworks {
 	datePathFormat = 'yyyy/MM/dd/'
 }
 
+grails.cache.config = {
+	cache {
+		name 'externalData'
+		overflowToDisk true
+		timeToLiveSeconds 300
+	}
+}
+
 log4j = {
 	appenders {
 		console name: 'stdout', threshold: org.apache.log4j.Level.ERROR
