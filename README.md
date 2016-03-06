@@ -11,7 +11,7 @@ A production environment can be built which uses environment variables for all c
 - **RDS_PASSWORD** - MySQL password
 - **RDS_HOSTNAME** - MySQL host
 - **RDS_PORT** (default: 3306) - MySQL port number
-- **RDS_DB_NAME** (default: ebdb) - MySQL DB name
+- **RDS_DB_NAME** (default: engine) - MySQL DB name
 
 ## Local Development
 ### Dependencies
