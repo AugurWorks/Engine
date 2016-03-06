@@ -56,7 +56,11 @@ class AlgorithmRequestController {
 			if (overwrite && id) {
 				AlgorithmRequest.get(id)?.delete(flush: true)
 			}
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, unit, dataSets).save()
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, unit, dataSets)
+			algorithmRequest.save()
+			if (algorithmRequest.hasErrors()) {
+				throw new AugurWorksException('The request could not be created, please check that the name is unique.')
+			}
 			algorithmRequest.updateDataSets(dataSets)
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
