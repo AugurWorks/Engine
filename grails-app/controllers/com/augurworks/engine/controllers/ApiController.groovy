@@ -35,6 +35,14 @@ class ApiController {
 				render(contentType: 'application/json') {
 					new SlashMessage('Algorithm Request List').withMessage(message).toJson()
 				}
+			} else {
+				String message = [
+					'[help] - This help message',
+					'[list] - List all existing requests and basic information about them'
+				].join('\n')
+				render(contentType: 'application/json') {
+					new SlashMessage('Engine Help').withMessage(message).toJson()
+				}
 			}
 		} catch (AugurWorksException e) {
 			render(status: 500)
