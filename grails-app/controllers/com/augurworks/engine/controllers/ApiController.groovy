@@ -7,6 +7,7 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.services.AutomatedService
+import com.augurworks.engine.slack.Attachment
 import com.augurworks.engine.slack.SlashMessage
 
 class ApiController {
@@ -37,7 +38,7 @@ class ApiController {
 							'(<' + serverUrl + '/algorithmRequest/show/' + algorithmRequest.id + '|View>)'
 						].join('')
 					}.join('\n')
-					slashMessage.withText('Algorithm Request List').withMessage(message)
+					slashMessage.withText('Algorithm Request List').withAttachment(new Attachment(message))
 					break
 				case 'running':
 					String message = AlgorithmResult.findAllByComplete(false, [sort: 'dateCreated']).collect { AlgorithmResult algorithmResult ->
@@ -48,7 +49,7 @@ class ApiController {
 							'(<' + serverUrl + '/algorithmRequest/show/' + algorithmResult.algorithmRequest.id + '|View>)'
 						].join('')
 					}.join('\n') ?: 'No currently running requests'
-					slashMessage.withText('Running Request List').withMessage(message)
+					slashMessage.withText('Running Request List').withAttachment(new Attachment(message))
 					break
 				case 'ml':
 				case 'alfred':
@@ -83,7 +84,7 @@ class ApiController {
 						'(run) alfred (for) [request name] - Kick off an Alfred run for a given request',
 						'(run) ml (for) [request name] - Kick off a Machine Learning run for a given request'
 					].join('\n')
-					slashMessage.withText('Engine Help').withMessage(message)
+					slashMessage.withText('Engine Help').withAttachment(new Attachment(message))
 					break
 			}
 			render(contentType: 'application/json') {
