@@ -5,11 +5,14 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
+import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.SlashMessage
+import com.augurworks.engine.services.AutomatedService
 
 class ApiController {
 
 	GrailsApplication grailsApplication
+	AutomatedService automatedService
 
 	def slack(String token, String user_name, String text, String response_url) {
 		try {
@@ -36,10 +39,31 @@ class ApiController {
 					}.join('\n')
 					slashMessage.withText('Algorithm Request List').withMessage(message)
 					break
+				case 'ml':
+				case 'alfred':
+					String requestName = commands.tail().join(' ')
+					AlgorithmRequest algorithmRequest = AlgorithmRequest.findByNameIlike(requestName)
+					if (algorithmRequest) {
+						try {
+							automatedService.runAlgorithm(algorithmRequest, Global.MODEL_TYPES[Global.SLASH_MAP[commands.first()]])
+							slashMessage.withText(user_name + ' kicked off Alfred run for ' + requestName)
+						} catch (AugurWorksException e) {
+							slashMessage.withText('Error: ' + e.getMessage())
+						} catch (e) {
+							log.error e
+							log.info e.getStackTrace().join('\n')
+							slashMessage.withText('An error has occured, please validate the request in the Engine application')
+						}
+					} else {
+						slashMessage.withText('No request found with the name ' + requestName)
+					}
+					break
 				default:
 					String message = [
-						'[help] - This help message',
-						'[list] - List all existing requests and basic information about them'
+						'help - This help message',
+						'list - List all existing requests and basic information about them',
+						'alfred [request name] - Kick off an Alfred run for a given request',
+						'ml [request name] - Kick off a Machine Learning run for a given request'
 					].join('\n')
 					slashMessage.withText('Engine Help').withMessage(message)
 					break

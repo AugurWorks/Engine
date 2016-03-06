@@ -2,6 +2,7 @@ package com.augurworks.engine.helper
 
 class Global {
 
+	static final Map SLASH_MAP = ['ml': 0, 'alfred': 1]
 	static final Collection<String> MODEL_TYPES = ['Machine Learning', 'Alfred']
 
 	static final String S3_DATE_FORMAT = 'yyyy/MM/dd/HH/mm-ss-'
