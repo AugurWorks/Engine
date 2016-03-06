@@ -50,14 +50,14 @@ class AlgorithmRequestController {
 		[dataSets: DataSet.list()*.toString(), algorithmRequest: algorithmRequest]
 	}
 
-	def submitRequest(int startOffset, int endOffset, String unit, Long id, boolean overwrite) {
+	def submitRequest(String name, int startOffset, int endOffset, String unit, Long id, boolean overwrite) {
 		try {
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(startOffset, endOffset, unit, dataSets).save()
-			algorithmRequest.updateDataSets(dataSets)
 			if (overwrite && id) {
 				AlgorithmRequest.get(id)?.delete(flush: true)
 			}
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, unit, dataSets).save()
+			algorithmRequest.updateDataSets(dataSets)
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
 			log.error e.getMessage()
@@ -81,9 +81,10 @@ class AlgorithmRequestController {
 		}
 	}
 
-	private AlgorithmRequest constructAlgorithmRequest(int startOffset, int endOffset, String unit, Collection<Map> dataSets) {
+	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, String unit, Collection<Map> dataSets) {
 		Map dependantDataSetMap = dataSets.grep { it.dependant }.first()
 		Map parameters = [
+			name: name,
 			startOffset: startOffset,
 			endOffset: endOffset,
 			unit: unit,
