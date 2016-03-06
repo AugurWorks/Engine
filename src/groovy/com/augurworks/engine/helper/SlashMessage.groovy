@@ -1,7 +1,6 @@
 package com.augurworks.engine.helper
 
 import grails.plugins.rest.client.RestBuilder
-import grails.util.Holders
 
 class SlashMessage {
 
@@ -10,6 +9,7 @@ class SlashMessage {
 	String title
 	String message
 	String color
+	String url
 
 	SlashMessage withText(String text) {
 		this.text = text
@@ -36,6 +36,11 @@ class SlashMessage {
 		return this
 	}
 
+	SlashMessage withUrl(String url) {
+		this.url = url
+		return this
+	}
+
 	Map toJson() {
 		Map map = [
 			text: this.text,
@@ -51,5 +56,11 @@ class SlashMessage {
 			]
 		}
 		return map
+	}
+
+	void post() {
+		new RestBuilder().post(this.url) {
+			json this.toJson()
+		}
 	}
 }

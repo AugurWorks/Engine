@@ -40,6 +40,7 @@ grails.project.dependency.resolution = {
 		compile ":quartz:1.0.1"
 		compile ":oauth:2.6.1"
 		compile "org.grails.plugins:cache-ehcache:1.0.5"
+		compile "org.grails.plugins:executor:0.3"
 
 		runtime ":hibernate4:4.3.8.1"
 		compile ":asset-pipeline:2.3.2"

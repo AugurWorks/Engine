@@ -44,16 +44,22 @@ class ApiController {
 					String requestName = commands.tail().join(' ')
 					AlgorithmRequest algorithmRequest = AlgorithmRequest.findByNameIlike(requestName)
 					if (algorithmRequest) {
-						try {
-							automatedService.runAlgorithm(algorithmRequest, Global.MODEL_TYPES[Global.SLASH_MAP[commands.first()]])
-							slashMessage.withText(user_name + ' kicked off Alfred run for ' + requestName)
-						} catch (AugurWorksException e) {
-							slashMessage.withText('Error: ' + e.getMessage())
-						} catch (e) {
-							log.error e
-							log.info e.getStackTrace().join('\n')
-							slashMessage.withText('An error has occured, please validate the request in the Engine application')
+						String runType = Global.MODEL_TYPES[Global.SLASH_MAP[commands.first()]]
+						runAsync {
+							SlashMessage defered = new SlashMessage().withUrl(response_url)
+							try {
+								automatedService.runAlgorithm(AlgorithmRequest.findByNameIlike(requestName), runType)
+								defered.withText(user_name + ' kicked off a(n)' + runType + ' run for ' + requestName).isInChannel()
+							} catch (AugurWorksException e) {
+								defered.withText('Error: ' + e.getMessage())
+							} catch (e) {
+								log.error e
+								log.info e.getStackTrace().join('\n')
+								defered.withText('An error has occured, please validate the request in the Engine application')
+							}
+							defered.post()
 						}
+						slashMessage.withText('Kicking off ' + runType + ' for ' + requestName)
 					} else {
 						slashMessage.withText('No request found with the name ' + requestName)
 					}
