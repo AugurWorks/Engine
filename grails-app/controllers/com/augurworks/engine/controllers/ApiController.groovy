@@ -44,7 +44,7 @@ class ApiController {
 						return [
 							algorithmResult.modelType + ' run of ',
 							algorithmResult.algorithmRequest.name + ' started at ',
-							algorithmResult.dateCreated.sort().first().format('MM/dd/yy HH:mm') + ' ',
+							algorithmResult.dateCreated.format('MM/dd/yy HH:mm') + ' ',
 							'(<' + serverUrl + '/algorithmRequest/show/' + algorithmResult.algorithmRequest.id + '|View>)'
 						].join('')
 					}.join('\n') ?: 'No currently running requests'
