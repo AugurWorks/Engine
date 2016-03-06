@@ -8,6 +8,7 @@ import com.augurworks.engine.AugurWorksException
 
 class AlgorithmRequest {
 
+	String name
 	int startOffset
 	int endOffset
 	Date dateCreated
@@ -17,6 +18,7 @@ class AlgorithmRequest {
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult]
 
 	static constraints = {
+		name unique: true
 		startOffset()
 		endOffset()
 		dateCreated()
@@ -30,7 +32,7 @@ class AlgorithmRequest {
 	}
 
 	String toString() {
-		requestDataSets*.toString().sort().join(', ')
+		name
 	}
 
 	String getName() {
