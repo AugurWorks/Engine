@@ -21,28 +21,31 @@ class ApiController {
 				throw new AugurWorksException('No commands specified')
 			}
 			String serverUrl = grailsApplication.config.grails.serverURL
-			if (commands.first() == 'list') {
-				String message = AlgorithmRequest.list(sort: 'name').collect { AlgorithmRequest algorithmRequest ->
-					Collection<AlgorithmResult> results = algorithmRequest.algorithmResults
-					return [
-						algorithmRequest.name + ': ',
-						results.size() + ' runs, ',
-						algorithmRequest.requestDataSets.size() + ' data sets, ',
-						'Last run: ' + (results.size() > 0 ? results*.dateCreated.sort().first().format('MM/dd/yy HH:mm') : 'never') + ' ',
-						'(<' + serverUrl + '/algorithmRequest/show/' + algorithmRequest.id + '|View>)'
-					].join('')
-				}.join('\n')
-				render(contentType: 'application/json') {
-					new SlashMessage('Algorithm Request List').withMessage(message).toJson()
-				}
-			} else {
-				String message = [
-					'[help] - This help message',
-					'[list] - List all existing requests and basic information about them'
-				].join('\n')
-				render(contentType: 'application/json') {
-					new SlashMessage('Engine Help').withMessage(message).toJson()
-				}
+			SlashMessage slashMessage = new SlashMessage()
+			switch (commands.first().toLowerCase()) {
+				case 'list':
+					String message = AlgorithmRequest.list(sort: 'name').collect { AlgorithmRequest algorithmRequest ->
+						Collection<AlgorithmResult> results = algorithmRequest.algorithmResults
+						return [
+							algorithmRequest.name + ': ',
+							results.size() + ' runs, ',
+							algorithmRequest.requestDataSets.size() + ' data sets, ',
+							'Last run: ' + (results.size() > 0 ? results*.dateCreated.sort().first().format('MM/dd/yy HH:mm') : 'never') + ' ',
+							'(<' + serverUrl + '/algorithmRequest/show/' + algorithmRequest.id + '|View>)'
+						].join('')
+					}.join('\n')
+					slashMessage.withText('Algorithm Request List').withMessage(message)
+					break
+				default:
+					String message = [
+						'[help] - This help message',
+						'[list] - List all existing requests and basic information about them'
+					].join('\n')
+					slashMessage.withText('Engine Help').withMessage(message)
+					break
+			}
+			render(contentType: 'application/json') {
+				slashMessage.toJson()
 			}
 		} catch (AugurWorksException e) {
 			render(status: 500)

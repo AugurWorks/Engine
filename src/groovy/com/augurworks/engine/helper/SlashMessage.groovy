@@ -6,12 +6,19 @@ import grails.util.Holders
 class SlashMessage {
 
 	String text
+	boolean inChannel = false
 	String title
 	String message
 	String color
 
-	SlashMessage(String text) {
+	SlashMessage withText(String text) {
 		this.text = text
+		return this
+	}
+
+	SlashMessage isInChannel() {
+		this.inChannel = true
+		return this
 	}
 
 	SlashMessage withTitle(String title) {
@@ -32,6 +39,7 @@ class SlashMessage {
 	Map toJson() {
 		Map map = [
 			text: this.text,
+			response_type: this.inChannel ? 'in_channel' : 'ephemeral'
 		]
 		if (this.message) {
 			map.attachments = [
