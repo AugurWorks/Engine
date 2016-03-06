@@ -60,7 +60,7 @@ class ApiController {
 							SlashMessage defered = new SlashMessage().withUrl(response_url)
 							try {
 								automatedService.runAlgorithm(AlgorithmRequest.findByNameIlike(requestName), runType)
-								defered.withText(user_name + ' kicked off a(n) ' + runType + ' run for ' + requestName).isInChannel()
+								defered.withText('@' + user_name + ' kicked off a(n) ' + runType + ' run for ' + requestName).isInChannel()
 							} catch (AugurWorksException e) {
 								defered.withText('Error: ' + e.getMessage())
 							} catch (e) {
@@ -70,9 +70,9 @@ class ApiController {
 							}
 							defered.post()
 						}
-						slashMessage.withText('Kicking off ' + runType + ' for ' + requestName + '...')
+						slashMessage.withText('Kicking off ' + runType + ' for ' + algorithmRequest.name + '...')
 					} else {
-						slashMessage.withText('No request found with the name ' + requestName)
+						slashMessage.withText('No request found with the name ' + algorithmRequest.name)
 					}
 					break
 				default:
