@@ -1,5 +1,7 @@
 package com.augurworks.engine.services
 
+import grails.plugin.cache.GrailsCacheManager
+import grails.plugin.cache.GrailsValueWrapper
 import grails.transaction.Transactional
 import groovy.time.TimeCategory
 import groovy.time.TimeDuration
@@ -23,6 +25,7 @@ class DataRetrievalService {
 
 	GrailsApplication grailsApplication
 	DataGeneratorService dataGeneratorService
+	GrailsCacheManager grailsCacheManager
 
 	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(splineRequest)
@@ -79,7 +82,7 @@ class DataRetrievalService {
 		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
 		String quandlPost = '.csv?auth_token=' + quandlKey
 		String url = quandlPre + quandlCode + quandlPost
-		return new URL(url).getText()
+		return getUrlText(url)
 	}
 
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
@@ -99,13 +102,22 @@ class DataRetrievalService {
 			}
 		}
 	}
-
+	
 	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
-		URL url = new URL(constructGoogleUrl(ticker, startDate, intervalMinutes))
-		String text = url.getText()
+		String text = getUrlText(constructGoogleUrl(ticker, startDate, intervalMinutes))
 		if (grailsApplication.config.logging.files) {
 			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + text.split('\n')).join('\n'))
 		}
+		return text
+	}
+
+	String getUrlText(String rawUrl) {
+		GrailsValueWrapper cache = grailsCacheManager.getCache('externalData').get(rawUrl)
+		if (cache) {
+			return cache.get()
+		}
+		String text = new URL(rawUrl).getText()
+		grailsCacheManager.getCache('externalData').put(rawUrl, text)
 		return text
 	}
 
