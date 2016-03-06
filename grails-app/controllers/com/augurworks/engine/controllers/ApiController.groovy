@@ -19,13 +19,13 @@ class ApiController {
 			if (token != grailsApplication.config.slack.slash.token) {
 				throw new RuntimeException('Invalid token')
 			}
-			Collection<String> commands = text.replace('run ', '').replace('for ', '').split(' ')
+			Collection<String> commands = text.toLowerCase().replace('run ', '').replace('for ', '').split(' ')
 			if (commands.size() == 0) {
 				throw new AugurWorksException('No commands specified')
 			}
 			String serverUrl = grailsApplication.config.grails.serverURL
 			SlashMessage slashMessage = new SlashMessage()
-			switch (commands.first().toLowerCase()) {
+			switch (commands.first()) {
 				case 'list':
 					String message = AlgorithmRequest.list(sort: 'name').collect { AlgorithmRequest algorithmRequest ->
 						Collection<AlgorithmResult> results = algorithmRequest.algorithmResults
