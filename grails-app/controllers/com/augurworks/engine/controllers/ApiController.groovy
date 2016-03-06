@@ -19,7 +19,7 @@ class ApiController {
 			if (token != grailsApplication.config.slack.slash.token) {
 				throw new RuntimeException('Invalid token')
 			}
-			Collection<String> commands = text.split(' ')
+			Collection<String> commands = text.replace('run ', '').replace('for ', '').split(' ')
 			if (commands.size() == 0) {
 				throw new AugurWorksException('No commands specified')
 			}
@@ -49,7 +49,7 @@ class ApiController {
 							SlashMessage defered = new SlashMessage().withUrl(response_url)
 							try {
 								automatedService.runAlgorithm(AlgorithmRequest.findByNameIlike(requestName), runType)
-								defered.withText(user_name + ' kicked off a(n)' + runType + ' run for ' + requestName).isInChannel()
+								defered.withText(user_name + ' kicked off a(n) ' + runType + ' run for ' + requestName).isInChannel()
 							} catch (AugurWorksException e) {
 								defered.withText('Error: ' + e.getMessage())
 							} catch (e) {
@@ -59,7 +59,7 @@ class ApiController {
 							}
 							defered.post()
 						}
-						slashMessage.withText('Kicking off ' + runType + ' for ' + requestName)
+						slashMessage.withText('Kicking off ' + runType + ' for ' + requestName + '...')
 					} else {
 						slashMessage.withText('No request found with the name ' + requestName)
 					}
@@ -68,8 +68,8 @@ class ApiController {
 					String message = [
 						'help - This help message',
 						'list - List all existing requests and basic information about them',
-						'alfred [request name] - Kick off an Alfred run for a given request',
-						'ml [request name] - Kick off a Machine Learning run for a given request'
+						'(run) alfred (for) [request name] - Kick off an Alfred run for a given request',
+						'(run) ml (for) [request name] - Kick off a Machine Learning run for a given request'
 					].join('\n')
 					slashMessage.withText('Engine Help').withMessage(message)
 					break
