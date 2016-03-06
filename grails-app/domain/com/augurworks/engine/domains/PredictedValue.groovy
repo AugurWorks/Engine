@@ -3,7 +3,7 @@ package com.augurworks.engine.domains
 import grails.util.Holders
 
 import com.augurworks.engine.helper.Global
-import com.augurworks.engine.helper.SlackMessage
+import com.augurworks.engine.slack.SlackMessage
 
 class PredictedValue {
 

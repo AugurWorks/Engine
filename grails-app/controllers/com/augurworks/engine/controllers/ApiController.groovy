@@ -6,8 +6,8 @@ import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.helper.Global
-import com.augurworks.engine.helper.SlashMessage
 import com.augurworks.engine.services.AutomatedService
+import com.augurworks.engine.slack.SlashMessage
 
 class ApiController {
 
