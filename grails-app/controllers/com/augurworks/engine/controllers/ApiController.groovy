@@ -15,6 +15,7 @@ class ApiController {
 	AutomatedService automatedService
 
 	def slack(String token, String user_name, String text, String response_url) {
+		SlashMessage slashMessage = new SlashMessage()
 		try {
 			if (token != grailsApplication.config.slack.slash.token) {
 				throw new RuntimeException('Invalid token')
@@ -24,7 +25,6 @@ class ApiController {
 				throw new AugurWorksException('No commands specified')
 			}
 			String serverUrl = grailsApplication.config.grails.serverURL
-			SlashMessage slashMessage = new SlashMessage()
 			switch (commands.first()) {
 				case 'list':
 					String message = AlgorithmRequest.list(sort: 'name').collect { AlgorithmRequest algorithmRequest ->
@@ -90,7 +90,10 @@ class ApiController {
 				slashMessage.toJson()
 			}
 		} catch (AugurWorksException e) {
-			render(status: 500)
+			slashMessage.withText(e.getMessage())
+			render(contentType: 'application/json') {
+				slashMessage.toJson()
+			}
 		} catch (e) {
 			log.warn(e)
 			render(status: 500)
