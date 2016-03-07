@@ -39,6 +39,7 @@ class AlgorithmRequestSpec extends Specification {
 			return new DataSet(dataSetParams(id)).save()
 		}
 		AlgorithmRequest algorithmRequest = new AlgorithmRequest(
+			name: 'Algorithm Request',
 			startOffset: startOffset,
 			endOffset: endOffset,
 			dateCreated: dateCreated,
