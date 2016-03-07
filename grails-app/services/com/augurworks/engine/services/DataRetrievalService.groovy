@@ -102,7 +102,7 @@ class DataRetrievalService {
 			}
 		}
 	}
-	
+
 	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
 		String text = getUrlText(constructGoogleUrl(ticker, startDate, intervalMinutes))
 		if (grailsApplication.config.logging.files) {
