@@ -35,6 +35,11 @@ class ApiController {
 					String message = apiService.getRunningMessage()
 					slashMessage.withText('Running Request List').withAttachment(new Attachment(message))
 					break
+				case 'recent':
+					int numberOfRuns = (commands.size() > 1 && commands[1].matches('^\\d+$')) ? Integer.parseInt(commands[1]) : 5
+					slashMessage = apiService.getRecentSlashMessage(slashMessage, numberOfRuns)
+					slashMessage.withText('Recent Run List')
+					break
 				case 'ml':
 				case 'alfred':
 					String requestName = commands.tail().join(' ')
