@@ -1,4 +1,4 @@
-package com.augurworks.engine.helper
+package com.augurworks.engine.slack
 
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders

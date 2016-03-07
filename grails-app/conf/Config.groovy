@@ -58,6 +58,7 @@ grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
 alfred.url = (localConfig.alfred.url ?: 'http://localhost:8080')
 logging.files = System.getProperty('ENGINE_LOGGING_FILES') ?: false
+slack.slash.token = System.getProperty('SLASH_TOKEN') ?: System.getenv('SLASH_TOKEN')
 
 environments {
 	development {
