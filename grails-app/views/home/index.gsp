@@ -24,7 +24,7 @@
 				<g:else>
 					<div class="ui one cards">
 						<g:each in="${ recentRuns.sort { it.dateCreated }.reverse() }" var="result">
-							<g:render template="/layouts/resultCard" model="${ [result: result, title: true] }" />
+							<g:render template="/layouts/resultCard" model="${ [result: result, title: true, requestLink: true] }" />
 						</g:each>
 					</div>
 				</g:else>
