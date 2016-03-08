@@ -22,11 +22,12 @@ class ApiController {
 			if (token != grailsApplication.config.slack.slash.token) {
 				throw new RuntimeException('Invalid token')
 			}
-			Collection<String> commands = text.toLowerCase().replace('run ', '').replace('for ', '').split(' ')
-			if (commands.size() == 0) {
+			Collection<String> arguments = text.toLowerCase().replace('run ', '').replace('for ', '').split(' ')
+			if (arguments.size() == 0) {
 				throw new AugurWorksException('No commands specified')
 			}
-			switch (commands.first()) {
+			String command = arguments.first()
+			switch (command) {
 				case 'list':
 					String message = apiService.getListMessage()
 					slashMessage.withText('Algorithm Request List').withAttachment(new Attachment(message))
@@ -36,16 +37,16 @@ class ApiController {
 					slashMessage.withText('Running Request List').withAttachment(new Attachment(message))
 					break
 				case 'recent':
-					int numberOfRuns = (commands.size() > 1 && commands[1].matches('^\\d+$')) ? Integer.parseInt(commands[1]) : 5
+					int numberOfRuns = (arguments.size() > 1 && arguments[1].matches('^\\d+$')) ? Integer.parseInt(arguments[1]) : 5
 					slashMessage = apiService.getRecentSlashMessage(slashMessage, numberOfRuns)
 					slashMessage.withText('Recent Run List')
 					break
 				case 'ml':
 				case 'alfred':
-					String requestName = commands.tail().join(' ')
+					String requestName = arguments.tail().join(' ')
 					AlgorithmRequest algorithmRequest = AlgorithmRequest.findByNameIlike(requestName)
 					if (algorithmRequest) {
-						String runType = Global.MODEL_TYPES[Global.SLASH_MAP[commands.first()]]
+						String runType = Global.MODEL_TYPES[Global.SLASH_MAP[command]]
 						runAsync {
 							apiService.runRequest(response_url, requestName, user_name, runType)
 						}
