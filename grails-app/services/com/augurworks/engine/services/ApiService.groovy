@@ -82,8 +82,8 @@ class ApiService {
 			'list - List all existing requests and basic information about them',
 			'running - List all running requests',
 			'recent [number] - List a number (default 5) of recent run results',
-			'(run) (n) alfred (for) [request name] - Kick off n (default 1) Alfred runs for a given request',
-			'(run) (n) ml (for) [request name] - Kick off n (default 1) Machine Learning runs for a given request'
+			'(run) (n) alfred(s) (for) [request name] - Kick off n (default 1) Alfred runs for a given request',
+			'(run) (n) ml(s) (for) [request name] - Kick off n (default 1) Machine Learning runs for a given request'
 		].join('\n')
 	}
 }

@@ -47,8 +47,10 @@ class ApiController {
 					slashMessage = apiService.getRecentSlashMessage(slashMessage, numberOfRuns)
 					slashMessage.withText('Recent Run List')
 					break
-				case 'ml':
-				case 'alfred':
+				case 'ml': case 'mls': case 'alfred': case 'alfreds':
+					if (command[-1] == 's') {
+						command = command[0..-2]
+					}
 					if (arguments.first().matches('^\\d+$')) {
 						requestCount = Integer.parseInt(arguments.first())
 						arguments.remove(0)
