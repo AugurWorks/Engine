@@ -26,7 +26,13 @@ class ApiController {
 			if (arguments.size() == 0) {
 				throw new AugurWorksException('No commands specified')
 			}
+			int requestCount = 1
+			if (arguments.first().matches('^\\d+$')) {
+				requestCount = Integer.parseInt(arguments.first())
+				arguments.remove(0)
+			}
 			String command = arguments.first()
+			arguments.remove(0)
 			switch (command) {
 				case 'list':
 					String message = apiService.getListMessage()
@@ -37,20 +43,24 @@ class ApiController {
 					slashMessage.withText('Running Request List').withAttachment(new Attachment(message))
 					break
 				case 'recent':
-					int numberOfRuns = (arguments.size() > 1 && arguments[1].matches('^\\d+$')) ? Integer.parseInt(arguments[1]) : 5
+					int numberOfRuns = (arguments.size() > 0 && arguments.first().matches('^\\d+$')) ? Integer.parseInt(arguments.first()) : 5
 					slashMessage = apiService.getRecentSlashMessage(slashMessage, numberOfRuns)
 					slashMessage.withText('Recent Run List')
 					break
 				case 'ml':
 				case 'alfred':
-					String requestName = arguments.tail().join(' ')
+					if (arguments.first().matches('^\\d+$')) {
+						requestCount = Integer.parseInt(arguments.first())
+						arguments.remove(0)
+					}
+					String requestName = arguments.join(' ')
 					AlgorithmRequest algorithmRequest = AlgorithmRequest.findByNameIlike(requestName)
 					if (algorithmRequest) {
 						String runType = Global.MODEL_TYPES[Global.SLASH_MAP[command]]
 						runAsync {
-							apiService.runRequest(response_url, requestName, user_name, runType)
+							apiService.runRequest(response_url, requestName, user_name, runType, requestCount)
 						}
-						slashMessage.withText('Kicking off ' + runType + ' for ' + algorithmRequest.name + '...')
+						slashMessage.withText('Kicking off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + runType + ' run(s) for ' + algorithmRequest.name + '...')
 					} else {
 						slashMessage.withText('No request found with the name ' + algorithmRequest.name)
 					}

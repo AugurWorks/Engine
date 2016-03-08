@@ -58,11 +58,14 @@ class ApiService {
 		return slashMessage
 	}
 
-	void runRequest(String responseUrl, String requestName, String userName, String runType) {
+	void runRequest(String responseUrl, String requestName, String userName, String runType, int requestCount) {
 		SlashMessage defered = new SlashMessage().withUrl(responseUrl)
 		try {
-			automatedService.runAlgorithm(AlgorithmRequest.findByNameIlike(requestName), runType)
-			defered.withText('@' + userName + ' kicked off a(n) ' + runType + ' run for ' + requestName).isInChannel()
+			AlgorithmRequest algorithmRequest = AlgorithmRequest.findByNameIlike(requestName)
+			(1..requestCount).each {
+				automatedService.runAlgorithm(algorithmRequest, runType)
+			}
+			defered.withText('@' + userName + ' kicked off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + runType + ' run(s) for ' + algorithmRequest.name).isInChannel()
 		} catch (AugurWorksException e) {
 			defered.withText('Error: ' + e.getMessage())
 		} catch (e) {
@@ -79,8 +82,8 @@ class ApiService {
 			'list - List all existing requests and basic information about them',
 			'running - List all running requests',
 			'recent [number] - List a number (default 5) of recent run results',
-			'(run) alfred (for) [request name] - Kick off an Alfred run for a given request',
-			'(run) ml (for) [request name] - Kick off a Machine Learning run for a given request'
+			'(run) (n) alfred (for) [request name] - Kick off n (default 1) Alfred runs for a given request',
+			'(run) (n) ml (for) [request name] - Kick off n (default 1) Machine Learning runs for a given request'
 		].join('\n')
 	}
 }
