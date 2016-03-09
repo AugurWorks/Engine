@@ -40,7 +40,7 @@
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
 				<div class="four fields">
 					<div class="field">
-						<label>Start Offset</label>
+						<label>Name</label>
 						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
 					</div>
 					<div class="field">
