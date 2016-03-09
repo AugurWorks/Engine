@@ -104,9 +104,10 @@ class DataRetrievalService {
 	}
 
 	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
-		String text = getUrlText(constructGoogleUrl(ticker, startDate, intervalMinutes))
+		String url = constructGoogleUrl(ticker, startDate, intervalMinutes)
+		String text = getUrlText(url)
 		if (grailsApplication.config.logging.files) {
-			logStringToS3(ticker + '-Hourly', (['URL: ' + url.toString(), ''] + text.split('\n')).join('\n'))
+			logStringToS3(ticker + '-Hourly', (['URL: ' + url, ''] + text.split('\n')).join('\n'))
 		}
 		return text
 	}
