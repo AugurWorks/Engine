@@ -73,7 +73,15 @@ class AlfredService {
 	void checkIncompleteAlgorithms() {
 		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, Global.MODEL_TYPES[1])
 		algorithmResults.each { AlgorithmResult algorithmResult ->
-			checkAlgorithm(algorithmResult)
+			try {
+				checkAlgorithm(algorithmResult)
+			} catch (AugurWorksException e) {
+				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error: ' + e.getMessage()
+				log.info e.getStackTrace().join('\n      at ')
+			} catch (e) {
+				log.error e.getMessage()
+				log.info e.getStackTrace().join('\n      at ')
+			}
 		}
 	}
 
