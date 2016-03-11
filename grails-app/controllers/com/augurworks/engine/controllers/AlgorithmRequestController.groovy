@@ -6,6 +6,7 @@ import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.DataSet
+import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.services.AlfredService
 import com.augurworks.engine.services.AutomatedService
@@ -29,7 +30,8 @@ class AlgorithmRequestController {
 
 	def run(AlgorithmRequest algorithmRequest, String type) {
 		try {
-			automatedService.runAlgorithm(algorithmRequest, type)
+			AlgorithmType algorithmType = AlgorithmType.findByName(type)
+			automatedService.runAlgorithm(algorithmRequest, algorithmType)
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
 			log.warn e.getMessage()

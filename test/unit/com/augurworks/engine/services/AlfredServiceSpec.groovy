@@ -5,7 +5,7 @@ import grails.test.mixin.*
 import spock.lang.Specification
 
 import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.helper.Global
+import com.augurworks.engine.helper.AlgorithmType
 
 @Build([AlgorithmResult])
 @Mock([AlgorithmResult])
@@ -18,10 +18,10 @@ class AlfredServiceSpec extends Specification {
 		service.metaClass.checkAlgorithm = { AlgorithmResult result ->
 			counter++
 		}
-		AlgorithmResult.build(complete: false, modelType: Global.MODEL_TYPES[0])
-		AlgorithmResult.build(complete: false, modelType: Global.MODEL_TYPES[1])
-		AlgorithmResult.build(complete: true, modelType: Global.MODEL_TYPES[0])
-		AlgorithmResult.build(complete: true, modelType: Global.MODEL_TYPES[1])
+		AlgorithmResult.build(complete: false, modelType: AlgorithmType.MACHINE_LEARNING)
+		AlgorithmResult.build(complete: false, modelType: AlgorithmType.ALFRED)
+		AlgorithmResult.build(complete: true, modelType: AlgorithmType.MACHINE_LEARNING)
+		AlgorithmResult.build(complete: true, modelType: AlgorithmType.ALFRED)
 
 		when:
 		service.checkIncompleteAlgorithms()

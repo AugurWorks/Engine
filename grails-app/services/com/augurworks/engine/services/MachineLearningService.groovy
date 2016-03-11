@@ -12,8 +12,8 @@ import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.MachineLearningModel
 import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
+import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
-import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SplineRequest
 
@@ -84,7 +84,7 @@ class MachineLearningService {
 	}
 
 	void checkIncompleteAlgorithms() {
-		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, Global.MODEL_TYPES[0])
+		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, AlgorithmType.MACHINE_LEARNING)
 		algorithmResults.each { AlgorithmResult algorithmResult ->
 			try {
 				checkAlgorithm(algorithmResult)
@@ -109,7 +109,7 @@ class MachineLearningService {
 			startDate: algorithmRequest.startDate,
 			endDate: algorithmRequest.endDate,
 			machineLearningModel: model,
-			modelType: Global.MODEL_TYPES[0]
+			modelType: AlgorithmType.MACHINE_LEARNING
 		])
 		algorithmResult.save()
 	}

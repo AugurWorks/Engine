@@ -8,6 +8,7 @@ import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
+import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.slack.Attachment
 import com.augurworks.engine.slack.SlashMessage
 
@@ -37,7 +38,7 @@ class ApiService {
 		String serverUrl = grailsApplication.config.grails.serverURL
 		return AlgorithmResult.findAllByComplete(false, [sort: 'dateCreated']).collect { AlgorithmResult algorithmResult ->
 			return [
-				algorithmResult.modelType + ' run of ',
+				algorithmResult.modelType.name + ' run of ',
 				algorithmResult.algorithmRequest.name + ' started at ',
 				algorithmResult.dateCreated.format(DATE_FORMAT) + ' ',
 				'(<' + serverUrl + '/algorithmRequest/show/' + algorithmResult.algorithmRequest.id + '|View>)'
@@ -58,14 +59,14 @@ class ApiService {
 		return slashMessage
 	}
 
-	void runRequest(String responseUrl, String requestName, String userName, String runType, int requestCount) {
+	void runRequest(String responseUrl, String requestName, String userName, AlgorithmType algorithmType, int requestCount) {
 		SlashMessage defered = new SlashMessage().withUrl(responseUrl)
 		try {
 			AlgorithmRequest algorithmRequest = AlgorithmRequest.findByNameIlike(requestName)
 			(1..requestCount).each {
-				automatedService.runAlgorithm(algorithmRequest, runType)
+				automatedService.runAlgorithm(algorithmRequest, algorithmType)
 			}
-			defered.withText('@' + userName + ' kicked off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + runType + ' run(s) for ' + algorithmRequest.name).isInChannel()
+			defered.withText('@' + userName + ' kicked off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + algorithmType.name + ' run(s) for ' + algorithmRequest.name).isInChannel()
 		} catch (AugurWorksException e) {
 			defered.withText('Error: ' + e.getMessage())
 		} catch (e) {

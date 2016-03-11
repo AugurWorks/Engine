@@ -3,7 +3,7 @@ package com.augurworks.engine.services
 import grails.transaction.Transactional
 
 import com.augurworks.engine.domains.AlgorithmRequest
-import com.augurworks.engine.helper.Global
+import com.augurworks.engine.helper.AlgorithmType
 
 @Transactional
 class AutomatedService {
@@ -23,15 +23,15 @@ class AutomatedService {
 	}
 
 	void runAllAlgorithmTypes(AlgorithmRequest algorithmRequest) {
-		Global.MODEL_TYPES.each { String type ->
-			runAlgorithm(algorithmRequest, type)
+		AlgorithmType.values().each { AlgorithmType algorithmType ->
+			runAlgorithm(algorithmRequest, algorithmType)
 		}
 	}
 
-	void runAlgorithm(AlgorithmRequest algorithmRequest, String type) {
-		if (type == Global.MODEL_TYPES[0]) {
+	void runAlgorithm(AlgorithmRequest algorithmRequest, AlgorithmType algorithmType) {
+		if (algorithmType == AlgorithmType.ALFRED) {
 			alfredService.createAlgorithm(algorithmRequest)
-		} else if (type == Global.MODEL_TYPES[1]) {
+		} else if (algorithmType == AlgorithmType.MACHINE_LEARNING) {
 			machineLearningService.createAlgorithm(algorithmRequest)
 		}
 	}

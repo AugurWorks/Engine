@@ -4,6 +4,7 @@ import grails.util.Holders
 import groovy.time.TimeCategory
 import groovy.time.TimeDuration
 
+import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.slack.SlackMessage
 
@@ -34,10 +35,10 @@ class PredictedValue {
 		String dateFormat = this.algorithmResult.algorithmRequest.unit == 'Day' ? Global.DATE_FORMAT : Global.DATE_TIME_FORMAT
 		String name = this.algorithmResult.algorithmRequest.dependantDataSet.name
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation
-		String modelType = this.algorithmResult.modelType
+		AlgorithmType modelType = this.algorithmResult.modelType
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }
 		return [
-			message: 'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType + ' is ' + this.value.round(4) + '\nRun in ' + runTime.toString(),
+			message: 'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + '\nRun in ' + runTime.toString(),
 			channel: Holders.config.augurworks.predictions.channel,
 			color: this.value >= 0 ? '#4DBD33' : '#ff4444',
 			title: this.algorithmResult.algorithmRequest.stringify(),

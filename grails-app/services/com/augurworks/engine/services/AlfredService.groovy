@@ -10,6 +10,7 @@ import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
+import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
@@ -30,7 +31,7 @@ class AlfredService {
 			startDate: algorithmRequest.startDate,
 			endDate: algorithmRequest.endDate,
 			alfredModelId: trainingId,
-			modelType: Global.MODEL_TYPES[1]
+			modelType: AlgorithmType.ALFRED
 		])
 		algorithmResult.save()
 	}
@@ -71,7 +72,7 @@ class AlfredService {
 	}
 
 	void checkIncompleteAlgorithms() {
-		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, Global.MODEL_TYPES[1])
+		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, AlgorithmType.ALFRED)
 		algorithmResults.each { AlgorithmResult algorithmResult ->
 			try {
 				checkAlgorithm(algorithmResult)
