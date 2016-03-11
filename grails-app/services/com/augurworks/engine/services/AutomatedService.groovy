@@ -30,9 +30,9 @@ class AutomatedService {
 
 	void runAlgorithm(AlgorithmRequest algorithmRequest, String type) {
 		if (type == Global.MODEL_TYPES[0]) {
-			machineLearningService.createAlgorithm(algorithmRequest)
-		} else if (type == Global.MODEL_TYPES[1]) {
 			alfredService.createAlgorithm(algorithmRequest)
+		} else if (type == Global.MODEL_TYPES[1]) {
+			machineLearningService.createAlgorithm(algorithmRequest)
 		}
 	}
 }
