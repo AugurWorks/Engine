@@ -32,16 +32,20 @@ class MachineLearningService {
 	}
 
 	String createRequestDataSource(AlgorithmRequest algorithmRequest, boolean prediction) {
-		File file = requestToCsv(algorithmRequest, prediction)
+		return createRequestDataSource(algorithmRequest, prediction, new Date())
+	}
+
+	String createRequestDataSource(AlgorithmRequest algorithmRequest, boolean prediction, Date now) {
+		File file = requestToCsv(algorithmRequest, prediction, now)
 		String path = awsService.uploadToS3(file)
 		file.delete()
 		String dataSchema = createDataSchema(algorithmRequest, prediction)
 		return awsService.createDataSource(path, dataSchema)
 	}
 
-	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction) {
+	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction, Date now) {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
-		SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: prediction, includeDependent: !prediction)
+		SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: prediction, includeDependent: !prediction, now: now)
 		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(splineRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
@@ -133,7 +137,7 @@ class MachineLearningService {
 	}
 
 	void generateMachineLearningResult(AlgorithmResult algorithmResult) {
-		String dataSourceId = createRequestDataSource(algorithmResult.algorithmRequest, true)
+		String dataSourceId = createRequestDataSource(algorithmResult.algorithmRequest, true, algorithmResult.dateCreated)
 		String batchPredictionId = awsService.createBatchPrediction(dataSourceId, algorithmResult.machineLearningModel.modelId)
 		MachineLearningModel model = algorithmResult.machineLearningModel
 		model.predictionDataSourceId = dataSourceId
