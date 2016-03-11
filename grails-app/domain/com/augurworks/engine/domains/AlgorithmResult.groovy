@@ -40,4 +40,8 @@ class AlgorithmResult {
 		}
 		return null
 	}
+
+	String toString() {
+		algorithmRequest.toString() + ': ' + dateCreated.format('MM/dd/yyyy HH:mm')
+	}
 }

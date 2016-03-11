@@ -13,4 +13,8 @@ class MachineLearningModel {
 		predictionDataSourceId nullable: true
 		batchPredictionId nullable: true
 	}
+
+	String toString() {
+		modelId
+	}
 }
