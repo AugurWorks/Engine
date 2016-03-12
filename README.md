@@ -26,7 +26,7 @@ After cloning the repo copy **UserConfig.groovy.example** to **UserConfig.groovy
 ### Database
 Run a local MySQL instance with Docker by running the following:
 ```bash
-docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=docker mysql
+docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=mysql mysql
 ```
 
 ### Local Docker
