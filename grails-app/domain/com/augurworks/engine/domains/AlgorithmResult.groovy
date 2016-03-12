@@ -1,6 +1,6 @@
 package com.augurworks.engine.domains
 
-import com.augurworks.engine.helper.Global
+import com.augurworks.engine.helper.AlgorithmType
 
 class AlgorithmResult {
 
@@ -8,7 +8,7 @@ class AlgorithmResult {
 	Date startDate
 	Date endDate
 	boolean complete = false
-	String modelType
+	AlgorithmType modelType
 	MachineLearningModel machineLearningModel
 	String alfredModelId
 
@@ -21,7 +21,7 @@ class AlgorithmResult {
 		startDate()
 		endDate()
 		complete()
-		modelType inList: Global.MODEL_TYPES
+		modelType()
 		machineLearningModel nullable: true
 		alfredModelId nullable: true
 	}

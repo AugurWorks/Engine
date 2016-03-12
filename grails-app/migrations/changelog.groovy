@@ -267,4 +267,6 @@ databaseChangeLog = {
 	include file: 'half-hour-runs.groovy'
 
 	include file: 'algorithm-request-name.groovy'
+
+	include file: 'algorithm-type-enum.groovy'
 }

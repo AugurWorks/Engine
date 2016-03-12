@@ -12,11 +12,11 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" type="text/css">
 	</head>
 	<body>
-		<%@ page import="com.augurworks.engine.helper.Global" %>
+		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
 		<div class="ui segment">
 			<h1 class="ui header">${ algorithm.name }</h1>
 			<input type="hidden" id="id" value="${ algorithm.id }" />
-			<g:select name="modelType" class="ui dropdown" from="${ Global.MODEL_TYPES }"></g:select>
+			<g:select name="modelType" class="ui dropdown" from="${ AlgorithmType.values()*.name }"></g:select>
 			<button class="ui primary button" onclick="kickOff(this, ${ algorithm.id })">Kick Off Evaluation</button>
 			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button">Edit</g:link>
 			<button onclick="deleteRequest()" class="ui negative button">Delete</button>

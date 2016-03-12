@@ -4,7 +4,7 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
-import com.augurworks.engine.helper.Global
+import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.services.ApiService
 import com.augurworks.engine.services.AutomatedService
 import com.augurworks.engine.slack.Attachment
@@ -58,11 +58,11 @@ class ApiController {
 					String requestName = arguments.join(' ')
 					AlgorithmRequest algorithmRequest = AlgorithmRequest.findByNameIlike(requestName)
 					if (algorithmRequest) {
-						String runType = Global.MODEL_TYPES[Global.SLASH_MAP[command]]
+						AlgorithmType algorithmType = AlgorithmType.findByShortName(command)
 						runAsync {
-							apiService.runRequest(response_url, requestName, user_name, runType, requestCount)
+							apiService.runRequest(response_url, requestName, user_name, algorithmType, requestCount)
 						}
-						slashMessage.withText('Kicking off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + runType + ' run(s) for ' + algorithmRequest.name + '...')
+						slashMessage.withText('Kicking off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + algorithmType.name + ' run(s) for ' + algorithmRequest.name + '...')
 					} else {
 						slashMessage.withText('No request found with the name ' + algorithmRequest.name)
 					}
