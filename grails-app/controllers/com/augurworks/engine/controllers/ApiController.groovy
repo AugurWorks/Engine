@@ -62,7 +62,7 @@ class ApiController {
 						runAsync {
 							apiService.runRequest(response_url, requestName, user_name, algorithmType, requestCount)
 						}
-						slashMessage.withText('Kicking off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + runType + ' run(s) for ' + algorithmRequest.name + '...')
+						slashMessage.withText('Kicking off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + algorithmType.name + ' run(s) for ' + algorithmRequest.name + '...')
 					} else {
 						slashMessage.withText('No request found with the name ' + algorithmRequest.name)
 					}
