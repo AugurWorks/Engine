@@ -47,6 +47,7 @@ function deleteResult(resultId) {
 		success: function(data) {
 			if (data.ok) {
 				$('#result-' + resultId).remove();
+				$('.ui.popup').remove();
 			} else {
 				swal('Error', 'That result could not be deleted, please try again later', 'error');
 			}
