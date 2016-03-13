@@ -109,4 +109,15 @@ class AlgorithmRequestController {
 			render([ok: false] as JSON)
 		}
 	}
+
+	def deleteResult(AlgorithmResult algorithmResult) {
+		try {
+			algorithmResult.delete(flush: true)
+			render([ok: true] as JSON)
+		} catch(e) {
+			log.error e.getMessage()
+			log.info e.getStackTrace().join('\n      at ')
+			render([ok: false] as JSON)
+		}
+	}
 }

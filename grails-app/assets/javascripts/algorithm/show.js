@@ -40,3 +40,16 @@ function refreshResultCard(id) {
 		}
 	});
 }
+
+function deleteResult(resultId) {
+	$.ajax({
+		url: '/algorithmRequest/deleteResult/' + resultId,
+		success: function(data) {
+			if (data.ok) {
+				$('#result-' + resultId).remove();
+			} else {
+				swal('Error', 'That result could not be deleted, please try again later', 'error');
+			}
+		}
+	});
+}
