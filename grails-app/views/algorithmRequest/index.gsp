@@ -23,14 +23,6 @@
 								<span data-title="Time Period"><i class="wait icon"></i> ${ request.unit }</span>
 							</div>
 						</div>
-						<div class="extra content">
-							<div class="header">Data Sets</div>
-							<ul>
-								<g:each in="${ request.requestDataSets }" var="dataSet">
-									<li>${ dataSet.toString() }</li>
-								</g:each>
-							</ul>
-						</div>
 					</g:link>
 				</g:each>
 			</div>
