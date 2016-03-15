@@ -96,6 +96,9 @@ class DataRetrievalService {
 		return data.collect { String rawString ->
 			return parseGoogleData(actualStart, apiIntervalMinutes, rawString)
 		}.grep { DataSetValue dataSetValue ->
+			if (!dataSetValue) {
+				return false
+			}
 			use (TimeCategory) {
 				TimeDuration timeSinceStart = dataSetValue.date - startDate
 				return timeSinceStart.minutes % intervalMinutes == 0
@@ -128,6 +131,10 @@ class DataRetrievalService {
 	}
 
 	DataSetValue parseGoogleData(Date startDate, int intervalMinutes, String googleRow) {
+		if (googleRow.indexOf('TIMEZONE_OFFSET') != -1) {
+			log.info 'Day light savings time weirdness'
+			return null
+		}
 		Collection<String> cols = googleRow.split(',')
 		int offset = (cols[0].isInteger() ? cols[0].toInteger() : 0) * intervalMinutes
 		Date date = use(TimeCategory) { startDate + offset.minutes }
