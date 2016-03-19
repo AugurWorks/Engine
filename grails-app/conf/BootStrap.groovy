@@ -1,11 +1,14 @@
+import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.Role
 import com.augurworks.engine.domains.User
 import com.augurworks.engine.domains.UserRole
+import com.augurworks.engine.services.AutoKickoffService
 import com.augurworks.engine.services.DataGeneratorService
 
 class BootStrap {
 
 	DataGeneratorService dataGeneratorService
+	AutoKickoffService autoKickoffService
 
 	def createUser(name, role) {
 		User me = new User(username: name).save()
@@ -25,6 +28,9 @@ class BootStrap {
 			dataGeneratorService.importQuandlDataSets()
 			dataGeneratorService.importLocalDataSets()
 			dataGeneratorService.bootstrapDefaultRequests()
+		}
+		AlgorithmRequest.findAllByCronExpressionIsNotNull().each { AlgorithmRequest algorithmRequest ->
+			autoKickoffService.scheduleKickoffJob(algorithmRequest)
 		}
 	}
 }
