@@ -69,7 +69,9 @@
 						<div class="item">
 							 <sec:username />
 						</div>
-						<aw:avatar class="ui avatar circular image" style="width: 40px; height: 40px; float: right;" />
+						<g:if test="${ !pageProperty(name: 'page.hideAvatar') }">
+							<aw:avatar class="ui avatar circular image" style="width: 40px; height: 40px; float: right;" />
+						</g:if>
 					</sec:ifLoggedIn>
 					<sec:ifNotLoggedIn>
 						<oauth:connect provider="github" class="item">
