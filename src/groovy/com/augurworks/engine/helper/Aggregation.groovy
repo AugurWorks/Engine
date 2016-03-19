@@ -1,27 +1,37 @@
 package com.augurworks.engine.helper
 
+import java.util.function.BiFunction
+
 import com.augurworks.engine.AugurWorksException
 
-class Aggregation {
+public enum Aggregation {
+	VALUE('Value', this.&identity),
+	PERIOD_CHANGE('Period Change', this.&periodChange),
+	PERIOD_PERCENT_CHANGE('Period Percent Change', this.&periodPercentChange)
 
-	static final Collection<String> TYPES = ['Value', 'Period Change', 'Period Percent Change']
+	private final String name
+	public final BiFunction<Double, Double, Double> aggregate
 
-	private Aggregations() { }
-
-	static Double aggregate(String type, Double previousValue, double currentValue) {
-		switch(type) {
-			case 'Value':
-				return currentValue
-			case 'Period Change':
-				return previousValue != null ? currentValue - previousValue : null
-			case 'Period Percent Change':
-				return previousValue != null ? periodPercentChange(previousValue, currentValue) : null
-			default:
-				throw new AugurWorksException('Invalid aggregation type: ' + type)
-		}
+	Aggregation(String name, BiFunction<Double, Double, Double> aggregate) {
+		this.name = name
+		this.aggregate = aggregate
 	}
 
-	static double periodPercentChange(double previousValue, double currentValue) {
+	static Double identity(Double previousValue, Double currentValue) {
+		return currentValue
+	}
+
+	static Double periodChange(Double previousValue, Double currentValue) {
+		if (previousValue == null) {
+			return null
+		}
+		return currentValue - previousValue
+	}
+
+	static Double periodPercentChange(Double previousValue, Double currentValue) {
+		if (previousValue == null) {
+			return null
+		}
 		if (previousValue == 0) {
 			throw new AugurWorksException('Invalid previous value for period percentage change: 0')
 		}

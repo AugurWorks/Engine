@@ -50,7 +50,7 @@ class AlgorithmRequestSpec extends Specification {
 			new RequestDataSet(
 				dataSet: dataSet,
 				offset: counter,
-				aggregation: Aggregation.TYPES[0],
+				aggregation: Aggregation.VALUE,
 				algorithmRequest: algorithmRequest
 			).save()
 		}
@@ -146,7 +146,7 @@ class AlgorithmRequestSpec extends Specification {
 		Collection<Map> dataSetMaps = dataSets.collect { DataSet dataSet ->
 			return [
 				name: dataSet.ticker,
-				aggregation: Aggregation.TYPES[0],
+				aggregation: Aggregation.VALUE,
 				offset: 0
 			]
 		}

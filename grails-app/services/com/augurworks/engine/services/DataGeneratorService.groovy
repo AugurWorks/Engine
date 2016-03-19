@@ -74,7 +74,7 @@ class DataGeneratorService {
 				new RequestDataSet(
 					dataSet: dataSet,
 					offset: dataSet.ticker == requestMap.dependent ? 0 : -1,
-					aggregation: 'Period Percent Change',
+					aggregation: Aggregation.PERIOD_PERCENT_CHANGE,
 					algorithmRequest: algorithmRequest
 				).save()
 			}
@@ -96,7 +96,7 @@ class DataGeneratorService {
 				new RequestDataSet(
 					dataSet: dataSet,
 					offset: counter == 0 ? 0 : -1,
-					aggregation: Aggregation.TYPES[rand.nextInt(Aggregation.TYPES.size())],
+					aggregation: Aggregation.values()[rand.nextInt(Aggregation.values().size())],
 					algorithmRequest: algorithmRequest
 				).save()
 			}

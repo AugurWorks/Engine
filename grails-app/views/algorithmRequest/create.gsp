@@ -6,7 +6,7 @@
 		<asset:javascript src="algorithmRequest.js" />
 	</head>
 	<body>
-		<%@ page import="com.augurworks.engine.helper.Aggregations" %>
+		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
 				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
@@ -68,7 +68,7 @@
 					</div>
 					<div class="field">
 						<label>Aggregation</label>
-						<g:select from="${ Aggregations.TYPES }" name="aggregation" class="ui search dropdown" value="Period Percent Change" />
+						<g:select from="${ Aggregation.values()*.name }" name="aggregation" class="ui search dropdown" value="Period Percent Change" />
 					</div>
 					<div class="field">
 						<label>Add Data Set</label>

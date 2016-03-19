@@ -6,14 +6,14 @@ class RequestDataSet {
 
 	DataSet dataSet
 	int offset
-	String aggregation
+	Aggregation aggregation
 
 	static belongsTo = [algorithmRequest: AlgorithmRequest]
 
 	static constraints = {
 		dataSet()
 		offset()
-		aggregation inList: Aggregation.TYPES
+		aggregation()
 	}
 
 	String toString() {

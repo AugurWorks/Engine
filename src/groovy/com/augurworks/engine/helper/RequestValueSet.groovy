@@ -30,13 +30,13 @@ class RequestValueSet {
 		return this.values*.date
 	}
 
-	RequestValueSet aggregateValues(String aggregationType) {
+	RequestValueSet aggregateValues(Aggregation aggregationType) {
 		Collection<DataSetValue> values = this.values
 		Collection<DataSetValue> newValues = []
 		for (int i = 0; i < values.size(); i++) {
 			Double previousValue = i == 0 ? null : values[i - 1].value
 			DataSetValue current = values[i]
-			Double newValue = Aggregation.aggregate(aggregationType, previousValue, current.value)?.round(3)
+			Double newValue = aggregationType.aggregate.apply(previousValue, current.value)?.round(3)
 			if (newValue != null) {
 				newValues.push(new DataSetValue(current.date, newValue))
 			}
