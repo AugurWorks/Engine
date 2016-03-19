@@ -31,7 +31,7 @@ class AutoKickoffService {
 	void scheduleKickoffJob(AlgorithmRequest algorithmRequest) {
 		try {
 			if (runningJobs[algorithmRequest.id]) {
-				runningJobs[algorithmRequest.id].cancel(false)
+				clearJob(algorithmRequest)
 			}
 			Trigger trigger = createTrigger(algorithmRequest)
 			Runnable job = new AlgorithmRequestJob(algorithmRequest.id)
@@ -42,6 +42,10 @@ class AutoKickoffService {
 			log.error e.getMessage()
 			log.debug e.getStackTrace().join('\n      at ')
 		}
+	}
+
+	void clearJob(AlgorithmRequest algorithmRequest) {
+		runningJobs[algorithmRequest.id]?.cancel(false)
 	}
 
 	Trigger createTrigger(AlgorithmRequest algorithmRequest) {

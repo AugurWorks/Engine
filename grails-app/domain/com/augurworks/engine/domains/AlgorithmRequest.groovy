@@ -5,8 +5,11 @@ import groovy.time.TimeCategory
 import org.apache.commons.lang.time.DateUtils
 
 import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.services.AutoKickoffService
 
 class AlgorithmRequest {
+
+	def autoKickoffService
 
 	String name
 	int startOffset
@@ -110,5 +113,9 @@ class AlgorithmRequest {
 			throw new AugurWorksException('Prediction data set not found')
 		}
 		return matching.first()
+	}
+
+	def beforeDelete() {
+		autoKickoffService.clearJob(this)
 	}
 }
