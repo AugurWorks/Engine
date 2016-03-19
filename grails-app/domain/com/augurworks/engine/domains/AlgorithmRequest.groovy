@@ -14,6 +14,7 @@ class AlgorithmRequest {
 	Date dateCreated
 	DataSet dependantDataSet
 	String unit = 'Day'
+	String cronExpression
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult]
 
@@ -24,6 +25,7 @@ class AlgorithmRequest {
 		dateCreated()
 		dependantDataSet()
 		unit inList: ['Day', 'Hour', 'Half Hour']
+		cronExpression nullable: true
 	}
 
 	static mapping = {

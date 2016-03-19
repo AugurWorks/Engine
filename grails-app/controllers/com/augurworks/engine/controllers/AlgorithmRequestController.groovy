@@ -2,6 +2,8 @@ package com.augurworks.engine.controllers
 
 import grails.converters.JSON
 
+import org.quartz.CronExpression
+
 import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
@@ -9,6 +11,7 @@ import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.services.AlfredService
+import com.augurworks.engine.services.AutoKickoffService
 import com.augurworks.engine.services.AutomatedService
 import com.augurworks.engine.services.DataRetrievalService
 import com.augurworks.engine.services.MachineLearningService
@@ -19,6 +22,7 @@ class AlgorithmRequestController {
 	AlfredService alfredService
 	DataRetrievalService dataRetrievalService
 	AutomatedService automatedService
+	AutoKickoffService autoKickoffService
 
 	def index() {
 		[requests: AlgorithmRequest.list()]
@@ -55,18 +59,23 @@ class AlgorithmRequestController {
 		[dataSets: DataSet.list()*.toString(), algorithmRequest: algorithmRequest]
 	}
 
-	def submitRequest(String name, int startOffset, int endOffset, String unit, Long id, boolean overwrite) {
+	def submitRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Long id, boolean overwrite) {
 		try {
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
 			if (overwrite && id) {
-				AlgorithmRequest.get(id)?.delete(flush: true)
+				AlgorithmRequest deleteRequest = AlgorithmRequest.get(id)
+				autoKickoffService.clearJob(deleteRequest)
+				deleteRequest?.delete(flush: true)
 			}
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, unit, dataSets)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, unit, cronExpression, dataSets)
 			algorithmRequest.save()
 			if (algorithmRequest.hasErrors()) {
 				throw new AugurWorksException('The request could not be created, please check that the name is unique.')
 			}
 			algorithmRequest.updateDataSets(dataSets)
+			if (algorithmRequest.cronExpression) {
+				autoKickoffService.scheduleKickoffJob(algorithmRequest)
+			}
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
 			log.error e.getMessage()
@@ -75,10 +84,13 @@ class AlgorithmRequestController {
 		}
 	}
 
-	def checkRequest(int startOffset, int endOffset, String unit) {
+	def checkRequest(int startOffset, int endOffset, String unit, String cronExpression) {
 		try {
+			if (cronExpression && !CronExpression.isValidExpression(cronExpression)) {
+				throw new AugurWorksException('Invalid Cron Expression')
+			}
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, unit, dataSets)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, unit, cronExpression, dataSets)
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)
@@ -90,13 +102,14 @@ class AlgorithmRequestController {
 		}
 	}
 
-	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, String unit, Collection<Map> dataSets) {
+	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Collection<Map> dataSets) {
 		Map dependantDataSetMap = dataSets.grep { it.dependant }.first()
 		Map parameters = [
 			name: name,
 			startOffset: startOffset,
 			endOffset: endOffset,
 			unit: unit,
+			cronExpression: cronExpression,
 			dependantDataSet: DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
 		]
 		return new AlgorithmRequest(parameters)
@@ -104,6 +117,7 @@ class AlgorithmRequestController {
 
 	def deleteRequest(AlgorithmRequest algorithmRequest) {
 		try {
+			autoKickoffService.clearJob(algorithmRequest)
 			algorithmRequest.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {

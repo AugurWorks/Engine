@@ -36,13 +36,21 @@
 				</div>
 			</div>
 			<div class="ui form">
-				<h3 class="ui dividing header">Name and Boundary Dates</h3>
+				<h3 class="ui dividing header">Name and Cron Expression</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
-				<div class="four fields">
+				<div class="two fields">
 					<div class="field">
 						<label>Name</label>
 						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
 					</div>
+					<div class="field">
+						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
+						<g:field type="text" name="cronExpression" value="${ algorithmRequest ? algorithmRequest?.cronExpression : '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
+					</div>
+				</div>
+				<h3 class="ui dividing header">Boundary Dates</h3>
+				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
+				<div class="three fields">
 					<div class="field">
 						<label>Start Offset</label>
 						<g:field type="number" name="startOffset" value="${ algorithmRequest?.startOffset ?: -14 }" />
