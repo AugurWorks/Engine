@@ -269,4 +269,6 @@ databaseChangeLog = {
 	include file: 'algorithm-request-name.groovy'
 
 	include file: 'algorithm-type-enum.groovy'
+
+	include file: 'cron-expressions.groovy'
 }
