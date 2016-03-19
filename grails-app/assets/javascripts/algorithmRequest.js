@@ -24,6 +24,7 @@ function submitRequest(overwrite) {
 			startOffset: $('#startOffset').val(),
 			endOffset: $('#endOffset').val(),
 			unit: $('#unit').val(),
+			cronExpression: $('#cronExpression').val(),
 			overwrite: overwrite
 		},
 		success: function(data) {
@@ -45,7 +46,8 @@ function checkRequest() {
 			dataSets: JSON.stringify(getDataSets()),
 			startOffset: $('#startOffset').val(),
 			endOffset: $('#endOffset').val(),
-			unit: $('#unit').val()
+			unit: $('#unit').val(),
+			cronExpression: $('#cronExpression').val()
 		},
 		success: function(data) {
 			$('#checking').hide();
