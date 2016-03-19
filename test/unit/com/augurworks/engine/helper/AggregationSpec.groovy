@@ -9,7 +9,7 @@ class AggregationSpec extends Specification {
 
 	void "test valid period percent change"() {
 		when:
-		double result = Aggregations.periodPercentChange(previousValue, currentValue)
+		double result = Aggregation.periodPercentChange(previousValue, currentValue)
 
 		then:
 		Math.abs(expected - result) < 1
@@ -23,7 +23,7 @@ class AggregationSpec extends Specification {
 
 	void "test invalid period percent change"() {
 		when:
-		Aggregations.periodPercentChange(0, 100)
+		Aggregation.periodPercentChange(0, 100)
 
 		then:
 		thrown(AugurWorksException)

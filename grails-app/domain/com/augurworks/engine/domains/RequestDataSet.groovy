@@ -1,6 +1,6 @@
 package com.augurworks.engine.domains
 
-import com.augurworks.engine.helper.Aggregations
+import com.augurworks.engine.helper.Aggregation
 
 class RequestDataSet {
 
@@ -13,7 +13,7 @@ class RequestDataSet {
 	static constraints = {
 		dataSet()
 		offset()
-		aggregation inList: Aggregations.TYPES
+		aggregation inList: Aggregation.TYPES
 	}
 
 	String toString() {

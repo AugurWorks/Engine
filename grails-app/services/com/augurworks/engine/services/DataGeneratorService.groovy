@@ -10,7 +10,7 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.RequestDataSet
-import com.augurworks.engine.helper.Aggregations
+import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.RequestValueSet
 
@@ -96,7 +96,7 @@ class DataGeneratorService {
 				new RequestDataSet(
 					dataSet: dataSet,
 					offset: counter == 0 ? 0 : -1,
-					aggregation: Aggregations.TYPES[rand.nextInt(Aggregations.TYPES.size())],
+					aggregation: Aggregation.TYPES[rand.nextInt(Aggregation.TYPES.size())],
 					algorithmRequest: algorithmRequest
 				).save()
 			}
