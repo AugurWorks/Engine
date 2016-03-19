@@ -3,6 +3,7 @@ package com.augurworks.engine.services
 import grails.transaction.Transactional
 
 import com.augurworks.engine.domains.AlgorithmRequest
+import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.helper.AlgorithmType
 
 @Transactional
@@ -34,5 +35,9 @@ class AutomatedService {
 		} else if (algorithmType == AlgorithmType.MACHINE_LEARNING) {
 			machineLearningService.createAlgorithm(algorithmRequest)
 		}
+	}
+
+	boolean areDataSetsCorrectlySized(Collection<Map> dataSets, int rowNumber) {
+		return dataSets*.values*.size().every { it == rowNumber }
 	}
 }

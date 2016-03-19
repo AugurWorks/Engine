@@ -21,7 +21,7 @@ class AlfredService {
 
 	GrailsApplication grailsApplication
 	DataRetrievalService dataRetrievalService
-	MachineLearningService machineLearningService
+	AutomatedService automatedService
 
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		String postBody = constructPostBody(algorithmRequest)
@@ -42,7 +42,7 @@ class AlfredService {
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
-		if (!machineLearningService.areDataSetsCorrectlySized(dataSets.tail(), rowNumber)) {
+		if (!automatedService.areDataSetsCorrectlySized(dataSets.tail(), rowNumber)) {
 			throw new AugurWorksException('Request datasets aren\'t all the same length')
 		}
 		/*if (dataSets.first().values.size() != rowNumber - 1) {

@@ -22,6 +22,7 @@ class MachineLearningService {
 
 	DataRetrievalService dataRetrievalService
 	AwsService awsService
+	AutomatedService automatedService
 
 	static final MACHINE_LEARNING_COMPLETE_STATUS = 'COMPLETED'
 
@@ -50,7 +51,7 @@ class MachineLearningService {
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
-		if (!areDataSetsCorrectlySized(dataSets, rowNumber)) {
+		if (!automatedService.areDataSetsCorrectlySized(dataSets, rowNumber)) {
 			throw new AugurWorksException('Request datasets aren\'t all the same length.')
 		}
 		csv << dataSets*.name.join(',') + '\n'
@@ -77,10 +78,6 @@ class MachineLearningService {
 			schema.targetAttributeName = algorithmRequest.dependantDataSet.ticker
 		}
 		return schema as JSON
-	}
-
-	boolean areDataSetsCorrectlySized(Collection<Map> dataSets, int rowNumber) {
-		return dataSets*.values*.size().every { it == rowNumber }
 	}
 
 	void checkIncompleteAlgorithms() {
