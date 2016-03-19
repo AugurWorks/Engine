@@ -4,6 +4,7 @@ import grails.test.spock.IntegrationSpec
 
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.DataSet
+import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.services.DataRetrievalService
@@ -25,7 +26,7 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 			algorithmRequest.addToRequestDataSets(
 				dataSet: DataSet.findByTicker(ticker),
 				offset: ticker == dependantDataSetTicker ? 0 : -1,
-				aggregation: 'Period Percent Change'
+				aggregation: Aggregation.PERIOD_PERCENT_CHANGE
 			)
 		}
 		algorithmRequest.save(flush: true)

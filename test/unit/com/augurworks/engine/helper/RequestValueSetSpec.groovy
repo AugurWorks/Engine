@@ -65,10 +65,10 @@ class RequestValueSetSpec extends Specification {
 		set.values.size() == valuesSize
 
 		where:
-		aggregationType         | valuesSize
-		'Value'                 | 10
-		'Period Change'         | 9
-		'Period Percent Change' | 9
+		aggregationType                   | valuesSize
+		Aggregation.VALUE                 | 10
+		Aggregation.PERIOD_CHANGE         | 9
+		Aggregation.PERIOD_PERCENT_CHANGE | 9
 	}
 
 	void "test filter values"() {

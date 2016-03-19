@@ -5,7 +5,7 @@ import grails.test.mixin.*
 import groovy.time.TimeCategory
 import spock.lang.Specification
 
-import com.augurworks.engine.helper.Aggregations
+import com.augurworks.engine.helper.Aggregation
 
 @TestFor(AlgorithmRequest)
 @Build([AlgorithmRequest])
@@ -50,7 +50,7 @@ class AlgorithmRequestSpec extends Specification {
 			new RequestDataSet(
 				dataSet: dataSet,
 				offset: counter,
-				aggregation: Aggregations.TYPES[0],
+				aggregation: Aggregation.VALUE,
 				algorithmRequest: algorithmRequest
 			).save()
 		}
@@ -146,7 +146,7 @@ class AlgorithmRequestSpec extends Specification {
 		Collection<Map> dataSetMaps = dataSets.collect { DataSet dataSet ->
 			return [
 				name: dataSet.ticker,
-				aggregation: Aggregations.TYPES[0],
+				aggregation: Aggregation.VALUE,
 				offset: 0
 			]
 		}
