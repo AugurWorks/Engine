@@ -117,6 +117,7 @@ grails.cache.config = {
 log4j = {
 	appenders {
 		console name: 'stdout', threshold: org.apache.log4j.Level.ERROR
+		rollingFile name: 'debug', file: 'logs/debug.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.DEBUG
 		rollingFile name: 'info', file: 'logs/info.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.INFO
 		rollingFile name: 'warn', file: 'logs/warn.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.WARN
 		appender new SlackAppender(name: 'slackAppender', layout: pattern(conversionPattern: '%c{2} - %m%n'), threshold: org.apache.log4j.Level.ERROR)
@@ -131,6 +132,14 @@ log4j = {
 	]
 
 	info 'info': [
+		'grails.app.controllers.com.augurworks.engine',
+		'grails.app.services.com.augurworks.engine',
+		'grails.app.conf.com.augurworks.engine',
+		'grails.app.domain.com.augurworks.engine',
+		'com.augurworks.engine.helper'
+	]
+
+	debug 'debug': [
 		'grails.app.controllers.com.augurworks.engine',
 		'grails.app.services.com.augurworks.engine',
 		'grails.app.conf.com.augurworks.engine',

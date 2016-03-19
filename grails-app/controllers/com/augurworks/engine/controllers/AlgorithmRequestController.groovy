@@ -26,7 +26,7 @@ class AlgorithmRequestController {
 
 	def show(AlgorithmRequest algorithmRequest) {
 		if (!algorithmRequest) {
-			render(view: '404')
+			render(view: '/404')
 		}
 		[algorithm: algorithmRequest]
 	}
@@ -38,11 +38,11 @@ class AlgorithmRequestController {
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
 			log.warn e.getMessage()
-			log.info e.getStackTrace().join('\n      at ')
+			log.debug e.getStackTrace().join('\n      at ')
 			render([ok: false, error: e.getMessage()] as JSON)
 		} catch (e) {
 			log.error e.getMessage()
-			log.info e.getStackTrace().join('\n      at ')
+			log.debug e.getStackTrace().join('\n      at ')
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -70,7 +70,7 @@ class AlgorithmRequestController {
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
 			log.error e.getMessage()
-			log.info e.getStackTrace().join('\n      at ')
+			log.debug e.getStackTrace().join('\n      at ')
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -85,7 +85,7 @@ class AlgorithmRequestController {
 			render([ok: true] as JSON)
 		} catch (e) {
 			log.warn e.getMessage()
-			log.info e.getStackTrace().join('\n      at ')
+			log.debug e.getStackTrace().join('\n      at ')
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -108,7 +108,7 @@ class AlgorithmRequestController {
 			render([ok: true] as JSON)
 		} catch(e) {
 			log.error e.getMessage()
-			log.info e.getStackTrace().join('\n      at ')
+			log.debug e.getStackTrace().join('\n      at ')
 			render([ok: false] as JSON)
 		}
 	}
@@ -119,7 +119,7 @@ class AlgorithmRequestController {
 			render([ok: true] as JSON)
 		} catch(e) {
 			log.error e.getMessage()
-			log.info e.getStackTrace().join('\n      at ')
+			log.debug e.getStackTrace().join('\n      at ')
 			render([ok: false] as JSON)
 		}
 	}

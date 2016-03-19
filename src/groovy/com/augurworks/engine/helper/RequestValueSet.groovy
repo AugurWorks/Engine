@@ -50,16 +50,16 @@ class RequestValueSet {
 		int startIndex = values.findIndexOf { it.date == startDate }
 		int endIndex = values.findIndexOf { it.date == endDate }
 		if (startIndex == -1 || endIndex == -1) {
-			log.info '------------------------------'
-			log.info 'Failed to get data for ' + this.name
+			log.debug '------------------------------'
+			log.debug 'Failed to get data for ' + this.name
 		}
 		if (startIndex == -1) {
-			log.info 'Start date needed: ' + startDate
-			log.info 'First available date: ' + this.values.first().date
+			log.debug 'Start date needed: ' + startDate
+			log.debug 'First available date: ' + this.values.first().date
 		}
 		if (endIndex == -1) {
-			log.info 'End date needed: ' + endDate
-			log.info 'Last available date: ' + this.values.last().date
+			log.debug 'End date needed: ' + endDate
+			log.debug 'Last available date: ' + this.values.last().date
 		}
 		if (startIndex == -1) {
 			throw new AugurWorksException(this.name + ' does not contain data for the start date, ' + startDate.format(Global.ERROR_DATE_FORMAT))

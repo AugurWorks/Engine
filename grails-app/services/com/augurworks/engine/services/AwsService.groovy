@@ -152,7 +152,7 @@ class AwsService {
 			out.close()
 		} catch(IOException e){
 			log.error e.getMessage()
-			log.info e.getStackTrace().join('\n      at ')
+			log.debug e.getStackTrace().join('\n      at ')
 		}
 		return unzippedFile
 	}
