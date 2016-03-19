@@ -29,6 +29,12 @@ Run a local MySQL instance with Docker by running the following:
 docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=mysql mysql
 ```
 
+#### Database Migrations
+Database migration diffs can be created with a local MySQL instances using the following command:
+```bash
+grails prod -DRDS_PASSWORD=[MySQL root password] -DRDS_HOSTNAME=[MySQL host ip] dbm-gorm-diff --add [filename].groovy
+```
+
 ### Local Docker
 An example local Docker `run` command is:
 ```bash
