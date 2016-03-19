@@ -18,8 +18,10 @@ import com.augurworks.engine.jobs.AlgorithmRequestJob
 @Transactional
 class AutoKickoffService {
 
+	@SuppressWarnings("GrailsStatelessService")
 	Map<Long, ScheduledFuture> runningJobs = [:]
 
+	@SuppressWarnings("GrailsStatelessService")
 	ThreadPoolTaskScheduler executor = new ThreadPoolTaskScheduler()
 
 	@PostConstruct
