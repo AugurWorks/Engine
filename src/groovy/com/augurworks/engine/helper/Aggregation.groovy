@@ -4,7 +4,7 @@ import java.util.function.BiFunction
 
 import com.augurworks.engine.AugurWorksException
 
-public enum Aggregation {
+enum Aggregation {
 	VALUE('Value', this.&identity, this.&identity),
 	PERIOD_CHANGE('Period Change', this.&periodChange, this.&periodChangeNormalize),
 	PERIOD_PERCENT_CHANGE('Period Percent Change', this.&periodPercentChange, this.&periodPercentChangeNormalize)
