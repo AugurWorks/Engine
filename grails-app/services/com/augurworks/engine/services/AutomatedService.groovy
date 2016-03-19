@@ -37,6 +37,7 @@ class AutomatedService {
 
 	void runAlgorithm(long algorithmRequestId, AlgorithmType algorithmType) {
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(algorithmRequestId)
+		log.info 'Running ' + algorithmRequest + ' from a cron job'
 		runAlgorithm(algorithmRequest, algorithmType)
 	}
 

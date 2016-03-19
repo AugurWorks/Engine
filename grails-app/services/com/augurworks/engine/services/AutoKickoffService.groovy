@@ -32,12 +32,14 @@ class AutoKickoffService {
 
 	void scheduleKickoffJob(AlgorithmRequest algorithmRequest) {
 		try {
+			log.info 'Creating cron job for ' + algorithmRequest
 			if (runningJobs[algorithmRequest.id]) {
 				clearJob(algorithmRequest)
 			}
 			Trigger trigger = createTrigger(algorithmRequest)
 			Runnable job = new AlgorithmRequestJob(algorithmRequest.id)
 			runningJobs[algorithmRequest.id] = executor.schedule(job, trigger)
+			log.info runningJobs.keySet().size() + ' total jobs scheduled'
 		} catch (AugurWorksException e) {
 			log.warn e.getMessage()
 		} catch (e) {
@@ -47,6 +49,7 @@ class AutoKickoffService {
 	}
 
 	void clearJob(AlgorithmRequest algorithmRequest) {
+		log.info 'Clearing cron job for ' + algorithmRequest
 		runningJobs[algorithmRequest.id]?.cancel(false)
 	}
 
