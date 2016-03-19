@@ -28,6 +28,11 @@ class AutomatedService {
 		}
 	}
 
+	void runAlgorithm(long algorithmRequestId, AlgorithmType algorithmType) {
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(algorithmRequestId)
+		runAlgorithm(algorithmRequest, algorithmType)
+	}
+
 	void runAlgorithm(AlgorithmRequest algorithmRequest, AlgorithmType algorithmType) {
 		if (algorithmType == AlgorithmType.ALFRED) {
 			alfredService.createAlgorithm(algorithmRequest)
