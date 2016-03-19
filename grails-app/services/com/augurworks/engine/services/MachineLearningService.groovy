@@ -153,7 +153,7 @@ class MachineLearningService {
 			cleanupMachineLearning(algorithmResult)
 			algorithmResult.complete = true
 			algorithmResult.save()
-			algorithmResult.futureValue?.sendToSlack()
+			automatedService.postProcessing(algorithmResult)
 		}
 	}
 

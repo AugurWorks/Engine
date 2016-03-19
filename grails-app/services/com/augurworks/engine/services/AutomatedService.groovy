@@ -37,6 +37,10 @@ class AutomatedService {
 		}
 	}
 
+	void postProcessing(AlgorithmResult algorithmResult) {
+		algorithmResult.futureValue?.sendToSlack()
+	}
+
 	boolean areDataSetsCorrectlySized(Collection<Map> dataSets, int rowNumber) {
 		return dataSets*.values*.size().every { it == rowNumber }
 	}

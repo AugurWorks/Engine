@@ -95,7 +95,7 @@ class AlfredService {
 				processResponse(algorithmResult, resp.text)
 			}
 			algorithmResult.save()
-			algorithmResult.futureValue?.sendToSlack()
+			automatedService.postProcessing(algorithmResult)
 		} else if (resp.status == 500) {
 			throw new AugurWorksException('Alfred was not able to process the submitted request')
 		}
