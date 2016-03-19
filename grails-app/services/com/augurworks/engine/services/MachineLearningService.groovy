@@ -15,6 +15,7 @@ import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.SplineRequest
 
 @Transactional
@@ -169,7 +170,17 @@ class MachineLearningService {
 
 	void addPredictionsToAlgorithmResult(AlgorithmResult algorithmResult, Collection<Double> predictions) {
 		RequestDataSet predictionSet = algorithmResult.algorithmRequest.dependentRequestDataSet
-		RequestValueSet requestValueSet = dataRetrievalService.getSingleRequestValues(predictionSet, algorithmResult.algorithmRequest.startDate, algorithmResult.algorithmRequest.endDate, algorithmResult.algorithmRequest.unit, predictionSet.offset, predictionSet.offset)
+		SingleDataRequest singleDataRequest = new SingleDataRequest(
+			dataSet: predictionSet.dataSet,
+			offset: predictionSet.offset,
+			startDate: algorithmResult.algorithmRequest.startDate,
+			endDate: algorithmResult.algorithmRequest.endDate,
+			unit: algorithmResult.algorithmRequest.unit,
+			minOffset: predictionSet.offset,
+			maxOffset: predictionSet.offset,
+			aggregation: predictionSet.aggregation
+		)
+		RequestValueSet requestValueSet = dataRetrievalService.getSingleRequestValues(singleDataRequest)
 		Collection<Date> predictionDates = requestValueSet.dates
 		createPredictedValues(algorithmResult, predictionDates, predictions)
 	}
