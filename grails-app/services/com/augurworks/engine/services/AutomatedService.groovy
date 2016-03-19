@@ -3,13 +3,20 @@ package com.augurworks.engine.services
 import grails.transaction.Transactional
 
 import com.augurworks.engine.domains.AlgorithmRequest
+import com.augurworks.engine.domains.AlgorithmResult
+import com.augurworks.engine.domains.RequestDataSet
+import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.Common
+import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SingleDataRequest
 
 @Transactional
 class AutomatedService {
 
 	MachineLearningService machineLearningService
 	AlfredService alfredService
+	DataRetrievalService dataRetrievalService
 
 	void runAllDailyAlgorithms() {
 		log.info 'Running all algorithms'
@@ -39,5 +46,37 @@ class AutomatedService {
 		} else if (algorithmType == AlgorithmType.MACHINE_LEARNING) {
 			machineLearningService.createAlgorithm(algorithmRequest)
 		}
+	}
+
+	void postProcessing(AlgorithmResult algorithmResult) {
+		AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
+		RequestDataSet requestDataSet = algorithmRequest.dependentRequestDataSet
+		SingleDataRequest singleDataRequest = new SingleDataRequest(
+			dataSet: requestDataSet.dataSet,
+			offset: requestDataSet.offset,
+			startDate: algorithmResult.algorithmRequest.startDate,
+			endDate: algorithmResult.algorithmRequest.endDate,
+			unit: algorithmResult.algorithmRequest.unit,
+			minOffset: requestDataSet.offset,
+			maxOffset: requestDataSet.offset,
+			aggregation: Aggregation.VALUE
+		)
+		RequestValueSet predictionActuals = dataRetrievalService.getSingleRequestValues(singleDataRequest)
+		if (algorithmResult.futureValue) {
+			Double actualValue
+			Date futureDate = Common.calculatePredictionDate(algorithmResult.algorithmRequest.unit, predictionActuals.values.last().date, 1)
+			if (futureDate == algorithmResult.futureValue.date) {
+				actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
+			} else {
+				log.warn 'Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up'
+				log.info '- Last actual date: ' + predictionActuals.values.last().date
+				log.info '- Last prediction date: ' + algorithmResult.futureValue.date
+			}
+			algorithmResult.futureValue?.sendToSlack(actualValue)
+		}
+	}
+
+	boolean areDataSetsCorrectlySized(Collection<Map> dataSets, int rowNumber) {
+		return dataSets*.values*.size().every { it == rowNumber }
 	}
 }

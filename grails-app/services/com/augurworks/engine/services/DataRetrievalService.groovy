@@ -15,6 +15,7 @@ import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.SplineRequest
 
 @Transactional
@@ -45,27 +46,37 @@ class DataRetrievalService {
 		Collection<RequestDataSet> requestDataSets = splineRequest.includeDependent ? splineRequest.algorithmRequest.requestDataSets : splineRequest.algorithmRequest.independentRequestDataSets
 		GParsPool.withPool(requestDataSets.size()) {
 			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
-				return getSingleRequestValues(requestDataSet, splineRequest.startDate, splineRequest.endDate, splineRequest.algorithmRequest.unit, minOffset, maxOffset)
+				SingleDataRequest singleDataRequest = new SingleDataRequest(
+					dataSet: requestDataSet.dataSet,
+					offset: requestDataSet.offset,
+					startDate: splineRequest.startDate,
+					endDate: splineRequest.endDate,
+					unit: splineRequest.algorithmRequest.unit,
+					minOffset: minOffset,
+					maxOffset: maxOffset,
+					aggregation: requestDataSet.aggregation
+				)
+				return getSingleRequestValues(singleDataRequest)
 			}
 		}
 	}
 
-	RequestValueSet getSingleRequestValues(RequestDataSet requestDataSet, Date startDate, Date endDate, String unit, int minOffset, int maxOffset) {
+	RequestValueSet getSingleRequestValues(SingleDataRequest singleDataRequest) {
 		Collection<DataSetValue> values = []
-		switch (unit) {
+		switch (singleDataRequest.unit) {
 			case 'Day':
-				values = getQuandlData(requestDataSet.dataSet.code, requestDataSet.dataSet.dataColumn)
+				values = getQuandlData(singleDataRequest.dataSet.code, singleDataRequest.dataSet.dataColumn)
 				break
 			case 'Hour':
-				values = getGoogleData(requestDataSet.dataSet.ticker, startDate.clone(), 60)
+				values = getGoogleData(singleDataRequest.dataSet.ticker, singleDataRequest.startDate.clone(), 60)
 				break
 			case 'Half Hour':
-				values = getGoogleData(requestDataSet.dataSet.ticker, startDate.clone(), 30)
+				values = getGoogleData(singleDataRequest.dataSet.ticker, singleDataRequest.startDate.clone(), 30)
 				break
 			default:
-				throw new AugurWorksException('Unknown prediction date unit: ' + unit)
+				throw new AugurWorksException('Unknown prediction date unit: ' + singleDataRequest.unit)
 		}
-		return new RequestValueSet(requestDataSet.dataSet.ticker, requestDataSet.offset, values).aggregateValues(requestDataSet.aggregation).filterValues(startDate, endDate, minOffset, maxOffset)
+		return new RequestValueSet(singleDataRequest.dataSet.ticker, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
 	}
 
 	Collection<DataSetValue> getQuandlData(String quandlCode, int dataColumn) {

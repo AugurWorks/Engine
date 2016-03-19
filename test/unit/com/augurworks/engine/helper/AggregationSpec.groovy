@@ -28,4 +28,18 @@ class AggregationSpec extends Specification {
 		then:
 		thrown(AugurWorksException)
 	}
+
+	void "test valid period percent change normalize"() {
+		when:
+		double result = Aggregation.periodPercentChangeNormalize(previousValue, currentValue)
+
+		then:
+		Math.abs(expected - result) < 0.01
+
+		where:
+		previousValue | currentValue | expected
+		1D            | 10D          | 1.1D
+		2D            | -20D         | 1.60D
+		5D            | 0D           | 5D
+	}
 }

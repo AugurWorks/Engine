@@ -15,6 +15,7 @@ import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.SplineRequest
 
 @Transactional
@@ -22,6 +23,7 @@ class MachineLearningService {
 
 	DataRetrievalService dataRetrievalService
 	AwsService awsService
+	AutomatedService automatedService
 
 	static final MACHINE_LEARNING_COMPLETE_STATUS = 'COMPLETED'
 
@@ -50,7 +52,7 @@ class MachineLearningService {
 			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
-		if (!areDataSetsCorrectlySized(dataSets, rowNumber)) {
+		if (!automatedService.areDataSetsCorrectlySized(dataSets, rowNumber)) {
 			throw new AugurWorksException('Request datasets aren\'t all the same length.')
 		}
 		csv << dataSets*.name.join(',') + '\n'
@@ -77,10 +79,6 @@ class MachineLearningService {
 			schema.targetAttributeName = algorithmRequest.dependantDataSet.ticker
 		}
 		return schema as JSON
-	}
-
-	boolean areDataSetsCorrectlySized(Collection<Map> dataSets, int rowNumber) {
-		return dataSets*.values*.size().every { it == rowNumber }
 	}
 
 	void checkIncompleteAlgorithms() {
@@ -156,7 +154,7 @@ class MachineLearningService {
 			cleanupMachineLearning(algorithmResult)
 			algorithmResult.complete = true
 			algorithmResult.save()
-			algorithmResult.futureValue?.sendToSlack()
+			automatedService.postProcessing(algorithmResult)
 		}
 	}
 
@@ -172,7 +170,17 @@ class MachineLearningService {
 
 	void addPredictionsToAlgorithmResult(AlgorithmResult algorithmResult, Collection<Double> predictions) {
 		RequestDataSet predictionSet = algorithmResult.algorithmRequest.dependentRequestDataSet
-		RequestValueSet requestValueSet = dataRetrievalService.getSingleRequestValues(predictionSet, algorithmResult.algorithmRequest.startDate, algorithmResult.algorithmRequest.endDate, algorithmResult.algorithmRequest.unit, predictionSet.offset, predictionSet.offset)
+		SingleDataRequest singleDataRequest = new SingleDataRequest(
+			dataSet: predictionSet.dataSet,
+			offset: predictionSet.offset,
+			startDate: algorithmResult.algorithmRequest.startDate,
+			endDate: algorithmResult.algorithmRequest.endDate,
+			unit: algorithmResult.algorithmRequest.unit,
+			minOffset: predictionSet.offset,
+			maxOffset: predictionSet.offset,
+			aggregation: predictionSet.aggregation
+		)
+		RequestValueSet requestValueSet = dataRetrievalService.getSingleRequestValues(singleDataRequest)
 		Collection<Date> predictionDates = requestValueSet.dates
 		createPredictedValues(algorithmResult, predictionDates, predictions)
 	}
