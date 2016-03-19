@@ -25,6 +25,9 @@ class AlgorithmRequestController {
 	}
 
 	def show(AlgorithmRequest algorithmRequest) {
+		if (!algorithmRequest) {
+			render(view: '404')
+		}
 		[algorithm: algorithmRequest]
 	}
 
