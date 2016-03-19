@@ -23,9 +23,10 @@ class DataRetrievalService {
 	static final String QUANDL_DATE_FORMAT = 'yyyy-MM-dd'
 	static final String GOOGLE_API_ROOT = 'http://www.google.com/finance/getprices?'
 
+	@SuppressWarnings("GrailsStatelessService")
+	GrailsCacheManager grailsCacheManager
 	GrailsApplication grailsApplication
 	DataGeneratorService dataGeneratorService
-	GrailsCacheManager grailsCacheManager
 
 	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(splineRequest)

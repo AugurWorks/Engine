@@ -2,10 +2,10 @@ package com.augurworks.engine.helper
 
 import com.augurworks.engine.AugurWorksException
 
-public enum AlgorithmType {
+enum AlgorithmType {
 	ALFRED('Alfred', 'alfred'),
 	MACHINE_LEARNING('Machine Learning', 'ml')
-	
+
 	private final String name
 	private final String shortName
 

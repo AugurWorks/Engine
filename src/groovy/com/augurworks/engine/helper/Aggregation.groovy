@@ -4,7 +4,7 @@ import java.util.function.BiFunction
 
 import com.augurworks.engine.AugurWorksException
 
-public enum Aggregation {
+enum Aggregation {
 	VALUE('Value', this.&identity),
 	PERIOD_CHANGE('Period Change', this.&periodChange),
 	PERIOD_PERCENT_CHANGE('Period Percent Change', this.&periodPercentChange)
@@ -17,6 +17,7 @@ public enum Aggregation {
 		this.aggregate = aggregate
 	}
 
+	@SuppressWarnings("UnusedMethodParameter")
 	static Double identity(Double previousValue, Double currentValue) {
 		return currentValue
 	}

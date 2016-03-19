@@ -16,11 +16,12 @@ class ApiController {
 	ApiService apiService
 	AutomatedService automatedService
 
+	@SuppressWarnings("ParameterName")
 	def slack(String token, String user_name, String text, String response_url) {
 		SlashMessage slashMessage = new SlashMessage()
 		try {
 			if (token != grailsApplication.config.slack.slash.token) {
-				throw new RuntimeException('Invalid token')
+				throw new AugurWorksException('Unauthorized')
 			}
 			Collection<String> arguments = text.toLowerCase().replace('run ', '').replace('for ', '').split(' ')
 			if (arguments.size() == 0) {
