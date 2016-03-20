@@ -55,32 +55,37 @@ class AutomatedService {
 	}
 
 	void postProcessing(AlgorithmResult algorithmResult) {
-		AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
-		RequestDataSet requestDataSet = algorithmRequest.dependentRequestDataSet
-		SingleDataRequest singleDataRequest = new SingleDataRequest(
-			dataSet: requestDataSet.dataSet,
-			offset: requestDataSet.offset,
-			startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
-			endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),
-			unit: algorithmResult.algorithmRequest.unit,
-			minOffset: requestDataSet.offset,
-			maxOffset: requestDataSet.offset,
-			aggregation: Aggregation.VALUE
-		)
-		RequestValueSet predictionActuals = dataRetrievalService.getSingleRequestValues(singleDataRequest)
-		if (algorithmResult.futureValue) {
-			Double actualValue
-			Date futureDate = Common.calculatePredictionDate(algorithmResult.algorithmRequest.unit, predictionActuals.values.last().date, 1)
-			if (futureDate == algorithmResult.futureValue.date) {
-				actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
-			} else {
-				log.warn 'Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up'
-				log.info '- Last actual date: ' + predictionActuals.values.last().date
-				log.info '- Last prediction date: ' + algorithmResult.futureValue.date
-			}
+		try {
 			if (grailsApplication.config.slack.on) {
-				algorithmResult.futureValue?.sendToSlack(actualValue)
+				AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
+				RequestDataSet requestDataSet = algorithmRequest.dependentRequestDataSet
+				SingleDataRequest singleDataRequest = new SingleDataRequest(
+					dataSet: requestDataSet.dataSet,
+					offset: requestDataSet.offset,
+					startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
+					endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),
+					unit: algorithmResult.algorithmRequest.unit,
+					minOffset: requestDataSet.offset,
+					maxOffset: requestDataSet.offset,
+					aggregation: Aggregation.VALUE
+				)
+				RequestValueSet predictionActuals = dataRetrievalService.getSingleRequestValues(singleDataRequest)
+				if (algorithmResult.futureValue) {
+					Double actualValue
+					Date futureDate = Common.calculatePredictionDate(algorithmResult.algorithmRequest.unit, predictionActuals.values.last().date, 1)
+					if (futureDate == algorithmResult.futureValue.date) {
+						actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
+					} else {
+						log.warn 'Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up'
+						log.info '- Last actual date: ' + predictionActuals.values.last().date
+						log.info '- Last prediction date: ' + algorithmResult.futureValue.date
+					}
+					algorithmResult.futureValue?.sendToSlack(actualValue)
+				}
 			}
+		} catch (e) {
+			log.error 'Post processing failed: ' + e.getMessage()
+			log.debug e.getStackTrace().join('\n      at ')
 		}
 	}
 
