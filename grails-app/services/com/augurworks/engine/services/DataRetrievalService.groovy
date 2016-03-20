@@ -144,7 +144,6 @@ class DataRetrievalService {
 
 	DataSetValue parseGoogleData(Date startDate, int intervalMinutes, String googleRow) {
 		if (googleRow.indexOf('TIMEZONE_OFFSET') != -1) {
-			log.info 'Day light savings time weirdness'
 			return null
 		}
 		Collection<String> cols = googleRow.split(',')
