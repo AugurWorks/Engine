@@ -38,10 +38,12 @@ class AutomatedService {
 		}
 	}
 
-	void runAlgorithm(long algorithmRequestId, AlgorithmType algorithmType) {
+	void runCronAlgorithms(long algorithmRequestId) {
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(algorithmRequestId)
-		log.info 'Running ' + algorithmRequest + ' from a cron job'
-		runAlgorithm(algorithmRequest, algorithmType)
+		log.info 'Running ' + (algorithmRequest.cronAlgorithms*.name.join(', ') ?: 'no algorithms') + ' for ' + algorithmRequest + ' from a cron job'
+		algorithmRequest.cronAlgorithms.each { AlgorithmType algorithmType ->
+			runAlgorithm(algorithmRequest, algorithmType)
+		}
 	}
 
 	void runAlgorithm(AlgorithmRequest algorithmRequest, AlgorithmType algorithmType) {

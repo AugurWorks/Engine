@@ -19,6 +19,6 @@ class AlgorithmRequestJob implements Runnable {
 
 	@Override
 	void run() {
-		automatedService.runAlgorithm(algorithmRequestId, AlgorithmType.ALFRED)
+		automatedService.runCronAlgorithms(algorithmRequestId)
 	}
 }
