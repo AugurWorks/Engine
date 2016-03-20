@@ -60,8 +60,8 @@ class AutomatedService {
 		SingleDataRequest singleDataRequest = new SingleDataRequest(
 			dataSet: requestDataSet.dataSet,
 			offset: requestDataSet.offset,
-			startDate: algorithmResult.algorithmRequest.startDate,
-			endDate: algorithmResult.algorithmRequest.endDate,
+			startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
+			endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),
 			unit: algorithmResult.algorithmRequest.unit,
 			minOffset: requestDataSet.offset,
 			maxOffset: requestDataSet.offset,
