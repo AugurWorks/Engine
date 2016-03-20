@@ -51,6 +51,7 @@ class AutoKickoffService {
 	void clearJob(AlgorithmRequest algorithmRequest) {
 		log.info 'Clearing cron job for ' + algorithmRequest
 		runningJobs[algorithmRequest.id]?.cancel(false)
+		runningJobs.remove(algorithmRequest.id)
 	}
 
 	Trigger createTrigger(AlgorithmRequest algorithmRequest) {
