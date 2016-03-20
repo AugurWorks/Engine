@@ -36,7 +36,7 @@ class ApiController {
 			arguments.remove(0)
 			switch (command) {
 				case 'list':
-					String message = apiService.getListMessage()
+					String message = apiService.getListMessage(arguments)
 					slashMessage.withText('Algorithm Request List').withAttachment(new Attachment(message))
 					break
 				case 'running':

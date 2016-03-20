@@ -20,15 +20,24 @@ class ApiService {
 
 	static final String DATE_FORMAT = 'MM/dd/yy HH:mm'
 
-	String getListMessage() {
+	String getListMessage(Collection arguments) {
 		String serverUrl = grailsApplication.config.grails.serverURL
-		return AlgorithmRequest.list(sort: 'name').collect { AlgorithmRequest algorithmRequest ->
+		Collection<AlgorithmRequest> algorithmRequests = []
+		if (arguments.join(' ') == 'with cron') {
+			algorithmRequests = AlgorithmRequest.findAllByCronExpressionIsNotNull(sort: 'name')
+		} else if (arguments.join(' ') == 'without cron') {
+			algorithmRequests = AlgorithmRequest.findAllByCronExpressionIsNull(sort: 'name')
+		} else {
+			algorithmRequests = AlgorithmRequest.list(sort: 'name')
+		}
+		return algorithmRequests.collect { AlgorithmRequest algorithmRequest ->
 			Collection<AlgorithmResult> results = algorithmRequest.algorithmResults
 			return [
 				algorithmRequest.name + ': ',
 				results.size() + ' runs, ',
 				algorithmRequest.requestDataSets.size() + ' data sets, ',
 				'Last run: ' + (results.size() > 0 ? results*.dateCreated.sort().first().format(DATE_FORMAT) : 'never') + ' ',
+				algorithmRequest.cronExpression ? ', Cron: ' + algorithmRequest.cronExpression + ' ' : '',
 				'(<' + serverUrl + '/algorithmRequest/show/' + algorithmRequest.id + '|View>)'
 			].join('')
 		}.join('\n')
@@ -80,7 +89,7 @@ class ApiService {
 	String getHelpMessage() {
 		return [
 			'help - This help message',
-			'list - List all existing requests and basic information about them',
+			'list [with/without cron] - List all [with or without cron expressions] existing requests',
 			'running - List all running requests',
 			'recent [number] - List a number (default 5) of recent run results',
 			'(run) (n) alfred(s) (for) [request name] - Kick off n (default 1) Alfred runs for a given request',
