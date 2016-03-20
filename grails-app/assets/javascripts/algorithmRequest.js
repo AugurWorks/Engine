@@ -25,6 +25,7 @@ function submitRequest(overwrite) {
 			endOffset: $('#endOffset').val(),
 			unit: $('#unit').val(),
 			cronExpression: $('#cronExpression').val(),
+			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
 			overwrite: overwrite
 		},
 		success: function(data) {
