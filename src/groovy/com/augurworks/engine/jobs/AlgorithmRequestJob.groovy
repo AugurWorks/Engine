@@ -2,7 +2,6 @@ package com.augurworks.engine.jobs
 
 import grails.util.Holders
 
-import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.services.AutomatedService
 
 class AlgorithmRequestJob implements Runnable {

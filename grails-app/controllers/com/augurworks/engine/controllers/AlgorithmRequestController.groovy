@@ -16,7 +16,6 @@ import com.augurworks.engine.services.AutomatedService
 import com.augurworks.engine.services.DataRetrievalService
 import com.augurworks.engine.services.MachineLearningService
 
-
 class AlgorithmRequestController {
 
 	MachineLearningService machineLearningService
