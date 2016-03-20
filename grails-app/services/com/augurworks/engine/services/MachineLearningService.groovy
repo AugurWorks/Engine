@@ -173,8 +173,8 @@ class MachineLearningService {
 		SingleDataRequest singleDataRequest = new SingleDataRequest(
 			dataSet: predictionSet.dataSet,
 			offset: predictionSet.offset,
-			startDate: algorithmResult.algorithmRequest.startDate,
-			endDate: algorithmResult.algorithmRequest.endDate,
+			startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
+			endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),
 			unit: algorithmResult.algorithmRequest.unit,
 			minOffset: predictionSet.offset,
 			maxOffset: predictionSet.offset,
