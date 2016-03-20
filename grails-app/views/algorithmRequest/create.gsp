@@ -7,6 +7,7 @@
 	</head>
 	<body>
 		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
+		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
 				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
@@ -38,7 +39,7 @@
 			<div class="ui form">
 				<h3 class="ui dividing header">Name and Cron Expression</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
-				<div class="two fields">
+				<div class="three fields">
 					<div class="field">
 						<label>Name</label>
 						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
@@ -46,6 +47,10 @@
 					<div class="field">
 						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
 						<g:field type="text" name="cronExpression" value="${ algorithmRequest ? algorithmRequest?.cronExpression : '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
+					</div>
+					<div class="field">
+						<label>Cron Algorithms</label>
+						<g:select from="${ AlgorithmType.values()*.name }" name="cronAlgorithms" class="ui search dropdown" multiple="true" value="${ algorithmRequest?.cronAlgorithms*.name }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Boundary Dates</h3>

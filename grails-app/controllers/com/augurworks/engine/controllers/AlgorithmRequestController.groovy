@@ -16,6 +16,7 @@ import com.augurworks.engine.services.AutomatedService
 import com.augurworks.engine.services.DataRetrievalService
 import com.augurworks.engine.services.MachineLearningService
 
+
 class AlgorithmRequestController {
 
 	MachineLearningService machineLearningService
@@ -61,13 +62,14 @@ class AlgorithmRequestController {
 
 	def submitRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Long id, boolean overwrite) {
 		try {
+			Collection<String> cronAlgorithms = JSON.parse(params.cronAlgorithms)
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
 			if (overwrite && id) {
 				AlgorithmRequest deleteRequest = AlgorithmRequest.get(id)
 				autoKickoffService.clearJob(deleteRequest)
 				deleteRequest?.delete(flush: true)
 			}
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, unit, cronExpression, dataSets)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, unit, cronExpression, dataSets, cronAlgorithms)
 			algorithmRequest.save()
 			if (algorithmRequest.hasErrors()) {
 				throw new AugurWorksException('The request could not be created, please check that the name is unique.')
@@ -90,7 +92,7 @@ class AlgorithmRequestController {
 				throw new AugurWorksException('Invalid Cron Expression')
 			}
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, unit, cronExpression, dataSets)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, unit, cronExpression, dataSets, [])
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)
@@ -102,7 +104,7 @@ class AlgorithmRequestController {
 		}
 	}
 
-	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Collection<Map> dataSets) {
+	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Collection<Map> dataSets, Collection<String> cronAlgorithms) {
 		Map dependantDataSetMap = dataSets.grep { it.dependant }.first()
 		Map parameters = [
 			name: name,
@@ -110,6 +112,7 @@ class AlgorithmRequestController {
 			endOffset: endOffset,
 			unit: unit,
 			cronExpression: cronExpression,
+			cronAlgorithms: cronAlgorithms.collect { AlgorithmType.findByName(it) },
 			dependantDataSet: DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
 		]
 		return new AlgorithmRequest(parameters)
