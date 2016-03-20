@@ -2,6 +2,8 @@ package com.augurworks.engine.services
 
 import grails.transaction.Transactional
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
+
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.RequestDataSet
@@ -14,6 +16,7 @@ import com.augurworks.engine.helper.SingleDataRequest
 @Transactional
 class AutomatedService {
 
+	GrailsApplication grailsApplication
 	MachineLearningService machineLearningService
 	AlfredService alfredService
 	DataRetrievalService dataRetrievalService
@@ -73,7 +76,9 @@ class AutomatedService {
 				log.info '- Last actual date: ' + predictionActuals.values.last().date
 				log.info '- Last prediction date: ' + algorithmResult.futureValue.date
 			}
-			algorithmResult.futureValue?.sendToSlack(actualValue)
+			if (grailsApplication.config.slack.on) {
+				algorithmResult.futureValue?.sendToSlack(actualValue)
+			}
 		}
 	}
 
