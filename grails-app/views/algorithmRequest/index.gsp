@@ -19,8 +19,11 @@
 								<span data-title="Date Created"><i class="plus icon"></i> <abbr class="timeago" title="${ request.dateCreated }"></abbr></span>
 								<span data-title="Request Start Date"><i class="green calendar icon"></i> ${ request.startDate.format(Global.DATE_FORMAT) }</span>
 								<span data-title="Request End Date"><i class="red calendar icon"></i> ${ request.endDate.format(Global.DATE_FORMAT) }</span>
+							</div>
+							<div class="meta">
 								<span data-title="Result Set Count"><i class="cubes icon"></i> ${ request.algorithmResults.size() }</span>
 								<span data-title="Time Period"><i class="wait icon"></i> ${ request.unit }</span>
+								<span data-title="Cron Expression"><i class="repeat icon"></i> ${ request.cronExpression ?: 'None' }</span>
 							</div>
 						</div>
 					</g:link>
