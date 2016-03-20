@@ -83,7 +83,7 @@ class ApiController {
 			}
 		} catch (e) {
 			log.warn(e)
-			render(status: 500)
+			render(status: 500, text: 'An error occured')
 		}
 	}
 }
