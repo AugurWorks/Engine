@@ -5,6 +5,7 @@ import groovy.time.TimeCategory
 import org.apache.commons.lang.time.DateUtils
 
 import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.helper.AlgorithmType
 
 class AlgorithmRequest {
 
@@ -16,7 +17,7 @@ class AlgorithmRequest {
 	String unit = 'Day'
 	String cronExpression
 
-	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult]
+	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType]
 
 	static constraints = {
 		name unique: true
