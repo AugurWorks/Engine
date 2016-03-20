@@ -153,7 +153,7 @@ class MachineLearningService {
 			addPredictionsToAlgorithmResult(algorithmResult, predictions)
 			cleanupMachineLearning(algorithmResult)
 			algorithmResult.complete = true
-			algorithmResult.save()
+			algorithmResult.save(flush: true)
 			automatedService.postProcessing(algorithmResult)
 		}
 	}

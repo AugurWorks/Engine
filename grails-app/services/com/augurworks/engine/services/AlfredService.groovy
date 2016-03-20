@@ -94,7 +94,7 @@ class AlfredService {
 			if (resp.text != 'UNKNOWN') {
 				processResponse(algorithmResult, resp.text)
 			}
-			algorithmResult.save()
+			algorithmResult.save(flush: true)
 			automatedService.postProcessing(algorithmResult)
 		} else if (resp.status == 500) {
 			throw new AugurWorksException('Alfred was not able to process the submitted request')
