@@ -13,7 +13,6 @@ import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.services.AlfredService
 import com.augurworks.engine.services.AutoKickoffService
 import com.augurworks.engine.services.AutomatedService
-import com.augurworks.engine.services.BarchartService
 import com.augurworks.engine.services.DataRetrievalService
 import com.augurworks.engine.services.MachineLearningService
 
@@ -24,7 +23,6 @@ class AlgorithmRequestController {
 	DataRetrievalService dataRetrievalService
 	AutomatedService automatedService
 	AutoKickoffService autoKickoffService
-	BarchartService barchartService
 
 	def index() {
 		[requests: AlgorithmRequest.list()]
@@ -145,7 +143,7 @@ class AlgorithmRequestController {
 	def searchSymbol(String keyword) {
 		render([
 			success: true,
-			results: keyword.size() > 1 ? barchartService.searchSymbol(keyword) : []
+			results: keyword.size() > 1 ? dataRetrievalService.searchSymbol(keyword) : []
 		] as JSON)
 	}
 }
