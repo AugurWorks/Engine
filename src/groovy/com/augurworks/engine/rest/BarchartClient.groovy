@@ -1,6 +1,7 @@
 package com.augurworks.engine.rest
 
 import grails.plugins.rest.client.RestBuilder
+import grails.util.Holders
 
 class BarchartClient {
 
@@ -10,8 +11,8 @@ class BarchartClient {
 
 	private final API_KEY
 
-	BarchartClient(String apiKey) {
-		API_KEY = apiKey
+	BarchartClient() {
+		API_KEY = Holders.config.augurworks.barchart.key
 	}
 
 	Collection<Map> searchSymbol(String keyword) {

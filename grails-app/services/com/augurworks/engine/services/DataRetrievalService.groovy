@@ -35,7 +35,7 @@ class DataRetrievalService {
 
 	@PostConstruct
 	void init() {
-		barchartClient = new BarchartClient(grailsApplication.config.augurworks.barchart.key)
+		barchartClient = new BarchartClient()
 	}
 
 	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
