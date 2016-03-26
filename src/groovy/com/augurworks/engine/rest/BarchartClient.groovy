@@ -24,7 +24,7 @@ class BarchartClient implements ApiClient {
 		}
 	}
 
-	Collection<DataSetValue> getHistory(BarchartHistoryParameters parameters) {
+	Collection<DataSetValue> getHistory(HistoryParameters parameters) {
 		return makeRequest(HISTORY_LOOKUP, parameters.toParameters()).collect { Map result ->
 			return new DataSetValue(date: new Date(result.timestamp), value: result.close)
 		}

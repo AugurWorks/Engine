@@ -6,5 +6,5 @@ public interface ApiClient {
 
 	Collection<SymbolResult> searchSymbol(String keyword)
 
-	Collection<DataSetValue> getHistory(BarchartHistoryParameters parameters)
+	Collection<DataSetValue> getHistory(HistoryParameters parameters)
 }

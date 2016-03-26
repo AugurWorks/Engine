@@ -28,7 +28,7 @@ class TDClient implements ApiClient {
 		}
 	}
 
-	Collection<DataSetValue> getHistory(BarchartHistoryParameters parameters) {
+	Collection<DataSetValue> getHistory(HistoryParameters parameters) {
 		return []
 	}
 

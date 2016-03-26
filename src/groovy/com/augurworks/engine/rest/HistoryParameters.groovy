@@ -2,14 +2,14 @@ package com.augurworks.engine.rest
 
 import com.augurworks.engine.helper.Global
 
-class BarchartHistoryParameters {
+class HistoryParameters {
 
 	String symbol
 	String type
 	Date startDate
 	Date endDate
 	int interval
-	
+
 	Map toParameters() {
 		Map parameters = [
 			symbol: symbol,
