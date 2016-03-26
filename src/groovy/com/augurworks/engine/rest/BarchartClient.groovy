@@ -5,6 +5,7 @@ import grails.plugins.rest.client.RestBuilder
 class BarchartClient {
 
 	private final BARCHART_ROOT = 'http://ondemand.websol.barchart.com'
+	private final HISTORY_LOOKUP = BARCHART_ROOT + '/getHistory.json'
 	private final SYMBOL_LOOKUP = BARCHART_ROOT + '/getSymbolLookUp.json'
 
 	private final API_KEY
@@ -15,6 +16,10 @@ class BarchartClient {
 
 	Collection<Map> searchSymbol(String keyword) {
 		return makeRequest(SYMBOL_LOOKUP, [keyword: keyword])
+	}
+
+	Collection<Map> getHistory(BarchartHistoryParameters parameters) {
+		return makeRequest(HISTORY_LOOKUP, parameters.toParameters())
 	}
 
 	private Collection<Map> makeRequest(String url, Map parameters) {
