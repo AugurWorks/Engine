@@ -7,19 +7,17 @@ import groovy.time.TimeCategory
 import groovy.time.TimeDuration
 import groovyx.gpars.GParsPool
 
-import javax.annotation.PostConstruct
-
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import com.amazonaws.services.s3.AmazonS3Client
 import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.SplineRequest
-import com.augurworks.engine.rest.BarchartClient
 import com.augurworks.engine.rest.SymbolResult
 
 @Transactional
@@ -32,12 +30,6 @@ class DataRetrievalService {
 	GrailsCacheManager grailsCacheManager
 	GrailsApplication grailsApplication
 	DataGeneratorService dataGeneratorService
-	BarchartClient barchartClient
-
-	@PostConstruct
-	void init() {
-		barchartClient = new BarchartClient()
-	}
 
 	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(splineRequest)
@@ -163,7 +155,9 @@ class DataRetrievalService {
 	}
 
 	Collection<SymbolResult> searchSymbol(String keyword) {
-		return barchartClient.searchSymbol(keyword)
+		return Datasource.values().collect { Datasource datasource ->
+			return datasource.apiClient.searchSymbol(keyword)
+		}.flatten()
 	}
 
 	void logStringToS3(String filename, String text) {
