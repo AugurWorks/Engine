@@ -104,6 +104,9 @@ augurworks {
 	quandl {
 		key = localConfig.augurworks.quandlKey
 	}
+	barchart {
+		key = System.getProperty('BARCHART_KEY') ?: (System.getenv('BARCHART_KEY') ?: (localConfig.augurworks.barchartKey ?: null))
+	}
 	datePathFormat = 'yyyy/MM/dd/'
 }
 
