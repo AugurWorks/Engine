@@ -15,7 +15,12 @@ class BarchartClient {
 	}
 
 	Collection<Map> searchSymbol(String keyword) {
-		return makeRequest(SYMBOL_LOOKUP, [keyword: keyword])
+		return makeRequest(SYMBOL_LOOKUP, [keyword: keyword]).collect { Map result ->
+			return [
+				name: result.name,
+				value: result.symbol + '-Barchart'
+			]
+		}
 	}
 
 	Collection<Map> getHistory(BarchartHistoryParameters parameters) {
@@ -27,6 +32,6 @@ class BarchartClient {
 		String fullUrl = url + '?' + parameters.collect { String key, String value ->
 			return key + '=' + URLEncoder.encode(value)
 		}.join('&')
-		return new RestBuilder().get(fullUrl).json.results
+		return new RestBuilder().get(fullUrl).json?.results ?: []
 	}
 }
