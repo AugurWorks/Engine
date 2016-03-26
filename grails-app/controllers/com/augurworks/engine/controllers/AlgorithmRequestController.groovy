@@ -143,7 +143,7 @@ class AlgorithmRequestController {
 	def searchSymbol(String keyword) {
 		render([
 			success: true,
-			results: keyword.size() > 1 ? dataRetrievalService.searchSymbol(keyword) : []
+			results: keyword.size() > 1 ? dataRetrievalService.searchSymbol(keyword)*.toResultMap() : []
 		] as JSON)
 	}
 }

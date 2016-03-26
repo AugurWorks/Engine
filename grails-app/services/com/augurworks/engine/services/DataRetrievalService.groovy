@@ -20,6 +20,7 @@ import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.rest.BarchartClient
+import com.augurworks.engine.rest.SymbolResult
 
 @Transactional
 class DataRetrievalService {
@@ -161,7 +162,7 @@ class DataRetrievalService {
 		return new DataSetValue(date, cols[1].toDouble())
 	}
 
-	Collection<Map> searchSymbol(String keyword) {
+	Collection<SymbolResult> searchSymbol(String keyword) {
 		return barchartClient.searchSymbol(keyword)
 	}
 
