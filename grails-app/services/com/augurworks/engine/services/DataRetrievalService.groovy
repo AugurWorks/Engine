@@ -155,9 +155,11 @@ class DataRetrievalService {
 	}
 
 	Collection<SymbolResult> searchSymbol(String keyword) {
-		return Datasource.values().collect { Datasource datasource ->
-			return datasource.apiClient.searchSymbol(keyword)
-		}.flatten()
+		GParsPool.withPool(Datasource.values().size()) {
+			return Datasource.values().collectParallel { Datasource datasource ->
+				return datasource.apiClient.searchSymbol(keyword)
+			}.flatten()
+		}
 	}
 
 	void logStringToS3(String filename, String text) {
