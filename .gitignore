@@ -2,6 +2,8 @@
 /target
 /target-eclipse
 /.settings
-/.classpath
-/.project
 /logs
+cobertura.ser
+UserConfig.groovy
+*.db
+*.db.old

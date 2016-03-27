@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>404</title>
+		<parameter name="hideAvatar" value="true" />
 		<meta name="layout" content="semantic">
 	</head>
 	<body>

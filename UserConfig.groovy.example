@@ -1,0 +1,6 @@
+oauth.github.key = "[local OAuth application key]"
+oauth.github.secret = "[local OAuth application secret]"
+augurworks.slacklogger.webhook = '[slacklogger webhook (Optional)]'
+augurworks.quandlKey = '[quandle key]'
+local.ip = '[local dev machine IP]'
+alfred.url = '[local Alfred instance URL] (Optional)'
