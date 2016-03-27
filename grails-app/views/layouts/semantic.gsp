@@ -95,7 +95,7 @@
 
 		<script>
 			$(function() {
-				$('.ui.dropdown').dropdown({
+				$('.menu-wrapper .ui.dropdown').dropdown({
 					on: 'hover'
 				});
 			});

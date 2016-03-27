@@ -73,7 +73,7 @@
 				<div class="four fields">
 					<div class="field">
 						<label>Stock</label>
-						<g:select from="${ dataSets }" name="stock" class="ui search dropdown" />
+						<select id="stock" name="stock" class="ui search dropdown"></select>
 					</div>
 					<div class="field">
 						<label>Interval Offset</label>
@@ -141,6 +141,11 @@
 			var dataSets = [];
 			$(function() {
 				$('.ui.radio.checkbox').checkbox();
+				$('#stock').dropdown({
+					apiSettings: {
+						url: '/algorithmRequest/searchSymbol?keyword={query}'
+					}
+				});
 			});
 		</script>
 	</body>

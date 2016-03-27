@@ -6,6 +6,7 @@ import org.apache.commons.lang.time.DateUtils
 
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.Datasource
 
 class AlgorithmRequest {
 
