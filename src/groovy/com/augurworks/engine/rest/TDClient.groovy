@@ -15,20 +15,20 @@ import com.augurworks.engine.helper.Datasource
 
 class TDClient implements ApiClient {
 
-	static final String DATE_FORMAT = 'yyyyMMdd'
+	private final String dateFormat = 'yyyyMMdd'
 
-	private final TD_ROOT = 'https://apis.tdameritrade.com/apps/100'
-	private final HISTORY_LOOKUP = TD_ROOT + '/PriceHistory'
-	private final SYMBOL_LOOKUP = TD_ROOT + '/SymbolLookup'
+	private final tdRoot = 'https://apis.tdameritrade.com/apps/100'
+	private final historyLookup = tdRoot + '/PriceHistory'
+	private final symbolLookup = tdRoot + '/SymbolLookup'
 
-	private final SOURCE_ID
+	private final sourceId
 
 	TDClient() {
-		SOURCE_ID = Holders.config.augurworks.td.key
+		sourceId = Holders.config.augurworks.td.key
 	}
 
 	Collection<SymbolResult> searchSymbol(String keyword) {
-		Collection<GPathResult> xmlResults = makeXmlRequest(SYMBOL_LOOKUP, [matchstring: keyword]).depthFirst().findAll { GPathResult result ->
+		Collection<GPathResult> xmlResults = makeXmlRequest(symbolLookup, [matchstring: keyword]).depthFirst().findAll { GPathResult result ->
 			return result.name() == 'symbol-result'
 		}
 		return xmlResults.collect { GPathResult result ->
@@ -37,7 +37,7 @@ class TDClient implements ApiClient {
 	}
 
 	Collection<DataSetValue> getHistory(HistoryParameters parameters) {
-		DataInputStream binaryResults = makeBinaryRequest(HISTORY_LOOKUP, historyParametersToMap(parameters))
+		DataInputStream binaryResults = makeBinaryRequest(historyLookup, historyParametersToMap(parameters))
 		Collection<Map> parsedResults = parseGetHistoryBinary(binaryResults)
 		if (parsedResults.size() > 1) {
 			throw new AugurWorksException('More results returned than expected')
@@ -51,8 +51,8 @@ class TDClient implements ApiClient {
 		Map parameters = [
 			requestvalue: historyParameters.symbolResult.symbol,
 			intervaltype: historyParameters.type == 'Day' ? 'DAILY' : 'MINUTE',
-			startdate: historyParameters.startDate.format(DATE_FORMAT),
-			enddate: historyParameters.endDate.format(DATE_FORMAT),
+			startdate: historyParameters.startDate.format(dateFormat),
+			enddate: historyParameters.endDate.format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
 			intervalduration: historyParameters.interval.toString() ?: '1'
 		]
@@ -73,7 +73,7 @@ class TDClient implements ApiClient {
 	}
 
 	private String generateUrl(String url, Map parameters) {
-		parameters.source = SOURCE_ID
+		parameters.source = sourceId
 		return url + '?' + parameters.collect { String key, String value ->
 			return key + '=' + URLEncoder.encode(value)
 		}.join('&')

@@ -1,7 +1,6 @@
 package com.augurworks.engine.rest
 
 import com.augurworks.engine.domains.DataSet
-import com.augurworks.engine.helper.Global
 
 class HistoryParameters {
 

@@ -10,26 +10,26 @@ import com.augurworks.engine.helper.Datasource
 
 class BarchartClient implements ApiClient {
 
-	static final String DATE_FORMAT = 'yyyyMMddHHmm'
+	private final String dateFormat = 'yyyyMMddHHmm'
 
-	private final BARCHART_ROOT = 'http://ondemand.websol.barchart.com'
-	private final HISTORY_LOOKUP = BARCHART_ROOT + '/getHistory.json'
-	private final SYMBOL_LOOKUP = BARCHART_ROOT + '/getSymbolLookUp.json'
+	private final barchartRoot = 'http://ondemand.websol.barchart.com'
+	private final historyLookup = barchartRoot + '/getHistory.json'
+	private final symbolLookup = barchartRoot + '/getSymbolLookUp.json'
 
-	private final API_KEY
+	private final apiKey
 
 	BarchartClient() {
-		API_KEY = Holders.config.augurworks.barchart.key
+		apiKey = Holders.config.augurworks.barchart.key
 	}
 
 	Collection<SymbolResult> searchSymbol(String keyword) {
-		return makeRequest(SYMBOL_LOOKUP, [keyword: keyword]).collect { Map result ->
+		return makeRequest(symbolLookup, [keyword: keyword]).collect { Map result ->
 			return new SymbolResult(name: result.name, symbol: result.symbol, datasource: Datasource.BARCHART)
 		}
 	}
 
 	Collection<DataSetValue> getHistory(HistoryParameters parameters) {
-		return makeRequest(HISTORY_LOOKUP, historyParametersToMap(parameters)).collect { Map result ->
+		return makeRequest(historyLookup, historyParametersToMap(parameters)).collect { Map result ->
 			return new DataSetValue(new DateTime(result.timestamp).toDate(), result.close)
 		}
 	}
@@ -38,8 +38,8 @@ class BarchartClient implements ApiClient {
 		Map parameters = [
 			symbol: historyParameters.symbolResult.symbol,
 			type: historyParameters.type == 'Day' ? 'daily' : 'minutes',
-			startDate: historyParameters.startDate.format(DATE_FORMAT),
-			endDate: historyParameters.endDate.format(DATE_FORMAT)
+			startDate: historyParameters.startDate.format(dateFormat),
+			endDate: historyParameters.endDate.format(dateFormat)
 		]
 		if (historyParameters.interval) {
 			parameters.interval = historyParameters.interval.toString()
@@ -48,7 +48,7 @@ class BarchartClient implements ApiClient {
 	}
 
 	private Collection<Map> makeRequest(String url, Map parameters) {
-		parameters.apikey = API_KEY
+		parameters.apikey = apiKey
 		String fullUrl = url + '?' + parameters.collect { String key, String value ->
 			return key + '=' + URLEncoder.encode(value)
 		}.join('&')

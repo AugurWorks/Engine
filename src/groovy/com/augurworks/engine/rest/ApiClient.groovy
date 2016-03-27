@@ -2,7 +2,7 @@ package com.augurworks.engine.rest
 
 import com.augurworks.engine.helper.DataSetValue
 
-public interface ApiClient {
+interface ApiClient {
 
 	Collection<SymbolResult> searchSymbol(String keyword)
 
