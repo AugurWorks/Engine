@@ -42,7 +42,7 @@ class BarchartClient implements ApiClient {
 			endDate: historyParameters.endDate.format(DATE_FORMAT)
 		]
 		if (historyParameters.interval) {
-			parameters.interval = historyParameters.interval
+			parameters.interval = historyParameters.interval.toString()
 		}
 		return parameters
 	}

@@ -54,7 +54,7 @@ class TDClient implements ApiClient {
 			startdate: historyParameters.startDate.format(DATE_FORMAT),
 			enddate: historyParameters.endDate.format(DATE_FORMAT),
 			requestidentifiertype: 'SYMBOL',
-			intervalduration: historyParameters.interval ?: '1'
+			intervalduration: historyParameters.interval.toString() ?: '1'
 		]
 		return parameters
 	}
