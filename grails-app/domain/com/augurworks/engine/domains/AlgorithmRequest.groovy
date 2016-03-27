@@ -13,7 +13,7 @@ class AlgorithmRequest {
 	int startOffset
 	int endOffset
 	Date dateCreated
-	DataSet dependantDataSet
+	String dependantSymbol
 	String unit = 'Day'
 	String cronExpression
 
@@ -24,7 +24,7 @@ class AlgorithmRequest {
 		startOffset()
 		endOffset()
 		dateCreated()
-		dependantDataSet()
+		dependantSymbol()
 		unit inList: ['Day', 'Hour', 'Half Hour']
 		cronExpression nullable: true
 	}
@@ -84,11 +84,13 @@ class AlgorithmRequest {
 	void updateDataSets(Collection<Map> dataSets, boolean persist = true) {
 		this.requestDataSets?.clear()
 		dataSets.each { Map dataSet ->
-			this.addToRequestDataSets([
-				dataSet: DataSet.findByTicker(dataSet.name.split(' - ').first()),
+			this.addToRequestDataSets(
+				symbol: dataSet.symbol,
+				name: dataSet.name,
+				datasource: Datasource[dataSet.datasource],
 				offset: dataSet.offset,
 				aggregation: dataSet.aggregation
-			])
+			)
 		}
 		if (persist) {
 			this.save(flush: true)
@@ -105,7 +107,7 @@ class AlgorithmRequest {
 
 	RequestDataSet getDependentRequestDataSet() {
 		Collection<RequestDataSet> matching = this.requestDataSets.grep { RequestDataSet requestDataSet ->
-			return requestDataSet.dataSet == this.dependantDataSet
+			return requestDataSet.symbol == this.dependantSymbol
 		}
 		if (matching.size() != 1) {
 			throw new AugurWorksException('Prediction data set not found')
