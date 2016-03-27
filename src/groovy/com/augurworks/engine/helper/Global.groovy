@@ -9,5 +9,4 @@ class Global {
 	static final String C3_DATE_FORMAT = 'yyyy-MM-dd HH:mm'
 	static final String FORM_DATE_FORMAT = 'yyyy-MM-dd'
 	static final String ALFRED_DATE_FORMAT = 'MM/dd/yyyy-HH:mm'
-	static final String BARCHART_FORMAT = 'yyyymmddhhmm'
 }
