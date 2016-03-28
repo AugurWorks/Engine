@@ -6,7 +6,6 @@ import org.quartz.CronExpression
 
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.SplineRequest
@@ -56,7 +55,7 @@ class AlgorithmRequestController {
 	}
 
 	def create(AlgorithmRequest algorithmRequest) {
-		[dataSets: DataSet.list()*.toString(), algorithmRequest: algorithmRequest]
+		[algorithmRequest: algorithmRequest]
 	}
 
 	def submitRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Long id, boolean overwrite) {
@@ -112,7 +111,7 @@ class AlgorithmRequestController {
 			unit: unit,
 			cronExpression: cronExpression,
 			cronAlgorithms: cronAlgorithms.collect { AlgorithmType.findByName(it) },
-			dependantDataSet: DataSet.findByTicker(dependantDataSetMap.name.split(' - ')[0])
+			dependantSymbol: dependantDataSetMap.symbol
 		]
 		return new AlgorithmRequest(parameters)
 	}
