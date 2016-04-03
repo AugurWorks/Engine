@@ -7,6 +7,7 @@ import org.joda.time.DateTime
 
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.Unit
 
 class BarchartClient implements ApiClient {
@@ -29,21 +30,21 @@ class BarchartClient implements ApiClient {
 		}
 	}
 
-	Collection<DataSetValue> getHistory(HistoryParameters parameters) {
-		return makeRequest(historyLookup, historyParametersToMap(parameters)).collect { Map result ->
+	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+		return makeRequest(historyLookup, historyParametersToMap(dataRequest)).collect { Map result ->
 			return new DataSetValue(new DateTime(result.timestamp).toDate(), result.close)
 		}
 	}
 
-	private Map historyParametersToMap(HistoryParameters historyParameters) {
+	private Map historyParametersToMap(SingleDataRequest dataRequest) {
 		Map parameters = [
-			symbol: historyParameters.symbolResult.symbol,
-			type: historyParameters.unit == Unit.DAY ? 'daily' : 'minutes',
-			startDate: historyParameters.startDate.format(dateFormat),
-			endDate: historyParameters.endDate.format(dateFormat)
+			symbol: dataRequest.symbolResult.symbol,
+			type: dataRequest.unit == Unit.DAY ? 'daily' : 'minutes',
+			startDate: dataRequest.startDate.format(dateFormat),
+			endDate: dataRequest.endDate.format(dateFormat)
 		]
-		if (historyParameters.unit.interval) {
-			parameters.interval = historyParameters.unit.interval.toString()
+		if (dataRequest.unit.interval) {
+			parameters.interval = dataRequest.unit.interval.toString()
 		}
 		return parameters
 	}
