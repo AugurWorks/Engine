@@ -13,10 +13,12 @@ import com.amazonaws.services.s3.AmazonS3Client
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.SplineRequest
+import com.augurworks.engine.rest.SymbolResult
 
 @Transactional
 class DataRetrievalService {
@@ -150,6 +152,14 @@ class DataRetrievalService {
 		int offset = (cols[0].isInteger() ? cols[0].toInteger() : 0) * intervalMinutes
 		Date date = use(TimeCategory) { startDate + offset.minutes }
 		return new DataSetValue(date, cols[1].toDouble())
+	}
+
+	Collection<SymbolResult> searchSymbol(String keyword) {
+		GParsPool.withPool(Datasource.values().size()) {
+			return Datasource.values().collectParallel { Datasource datasource ->
+				return datasource.apiClient.searchSymbol(keyword)
+			}.flatten()
+		}
 	}
 
 	void logStringToS3(String filename, String text) {
