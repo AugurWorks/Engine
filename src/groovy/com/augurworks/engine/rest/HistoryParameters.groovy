@@ -1,16 +1,16 @@
 package com.augurworks.engine.rest
 
-import com.augurworks.engine.domains.DataSet
+import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.helper.Unit
 
 class HistoryParameters {
 
 	SymbolResult symbolResult
-	String type
 	Date startDate
 	Date endDate
-	int interval
+	Unit unit
 
-	Collection<DataSet> getHistory() {
+	Collection<DataSetValue> getHistory() {
 		return symbolResult.datasource.apiClient.getHistory(this)
 	}
 }

@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClientBuilder
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.helper.Unit
 
 class TDClient implements ApiClient {
 
@@ -50,11 +51,11 @@ class TDClient implements ApiClient {
 	private Map historyParametersToMap(HistoryParameters historyParameters) {
 		Map parameters = [
 			requestvalue: historyParameters.symbolResult.symbol,
-			intervaltype: historyParameters.type == 'Day' ? 'DAILY' : 'MINUTE',
+			intervaltype: historyParameters.unit == Unit.DAY ? 'DAILY' : 'MINUTE',
 			startdate: historyParameters.startDate.format(dateFormat),
 			enddate: historyParameters.endDate.format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
-			intervalduration: historyParameters.interval.toString() ?: '1'
+			intervalduration: historyParameters.unit.interval.toString() ?: '1'
 		]
 		return parameters
 	}

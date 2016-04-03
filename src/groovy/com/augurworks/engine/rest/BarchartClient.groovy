@@ -7,6 +7,7 @@ import org.joda.time.DateTime
 
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.helper.Unit
 
 class BarchartClient implements ApiClient {
 
@@ -37,12 +38,12 @@ class BarchartClient implements ApiClient {
 	private Map historyParametersToMap(HistoryParameters historyParameters) {
 		Map parameters = [
 			symbol: historyParameters.symbolResult.symbol,
-			type: historyParameters.type == 'Day' ? 'daily' : 'minutes',
+			type: historyParameters.unit == Unit.DAY ? 'daily' : 'minutes',
 			startDate: historyParameters.startDate.format(dateFormat),
 			endDate: historyParameters.endDate.format(dateFormat)
 		]
-		if (historyParameters.interval) {
-			parameters.interval = historyParameters.interval.toString()
+		if (historyParameters.unit.interval) {
+			parameters.interval = historyParameters.unit.interval.toString()
 		}
 		return parameters
 	}
