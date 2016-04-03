@@ -81,6 +81,7 @@ class DataRetrievalService {
 		return new RequestValueSet(singleDataRequest.dataSet.ticker, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
 	}
 
+	@Deprecated
 	Collection<DataSetValue> getQuandlData(String quandlCode, int dataColumn) {
 		return getQuandlAPIText(quandlCode).split('\n').tail().reverse().grep { String line ->
 			Collection<String> lineValues = line.split(',')
@@ -91,6 +92,7 @@ class DataRetrievalService {
 		}
 	}
 
+	@Deprecated
 	String getQuandlAPIText(String quandlCode) {
 		String quandlKey = grailsApplication.config.augurworks.quandl.key
 		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
@@ -99,6 +101,7 @@ class DataRetrievalService {
 		return getUrlText(url)
 	}
 
+	@Deprecated
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
 		int apiIntervalMinutes = Math.min(intervalMinutes, 30)
 		Collection<String> vals = getGoogleAPIText(ticker, startDate, apiIntervalMinutes).split('\n')
@@ -120,6 +123,7 @@ class DataRetrievalService {
 		}
 	}
 
+	@Deprecated
 	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
 		String url = constructGoogleUrl(ticker, startDate, intervalMinutes)
 		String text = getUrlText(url)
@@ -129,6 +133,7 @@ class DataRetrievalService {
 		return text
 	}
 
+	@Deprecated
 	String getUrlText(String rawUrl) {
 		GrailsValueWrapper cache = grailsCacheManager.getCache('externalData').get(rawUrl)
 		if (cache) {
@@ -139,11 +144,13 @@ class DataRetrievalService {
 		return text
 	}
 
+	@Deprecated
 	String constructGoogleUrl(String ticker, Date startDate, int intervalMinutes) {
 		int period = use(TimeCategory) { (new Date() - startDate).days + 3 }
 		return GOOGLE_API_ROOT + 'q=' + ticker + '&p=' + period + 'd&i=' + (intervalMinutes * 60) + '&f=d,c'
 	}
 
+	@Deprecated
 	DataSetValue parseGoogleData(Date startDate, int intervalMinutes, String googleRow) {
 		if (googleRow.indexOf('TIMEZONE_OFFSET') != -1) {
 			return null
@@ -154,6 +161,7 @@ class DataRetrievalService {
 		return new DataSetValue(date, cols[1].toDouble())
 	}
 
+	@Deprecated
 	Collection<SymbolResult> searchSymbol(String keyword) {
 		GParsPool.withPool(Datasource.values().size()) {
 			return Datasource.values().collectParallel { Datasource datasource ->
