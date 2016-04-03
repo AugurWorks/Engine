@@ -5,7 +5,7 @@ import grails.test.mixin.*
 import groovy.time.TimeCategory
 import spock.lang.Specification
 
-import com.augurworks.engine.helper.Aggregation
+import com.augurworks.engine.helper.Unit
 
 @TestFor(AlgorithmRequest)
 @Build([AlgorithmRequest, RequestDataSet])
@@ -35,7 +35,7 @@ class AlgorithmRequestSpec extends Specification {
 	void "test truncate date (hour)"() {
 		given:
 		Date mockTime = Date.parse(DATE_TIME_FORMAT, startTime)
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: 'Hour')
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: Unit.HOUR)
 
 		when:
 		Date startDate = algorithmRequest.truncateDate('startOffset', mockTime)
@@ -57,7 +57,7 @@ class AlgorithmRequestSpec extends Specification {
 	void "test truncate date (day)"() {
 		given:
 		Date mockTime = Date.parse(DATE_FORMAT, '2016-01-10')
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: 'Day')
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: Unit.DAY)
 
 		when:
 		Date startDate = algorithmRequest.truncateDate('startOffset', mockTime)

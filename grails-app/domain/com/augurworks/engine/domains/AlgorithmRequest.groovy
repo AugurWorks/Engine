@@ -6,7 +6,7 @@ import org.apache.commons.lang.time.DateUtils
 
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
-import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.helper.Unit
 
 class AlgorithmRequest {
 
@@ -15,7 +15,7 @@ class AlgorithmRequest {
 	int endOffset
 	Date dateCreated
 	String dependantSymbol
-	String unit = 'Day'
+	Unit unit = Unit.DAY
 	String cronExpression
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType]
@@ -26,7 +26,7 @@ class AlgorithmRequest {
 		endOffset()
 		dateCreated()
 		dependantSymbol()
-		unit inList: ['Day', 'Hour', 'Half Hour']
+		unit()
 		cronExpression nullable: true
 	}
 
@@ -54,20 +54,22 @@ class AlgorithmRequest {
 	Date truncateDate(String field, Date now) {
 		use(TimeCategory) {
 			switch (this.unit) {
-				case 'Day':
+				case Unit.DAY:
 					return DateUtils.truncate(now, Calendar.DATE) + this[field].days
-				case 'Hour':
+				case Unit.HOUR:
 					Date date = DateUtils.truncate(now, Calendar.HOUR) + this[field].hours
 					if (now[Calendar.MINUTE] >= 30) {
 						date[Calendar.MINUTE] = 30
 					}
 					return date
-				case 'Half Hour':
+				case Unit.HALF_HOUR:
 					Date date = DateUtils.truncate(now, Calendar.HOUR) + (30 * this[field]).minutes
 					if (now[Calendar.MINUTE] >= 30) {
 						date[Calendar.MINUTE] = 30
 					}
 					return date
+				default:
+					throw new AugurWorksException('Matching Unit not found')
 			}
 		}
 	}
