@@ -82,16 +82,10 @@ class AlgorithmRequest {
 		}
 	}
 
-	void updateDataSets(Collection<Map> dataSets, boolean persist = true) {
+	void updateDataSets(Collection<RequestDataSet> requestDataSets, boolean persist = true) {
 		this.requestDataSets?.clear()
-		dataSets.each { Map dataSet ->
-			this.addToRequestDataSets(
-				symbol: dataSet.symbol,
-				name: dataSet.name,
-				datasource: Datasource[dataSet.datasource],
-				offset: dataSet.offset,
-				aggregation: dataSet.aggregation
-			)
+		requestDataSets.each { RequestDataSet requestDataSet ->
+			this.addToRequestDataSets(requestDataSet)
 		}
 		if (persist) {
 			this.save(flush: true)
