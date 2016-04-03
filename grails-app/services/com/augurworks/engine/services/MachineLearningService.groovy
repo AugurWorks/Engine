@@ -171,7 +171,7 @@ class MachineLearningService {
 	void addPredictionsToAlgorithmResult(AlgorithmResult algorithmResult, Collection<Double> predictions) {
 		RequestDataSet predictionSet = algorithmResult.algorithmRequest.dependentRequestDataSet
 		SingleDataRequest singleDataRequest = new SingleDataRequest(
-			dataSet: predictionSet.dataSet,
+			symbolResult: predictionSet.toSymbolResult(),
 			offset: predictionSet.offset,
 			startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
 			endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),

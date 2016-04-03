@@ -49,7 +49,7 @@ class DataRetrievalService {
 		GParsPool.withPool(requestDataSets.size()) {
 			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
 				SingleDataRequest singleDataRequest = new SingleDataRequest(
-					dataSet: requestDataSet.dataSet,
+					symbolResult: requestDataSet.toSymbolResult(),
 					offset: requestDataSet.offset,
 					startDate: splineRequest.startDate,
 					endDate: splineRequest.endDate,
@@ -64,20 +64,7 @@ class DataRetrievalService {
 	}
 
 	RequestValueSet getSingleRequestValues(SingleDataRequest singleDataRequest) {
-		Collection<DataSetValue> values = []
-		switch (singleDataRequest.unit) {
-			case 'Day':
-				values = getQuandlData(singleDataRequest.dataSet.code, singleDataRequest.dataSet.dataColumn)
-				break
-			case 'Hour':
-				values = getGoogleData(singleDataRequest.dataSet.ticker, singleDataRequest.startDate.clone(), 60)
-				break
-			case 'Half Hour':
-				values = getGoogleData(singleDataRequest.dataSet.ticker, singleDataRequest.startDate.clone(), 30)
-				break
-			default:
-				throw new AugurWorksException('Unknown prediction date unit: ' + singleDataRequest.unit)
-		}
+		Collection<DataSetValue> values = singleDataRequest.getHistory()
 		return new RequestValueSet(singleDataRequest.dataSet.ticker, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
 	}
 
