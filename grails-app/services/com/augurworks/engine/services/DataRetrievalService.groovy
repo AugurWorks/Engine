@@ -37,9 +37,9 @@ class DataRetrievalService {
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (splineRequest.prediction) {
 			int predictionOffset = splineRequest.algorithmRequest.predictionOffset
-			return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate, predictionOffset)
+			return expandedRequestValues*.reduceValueRange(splineRequest.algorithmRequest.unit, splineRequest.startDate, splineRequest.endDate, predictionOffset)
 		}
-		return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate)
+		return expandedRequestValues*.reduceValueRange(splineRequest.algorithmRequest.unit, splineRequest.startDate, splineRequest.endDate)
 	}
 
 	Collection<RequestValueSet> getRequestValues(SplineRequest splineRequest) {
@@ -65,7 +65,7 @@ class DataRetrievalService {
 
 	RequestValueSet getSingleRequestValues(SingleDataRequest singleDataRequest) {
 		Collection<DataSetValue> values = singleDataRequest.getHistory()
-		return new RequestValueSet(singleDataRequest.dataSet.ticker, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
+		return new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.unit, singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
 	}
 
 	@Deprecated

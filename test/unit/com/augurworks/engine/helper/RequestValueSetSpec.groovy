@@ -75,7 +75,7 @@ class RequestValueSetSpec extends Specification {
 		setup:
 		Date startDate = Date.parse(Global.DATE_FORMAT, start)
 		Date endDate = Date.parse(Global.DATE_FORMAT, end)
-		RequestValueSet set = validRequestValueSet(10).filterValues(startDate, endDate, minOffset, maxOffset)
+		RequestValueSet set = validRequestValueSet(10).filterValues(Unit.DAY, startDate, endDate, minOffset, maxOffset)
 
 		expect:
 		set.values.size() == size
@@ -94,7 +94,7 @@ class RequestValueSetSpec extends Specification {
 		RequestValueSet set = validRequestValueSet(10)
 
 		when:
-		set.filterValues(startDate, endDate, minOffset, maxOffset)
+		set.filterValues(Unit.DAY, startDate, endDate, minOffset, maxOffset)
 
 		then:
 		thrown(AugurWorksException)
@@ -137,7 +137,7 @@ class RequestValueSetSpec extends Specification {
 		RequestValueSet set = validRequestValueSet(10, offset)
 
 		when:
-		Collection<Date> dates = set.reduceValueRange(startDate, endDate, predictionOffset).dates
+		Collection<Date> dates = set.reduceValueRange(Unit.DAY, startDate, endDate, predictionOffset).dates
 
 		then:
 		dates.size() == size
@@ -159,7 +159,7 @@ class RequestValueSetSpec extends Specification {
 		RequestValueSet set = validRequestValueSet(10, offset)
 
 		when:
-		Collection<Date> dates = set.reduceValueRange(startDate, endDate).dates
+		Collection<Date> dates = set.reduceValueRange(Unit.DAY, startDate, endDate).dates
 
 		then:
 		dates.size() == size
