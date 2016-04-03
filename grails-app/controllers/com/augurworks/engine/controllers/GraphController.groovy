@@ -2,9 +2,9 @@ package com.augurworks.engine.controllers
 
 import grails.converters.JSON
 
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SplineRequest
 

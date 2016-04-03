@@ -4,7 +4,7 @@ import grails.test.mixin.*
 import groovy.time.TimeCategory
 import spock.lang.Specification
 
-import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.exceptions.AugurWorksException
 
 class RequestValueSetSpec extends Specification {
 

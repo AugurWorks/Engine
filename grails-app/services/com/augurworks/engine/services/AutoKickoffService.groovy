@@ -11,8 +11,8 @@ import org.springframework.scheduling.Trigger
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.scheduling.support.CronTrigger
 
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.jobs.AlgorithmRequestJob
 
 @Transactional

@@ -5,13 +5,13 @@ import grails.transaction.Transactional
 
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.MachineLearningModel
 import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.RequestValueSet

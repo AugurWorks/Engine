@@ -6,10 +6,10 @@ import grails.transaction.Transactional
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global

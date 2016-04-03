@@ -1,6 +1,6 @@
 package com.augurworks.engine.helper
 
-import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.exceptions.AugurWorksException
 
 class RequestValueSet {
 

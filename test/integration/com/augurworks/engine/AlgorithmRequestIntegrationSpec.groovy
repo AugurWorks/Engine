@@ -4,6 +4,7 @@ import grails.test.spock.IntegrationSpec
 
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.DataSet
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SplineRequest

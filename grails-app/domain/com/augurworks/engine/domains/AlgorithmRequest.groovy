@@ -4,7 +4,7 @@ import groovy.time.TimeCategory
 
 import org.apache.commons.lang.time.DateUtils
 
-import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 
 class AlgorithmRequest {

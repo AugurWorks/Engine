@@ -2,7 +2,7 @@ package com.augurworks.engine.helper
 
 import groovy.time.TimeCategory
 
-import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.exceptions.AugurWorksException
 
 class Common {
 

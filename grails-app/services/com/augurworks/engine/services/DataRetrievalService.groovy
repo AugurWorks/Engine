@@ -10,8 +10,8 @@ import groovyx.gpars.GParsPool
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import com.amazonaws.services.s3.AmazonS3Client
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.RequestDataSet
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
