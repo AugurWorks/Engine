@@ -13,6 +13,13 @@ enum Aggregation {
 	public final BiFunction<Double, Double, Double> aggregate
 	public final BiFunction<Double, Double, Double> normalize
 
+	private static final Map<String, Aggregation> aggregationMap = [:]
+	static {
+		Aggregation.values().each { Aggregation aggregation ->
+			aggregationMap[aggregation.name] = aggregation
+		}
+	}
+
 	Aggregation(String name, BiFunction<Double, Double, Double> aggregate, BiFunction<Double, Double, Double> normalize) {
 		this.name = name
 		this.aggregate = aggregate
@@ -53,5 +60,9 @@ enum Aggregation {
 			return null
 		}
 		return previousValue * currentValue / 100 + previousValue
+	}
+
+	public static Aggregation findByName(String name) {
+		return aggregationMap[name]
 	}
 }
