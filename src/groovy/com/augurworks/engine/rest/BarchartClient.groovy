@@ -56,8 +56,12 @@ class BarchartClient implements ApiClient {
 
 	private Collection<Map> makeRequest(SingleDataRequest dataRequest) {
 		Map parameters = historyParametersToMap(dataRequest)
+		return makeRequest(historyLookup, parameters)
+	}
+
+	private Collection<Map> makeRequest(String url, Map parameters) {
 		parameters.apikey = apiKey
-		String fullUrl = historyLookup + '?' + parameters.collect { String key, String value ->
+		String fullUrl = url + '?' + parameters.collect { String key, String value ->
 			return key + '=' + URLEncoder.encode(value)
 		}.join('&')
 		return new RestBuilder().get(fullUrl).json?.results ?: []
