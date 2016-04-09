@@ -3,6 +3,7 @@ package com.augurworks.engine.rest
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
 
+import org.apache.commons.lang.time.DateUtils
 import org.joda.time.DateTime
 
 import com.augurworks.engine.helper.DataSetValue
@@ -32,7 +33,11 @@ class BarchartClient implements ApiClient {
 
 	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
 		return makeRequest(dataRequest).collect { Map result ->
-			return new DataSetValue(new DateTime(result.timestamp).toDate(), result.close)
+			Date date = new DateTime(result.timestamp).toDate()
+			if (dataRequest.unit == Unit.DAY) {
+				date = DateUtils.truncate(date, Calendar.DATE)
+			}
+			return new DataSetValue(date, result.close)
 		}
 	}
 
