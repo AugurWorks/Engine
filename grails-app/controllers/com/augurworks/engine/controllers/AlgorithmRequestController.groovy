@@ -6,8 +6,11 @@ import org.quartz.CronExpression
 
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
+import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.services.AlfredService
@@ -62,13 +65,17 @@ class AlgorithmRequestController {
 	def submitRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Long id, boolean overwrite) {
 		try {
 			Collection<String> cronAlgorithms = JSON.parse(params.cronAlgorithms)
-			Collection<Map> dataSets = JSON.parse(params.dataSets)
+			Collection<Map> rawDataSets = JSON.parse(params.dataSets)
+			Collection<RequestDataSet> dataSets = rawDataSets.collect { Map dataSet ->
+				return parseDataSet(dataSet)
+			}
+			String dependantSymbol = rawDataSets.grep { it.dependant }.first().symbol
 			if (overwrite && id) {
 				AlgorithmRequest deleteRequest = AlgorithmRequest.get(id)
 				autoKickoffService.clearJob(deleteRequest)
 				deleteRequest?.delete(flush: true)
 			}
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], cronExpression, dataSets, cronAlgorithms)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], cronExpression, dataSets, cronAlgorithms, dependantSymbol)
 			algorithmRequest.save()
 			if (algorithmRequest.hasErrors()) {
 				throw new AugurWorksException('The request could not be created, please check that the name is unique.')
@@ -90,8 +97,12 @@ class AlgorithmRequestController {
 			if (cronExpression && !CronExpression.isValidExpression(cronExpression)) {
 				throw new AugurWorksException('Invalid Cron Expression')
 			}
-			Collection<Map> dataSets = JSON.parse(params.dataSets)
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], cronExpression, dataSets, [])
+			Collection<Map> rawDataSets = JSON.parse(params.dataSets)
+			Collection<RequestDataSet> dataSets = rawDataSets.collect { Map dataSet ->
+				return parseDataSet(dataSet)
+			}
+			String dependantSymbol = rawDataSets.grep { it.dependant }.first().symbol
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], cronExpression, dataSets, [], dependantSymbol)
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)
@@ -103,8 +114,17 @@ class AlgorithmRequestController {
 		}
 	}
 
-	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, String cronExpression, Collection<Map> dataSets, Collection<String> cronAlgorithms) {
-		Map dependantDataSetMap = dataSets.grep { it.dependant }.first()
+	private RequestDataSet parseDataSet(Map dataSet) {
+		return new RequestDataSet(
+			symbol: dataSet.symbol,
+			name: dataSet.name,
+			datasource: Datasource[dataSet.datasource],
+			offset: dataSet.offset,
+			aggregation: Aggregation.findByName(dataSet.aggregation)
+		)
+	}
+
+	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, String cronExpression, Collection<Map> dataSets, Collection<String> cronAlgorithms, String dependantSymbol) {
 		Map parameters = [
 			name: name,
 			startOffset: startOffset,
@@ -112,7 +132,7 @@ class AlgorithmRequestController {
 			unit: unit,
 			cronExpression: cronExpression,
 			cronAlgorithms: cronAlgorithms.collect { AlgorithmType.findByName(it) },
-			dependantSymbol: dependantDataSetMap.symbol
+			dependantSymbol: dependantSymbol
 		]
 		return new AlgorithmRequest(parameters)
 	}
