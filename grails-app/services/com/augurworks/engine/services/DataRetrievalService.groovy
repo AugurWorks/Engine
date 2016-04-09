@@ -43,7 +43,7 @@ class DataRetrievalService {
 	}
 
 	Collection<RequestValueSet> getRequestValues(SplineRequest splineRequest) {
-		int minOffset = splineRequest.algorithmRequest.requestDataSets*.offset.min()
+		int minOffset = splineRequest.algorithmRequest.requestDataSets*.offset.min() - 1
 		int maxOffset = splineRequest.algorithmRequest.requestDataSets*.offset.max()
 		Collection<RequestDataSet> requestDataSets = splineRequest.includeDependent ? splineRequest.algorithmRequest.requestDataSets : splineRequest.algorithmRequest.independentRequestDataSets
 		GParsPool.withPool(requestDataSets.size()) {
