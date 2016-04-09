@@ -63,10 +63,11 @@ class AlgorithmRequest {
 					}
 					return date
 				case Unit.HALF_HOUR:
-					Date date = DateUtils.truncate(now, Calendar.HOUR) + (30 * this[field]).minutes
+					Date date = DateUtils.truncate(now, Calendar.HOUR)
 					if (now[Calendar.MINUTE] >= 30) {
-						date[Calendar.MINUTE] = 30
+						date += 30.minutes
 					}
+					date += (30 * this[field]).minutes
 					return date
 				default:
 					throw new AugurWorksException('Matching Unit not found')
