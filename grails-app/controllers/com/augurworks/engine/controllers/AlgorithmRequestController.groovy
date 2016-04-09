@@ -9,6 +9,7 @@ import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.SplineRequest
+import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.services.AlfredService
 import com.augurworks.engine.services.AutoKickoffService
 import com.augurworks.engine.services.AutomatedService
@@ -67,7 +68,7 @@ class AlgorithmRequestController {
 				autoKickoffService.clearJob(deleteRequest)
 				deleteRequest?.delete(flush: true)
 			}
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, unit, cronExpression, dataSets, cronAlgorithms)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], cronExpression, dataSets, cronAlgorithms)
 			algorithmRequest.save()
 			if (algorithmRequest.hasErrors()) {
 				throw new AugurWorksException('The request could not be created, please check that the name is unique.')
@@ -90,7 +91,7 @@ class AlgorithmRequestController {
 				throw new AugurWorksException('Invalid Cron Expression')
 			}
 			Collection<Map> dataSets = JSON.parse(params.dataSets)
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, unit, cronExpression, dataSets, [])
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], cronExpression, dataSets, [])
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)
@@ -102,7 +103,7 @@ class AlgorithmRequestController {
 		}
 	}
 
-	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Collection<Map> dataSets, Collection<String> cronAlgorithms) {
+	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, String cronExpression, Collection<Map> dataSets, Collection<String> cronAlgorithms) {
 		Map dependantDataSetMap = dataSets.grep { it.dependant }.first()
 		Map parameters = [
 			name: name,

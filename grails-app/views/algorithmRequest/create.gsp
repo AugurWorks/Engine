@@ -8,6 +8,7 @@
 	<body>
 		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
+		<%@ page import="com.augurworks.engine.helper.Unit" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
 				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
@@ -66,7 +67,7 @@
 					</div>
 					<div class="field">
 						<label>Time Period</label>
-						<g:select name="unit" from="${ ['Day', 'Hour', 'Half Hour'] }" value="${ algorithmRequest?.unit }" />
+						<g:select name="unit" from="${ Unit.values() }" optionValue="name" value="${ algorithmRequest?.unit.name }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>

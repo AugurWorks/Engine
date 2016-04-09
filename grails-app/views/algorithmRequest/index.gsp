@@ -22,7 +22,7 @@
 							</div>
 							<div class="meta">
 								<span data-title="Result Set Count"><i class="cubes icon"></i> ${ request.algorithmResults.size() }</span>
-								<span data-title="Time Period"><i class="wait icon"></i> ${ request.unit }</span>
+								<span data-title="Time Period"><i class="wait icon"></i> ${ request.unit.name }</span>
 								<span data-title="Cron Expression"><i class="repeat icon"></i> ${ request.cronExpression ?: 'None' }</span>
 							</div>
 						</div>
