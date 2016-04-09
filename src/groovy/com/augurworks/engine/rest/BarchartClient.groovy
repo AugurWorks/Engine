@@ -31,7 +31,7 @@ class BarchartClient implements ApiClient {
 	}
 
 	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
-		return makeRequest(historyLookup, historyParametersToMap(dataRequest)).collect { Map result ->
+		return makeRequest(dataRequest).collect { Map result ->
 			return new DataSetValue(new DateTime(result.timestamp).toDate(), result.close)
 		}
 	}
@@ -49,9 +49,10 @@ class BarchartClient implements ApiClient {
 		return parameters
 	}
 
-	private Collection<Map> makeRequest(String url, Map parameters) {
+	private Collection<Map> makeRequest(SingleDataRequest dataRequest) {
+		Map parameters = historyParametersToMap(dataRequest)
 		parameters.apikey = apiKey
-		String fullUrl = url + '?' + parameters.collect { String key, String value ->
+		String fullUrl = historyLookup + '?' + parameters.collect { String key, String value ->
 			return key + '=' + URLEncoder.encode(value)
 		}.join('&')
 		return new RestBuilder().get(fullUrl).json?.results ?: []
