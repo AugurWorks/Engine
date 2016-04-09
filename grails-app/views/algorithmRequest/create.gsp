@@ -144,6 +144,7 @@
 			var dataSets = [];
 			$(function() {
 				$('.ui.radio.checkbox').checkbox();
+				$('#cronAlgorithms').dropdown();
 				$('#stock').dropdown({
 					apiSettings: {
 						url: '/algorithmRequest/searchSymbol?keyword={query}'
