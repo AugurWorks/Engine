@@ -42,10 +42,11 @@ class BarchartClient implements ApiClient {
 	}
 
 	private Map historyParametersToMap(SingleDataRequest dataRequest) {
+		Date startDate = dataRequest.unit.calculateOffset.apply(dataRequest.startDate, -3)
 		Map parameters = [
 			symbol: dataRequest.symbolResult.symbol,
 			type: dataRequest.unit == Unit.DAY ? 'daily' : 'minutes',
-			startDate: dataRequest.startDate.format(dateFormat),
+			startDate: startDate.format(dateFormat),
 			endDate: dataRequest.endDate.format(dateFormat)
 		]
 		if (dataRequest.unit.interval) {

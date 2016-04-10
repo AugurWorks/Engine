@@ -50,10 +50,11 @@ class TDClient implements ApiClient {
 	}
 
 	private Map dataRequestToMap(SingleDataRequest dataRequest) {
+		Date startDate = dataRequest.unit.calculateOffset.apply(dataRequest.startDate, -3)
 		Map parameters = [
 			requestvalue: dataRequest.symbolResult.symbol,
 			intervaltype: dataRequest.unit == Unit.DAY ? 'DAILY' : 'MINUTE',
-			startdate: dataRequest.startDate.format(dateFormat),
+			startdate: startDate.format(dateFormat),
 			enddate: dataRequest.endDate.format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
 			intervalduration: dataRequest.unit.interval.toString() ?: '1'
