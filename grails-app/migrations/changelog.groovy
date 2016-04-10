@@ -275,4 +275,6 @@ databaseChangeLog = {
 	include file: 'aggregation-enum.groovy'
 
 	include file: 'cron-algorithms.groovy'
+
+	include file: 'add-cron-expressions.groovy'
 }
