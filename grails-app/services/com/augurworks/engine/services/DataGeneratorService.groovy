@@ -20,18 +20,18 @@ class DataGeneratorService {
 	GrailsApplication grailsApplication
 
 	static final Collection<Map> DEFAULT_REQUESTS = [[
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
-		dependent: 'GSPC',
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
+		dependent: 'TSLA',
 		startOffset: -15,
 		endOffset: -1
 	], [
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
-		dependent: 'GSPC',
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
+		dependent: 'TSLA',
 		startOffset: -22,
 		endOffset: -1
 	], [
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
-		dependent: 'GSPC',
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
+		dependent: 'TSLA',
 		startOffset: -29,
 		endOffset: -1
 	]]
