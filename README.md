@@ -35,6 +35,13 @@ Database migration diffs can be created with a local MySQL instances using the f
 grails prod -DRDS_PASSWORD=[MySQL root password] -DRDS_HOSTNAME=[MySQL host ip] dbm-gorm-diff --add [filename].groovy
 ```
 
+Migrations can be tested on production data by exporting the prod database to SQL, loading it into a local DB, and executing the migrations with the following:
+```bash
+mysqldump -h [prod DB host] -u [username] -p [password] [database] > backup.sql
+mysql -h [prod DB host] -u [username] -p [password] [database] < backup.sql
+grails prod -DRDS_PASSWORD=[password] -DRDS_HOSTNAME=[database hostname] dbm-changelog-sync
+```
+
 ### Local Docker
 An example local Docker `run` command is:
 ```bash
