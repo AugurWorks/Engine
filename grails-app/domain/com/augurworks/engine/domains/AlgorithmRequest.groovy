@@ -1,9 +1,5 @@
 package com.augurworks.engine.domains
 
-import groovy.time.TimeCategory
-
-import org.apache.commons.lang.time.DateUtils
-
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Unit
@@ -52,27 +48,7 @@ class AlgorithmRequest {
 	}
 
 	Date truncateDate(String field, Date now) {
-		use(TimeCategory) {
-			switch (this.unit) {
-				case Unit.DAY:
-					return DateUtils.truncate(now, Calendar.DATE) + this[field].days
-				case Unit.HOUR:
-					Date date = DateUtils.truncate(now, Calendar.HOUR) + this[field].hours
-					if (now[Calendar.MINUTE] >= 30) {
-						date[Calendar.MINUTE] = 30
-					}
-					return date
-				case Unit.HALF_HOUR:
-					Date date = DateUtils.truncate(now, Calendar.HOUR)
-					if (now[Calendar.MINUTE] >= 30) {
-						date += 30.minutes
-					}
-					date += (30 * this[field]).minutes
-					return date
-				default:
-					throw new AugurWorksException('Matching Unit not found')
-			}
-		}
+		return this.unit.calculateOffset.apply(now, this[field])
 	}
 
 	String stringify() {
