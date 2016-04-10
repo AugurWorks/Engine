@@ -277,4 +277,6 @@ databaseChangeLog = {
 	include file: 'cron-algorithms.groovy'
 
 	include file: 'add-cron-expressions.groovy'
+
+	include file: 'add-spring-security-ui.groovy'
 }
