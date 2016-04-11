@@ -45,7 +45,7 @@ class RequestValueSet {
 		return this
 	}
 
-	RequestValueSet filterValues(Date startDate, Date endDate, int minOffset, int maxOffset) {
+	RequestValueSet filterValues(Unit unit, Date startDate, Date endDate, int minOffset, int maxOffset) {
 		Collection<DataSetValue> values = this.values
 		int startIndex = values.findIndexOf { it.date == startDate }
 		int endIndex = values.findIndexOf { it.date == endDate }
@@ -73,7 +73,9 @@ class RequestValueSet {
 		if (endIndex + maxOffset > values.size() - 1) {
 			throw new AugurWorksException(this.name + ' does not contain data all offsets after the end date')
 		}
-		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)]
+		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)].grep { DataSetValue dataSetValue ->
+			return unit.filterDates.apply(dataSetValue.date, startDate)
+		}
 		return this
 	}
 
@@ -97,10 +99,10 @@ class RequestValueSet {
 		return this
 	}
 
-	RequestValueSet reduceValueRange(Date startDate, Date endDate, int predictionOffset = this.offset) {
+	RequestValueSet reduceValueRange(Unit unit, Date startDate, Date endDate, int predictionOffset = this.offset) {
 		int minOffset = Math.min(this.offset, predictionOffset)
 		int maxOffset = Math.max(this.offset, predictionOffset)
-		return this.filterValues(startDate, endDate, minOffset, maxOffset)
+		return this.filterValues(unit, startDate, endDate, minOffset, maxOffset)
 	}
 
 	String toString() {

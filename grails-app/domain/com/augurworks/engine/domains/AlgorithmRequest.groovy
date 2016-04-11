@@ -1,11 +1,8 @@
 package com.augurworks.engine.domains
 
-import groovy.time.TimeCategory
-
-import org.apache.commons.lang.time.DateUtils
-
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.Unit
 
 class AlgorithmRequest {
 
@@ -13,8 +10,8 @@ class AlgorithmRequest {
 	int startOffset
 	int endOffset
 	Date dateCreated
-	DataSet dependantDataSet
-	String unit = 'Day'
+	String dependantSymbol
+	Unit unit = Unit.DAY
 	String cronExpression
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType]
@@ -24,8 +21,8 @@ class AlgorithmRequest {
 		startOffset()
 		endOffset()
 		dateCreated()
-		dependantDataSet()
-		unit inList: ['Day', 'Hour', 'Half Hour']
+		dependantSymbol()
+		unit()
 		cronExpression nullable: true
 	}
 
@@ -51,24 +48,7 @@ class AlgorithmRequest {
 	}
 
 	Date truncateDate(String field, Date now) {
-		use(TimeCategory) {
-			switch (this.unit) {
-				case 'Day':
-					return DateUtils.truncate(now, Calendar.DATE) + this[field].days
-				case 'Hour':
-					Date date = DateUtils.truncate(now, Calendar.HOUR) + this[field].hours
-					if (now[Calendar.MINUTE] >= 30) {
-						date[Calendar.MINUTE] = 30
-					}
-					return date
-				case 'Half Hour':
-					Date date = DateUtils.truncate(now, Calendar.HOUR) + (30 * this[field]).minutes
-					if (now[Calendar.MINUTE] >= 30) {
-						date[Calendar.MINUTE] = 30
-					}
-					return date
-			}
-		}
+		return this.unit.calculateOffset.apply(now, this[field])
 	}
 
 	String stringify() {
@@ -81,14 +61,10 @@ class AlgorithmRequest {
 		}
 	}
 
-	void updateDataSets(Collection<Map> dataSets, boolean persist = true) {
+	void updateDataSets(Collection<RequestDataSet> requestDataSets, boolean persist = true) {
 		this.requestDataSets?.clear()
-		dataSets.each { Map dataSet ->
-			this.addToRequestDataSets([
-				dataSet: DataSet.findByTicker(dataSet.name.split(' - ').first()),
-				offset: dataSet.offset,
-				aggregation: dataSet.aggregation
-			])
+		requestDataSets.each { RequestDataSet requestDataSet ->
+			this.addToRequestDataSets(requestDataSet)
 		}
 		if (persist) {
 			this.save(flush: true)
@@ -105,7 +81,7 @@ class AlgorithmRequest {
 
 	RequestDataSet getDependentRequestDataSet() {
 		Collection<RequestDataSet> matching = this.requestDataSets.grep { RequestDataSet requestDataSet ->
-			return requestDataSet.dataSet == this.dependantDataSet
+			return requestDataSet.symbol == this.dependantSymbol
 		}
 		if (matching.size() != 1) {
 			throw new AugurWorksException('Prediction data set not found')

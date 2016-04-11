@@ -7,7 +7,6 @@ import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.MachineLearningModel
 import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
@@ -49,7 +48,7 @@ class MachineLearningService {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
 		SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: prediction, includeDependent: !prediction, now: now)
 		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(splineRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
-			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
+			return (requestValueSetB.name == algorithmRequest.dependantSymbol) <=> (requestValueSetA.name == algorithmRequest.dependantSymbol) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
 		if (!automatedService.areDataSetsCorrectlySized(dataSets, rowNumber)) {
@@ -68,15 +67,15 @@ class MachineLearningService {
 			version: '1.0',
 			dataFormat: 'CSV',
 			dataFileContainsHeader: true,
-			attributes: requestDataSets*.dataSet.collect { DataSet dataSet ->
+			attributes: requestDataSets.collect { RequestDataSet requestDataSet ->
 				return [
-					attributeName: dataSet.ticker,
+					attributeName: requestDataSet.symbol,
 					attributeType: 'NUMERIC'
 				]
 			}
 		]
 		if (!prediction) {
-			schema.targetAttributeName = algorithmRequest.dependantDataSet.ticker
+			schema.targetAttributeName = algorithmRequest.dependantSymbol
 		}
 		return schema as JSON
 	}
@@ -171,7 +170,7 @@ class MachineLearningService {
 	void addPredictionsToAlgorithmResult(AlgorithmResult algorithmResult, Collection<Double> predictions) {
 		RequestDataSet predictionSet = algorithmResult.algorithmRequest.dependentRequestDataSet
 		SingleDataRequest singleDataRequest = new SingleDataRequest(
-			dataSet: predictionSet.dataSet,
+			symbolResult: predictionSet.toSymbolResult(),
 			offset: predictionSet.offset,
 			startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
 			endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),

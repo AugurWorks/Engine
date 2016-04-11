@@ -1,7 +1,9 @@
 function addDataSet() {
 	var html = '<tr>';
+	html += '<input type="hidden" class="name" value="' + $('#stock option:selected').text() + '" />';
+	html += '<input type="hidden" class="datasource" value="' + $('#stock').val().split('-')[1] + '" />';
 	html += '<td><div class="ui radio checkbox"><input type="radio" name="dependant"' + ($('#dataSets tbody tr').length ? '' : 'checked') + ' /></div></td>'
-	html += '<td class="stock">' + $('#stock').val() + '</td>';
+	html += '<td class="stock">' + $('#stock').val().split('-')[0] + '</td>';
 	html += '<td class="offset">' + $('#offset').val() + '</td>';
 	html += '<td class="aggregation">' + $('#aggregation').val() + '</td>';
 	html += '<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>';
@@ -81,7 +83,9 @@ function deleteRequest() {
 function getDataSets() {
 	return $('#dataSets tbody > tr').toArray().map(function(d) {
 		return {
-			name: $(d).children('.stock').text(),
+			symbol: $(d).children('.stock').text(),
+			name: $(d).children('.name').val(),
+			datasource: $(d).children('.datasource').val(),
 			offset: $(d).children('.offset').text(),
 			aggregation: $(d).children('.aggregation').text(),
 			dependant: $(d).find('input[name=dependant]').is(':checked')

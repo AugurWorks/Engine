@@ -12,6 +12,8 @@ import org.apache.http.impl.client.HttpClientBuilder
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.helper.SingleDataRequest
+import com.augurworks.engine.helper.Unit
 
 class TDClient implements ApiClient {
 
@@ -36,8 +38,8 @@ class TDClient implements ApiClient {
 		}
 	}
 
-	Collection<DataSetValue> getHistory(HistoryParameters parameters) {
-		DataInputStream binaryResults = makeBinaryRequest(historyLookup, historyParametersToMap(parameters))
+	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+		DataInputStream binaryResults = makeBinaryRequest(historyLookup, dataRequestToMap(dataRequest))
 		Collection<Map> parsedResults = parseGetHistoryBinary(binaryResults)
 		if (parsedResults.size() > 1) {
 			throw new AugurWorksException('More results returned than expected')
@@ -47,14 +49,15 @@ class TDClient implements ApiClient {
 		}
 	}
 
-	private Map historyParametersToMap(HistoryParameters historyParameters) {
+	private Map dataRequestToMap(SingleDataRequest dataRequest) {
+		Date startDate = dataRequest.unit.calculateOffset.apply(dataRequest.startDate, -3)
 		Map parameters = [
-			requestvalue: historyParameters.symbolResult.symbol,
-			intervaltype: historyParameters.type == 'Day' ? 'DAILY' : 'MINUTE',
-			startdate: historyParameters.startDate.format(dateFormat),
-			enddate: historyParameters.endDate.format(dateFormat),
+			requestvalue: dataRequest.symbolResult.symbol,
+			intervaltype: dataRequest.unit == Unit.DAY ? 'DAILY' : 'MINUTE',
+			startdate: startDate.format(dateFormat),
+			enddate: dataRequest.endDate.format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
-			intervalduration: historyParameters.interval.toString() ?: '1'
+			intervalduration: dataRequest.unit.interval.toString() ?: '1'
 		]
 		return parameters
 	}

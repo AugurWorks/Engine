@@ -8,6 +8,8 @@ import org.apache.commons.lang.time.DateUtils
 
 import spock.lang.Specification
 
+import com.augurworks.engine.helper.Unit
+
 @Mock([AlgorithmRequest, AlgorithmResult, PredictedValue])
 @Build([AlgorithmRequest, AlgorithmResult, PredictedValue])
 @TestFor(AlgorithmResult)
@@ -29,7 +31,7 @@ class AlgorithmResultSpec extends Specification {
 
 	void "test valid get tomorrows value (hour)"() {
 		given:
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: 'Hour')
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: Unit.HOUR)
 		AlgorithmResult result = AlgorithmResult.build(algorithmRequest: algorithmRequest, endDate: new Date())
 		PredictedValue nextHour = PredictedValue.build(algorithmResult: result, date: DateUtils.ceiling(new Date(), Calendar.HOUR))
 		PredictedValue.build(algorithmResult: result, date: DateUtils.truncate(new Date(), Calendar.HOUR))
@@ -55,7 +57,7 @@ class AlgorithmResultSpec extends Specification {
 
 	void "test invalid get tomorrows value (hour)"() {
 		given:
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: 'Hour')
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: Unit.HOUR)
 		AlgorithmResult result = AlgorithmResult.build(algorithmRequest: algorithmRequest, endDate: new Date())
 		PredictedValue.build(algorithmResult: result, date: DateUtils.truncate(new Date(), Calendar.HOUR))
 

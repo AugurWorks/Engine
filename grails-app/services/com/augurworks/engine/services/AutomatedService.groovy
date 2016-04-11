@@ -60,7 +60,7 @@ class AutomatedService {
 				AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
 				RequestDataSet requestDataSet = algorithmRequest.dependentRequestDataSet
 				SingleDataRequest singleDataRequest = new SingleDataRequest(
-					dataSet: requestDataSet.dataSet,
+					symbolResult: requestDataSet.toSymbolResult(),
 					offset: requestDataSet.offset,
 					startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
 					endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),

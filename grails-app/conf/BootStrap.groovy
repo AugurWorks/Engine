@@ -25,8 +25,6 @@ class BootStrap {
 			createUser('augurworks1', adminRole)
 			createUser('gbcolema11', adminRole)
 
-			dataGeneratorService.importQuandlDataSets()
-			dataGeneratorService.importLocalDataSets()
 			dataGeneratorService.bootstrapDefaultRequests()
 		}
 		AlgorithmRequest.findAllByCronExpressionIsNotNull().each { AlgorithmRequest algorithmRequest ->

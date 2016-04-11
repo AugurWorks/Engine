@@ -33,7 +33,7 @@ class PredictedValue {
 
 	Map getSlackMap(Double actual = null) {
 		String dateFormat = this.algorithmResult.algorithmRequest.unit == 'Day' ? Global.DATE_FORMAT : Global.DATE_TIME_FORMAT
-		String name = this.algorithmResult.algorithmRequest.dependantDataSet.name
+		String name = this.algorithmResult.algorithmRequest.dependantSymbol
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation.name
 		AlgorithmType modelType = this.algorithmResult.modelType
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }

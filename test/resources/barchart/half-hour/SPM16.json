@@ -1,0 +1,4358 @@
+{
+  "status": {
+    "code": 200,
+    "message": "Success."
+  },
+  "results": [
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T01:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2007.7,
+      "high": 2007.7,
+      "low": 2007.2,
+      "close": 2007.4,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T01:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2007,
+      "high": 2007.1,
+      "low": 2007,
+      "close": 2007.1,
+      "volume": 12
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T02:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2006.3,
+      "high": 2007.6,
+      "low": 2006,
+      "close": 2007.6,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T02:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2008.6,
+      "high": 2008.9,
+      "low": 2006.6,
+      "close": 2008.9,
+      "volume": 8
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T03:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2008.4,
+      "high": 2010.9,
+      "low": 2008.1,
+      "close": 2010.9,
+      "volume": 28
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T03:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2009.7,
+      "high": 2010.5,
+      "low": 2007.8,
+      "close": 2007.8,
+      "volume": 199
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T04:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2007.2,
+      "high": 2009.2,
+      "low": 2007,
+      "close": 2008.2,
+      "volume": 71
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T04:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2008.2,
+      "high": 2010.6,
+      "low": 2007.6,
+      "close": 2007.6,
+      "volume": 35
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T05:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2006.7,
+      "high": 2006.7,
+      "low": 2005.5,
+      "close": 2005.5,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T05:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2008.7,
+      "high": 2008.7,
+      "low": 2007.7,
+      "close": 2007.7,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T06:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2007.1,
+      "high": 2007.1,
+      "low": 2007.1,
+      "close": 2007.1,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T06:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2006.9,
+      "high": 2007.2,
+      "low": 2004.6,
+      "close": 2004.7,
+      "volume": 23
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T07:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2005.1,
+      "high": 2006.2,
+      "low": 2005.1,
+      "close": 2006.2,
+      "volume": 6
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T07:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2005.8,
+      "high": 2005.8,
+      "low": 2005,
+      "close": 2005,
+      "volume": 20
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T08:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2005.4,
+      "high": 2005.6,
+      "low": 2004.8,
+      "close": 2005.6,
+      "volume": 9
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T08:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2006,
+      "high": 2007.5,
+      "low": 2003.2,
+      "close": 2003.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T09:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2003.2,
+      "high": 2005.1,
+      "low": 2003.2,
+      "close": 2005,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T09:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2006.5,
+      "high": 2009.3,
+      "low": 2005.5,
+      "close": 2006.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T10:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2006,
+      "high": 2008.3,
+      "low": 2006,
+      "close": 2008.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T10:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2006.5,
+      "high": 2008.2,
+      "low": 2006,
+      "close": 2006.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T11:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2005.5,
+      "high": 2009.5,
+      "low": 2005.5,
+      "close": 2009.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T11:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2010,
+      "high": 2010.5,
+      "low": 2010,
+      "close": 2010.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T12:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2011.6,
+      "high": 2011.6,
+      "low": 2011.6,
+      "close": 2011.6,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T12:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2011.9,
+      "high": 2011.9,
+      "low": 2010.3,
+      "close": 2010.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T13:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2008.8,
+      "high": 2010.7,
+      "low": 2008.8,
+      "close": 2010.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T13:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2012,
+      "high": 2013.5,
+      "low": 2011.5,
+      "close": 2012.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T14:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2011.5,
+      "high": 2014,
+      "low": 2011.5,
+      "close": 2014,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T14:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2013.5,
+      "high": 2014,
+      "low": 2010.5,
+      "close": 2010.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T15:00:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2010,
+      "high": 2010.3,
+      "low": 2009,
+      "close": 2009,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T15:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2009.7,
+      "high": 2009.7,
+      "low": 2008.9,
+      "close": 2008.9,
+      "volume": 22
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T18:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2009.9,
+      "high": 2010,
+      "low": 2009.4,
+      "close": 2009.4,
+      "volume": 6
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-14T22:30:00-05:00",
+      "tradingDay": "2016-03-14",
+      "open": 2005.7,
+      "high": 2005.7,
+      "low": 2004,
+      "close": 2004,
+      "volume": 61
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T02:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2004.7,
+      "high": 2005.3,
+      "low": 2002.3,
+      "close": 2002.4,
+      "volume": 18
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T02:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2002.4,
+      "high": 2002.8,
+      "low": 2000.3,
+      "close": 2000.3,
+      "volume": 58
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T03:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2000.8,
+      "high": 2001.6,
+      "low": 1999.3,
+      "close": 1999.6,
+      "volume": 11
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T03:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1999.1,
+      "high": 2000.3,
+      "low": 1997.9,
+      "close": 1998.5,
+      "volume": 28
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T04:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1997.8,
+      "high": 2000.5,
+      "low": 1997.8,
+      "close": 1999.3,
+      "volume": 12
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T04:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1998.9,
+      "high": 1998.9,
+      "low": 1997.7,
+      "close": 1998.7,
+      "volume": 8
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T05:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1999,
+      "high": 1999,
+      "low": 1997,
+      "close": 1997,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T05:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1998.7,
+      "high": 1999.6,
+      "low": 1998.7,
+      "close": 1999.3,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T06:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1998.7,
+      "high": 1998.7,
+      "low": 1998.7,
+      "close": 1998.7,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T06:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1998.5,
+      "high": 1999.5,
+      "low": 1998.5,
+      "close": 1999.5,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T07:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1998.6,
+      "high": 1999.2,
+      "low": 1998.1,
+      "close": 1998.1,
+      "volume": 8
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T07:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1999,
+      "high": 1999.1,
+      "low": 1996,
+      "close": 1998,
+      "volume": 64
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T08:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1999.2,
+      "high": 1999.8,
+      "low": 1998.6,
+      "close": 1998.6,
+      "volume": 13
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T08:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1998.5,
+      "high": 1999.5,
+      "low": 1996,
+      "close": 1996.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T09:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1996.7,
+      "high": 2000.5,
+      "low": 1995,
+      "close": 2000.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T09:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2001.3,
+      "high": 2002.3,
+      "low": 1999,
+      "close": 1999,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T10:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1999,
+      "high": 2000,
+      "low": 1999,
+      "close": 1999.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T10:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2002.5,
+      "high": 2002.5,
+      "low": 2000,
+      "close": 2000,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T11:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1998.3,
+      "high": 1999,
+      "low": 1998,
+      "close": 1999,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T11:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2000.5,
+      "high": 2000.5,
+      "low": 1999,
+      "close": 1999.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T12:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 1999,
+      "high": 2002,
+      "low": 1999,
+      "close": 2002,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T12:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2003.2,
+      "high": 2003.2,
+      "low": 2003,
+      "close": 2003,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T13:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2003,
+      "high": 2003,
+      "low": 2002.2,
+      "close": 2002.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T13:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2002.3,
+      "high": 2002.3,
+      "low": 2002.3,
+      "close": 2002.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T14:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2001.5,
+      "high": 2005,
+      "low": 2001.5,
+      "close": 2005,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T14:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2004.7,
+      "high": 2006,
+      "low": 2003.2,
+      "close": 2006,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T15:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2006.5,
+      "high": 2006.8,
+      "low": 2005.5,
+      "close": 2006,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T15:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2006.6,
+      "high": 2006.8,
+      "low": 2006.6,
+      "close": 2006.8,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T17:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2007,
+      "high": 2007,
+      "low": 2007,
+      "close": 2007,
+      "volume": 27
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T19:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2010,
+      "high": 2010,
+      "low": 2010,
+      "close": 2010,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T20:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2009.6,
+      "high": 2009.6,
+      "low": 2009.6,
+      "close": 2009.6,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T21:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2007.2,
+      "high": 2007.2,
+      "low": 2007.2,
+      "close": 2007.2,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T22:00:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2006,
+      "high": 2006,
+      "low": 2006,
+      "close": 2006,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T22:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2006,
+      "high": 2006,
+      "low": 2005.5,
+      "close": 2006,
+      "volume": 24
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-15T23:30:00-05:00",
+      "tradingDay": "2016-03-15",
+      "open": 2007,
+      "high": 2007,
+      "low": 2007,
+      "close": 2007,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T00:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2008.5,
+      "high": 2008.5,
+      "low": 2008.5,
+      "close": 2008.5,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T01:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2007.5,
+      "high": 2007.5,
+      "low": 2007.4,
+      "close": 2007.4,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T03:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2008.7,
+      "high": 2010,
+      "low": 2008.3,
+      "close": 2008.3,
+      "volume": 11
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T03:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2009.5,
+      "high": 2009.7,
+      "low": 2007.8,
+      "close": 2009.7,
+      "volume": 13
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T04:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2009.7,
+      "high": 2009.8,
+      "low": 2009,
+      "close": 2009,
+      "volume": 6
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T04:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2008.6,
+      "high": 2009.2,
+      "low": 2008,
+      "close": 2009.2,
+      "volume": 42
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T05:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2007,
+      "high": 2007.2,
+      "low": 2006.6,
+      "close": 2007.2,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T05:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2007.3,
+      "high": 2007.7,
+      "low": 2007.3,
+      "close": 2007.7,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T06:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2005.9,
+      "high": 2006.4,
+      "low": 2005.8,
+      "close": 2005.8,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T06:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2004.9,
+      "high": 2004.9,
+      "low": 2004.7,
+      "close": 2004.7,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T07:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2004.9,
+      "high": 2005.2,
+      "low": 2004.3,
+      "close": 2004.9,
+      "volume": 16
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T07:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2004.1,
+      "high": 2004.1,
+      "low": 1999.1,
+      "close": 1999.1,
+      "volume": 15
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T08:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 1998.3,
+      "high": 1999.7,
+      "low": 1998,
+      "close": 1999.1,
+      "volume": 13
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T08:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2000,
+      "high": 2008,
+      "low": 2000,
+      "close": 2006,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T09:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2006.5,
+      "high": 2007,
+      "low": 2006.2,
+      "close": 2006.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T09:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2005.7,
+      "high": 2009,
+      "low": 2005.7,
+      "close": 2007.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T10:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2007.5,
+      "high": 2008.6,
+      "low": 2007.5,
+      "close": 2008.6,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T10:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2008,
+      "high": 2008.6,
+      "low": 2007,
+      "close": 2007,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T11:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2007.8,
+      "high": 2008,
+      "low": 2007.2,
+      "close": 2007.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T11:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2006.7,
+      "high": 2007.5,
+      "low": 2004.7,
+      "close": 2005,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T12:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2003,
+      "high": 2003,
+      "low": 2001.3,
+      "close": 2001.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T12:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2003.2,
+      "high": 2003.2,
+      "low": 2003.2,
+      "close": 2003.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T13:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2009.5,
+      "high": 2015.5,
+      "low": 2005.5,
+      "close": 2015.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T13:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2016.5,
+      "high": 2021.3,
+      "low": 2014,
+      "close": 2015.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T14:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2017,
+      "high": 2020.5,
+      "low": 2017,
+      "close": 2019.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T14:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2020,
+      "high": 2022,
+      "low": 2016.8,
+      "close": 2016.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T15:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2018,
+      "high": 2018.5,
+      "low": 2016.5,
+      "close": 2017.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T18:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2019.2,
+      "high": 2020,
+      "low": 2019.2,
+      "close": 2020,
+      "volume": 26
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T19:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2021,
+      "high": 2022,
+      "low": 2021,
+      "close": 2022,
+      "volume": 55
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T19:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2023,
+      "high": 2024.1,
+      "low": 2022.1,
+      "close": 2024.1,
+      "volume": 32
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T21:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2023,
+      "high": 2023,
+      "low": 2023,
+      "close": 2023,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T22:00:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2024.5,
+      "high": 2024.5,
+      "low": 2024.5,
+      "close": 2024.5,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T22:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2024.8,
+      "high": 2024.8,
+      "low": 2024.8,
+      "close": 2024.8,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-16T23:30:00-05:00",
+      "tradingDay": "2016-03-16",
+      "open": 2019.6,
+      "high": 2019.6,
+      "low": 2019.5,
+      "close": 2019.5,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T00:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2020.5,
+      "high": 2020.5,
+      "low": 2020.4,
+      "close": 2020.4,
+      "volume": 20
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T01:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2021,
+      "high": 2021.1,
+      "low": 2020,
+      "close": 2020,
+      "volume": 8
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T02:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2023,
+      "high": 2024.9,
+      "low": 2022,
+      "close": 2024.6,
+      "volume": 17
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T02:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2024.8,
+      "high": 2026.6,
+      "low": 2024,
+      "close": 2024.7,
+      "volume": 74
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T03:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2023.8,
+      "high": 2026.8,
+      "low": 2023.4,
+      "close": 2024.1,
+      "volume": 59
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T03:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2026.5,
+      "high": 2026.8,
+      "low": 2025.7,
+      "close": 2026,
+      "volume": 39
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T04:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2023.6,
+      "high": 2023.7,
+      "low": 2020.7,
+      "close": 2020.7,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T04:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2021.4,
+      "high": 2021.4,
+      "low": 2013.6,
+      "close": 2015,
+      "volume": 166
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T05:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2015,
+      "high": 2015.2,
+      "low": 2010.3,
+      "close": 2010.5,
+      "volume": 222
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T05:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2008.8,
+      "high": 2009.8,
+      "low": 2006.1,
+      "close": 2008.2,
+      "volume": 59
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T06:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2008.9,
+      "high": 2011.5,
+      "low": 2008.5,
+      "close": 2011.5,
+      "volume": 77
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T06:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2010.9,
+      "high": 2010.9,
+      "low": 2009.2,
+      "close": 2010.1,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T07:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2009.3,
+      "high": 2012.9,
+      "low": 2009.3,
+      "close": 2009.9,
+      "volume": 13
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T07:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2013,
+      "high": 2014.2,
+      "low": 2012,
+      "close": 2013.1,
+      "volume": 29
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T08:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2012.7,
+      "high": 2016,
+      "low": 2012.7,
+      "close": 2016,
+      "volume": 44
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T08:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2017.5,
+      "high": 2019,
+      "low": 2013,
+      "close": 2015,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T09:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2013,
+      "high": 2016.3,
+      "low": 2013,
+      "close": 2015,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T09:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2017.5,
+      "high": 2021,
+      "low": 2017,
+      "close": 2021,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T10:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2023,
+      "high": 2025,
+      "low": 2021.7,
+      "close": 2025,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T10:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2023.5,
+      "high": 2024.3,
+      "low": 2023,
+      "close": 2024,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T11:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2024,
+      "high": 2028.4,
+      "low": 2024,
+      "close": 2028.4,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T11:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2029.5,
+      "high": 2030.7,
+      "low": 2029.5,
+      "close": 2030,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T12:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2027.5,
+      "high": 2029,
+      "low": 2027.5,
+      "close": 2029,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T12:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2031,
+      "high": 2032,
+      "low": 2031,
+      "close": 2032,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T13:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2033,
+      "high": 2036,
+      "low": 2033,
+      "close": 2036,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T13:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2034,
+      "high": 2034.5,
+      "low": 2033,
+      "close": 2034.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T14:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2033.8,
+      "high": 2033.8,
+      "low": 2033.8,
+      "close": 2033.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T14:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2036,
+      "high": 2036,
+      "low": 2033.5,
+      "close": 2033.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T15:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2031.5,
+      "high": 2033,
+      "low": 2030.5,
+      "close": 2031.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T15:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2032,
+      "high": 2032,
+      "low": 2032,
+      "close": 2032,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T18:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2032.1,
+      "high": 2032.1,
+      "low": 2032.1,
+      "close": 2032.1,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T18:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2032.3,
+      "high": 2033,
+      "low": 2032.3,
+      "close": 2033,
+      "volume": 17
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T19:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2033.7,
+      "high": 2033.7,
+      "low": 2032.5,
+      "close": 2032.5,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T19:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2031,
+      "high": 2031,
+      "low": 2031,
+      "close": 2031,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T20:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2030,
+      "high": 2030,
+      "low": 2030,
+      "close": 2030,
+      "volume": 25
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T20:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2029,
+      "high": 2029,
+      "low": 2029,
+      "close": 2029,
+      "volume": 11
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T22:30:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2031.6,
+      "high": 2031.6,
+      "low": 2030.8,
+      "close": 2030.8,
+      "volume": 18
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-17T23:00:00-05:00",
+      "tradingDay": "2016-03-17",
+      "open": 2030.8,
+      "high": 2030.8,
+      "low": 2030.8,
+      "close": 2030.8,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T00:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2030.8,
+      "high": 2030.8,
+      "low": 2030.8,
+      "close": 2030.8,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T00:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2030.8,
+      "high": 2030.8,
+      "low": 2030.4,
+      "close": 2030.4,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T01:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2030,
+      "high": 2030,
+      "low": 2030,
+      "close": 2030,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T01:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2029,
+      "high": 2029,
+      "low": 2029,
+      "close": 2029,
+      "volume": 9
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T02:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2029.5,
+      "high": 2033.7,
+      "low": 2029.5,
+      "close": 2033.7,
+      "volume": 12
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T02:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2031.3,
+      "high": 2031.3,
+      "low": 2031.3,
+      "close": 2031.3,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T03:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2031.4,
+      "high": 2032.7,
+      "low": 2028,
+      "close": 2032.7,
+      "volume": 64
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T03:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2031.9,
+      "high": 2034,
+      "low": 2030.5,
+      "close": 2031.8,
+      "volume": 96
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T04:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2032.6,
+      "high": 2035.3,
+      "low": 2032.3,
+      "close": 2033.3,
+      "volume": 37
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T04:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2034.6,
+      "high": 2034.6,
+      "low": 2032.7,
+      "close": 2032.9,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T05:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2034.3,
+      "high": 2034.3,
+      "low": 2034.3,
+      "close": 2034.3,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T05:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2035.6,
+      "high": 2036,
+      "low": 2035.6,
+      "close": 2035.7,
+      "volume": 11
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T06:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2036.4,
+      "high": 2036.4,
+      "low": 2036,
+      "close": 2036,
+      "volume": 14
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T07:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2034.6,
+      "high": 2036.2,
+      "low": 2034.3,
+      "close": 2036.2,
+      "volume": 37
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T07:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2036.7,
+      "high": 2037,
+      "low": 2036,
+      "close": 2036.4,
+      "volume": 53
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T08:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2034.7,
+      "high": 2034.7,
+      "low": 2034.4,
+      "close": 2034.4,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T08:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2036,
+      "high": 2037.8,
+      "low": 2034.5,
+      "close": 2037.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T09:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2038,
+      "high": 2040.5,
+      "low": 2037,
+      "close": 2037,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T09:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2037.5,
+      "high": 2039.5,
+      "low": 2036.5,
+      "close": 2039,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T10:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2039.8,
+      "high": 2042.3,
+      "low": 2039.8,
+      "close": 2040.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T10:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2040,
+      "high": 2040.5,
+      "low": 2038,
+      "close": 2039.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T11:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2040.5,
+      "high": 2041.5,
+      "low": 2039.2,
+      "close": 2041.4,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T11:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2040.7,
+      "high": 2040.7,
+      "low": 2038.5,
+      "close": 2039.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T12:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2040,
+      "high": 2040,
+      "low": 2034.5,
+      "close": 2035.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T12:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2034,
+      "high": 2036.2,
+      "low": 2033.3,
+      "close": 2036.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T14:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2036,
+      "high": 2041,
+      "low": 2036,
+      "close": 2041,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T14:30:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2040.5,
+      "high": 2040.5,
+      "low": 2039.4,
+      "close": 2039.4,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-18T15:00:00-05:00",
+      "tradingDay": "2016-03-18",
+      "open": 2039,
+      "high": 2039.5,
+      "low": 2037,
+      "close": 2037,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-20T18:00:00-05:00",
+      "tradingDay": "2016-03-20",
+      "open": 2036.9,
+      "high": 2036.9,
+      "low": 2036.9,
+      "close": 2036.9,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-20T19:00:00-05:00",
+      "tradingDay": "2016-03-20",
+      "open": 2036,
+      "high": 2036,
+      "low": 2036,
+      "close": 2036,
+      "volume": 25
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-20T19:30:00-05:00",
+      "tradingDay": "2016-03-20",
+      "open": 2035.1,
+      "high": 2035.1,
+      "low": 2035.1,
+      "close": 2035.1,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-20T20:00:00-05:00",
+      "tradingDay": "2016-03-20",
+      "open": 2035,
+      "high": 2035,
+      "low": 2034.6,
+      "close": 2034.6,
+      "volume": 26
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-20T21:00:00-05:00",
+      "tradingDay": "2016-03-20",
+      "open": 2033.6,
+      "high": 2033.6,
+      "low": 2033.6,
+      "close": 2033.6,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T02:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2033.4,
+      "high": 2033.5,
+      "low": 2033.4,
+      "close": 2033.5,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T02:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2033,
+      "high": 2033,
+      "low": 2033,
+      "close": 2033,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T03:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2031.5,
+      "high": 2035.5,
+      "low": 2031,
+      "close": 2035.5,
+      "volume": 15
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T03:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2034,
+      "high": 2035.7,
+      "low": 2033.7,
+      "close": 2035.2,
+      "volume": 28
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T04:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2034.7,
+      "high": 2039.3,
+      "low": 2034.7,
+      "close": 2038.8,
+      "volume": 13
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T04:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2043.2,
+      "high": 2043.5,
+      "low": 2041.7,
+      "close": 2041.7,
+      "volume": 36
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T05:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2041.3,
+      "high": 2041.3,
+      "low": 2040.1,
+      "close": 2040.2,
+      "volume": 23
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T05:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2040,
+      "high": 2040.3,
+      "low": 2039,
+      "close": 2039,
+      "volume": 33
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T06:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2039,
+      "high": 2039,
+      "low": 2037.7,
+      "close": 2038.5,
+      "volume": 34
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T06:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2039.6,
+      "high": 2039.6,
+      "low": 2039.6,
+      "close": 2039.6,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T07:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2039,
+      "high": 2039.7,
+      "low": 2034.8,
+      "close": 2034.8,
+      "volume": 123
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T07:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2034.3,
+      "high": 2035.7,
+      "low": 2034.3,
+      "close": 2035.7,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T08:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2036,
+      "high": 2036.2,
+      "low": 2035.1,
+      "close": 2035.1,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T08:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2036.5,
+      "high": 2041.3,
+      "low": 2035.5,
+      "close": 2041.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T09:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2039,
+      "high": 2039,
+      "low": 2034.7,
+      "close": 2037,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T09:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2034.5,
+      "high": 2036.7,
+      "low": 2033,
+      "close": 2033,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T10:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2035.8,
+      "high": 2037.3,
+      "low": 2035.5,
+      "close": 2037.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T10:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2039.5,
+      "high": 2040,
+      "low": 2038.2,
+      "close": 2040,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T11:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2037.5,
+      "high": 2039.5,
+      "low": 2037,
+      "close": 2037.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T11:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2038,
+      "high": 2038,
+      "low": 2036.8,
+      "close": 2037,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T12:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2040,
+      "high": 2042,
+      "low": 2040,
+      "close": 2042,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T12:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2041.8,
+      "high": 2041.8,
+      "low": 2041.8,
+      "close": 2041.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T13:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2043.5,
+      "high": 2043.5,
+      "low": 2043.5,
+      "close": 2043.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T13:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2043.5,
+      "high": 2043.5,
+      "low": 2043.5,
+      "close": 2043.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T14:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2043,
+      "high": 2043,
+      "low": 2042.5,
+      "close": 2042.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T14:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2040.5,
+      "high": 2042.3,
+      "low": 2040.5,
+      "close": 2042,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T15:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2041.5,
+      "high": 2043,
+      "low": 2041.5,
+      "close": 2043,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T17:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2043,
+      "high": 2043,
+      "low": 2043,
+      "close": 2043,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T18:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2040.6,
+      "high": 2041,
+      "low": 2040.6,
+      "close": 2041,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T19:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2043.7,
+      "high": 2043.7,
+      "low": 2043.7,
+      "close": 2043.7,
+      "volume": 12
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T20:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2041.5,
+      "high": 2042.1,
+      "low": 2041.5,
+      "close": 2042.1,
+      "volume": 27
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T22:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2041,
+      "high": 2041,
+      "low": 2041,
+      "close": 2041,
+      "volume": 23
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T22:30:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2040.1,
+      "high": 2040.1,
+      "low": 2039.8,
+      "close": 2039.8,
+      "volume": 32
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-21T23:00:00-05:00",
+      "tradingDay": "2016-03-21",
+      "open": 2039,
+      "high": 2039,
+      "low": 2039,
+      "close": 2039,
+      "volume": 25
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T01:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2040.1,
+      "high": 2040.2,
+      "low": 2040.1,
+      "close": 2040.2,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T02:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2041,
+      "high": 2041,
+      "low": 2039,
+      "close": 2039,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T02:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2038.6,
+      "high": 2038.6,
+      "low": 2034.8,
+      "close": 2034.8,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T03:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2035.2,
+      "high": 2035.6,
+      "low": 2029.8,
+      "close": 2029.8,
+      "volume": 26
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T03:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2029.9,
+      "high": 2033.7,
+      "low": 2028.4,
+      "close": 2033.2,
+      "volume": 87
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T04:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2035.7,
+      "high": 2036.8,
+      "low": 2034.5,
+      "close": 2036.6,
+      "volume": 40
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T04:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2034.9,
+      "high": 2040,
+      "low": 2034.9,
+      "close": 2040,
+      "volume": 44
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T05:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2036.8,
+      "high": 2037.7,
+      "low": 2032.5,
+      "close": 2032.7,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T05:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2034.6,
+      "high": 2035.1,
+      "low": 2034.1,
+      "close": 2034.2,
+      "volume": 16
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T06:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2036.4,
+      "high": 2037.3,
+      "low": 2036.4,
+      "close": 2037.3,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T06:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2034.1,
+      "high": 2034.1,
+      "low": 2033.7,
+      "close": 2034,
+      "volume": 39
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T07:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2034.5,
+      "high": 2034.7,
+      "low": 2032.9,
+      "close": 2032.9,
+      "volume": 102
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T07:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2034.5,
+      "high": 2035.3,
+      "low": 2034.3,
+      "close": 2035.3,
+      "volume": 9
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T08:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2034.9,
+      "high": 2034.9,
+      "low": 2031.8,
+      "close": 2031.8,
+      "volume": 109
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T08:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2032.5,
+      "high": 2036,
+      "low": 2031,
+      "close": 2036,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T09:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2036.5,
+      "high": 2039.5,
+      "low": 2035.5,
+      "close": 2039,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T09:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2039,
+      "high": 2041.8,
+      "low": 2038,
+      "close": 2040.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T10:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2039.5,
+      "high": 2042,
+      "low": 2039.5,
+      "close": 2041.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T10:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2042,
+      "high": 2042,
+      "low": 2039.2,
+      "close": 2039.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T11:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2039,
+      "high": 2041.2,
+      "low": 2039,
+      "close": 2041.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T11:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2042.7,
+      "high": 2044,
+      "low": 2042.3,
+      "close": 2044,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T12:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2047,
+      "high": 2047,
+      "low": 2047,
+      "close": 2047,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T12:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2046.2,
+      "high": 2046.2,
+      "low": 2045,
+      "close": 2045,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T13:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2046,
+      "high": 2046.2,
+      "low": 2044,
+      "close": 2045.6,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T13:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2046.2,
+      "high": 2046.7,
+      "low": 2043.5,
+      "close": 2043.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T14:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2042.5,
+      "high": 2043,
+      "low": 2038.5,
+      "close": 2040,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T14:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2040,
+      "high": 2040.4,
+      "low": 2039.5,
+      "close": 2039.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T15:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2040.5,
+      "high": 2042.8,
+      "low": 2040.5,
+      "close": 2042.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T17:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2040.9,
+      "high": 2040.9,
+      "low": 2040.9,
+      "close": 2040.9,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T19:00:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2042.5,
+      "high": 2042.5,
+      "low": 2042.5,
+      "close": 2042.5,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T19:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2040,
+      "high": 2040,
+      "low": 2040,
+      "close": 2040,
+      "volume": 20
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-22T22:30:00-05:00",
+      "tradingDay": "2016-03-22",
+      "open": 2039.6,
+      "high": 2039.6,
+      "low": 2039.6,
+      "close": 2039.6,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T00:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2039,
+      "high": 2039,
+      "low": 2039,
+      "close": 2039,
+      "volume": 20
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T00:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2038,
+      "high": 2039.7,
+      "low": 2038,
+      "close": 2039.7,
+      "volume": 22
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T01:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2038.6,
+      "high": 2038.6,
+      "low": 2038.6,
+      "close": 2038.6,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T01:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2040,
+      "high": 2040,
+      "low": 2040,
+      "close": 2040,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T02:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2040.1,
+      "high": 2041.4,
+      "low": 2040.1,
+      "close": 2041,
+      "volume": 11
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T02:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2040.8,
+      "high": 2041.3,
+      "low": 2040.4,
+      "close": 2040.7,
+      "volume": 19
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T03:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2042.3,
+      "high": 2043,
+      "low": 2040.9,
+      "close": 2042.5,
+      "volume": 17
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T03:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2043.7,
+      "high": 2043.7,
+      "low": 2043.7,
+      "close": 2043.7,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T04:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2043.3,
+      "high": 2043.5,
+      "low": 2042.1,
+      "close": 2042.1,
+      "volume": 6
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T04:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2042.7,
+      "high": 2042.8,
+      "low": 2042.3,
+      "close": 2042.8,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T05:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2042.6,
+      "high": 2042.6,
+      "low": 2042.1,
+      "close": 2042.2,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T06:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2042.7,
+      "high": 2042.7,
+      "low": 2042.7,
+      "close": 2042.7,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T06:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2043.5,
+      "high": 2043.6,
+      "low": 2043.3,
+      "close": 2043.5,
+      "volume": 8
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T07:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2043.9,
+      "high": 2044,
+      "low": 2042.7,
+      "close": 2042.7,
+      "volume": 42
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T07:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2041.9,
+      "high": 2041.9,
+      "low": 2040.7,
+      "close": 2040.9,
+      "volume": 13
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T08:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2039.5,
+      "high": 2039.7,
+      "low": 2035.3,
+      "close": 2035.3,
+      "volume": 51
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T08:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2036.5,
+      "high": 2037.5,
+      "low": 2032.7,
+      "close": 2034.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T09:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2034,
+      "high": 2035.5,
+      "low": 2032.2,
+      "close": 2035.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T09:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2036,
+      "high": 2037.5,
+      "low": 2032,
+      "close": 2036,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T10:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2033.5,
+      "high": 2034.8,
+      "low": 2031,
+      "close": 2031,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T10:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2030.7,
+      "high": 2031.7,
+      "low": 2029.5,
+      "close": 2030.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T11:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2031,
+      "high": 2033.7,
+      "low": 2031,
+      "close": 2033.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T11:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2034.7,
+      "high": 2035,
+      "low": 2033.5,
+      "close": 2033.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T12:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2034,
+      "high": 2034,
+      "low": 2033,
+      "close": 2033.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T12:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2033,
+      "high": 2033.5,
+      "low": 2032.2,
+      "close": 2033.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T13:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2035.2,
+      "high": 2035.2,
+      "low": 2032,
+      "close": 2032,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T13:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2033.5,
+      "high": 2033.5,
+      "low": 2027.5,
+      "close": 2027.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T14:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2027,
+      "high": 2027.2,
+      "low": 2025.5,
+      "close": 2025.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T14:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2027.5,
+      "high": 2029,
+      "low": 2027,
+      "close": 2028,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T15:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2028.5,
+      "high": 2030.2,
+      "low": 2028.5,
+      "close": 2028.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T15:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2028.6,
+      "high": 2028.6,
+      "low": 2028.6,
+      "close": 2028.6,
+      "volume": 6
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T17:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2028,
+      "high": 2028,
+      "low": 2028,
+      "close": 2028,
+      "volume": 20
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T19:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2026,
+      "high": 2026,
+      "low": 2026,
+      "close": 2026,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T19:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2025,
+      "high": 2025,
+      "low": 2025,
+      "close": 2025,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T20:00:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2025.5,
+      "high": 2025.5,
+      "low": 2025.5,
+      "close": 2025.5,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T20:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2024.6,
+      "high": 2024.6,
+      "low": 2024.6,
+      "close": 2024.6,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T21:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2026.4,
+      "high": 2026.4,
+      "low": 2026.4,
+      "close": 2026.4,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-23T22:30:00-05:00",
+      "tradingDay": "2016-03-23",
+      "open": 2024.3,
+      "high": 2024.3,
+      "low": 2024.3,
+      "close": 2024.3,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T00:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2025.5,
+      "high": 2025.5,
+      "low": 2025.5,
+      "close": 2025.5,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T01:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2023.2,
+      "high": 2023.5,
+      "low": 2023.2,
+      "close": 2023.5,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T02:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2022.7,
+      "high": 2023.4,
+      "low": 2022.7,
+      "close": 2023.4,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T02:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2022.3,
+      "high": 2022.3,
+      "low": 2022.3,
+      "close": 2022.3,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T03:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2022,
+      "high": 2025.2,
+      "low": 2022,
+      "close": 2023.4,
+      "volume": 31
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T03:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2023.3,
+      "high": 2023.3,
+      "low": 2020.5,
+      "close": 2022,
+      "volume": 26
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T04:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2022,
+      "high": 2022,
+      "low": 2019.5,
+      "close": 2021,
+      "volume": 34
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T04:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2020.3,
+      "high": 2021.4,
+      "low": 2020.1,
+      "close": 2020.9,
+      "volume": 131
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T05:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2020.8,
+      "high": 2020.8,
+      "low": 2018.1,
+      "close": 2019.7,
+      "volume": 67
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T05:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2018,
+      "high": 2018.9,
+      "low": 2017.7,
+      "close": 2018.8,
+      "volume": 125
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T06:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2018,
+      "high": 2018,
+      "low": 2017.3,
+      "close": 2018,
+      "volume": 33
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T06:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2017.7,
+      "high": 2018,
+      "low": 2017.7,
+      "close": 2018,
+      "volume": 21
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T07:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2017.7,
+      "high": 2018.5,
+      "low": 2017.7,
+      "close": 2018.1,
+      "volume": 46
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T07:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2017.6,
+      "high": 2017.6,
+      "low": 2013.6,
+      "close": 2015.3,
+      "volume": 18
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T08:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2015.5,
+      "high": 2015.5,
+      "low": 2013.8,
+      "close": 2013.8,
+      "volume": 34
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T08:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2015,
+      "high": 2016.5,
+      "low": 2013.5,
+      "close": 2016.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T09:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2018,
+      "high": 2018,
+      "low": 2015.7,
+      "close": 2016.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T09:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2015,
+      "high": 2018.7,
+      "low": 2015,
+      "close": 2018.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T10:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2020.5,
+      "high": 2020.8,
+      "low": 2018,
+      "close": 2018,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T10:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2017,
+      "high": 2018.3,
+      "low": 2017,
+      "close": 2017.9,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T11:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2020,
+      "high": 2021,
+      "low": 2016.5,
+      "close": 2016.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T11:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2017.5,
+      "high": 2018,
+      "low": 2017.5,
+      "close": 2018,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T12:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2018,
+      "high": 2019,
+      "low": 2018,
+      "close": 2019,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T13:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2019,
+      "high": 2021,
+      "low": 2019,
+      "close": 2020.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T13:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2021,
+      "high": 2024.2,
+      "low": 2020.5,
+      "close": 2024.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T14:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2023.2,
+      "high": 2025.5,
+      "low": 2022.5,
+      "close": 2025.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T14:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2025.5,
+      "high": 2026,
+      "low": 2025.2,
+      "close": 2026,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T15:00:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2027,
+      "high": 2028.8,
+      "low": 2026.5,
+      "close": 2028.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-24T15:30:00-05:00",
+      "tradingDay": "2016-03-24",
+      "open": 2029,
+      "high": 2029,
+      "low": 2029,
+      "close": 2029,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-27T17:00:00-05:00",
+      "tradingDay": "2016-03-27",
+      "open": 2031.7,
+      "high": 2031.7,
+      "low": 2030.9,
+      "close": 2030.9,
+      "volume": 50
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-27T21:30:00-05:00",
+      "tradingDay": "2016-03-27",
+      "open": 2035,
+      "high": 2037,
+      "low": 2035,
+      "close": 2036,
+      "volume": 12
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T02:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2038,
+      "high": 2038,
+      "low": 2038,
+      "close": 2038,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T03:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2037.2,
+      "high": 2037.2,
+      "low": 2036.6,
+      "close": 2036.6,
+      "volume": 26
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T05:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2034,
+      "high": 2034.2,
+      "low": 2034,
+      "close": 2034.2,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T06:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2034.5,
+      "high": 2034.6,
+      "low": 2034.5,
+      "close": 2034.6,
+      "volume": 12
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T06:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2032.8,
+      "high": 2033,
+      "low": 2032.8,
+      "close": 2033,
+      "volume": 26
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T07:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2033,
+      "high": 2033,
+      "low": 2033,
+      "close": 2033,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T07:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2033.2,
+      "high": 2033.2,
+      "low": 2031.8,
+      "close": 2032,
+      "volume": 41
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T08:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2031.2,
+      "high": 2032,
+      "low": 2026.5,
+      "close": 2026.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T09:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2027,
+      "high": 2029.3,
+      "low": 2025.5,
+      "close": 2028.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T09:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2027.5,
+      "high": 2027.5,
+      "low": 2022.8,
+      "close": 2025.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T10:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2026.5,
+      "high": 2027,
+      "low": 2024.5,
+      "close": 2024.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T10:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2025.9,
+      "high": 2027.2,
+      "low": 2025.9,
+      "close": 2027.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T11:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2026.2,
+      "high": 2026.2,
+      "low": 2026,
+      "close": 2026,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T11:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2031,
+      "high": 2032,
+      "low": 2031,
+      "close": 2032,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T12:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2031,
+      "high": 2031,
+      "low": 2030.3,
+      "close": 2030.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T13:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2032.5,
+      "high": 2033,
+      "low": 2030.8,
+      "close": 2030.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T13:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2030,
+      "high": 2030,
+      "low": 2027.5,
+      "close": 2027.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T14:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2028,
+      "high": 2031,
+      "low": 2028,
+      "close": 2029.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T14:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2028,
+      "high": 2028.5,
+      "low": 2028,
+      "close": 2028,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T15:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2028.5,
+      "high": 2029.5,
+      "low": 2027.5,
+      "close": 2027.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T15:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2028.2,
+      "high": 2028.2,
+      "low": 2028.1,
+      "close": 2028.2,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T20:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2030,
+      "high": 2034.3,
+      "low": 2030,
+      "close": 2034.3,
+      "volume": 17
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T20:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2031.9,
+      "high": 2031.9,
+      "low": 2031.9,
+      "close": 2031.9,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T21:00:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2032.6,
+      "high": 2032.7,
+      "low": 2032.6,
+      "close": 2032.7,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T22:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2029.3,
+      "high": 2029.3,
+      "low": 2029.3,
+      "close": 2029.3,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-28T23:30:00-05:00",
+      "tradingDay": "2016-03-28",
+      "open": 2031,
+      "high": 2031,
+      "low": 2031,
+      "close": 2031,
+      "volume": 10
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T01:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2031.1,
+      "high": 2031.2,
+      "low": 2031.1,
+      "close": 2031.2,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T01:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2030.7,
+      "high": 2030.7,
+      "low": 2030.7,
+      "close": 2030.7,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T02:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2031.2,
+      "high": 2032,
+      "low": 2031.2,
+      "close": 2032,
+      "volume": 13
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T03:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2029.4,
+      "high": 2031.5,
+      "low": 2029.4,
+      "close": 2031.5,
+      "volume": 57
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T03:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2031.1,
+      "high": 2031.1,
+      "low": 2031.1,
+      "close": 2031.1,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T04:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2028.6,
+      "high": 2028.6,
+      "low": 2028.5,
+      "close": 2028.5,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T04:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2025.1,
+      "high": 2025.1,
+      "low": 2025.1,
+      "close": 2025.1,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T05:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2024.9,
+      "high": 2024.9,
+      "low": 2024.6,
+      "close": 2024.6,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T05:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2025.1,
+      "high": 2025.2,
+      "low": 2024,
+      "close": 2024,
+      "volume": 19
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T06:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2022,
+      "high": 2022,
+      "low": 2022,
+      "close": 2022,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T06:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2023.4,
+      "high": 2023.4,
+      "low": 2022.4,
+      "close": 2022.4,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T07:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2022.5,
+      "high": 2023.7,
+      "low": 2022.3,
+      "close": 2023.5,
+      "volume": 19
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T07:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2022.2,
+      "high": 2022.7,
+      "low": 2021.6,
+      "close": 2022.6,
+      "volume": 15
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T08:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2023.2,
+      "high": 2023.4,
+      "low": 2022.9,
+      "close": 2023.2,
+      "volume": 23
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T08:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2023.3,
+      "high": 2023.5,
+      "low": 2019.5,
+      "close": 2023.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T09:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2024.5,
+      "high": 2026,
+      "low": 2024,
+      "close": 2024.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T09:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2025,
+      "high": 2025.6,
+      "low": 2024.2,
+      "close": 2025,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T10:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2026,
+      "high": 2026,
+      "low": 2024,
+      "close": 2025.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T10:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2026,
+      "high": 2027.7,
+      "low": 2024.7,
+      "close": 2026.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T11:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2026,
+      "high": 2036,
+      "low": 2026,
+      "close": 2036,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T11:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2036.5,
+      "high": 2039.5,
+      "low": 2035.3,
+      "close": 2036.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T12:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2036.2,
+      "high": 2036.5,
+      "low": 2034.5,
+      "close": 2036.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T12:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2035,
+      "high": 2039,
+      "low": 2035,
+      "close": 2039,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T13:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2040,
+      "high": 2043.5,
+      "low": 2040,
+      "close": 2043.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T13:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2044.3,
+      "high": 2045.8,
+      "low": 2044.3,
+      "close": 2045.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T14:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2045.2,
+      "high": 2047.3,
+      "low": 2045.2,
+      "close": 2047.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T14:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2046,
+      "high": 2047.5,
+      "low": 2044.5,
+      "close": 2047.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T15:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2047.5,
+      "high": 2048,
+      "low": 2046.8,
+      "close": 2047.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T15:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2049,
+      "high": 2049,
+      "low": 2048,
+      "close": 2048,
+      "volume": 6
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T17:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2048.7,
+      "high": 2048.7,
+      "low": 2048,
+      "close": 2048.3,
+      "volume": 55
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T18:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2049.2,
+      "high": 2053.8,
+      "low": 2049.2,
+      "close": 2053.8,
+      "volume": 24
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T18:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2051,
+      "high": 2051,
+      "low": 2051,
+      "close": 2051,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T20:00:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2049.6,
+      "high": 2049.6,
+      "low": 2049.6,
+      "close": 2049.6,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T20:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2050.7,
+      "high": 2050.7,
+      "low": 2050.7,
+      "close": 2050.7,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T21:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2049.1,
+      "high": 2049.1,
+      "low": 2048.8,
+      "close": 2048.8,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-29T22:30:00-05:00",
+      "tradingDay": "2016-03-29",
+      "open": 2049.2,
+      "high": 2049.2,
+      "low": 2049.2,
+      "close": 2049.2,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T00:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2048.8,
+      "high": 2048.8,
+      "low": 2048.8,
+      "close": 2048.8,
+      "volume": 4
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T02:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2051,
+      "high": 2054.8,
+      "low": 2051,
+      "close": 2054.8,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T02:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2056,
+      "high": 2056.2,
+      "low": 2056,
+      "close": 2056.2,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T03:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2057.9,
+      "high": 2058.2,
+      "low": 2056.8,
+      "close": 2058.2,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T03:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2056.6,
+      "high": 2057.8,
+      "low": 2056.6,
+      "close": 2057,
+      "volume": 25
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T04:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2057.7,
+      "high": 2057.8,
+      "low": 2057.7,
+      "close": 2057.8,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T04:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2058.2,
+      "high": 2058.2,
+      "low": 2057,
+      "close": 2057,
+      "volume": 14
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T05:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2058.2,
+      "high": 2060.2,
+      "low": 2058.2,
+      "close": 2060.2,
+      "volume": 98
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T05:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2059.8,
+      "high": 2059.8,
+      "low": 2059,
+      "close": 2059,
+      "volume": 3
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T06:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2058.6,
+      "high": 2058.6,
+      "low": 2058.6,
+      "close": 2058.6,
+      "volume": 6
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T07:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2058.3,
+      "high": 2058.5,
+      "low": 2057.5,
+      "close": 2057.5,
+      "volume": 27
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T07:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2057.4,
+      "high": 2059.2,
+      "low": 2057.4,
+      "close": 2059,
+      "volume": 43
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T08:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2059.5,
+      "high": 2059.5,
+      "low": 2058.5,
+      "close": 2058.9,
+      "volume": 19
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T08:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2058.5,
+      "high": 2063,
+      "low": 2056.8,
+      "close": 2061.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T09:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2060.5,
+      "high": 2061,
+      "low": 2059.5,
+      "close": 2060,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T09:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2059.3,
+      "high": 2063.5,
+      "low": 2059.3,
+      "close": 2061.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T10:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2063,
+      "high": 2063,
+      "low": 2059,
+      "close": 2059,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T10:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2056.8,
+      "high": 2057.8,
+      "low": 2054.5,
+      "close": 2057.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T11:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2057,
+      "high": 2058,
+      "low": 2056,
+      "close": 2056,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T11:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2056.3,
+      "high": 2056.3,
+      "low": 2054,
+      "close": 2054.2,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T12:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2055.2,
+      "high": 2055.2,
+      "low": 2053,
+      "close": 2053.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T12:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2053.2,
+      "high": 2056.8,
+      "low": 2052.5,
+      "close": 2056.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T13:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2056,
+      "high": 2057.5,
+      "low": 2055.2,
+      "close": 2057,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T13:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2058.3,
+      "high": 2058.3,
+      "low": 2056,
+      "close": 2056.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T14:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2058,
+      "high": 2060.5,
+      "low": 2058,
+      "close": 2060.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T14:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2059.5,
+      "high": 2059.5,
+      "low": 2055,
+      "close": 2056,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T15:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2056.5,
+      "high": 2056.5,
+      "low": 2054.8,
+      "close": 2055,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T17:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2055.7,
+      "high": 2055.7,
+      "low": 2055.7,
+      "close": 2055.7,
+      "volume": 50
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T18:00:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2054.3,
+      "high": 2054.3,
+      "low": 2054.3,
+      "close": 2054.3,
+      "volume": 16
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-30T21:30:00-05:00",
+      "tradingDay": "2016-03-30",
+      "open": 2053.2,
+      "high": 2053.2,
+      "low": 2053.2,
+      "close": 2053.2,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T00:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2053.1,
+      "high": 2053.1,
+      "low": 2053.1,
+      "close": 2053.1,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T02:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2051.7,
+      "high": 2053.3,
+      "low": 2051.7,
+      "close": 2053.1,
+      "volume": 11
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T02:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2050.1,
+      "high": 2050.7,
+      "low": 2049.5,
+      "close": 2049.6,
+      "volume": 32
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T03:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2047.8,
+      "high": 2048.5,
+      "low": 2047.8,
+      "close": 2048.5,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T03:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2051.2,
+      "high": 2051.2,
+      "low": 2051.2,
+      "close": 2051.2,
+      "volume": 5
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T04:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2051.7,
+      "high": 2051.7,
+      "low": 2051.7,
+      "close": 2051.7,
+      "volume": 6
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T04:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2052.7,
+      "high": 2052.7,
+      "low": 2052.3,
+      "close": 2052.3,
+      "volume": 81
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T05:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2052.1,
+      "high": 2052.2,
+      "low": 2051.7,
+      "close": 2052,
+      "volume": 12
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T05:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2053.3,
+      "high": 2053.3,
+      "low": 2052.8,
+      "close": 2052.8,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T06:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2055,
+      "high": 2055.5,
+      "low": 2055,
+      "close": 2055.5,
+      "volume": 7
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T06:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2056.3,
+      "high": 2056.3,
+      "low": 2056.3,
+      "close": 2056.3,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T07:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2055.3,
+      "high": 2056.8,
+      "low": 2054.2,
+      "close": 2056.8,
+      "volume": 32
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T07:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2055.3,
+      "high": 2055.3,
+      "low": 2055.3,
+      "close": 2055.3,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T08:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2055.1,
+      "high": 2055.1,
+      "low": 2055.1,
+      "close": 2055.1,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T08:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2055,
+      "high": 2058,
+      "low": 2054.5,
+      "close": 2056,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T09:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2055.2,
+      "high": 2059,
+      "low": 2055.2,
+      "close": 2058,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T09:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2056.1,
+      "high": 2057.8,
+      "low": 2055.9,
+      "close": 2057.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T10:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2057.8,
+      "high": 2058.8,
+      "low": 2057.8,
+      "close": 2058.8,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T10:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2055.7,
+      "high": 2058.3,
+      "low": 2055.7,
+      "close": 2058.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T11:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2058.7,
+      "high": 2059.5,
+      "low": 2058.3,
+      "close": 2059.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T11:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2058.2,
+      "high": 2058.2,
+      "low": 2057.5,
+      "close": 2057.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T12:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2057,
+      "high": 2057.3,
+      "low": 2056,
+      "close": 2056,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T12:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2054,
+      "high": 2054.7,
+      "low": 2054,
+      "close": 2054.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T13:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2051.7,
+      "high": 2051.7,
+      "low": 2051.7,
+      "close": 2051.7,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T13:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2050,
+      "high": 2051.3,
+      "low": 2049,
+      "close": 2051.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T14:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2053,
+      "high": 2053.3,
+      "low": 2053,
+      "close": 2053.3,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T14:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2053.7,
+      "high": 2054,
+      "low": 2051,
+      "close": 2051.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T15:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2052,
+      "high": 2053.8,
+      "low": 2050,
+      "close": 2053.5,
+      "volume": "0"
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T15:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2052.5,
+      "high": 2052.5,
+      "low": 2052.4,
+      "close": 2052.4,
+      "volume": 12
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T17:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2052,
+      "high": 2052,
+      "low": 2052,
+      "close": 2052,
+      "volume": 28
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T19:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2052.2,
+      "high": 2052.2,
+      "low": 2052,
+      "close": 2052,
+      "volume": 39
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T20:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2055,
+      "high": 2055,
+      "low": 2055,
+      "close": 2055,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T21:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2048.9,
+      "high": 2049,
+      "low": 2048.9,
+      "close": 2049,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T22:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2047,
+      "high": 2047,
+      "low": 2047,
+      "close": 2047,
+      "volume": 1
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T23:00:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2047.4,
+      "high": 2047.4,
+      "low": 2047.4,
+      "close": 2047.4,
+      "volume": 2
+    },
+    {
+      "symbol": "SPM16",
+      "timestamp": "2016-03-31T23:30:00-05:00",
+      "tradingDay": "2016-03-31",
+      "open": 2046,
+      "high": 2047.1,
+      "low": 2046,
+      "close": 2047.1,
+      "volume": 74
+    }
+  ]
+}

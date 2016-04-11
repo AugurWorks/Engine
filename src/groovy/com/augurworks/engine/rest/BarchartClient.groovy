@@ -3,10 +3,13 @@ package com.augurworks.engine.rest
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
 
+import org.apache.commons.lang.time.DateUtils
 import org.joda.time.DateTime
 
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.helper.SingleDataRequest
+import com.augurworks.engine.helper.Unit
 
 class BarchartClient implements ApiClient {
 
@@ -28,23 +31,33 @@ class BarchartClient implements ApiClient {
 		}
 	}
 
-	Collection<DataSetValue> getHistory(HistoryParameters parameters) {
-		return makeRequest(historyLookup, historyParametersToMap(parameters)).collect { Map result ->
-			return new DataSetValue(new DateTime(result.timestamp).toDate(), result.close)
+	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+		return makeRequest(dataRequest).collect { Map result ->
+			Date date = new DateTime(result.timestamp).toDate()
+			if (dataRequest.unit == Unit.DAY) {
+				date = DateUtils.truncate(date, Calendar.DATE)
+			}
+			return new DataSetValue(date, result.close)
 		}
 	}
 
-	private Map historyParametersToMap(HistoryParameters historyParameters) {
+	private Map historyParametersToMap(SingleDataRequest dataRequest) {
+		Date startDate = dataRequest.unit.calculateOffset.apply(dataRequest.startDate, -3)
 		Map parameters = [
-			symbol: historyParameters.symbolResult.symbol,
-			type: historyParameters.type == 'Day' ? 'daily' : 'minutes',
-			startDate: historyParameters.startDate.format(dateFormat),
-			endDate: historyParameters.endDate.format(dateFormat)
+			symbol: dataRequest.symbolResult.symbol,
+			type: dataRequest.unit == Unit.DAY ? 'daily' : 'minutes',
+			startDate: startDate.format(dateFormat),
+			endDate: dataRequest.endDate.format(dateFormat)
 		]
-		if (historyParameters.interval) {
-			parameters.interval = historyParameters.interval.toString()
+		if (dataRequest.unit.interval) {
+			parameters.interval = dataRequest.unit.interval.toString()
 		}
 		return parameters
+	}
+
+	private Collection<Map> makeRequest(SingleDataRequest dataRequest) {
+		Map parameters = historyParametersToMap(dataRequest)
+		return makeRequest(historyLookup, parameters)
 	}
 
 	private Collection<Map> makeRequest(String url, Map parameters) {

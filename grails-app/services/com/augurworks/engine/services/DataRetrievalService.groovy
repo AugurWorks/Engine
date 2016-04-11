@@ -37,19 +37,19 @@ class DataRetrievalService {
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (splineRequest.prediction) {
 			int predictionOffset = splineRequest.algorithmRequest.predictionOffset
-			return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate, predictionOffset)
+			return expandedRequestValues*.reduceValueRange(splineRequest.algorithmRequest.unit, splineRequest.startDate, splineRequest.endDate, predictionOffset)
 		}
-		return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate)
+		return expandedRequestValues*.reduceValueRange(splineRequest.algorithmRequest.unit, splineRequest.startDate, splineRequest.endDate)
 	}
 
 	Collection<RequestValueSet> getRequestValues(SplineRequest splineRequest) {
-		int minOffset = splineRequest.algorithmRequest.requestDataSets*.offset.min()
+		int minOffset = splineRequest.algorithmRequest.requestDataSets*.offset.min() - 1
 		int maxOffset = splineRequest.algorithmRequest.requestDataSets*.offset.max()
 		Collection<RequestDataSet> requestDataSets = splineRequest.includeDependent ? splineRequest.algorithmRequest.requestDataSets : splineRequest.algorithmRequest.independentRequestDataSets
 		GParsPool.withPool(requestDataSets.size()) {
 			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
 				SingleDataRequest singleDataRequest = new SingleDataRequest(
-					dataSet: requestDataSet.dataSet,
+					symbolResult: requestDataSet.toSymbolResult(),
 					offset: requestDataSet.offset,
 					startDate: splineRequest.startDate,
 					endDate: splineRequest.endDate,
@@ -64,23 +64,11 @@ class DataRetrievalService {
 	}
 
 	RequestValueSet getSingleRequestValues(SingleDataRequest singleDataRequest) {
-		Collection<DataSetValue> values = []
-		switch (singleDataRequest.unit) {
-			case 'Day':
-				values = getQuandlData(singleDataRequest.dataSet.code, singleDataRequest.dataSet.dataColumn)
-				break
-			case 'Hour':
-				values = getGoogleData(singleDataRequest.dataSet.ticker, singleDataRequest.startDate.clone(), 60)
-				break
-			case 'Half Hour':
-				values = getGoogleData(singleDataRequest.dataSet.ticker, singleDataRequest.startDate.clone(), 30)
-				break
-			default:
-				throw new AugurWorksException('Unknown prediction date unit: ' + singleDataRequest.unit)
-		}
-		return new RequestValueSet(singleDataRequest.dataSet.ticker, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
+		Collection<DataSetValue> values = singleDataRequest.getHistory()
+		return new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.unit, singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
 	}
 
+	@Deprecated
 	Collection<DataSetValue> getQuandlData(String quandlCode, int dataColumn) {
 		return getQuandlAPIText(quandlCode).split('\n').tail().reverse().grep { String line ->
 			Collection<String> lineValues = line.split(',')
@@ -91,6 +79,7 @@ class DataRetrievalService {
 		}
 	}
 
+	@Deprecated
 	String getQuandlAPIText(String quandlCode) {
 		String quandlKey = grailsApplication.config.augurworks.quandl.key
 		String quandlPre = 'https://www.quandl.com/api/v1/datasets/'
@@ -99,6 +88,7 @@ class DataRetrievalService {
 		return getUrlText(url)
 	}
 
+	@Deprecated
 	Collection<DataSetValue> getGoogleData(String ticker, Date startDate, int intervalMinutes) {
 		int apiIntervalMinutes = Math.min(intervalMinutes, 30)
 		Collection<String> vals = getGoogleAPIText(ticker, startDate, apiIntervalMinutes).split('\n')
@@ -120,6 +110,7 @@ class DataRetrievalService {
 		}
 	}
 
+	@Deprecated
 	String getGoogleAPIText(String ticker, Date startDate, int intervalMinutes) {
 		String url = constructGoogleUrl(ticker, startDate, intervalMinutes)
 		String text = getUrlText(url)
@@ -129,6 +120,7 @@ class DataRetrievalService {
 		return text
 	}
 
+	@Deprecated
 	String getUrlText(String rawUrl) {
 		GrailsValueWrapper cache = grailsCacheManager.getCache('externalData').get(rawUrl)
 		if (cache) {
@@ -139,11 +131,13 @@ class DataRetrievalService {
 		return text
 	}
 
+	@Deprecated
 	String constructGoogleUrl(String ticker, Date startDate, int intervalMinutes) {
 		int period = use(TimeCategory) { (new Date() - startDate).days + 3 }
 		return GOOGLE_API_ROOT + 'q=' + ticker + '&p=' + period + 'd&i=' + (intervalMinutes * 60) + '&f=d,c'
 	}
 
+	@Deprecated
 	DataSetValue parseGoogleData(Date startDate, int intervalMinutes, String googleRow) {
 		if (googleRow.indexOf('TIMEZONE_OFFSET') != -1) {
 			return null
@@ -154,6 +148,7 @@ class DataRetrievalService {
 		return new DataSetValue(date, cols[1].toDouble())
 	}
 
+	@Deprecated
 	Collection<SymbolResult> searchSymbol(String keyword) {
 		GParsPool.withPool(Datasource.values().size()) {
 			return Datasource.values().collectParallel { Datasource datasource ->
