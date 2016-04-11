@@ -275,8 +275,6 @@ databaseChangeLog = {
 	include file: 'aggregation-enum.groovy'
 
 	include file: 'cron-algorithms.groovy'
-	
-	include file: 'add-spring-security-ui.groovy'
 
 	include file: 'unit-enum.groovy'
 
