@@ -28,7 +28,7 @@ class BarchartClient extends RestClient {
 
 	Collection<SymbolResult> searchSymbol(String keyword) {
 		return makeRequest(symbolLookup, [keyword: keyword]).collect { Map result ->
-			return new SymbolResult(name: result.name, symbol: result.symbol, datasource: Datasource.BARCHART)
+			return new SymbolResult(name: result.symbol.toString() + ' (Future)', symbol: result.symbol, datasource: Datasource.BARCHART)
 		}
 	}
 

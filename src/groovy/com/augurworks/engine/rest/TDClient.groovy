@@ -35,7 +35,7 @@ class TDClient extends RestClient {
 			return result.name() == 'symbol-result'
 		}
 		return xmlResults.collect { GPathResult result ->
-			return new SymbolResult(name: result.getProperty('description'), symbol: result.getProperty('symbol'), datasource: Datasource.TD)
+			return new SymbolResult(name: result.getProperty('symbol').toString() + ' (Stock)', symbol: result.getProperty('symbol'), datasource: Datasource.TD)
 		}
 	}
 
