@@ -6,10 +6,8 @@ import groovyx.gpars.GParsPool
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
-import com.amazonaws.services.s3.AmazonS3Client
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.DataSetValue
-import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.SplineRequest
@@ -60,16 +58,5 @@ class DataRetrievalService {
 	RequestValueSet getSingleRequestValues(SingleDataRequest singleDataRequest) {
 		Collection<DataSetValue> values = singleDataRequest.getHistory()
 		return new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.unit, singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
-	}
-
-	void logStringToS3(String filename, String text) {
-		File file = File.createTempFile(filename, '.txt')
-		file.write(text)
-		AmazonS3Client s3 = new AmazonS3Client()
-		String bucket = grailsApplication.config.aws.bucket
-		Date date = new Date()
-		String path = 'logs/' + date.format(Global.S3_DATE_FORMAT) + filename + '.txt'
-		s3.putObject(bucket, path, file)
-		file.delete()
 	}
 }

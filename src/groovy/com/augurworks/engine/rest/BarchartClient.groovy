@@ -2,6 +2,7 @@ package com.augurworks.engine.rest
 
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
+import groovy.json.JsonBuilder
 
 import org.apache.commons.lang.time.DateUtils
 import org.joda.time.DateTime
@@ -11,7 +12,7 @@ import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.Unit
 
-class BarchartClient implements ApiClient {
+class BarchartClient extends RestClient {
 
 	private final String dateFormat = 'yyyyMMddHHmm'
 
@@ -32,7 +33,9 @@ class BarchartClient implements ApiClient {
 	}
 
 	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
-		return makeRequest(dataRequest).collect { Map result ->
+		Collection<Map> results = makeRequest(dataRequest)
+		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(results).toPrettyString())
+		return results.collect { Map result ->
 			Date date = new DateTime(result.timestamp).toDate()
 			if (dataRequest.unit == Unit.DAY) {
 				date = DateUtils.truncate(date, Calendar.DATE)

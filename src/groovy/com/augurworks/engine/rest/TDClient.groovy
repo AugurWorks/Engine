@@ -2,6 +2,7 @@ package com.augurworks.engine.rest
 
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
+import groovy.json.JsonBuilder
 import groovy.util.slurpersupport.GPathResult
 
 import org.apache.http.HttpResponse
@@ -15,7 +16,7 @@ import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.Unit
 
-class TDClient implements ApiClient {
+class TDClient extends RestClient {
 
 	private final String dateFormat = 'yyyyMMdd'
 
@@ -41,6 +42,7 @@ class TDClient implements ApiClient {
 	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
 		DataInputStream binaryResults = makeBinaryRequest(historyLookup, dataRequestToMap(dataRequest))
 		Collection<Map> parsedResults = parseGetHistoryBinary(binaryResults)
+		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(parsedResults).toPrettyString())
 		if (parsedResults.size() > 1) {
 			throw new AugurWorksException('More results returned than expected')
 		}
