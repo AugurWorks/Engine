@@ -86,6 +86,9 @@ class TDClient extends RestClient {
 
 	Collection<Map> parseGetHistoryBinary(DataInputStream dataInputStream) {
 		int symbolCount = dataInputStream.readInt()
+		if (symbolCount != 1) {
+			throw new AugurWorksException('Unexpected number of TD result sets: ' + symbolCount)
+		}
 		return (1..symbolCount).collect {
 			Map map = [:]
 			map.symbol = dataInputStream.readUTF()
