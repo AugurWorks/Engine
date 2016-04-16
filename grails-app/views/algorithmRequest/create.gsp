@@ -67,7 +67,7 @@
 					</div>
 					<div class="field">
 						<label>Time Period</label>
-						<g:select name="unit" from="${ Unit.values() }" optionValue="name" value="${ algorithmRequest?.unit.name }" />
+						<g:select name="unit" from="${ Unit.values() }" optionValue="name" value="${ algorithmRequest?.unit?.name }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Add Data Set</h3>
