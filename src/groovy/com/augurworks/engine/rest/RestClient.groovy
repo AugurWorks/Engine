@@ -5,10 +5,10 @@ import grails.util.Holders
 import com.amazonaws.services.s3.AmazonS3Client
 import com.augurworks.engine.helper.Global
 
-public abstract class RestClient implements ApiClient {
+abstract class RestClient implements ApiClient {
 
-	private String BUCKET = Holders.config.aws.bucket
-	private boolean LOGGING_ON = Holders.config.logging.files
+	private static final String BUCKET = Holders.config.aws.bucket
+	private static final boolean LOGGING_ON = Holders.config.logging.files
 
 	protected void logStringToS3(String filename, String text) {
 		try {
@@ -21,7 +21,7 @@ public abstract class RestClient implements ApiClient {
 				s3.putObject(BUCKET, path, file)
 				file.delete()
 			}
-		} catch (Exception e) {
+		} catch (e) {
 			log.warn e
 			log.debug e.getStackTrace().join('\n      at ')
 		}
