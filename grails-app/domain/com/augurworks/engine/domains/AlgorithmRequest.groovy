@@ -52,7 +52,7 @@ class AlgorithmRequest {
 	}
 
 	String stringify() {
-		return this.toString() + ': ' + (-1 * this.startOffset) + ' to ' + (-1 * this.endOffset) + ' ' + this.unit.toLowerCase() + '(s) ago'
+		return this.toString() + ': ' + (-1 * this.startOffset) + ' to ' + (-1 * this.endOffset) + ' ' + this.unit.name().toLowerCase() + '(s) ago'
 	}
 
 	void updateFields(Map parameters) {
