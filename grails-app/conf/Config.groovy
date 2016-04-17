@@ -135,7 +135,7 @@ log4j = {
 		'grails.app.services.com.augurworks.engine',
 		'grails.app.conf.com.augurworks.engine',
 		'grails.app.domain.com.augurworks.engine',
-		'com.augurworks.engine.helper'
+		'com.augurworks.engine'
 	]
 
 	info 'info': [
@@ -143,7 +143,7 @@ log4j = {
 		'grails.app.services.com.augurworks.engine',
 		'grails.app.conf.com.augurworks.engine',
 		'grails.app.domain.com.augurworks.engine',
-		'com.augurworks.engine.helper'
+		'com.augurworks.engine'
 	]
 
 	debug 'debug': [
@@ -151,7 +151,7 @@ log4j = {
 		'grails.app.services.com.augurworks.engine',
 		'grails.app.conf.com.augurworks.engine',
 		'grails.app.domain.com.augurworks.engine',
-		'com.augurworks.engine.helper'
+		'com.augurworks.engine'
 	]
 }
 
