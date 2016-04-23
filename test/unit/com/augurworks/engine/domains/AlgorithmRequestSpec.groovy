@@ -146,7 +146,7 @@ class AlgorithmRequestSpec extends Specification {
 		Collection<Map> dataSetMaps = dataSets.collect { DataSet dataSet ->
 			return [
 				name: dataSet.ticker,
-				aggregation: Aggregation.VALUE,
+				aggregation: Aggregation.VALUE.name,
 				offset: 0
 			]
 		}
