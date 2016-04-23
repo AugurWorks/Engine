@@ -5,6 +5,7 @@ import groovy.time.TimeCategory
 import org.apache.commons.lang.time.DateUtils
 
 import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
 
 class AlgorithmRequest {
@@ -87,7 +88,7 @@ class AlgorithmRequest {
 			this.addToRequestDataSets([
 				dataSet: DataSet.findByTicker(dataSet.name.split(' - ').first()),
 				offset: dataSet.offset,
-				aggregation: dataSet.aggregation
+				aggregation: Aggregation.findByName(dataSet.aggregation)
 			])
 		}
 		if (persist) {
