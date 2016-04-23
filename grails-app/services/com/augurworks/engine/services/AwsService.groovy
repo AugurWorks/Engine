@@ -33,10 +33,10 @@ class AwsService {
 
 	GrailsApplication grailsApplication
 
-	String createDataSource(String path, String dataSchema) {
+	String createDataSource(String path, String dataSchema, boolean computeStatistics) {
 		AmazonMachineLearningClient ml = new AmazonMachineLearningClient()
 		S3DataSpec dataSpec = new S3DataSpec().withDataLocationS3('s3://' + bucket() + '/' + path).withDataSchema(dataSchema)
-		CreateDataSourceFromS3Request dataSourceRequest = new CreateDataSourceFromS3Request().withDataSpec(dataSpec).withComputeStatistics(true)
+		CreateDataSourceFromS3Request dataSourceRequest = new CreateDataSourceFromS3Request().withDataSpec(dataSpec).withComputeStatistics(computeStatistics)
 		CreateDataSourceFromS3Result result = ml.createDataSourceFromS3(dataSourceRequest)
 		return result.getDataSourceId()
 	}
