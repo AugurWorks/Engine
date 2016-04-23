@@ -41,7 +41,7 @@ class MachineLearningService {
 		String path = awsService.uploadToS3(file)
 		file.delete()
 		String dataSchema = createDataSchema(algorithmRequest, prediction)
-		return awsService.createDataSource(path, dataSchema)
+		return awsService.createDataSource(path, dataSchema, !prediction)
 	}
 
 	File requestToCsv(AlgorithmRequest algorithmRequest, boolean prediction, Date now) {
