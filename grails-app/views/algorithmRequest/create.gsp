@@ -129,7 +129,7 @@
 								</td>
 								<td class="stock">${ requestDataSet.dataSet.toString() }</td>
 								<td class="offset">${ requestDataSet.offset }</td>
-								<td class="aggregation">${ requestDataSet.aggregation }</td>
+								<td class="aggregation">${ requestDataSet.aggregation.name }</td>
 								<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>
 							</tr>
 						</g:each>
