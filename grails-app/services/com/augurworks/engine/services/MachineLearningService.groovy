@@ -3,6 +3,8 @@ package com.augurworks.engine.services
 import grails.converters.JSON
 import grails.transaction.Transactional
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
+
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
 import com.augurworks.engine.domains.AlgorithmRequest
@@ -20,6 +22,7 @@ import com.augurworks.engine.helper.SplineRequest
 @Transactional
 class MachineLearningService {
 
+	GrailsApplication grailsApplication
 	DataRetrievalService dataRetrievalService
 	AwsService awsService
 	AutomatedService automatedService
@@ -27,6 +30,10 @@ class MachineLearningService {
 	static final MACHINE_LEARNING_COMPLETE_STATUS = 'COMPLETED'
 
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
+		int maxMl = grailsApplication.config.augurworks.ml.max
+		if (AlgorithmResult.countByCompleteAndModelType(false, AlgorithmType.MACHINE_LEARNING) >= maxMl) {
+			throw new AugurWorksException('Maximum simultaneous machine learning runs of ' + maxMl + ' has been reached')
+		}
 		String dataSourceId = createRequestDataSource(algorithmRequest, false)
 		String modelId = awsService.createMLModel(dataSourceId)
 		createAlgorithmResult(algorithmRequest, modelId, dataSourceId)

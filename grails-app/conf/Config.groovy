@@ -111,6 +111,9 @@ augurworks {
 		key = System.getProperty('TD_KEY') ?: (System.getenv('TD_KEY') ?: (localConfig.augurworks.tdKey ?: null))
 	}
 	datePathFormat = 'yyyy/MM/dd/'
+	ml {
+		max = System.getProperty('ML_MAX') ?: (System.getenv('ML_MAX') ?: 10)
+	}
 }
 
 grails.cache.config = {
