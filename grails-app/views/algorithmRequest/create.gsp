@@ -8,6 +8,7 @@
 	<body>
 		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
+		<%@ page import="com.augurworks.engine.helper.Datasource" %>
 		<%@ page import="com.augurworks.engine.helper.Unit" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
@@ -70,10 +71,10 @@
 						<g:select name="unit" from="${ Unit.values() }" optionValue="name" value="${ algorithmRequest?.unit }" />
 					</div>
 				</div>
-				<h3 class="ui dividing header">Add Data Set</h3>
+				<h3 class="ui dividing header">Search Data Sets</h3>
 				<div class="four fields">
 					<div class="field">
-						<label>Stock</label>
+						<label>Ticker</label>
 						<select id="stock" name="stock" class="ui search dropdown"></select>
 					</div>
 					<div class="field">
@@ -87,6 +88,29 @@
 					<div class="field">
 						<label>Add Data Set</label>
 						<button onclick="addDataSet()" class="ui primary button">Add Data Set</button>
+					</div>
+				</div>
+				<h3 class="ui dividing header">Manually Add Data Set</h3>
+				<div class="five fields">
+					<div class="field">
+						<label>Ticker</label>
+						<g:field type="text" name="stock-manual" />
+					</div>
+					<div class="field">
+						<label>Datasource</label>
+						<g:select from="${ Datasource.values()*.name }" name="datasource" class="ui search dropdown" />
+					</div>
+					<div class="field">
+						<label>Interval Offset</label>
+						<g:field type="number" name="offset-manual" value="0" />
+					</div>
+					<div class="field">
+						<label>Aggregation</label>
+						<g:select from="${ Aggregation.values()*.name }" name="aggregation-manual" class="ui search dropdown" value="Period Percent Change" />
+					</div>
+					<div class="field">
+						<label>Add Data Set</label>
+						<button onclick="addManualDataSet()" class="ui primary button">Add Data Set</button>
 					</div>
 				</div>
 				<div class="fields">

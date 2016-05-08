@@ -5,12 +5,14 @@ import com.augurworks.engine.rest.BarchartClient
 import com.augurworks.engine.rest.TDClient
 
 enum Datasource {
-	TD(new TDClient()),
-	BARCHART(new BarchartClient())
+	TD('TD', new TDClient()),
+	BARCHART('Barchart', new BarchartClient())
 
+	private final String name
 	private final ApiClient apiClient
 
-	Datasource(ApiClient apiClient) {
+	Datasource(String name, ApiClient apiClient) {
+		this.name = name
 		this.apiClient = apiClient
 	}
 }
