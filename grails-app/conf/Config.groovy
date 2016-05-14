@@ -56,7 +56,7 @@ grails.hibernate.cache.queries = false
 
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
-alfred.url = (localConfig.alfred.url ?: 'http://localhost:8080')
+alfred.url = System.getProperty('ALFRED_URL') ?: (System.getenv('ALFRED_URL') ?: (localConfig.alfred.url ?: 'http://localhost:8080'))
 logging.files = System.getProperty('ENGINE_LOGGING_FILES') ?: false
 slack.slash.token = System.getProperty('SLASH_TOKEN') ?: System.getenv('SLASH_TOKEN')
 slack.on = System.getProperty('SLACK_ON') ?: (System.getenv('SLACK_ON') ?: 'false')
