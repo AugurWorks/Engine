@@ -45,12 +45,13 @@ class BarchartClient extends RestClient {
 	}
 
 	private Map historyParametersToMap(SingleDataRequest dataRequest) {
-		Date startDate = dataRequest.unit.calculateOffset.apply(dataRequest.startDate, -3)
+		Date startDate = dataRequest.unit.calculateOffset.apply(dataRequest.startDate, -5)
+		Date endDate = dataRequest.unit.calculateOffset.apply(dataRequest.endDate, 3)
 		Map parameters = [
 			symbol: dataRequest.symbolResult.symbol,
 			type: dataRequest.unit == Unit.DAY ? 'daily' : 'minutes',
 			startDate: startDate.format(dateFormat),
-			endDate: dataRequest.endDate.format(dateFormat)
+			endDate: endDate.format(dateFormat)
 		]
 		if (dataRequest.unit.interval) {
 			parameters.interval = dataRequest.unit.interval.toString()
