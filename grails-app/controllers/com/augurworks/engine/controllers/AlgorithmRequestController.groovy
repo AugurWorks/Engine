@@ -118,7 +118,7 @@ class AlgorithmRequestController {
 		return new RequestDataSet(
 			symbol: dataSet.symbol,
 			name: dataSet.name,
-			datasource: Datasource[dataSet.datasource],
+			datasource: Datasource[dataSet.datasource.toUpperCase()],
 			offset: dataSet.offset,
 			aggregation: Aggregation.findByName(dataSet.aggregation)
 		)
