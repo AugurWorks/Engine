@@ -49,29 +49,31 @@ class RequestValueSet {
 		Collection<DataSetValue> values = this.values
 		int startIndex = values.findIndexOf { it.date == startDate }
 		int endIndex = values.findIndexOf { it.date == endDate }
+		Collection<String> errors = []
 		if (startIndex == -1 || endIndex == -1) {
 			log.debug '------------------------------'
 			log.debug 'Failed to get data for ' + this.name
 		}
 		if (startIndex == -1) {
+			errors.add(this.name + ' does not contain data for the start date, ' + startDate.format(Global.ERROR_DATE_FORMAT))
 			log.debug 'Start date needed: ' + startDate
 			log.debug 'First available date: ' + this.values.first().date
+			errors.addAll(['Start date needed: ' + startDate, 'First available date: ' + this.values.first().date])
 		}
 		if (endIndex == -1) {
+			errors.add(this.name + ' does not contain data for the end date, ' + endDate.format(Global.ERROR_DATE_FORMAT))
 			log.debug 'End date needed: ' + endDate
 			log.debug 'Last available date: ' + this.values.last().date
-		}
-		if (startIndex == -1) {
-			throw new AugurWorksException(this.name + ' does not contain data for the start date, ' + startDate.format(Global.ERROR_DATE_FORMAT))
-		}
-		if (endIndex == -1) {
-			throw new AugurWorksException(this.name + ' does not contain data for the end date, ' + endDate.format(Global.ERROR_DATE_FORMAT))
+			errors.addAll(['End date needed: ' + endDate, 'Last available date: ' + this.values.last().date])
 		}
 		if (startIndex + minOffset < 0) {
-			throw new AugurWorksException(this.name + ' does not contain data all offsets before the start date')
+			errors.add(this.name + ' does not contain data all offsets before the start date')
 		}
 		if (endIndex + maxOffset > values.size() - 1) {
-			throw new AugurWorksException(this.name + ' does not contain data all offsets after the end date')
+			errors.add(this.name + ' does not contain data all offsets after the end date')
+		}
+		if (errors.size() != 0) {
+			throw new AugurWorksException(errors.join('<br />'))
 		}
 		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)].grep { DataSetValue dataSetValue ->
 			return unit.filterDates.apply(dataSetValue.date, startDate)

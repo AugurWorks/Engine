@@ -44,7 +44,12 @@ function submitRequest(overwrite) {
 			if (data.ok) {
 				window.location.href = '/algorithmRequest/show/' + data.id
 			} else {
-				swal('Error', data.error, 'error');
+				swal({
+					title: 'Error',
+					text: data.error,
+					type: 'error',
+					html: true
+				});
 			}
 		}
 	});
@@ -68,7 +73,7 @@ function checkRequest() {
 				$('#valid').show();
 			} else {
 				$('#invalid').show();
-				$('#invalid p').text(data.error);
+				$('#invalid p').html(data.error);
 			}
 		}
 	});

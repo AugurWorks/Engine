@@ -17,7 +17,12 @@ function kickOff(me, id) {
 				window.location.reload();
 			} else {
 				$(me).removeClass('loading');
-				swal('Error', data.error, 'error');
+				swal({
+					title: 'Error',
+					text: data.error,
+					type: 'error',
+					html: true
+				});
 			}
 		}
 	});
