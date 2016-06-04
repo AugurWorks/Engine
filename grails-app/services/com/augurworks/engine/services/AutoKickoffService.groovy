@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledFuture
 import javax.annotation.PostConstruct
 
 import org.quartz.CronExpression
+import org.slf4j.MDC
 import org.springframework.scheduling.Trigger
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.scheduling.support.CronTrigger
@@ -31,6 +32,8 @@ class AutoKickoffService {
 	}
 
 	void scheduleKickoffJob(AlgorithmRequest algorithmRequest) {
+		MDC.put('algorithmRequestId', algorithmRequest.id.toString())
+		MDC.put('algorithmRequestName', algorithmRequest.name)
 		try {
 			log.info 'Creating cron job for ' + algorithmRequest
 			if (runningJobs[algorithmRequest.id]) {
