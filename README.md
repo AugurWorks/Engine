@@ -14,6 +14,8 @@ A production environment can be built which uses environment variables for all c
 - **RDS_PORT** (default: 3306) - MySQL port number
 - **RDS_DB_NAME** (default: engine) - MySQL DB name
 - **ML_MAX** - Maximum simultaneous machine learning runs
+- **FLUENTD_HOST** - Fluentd host for centralized logging
+- **HOSTNAME** - Hostname for Fluentd logs
 
 ## Local Development
 ### Dependencies
