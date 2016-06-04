@@ -3,12 +3,16 @@ grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 grails.project.work.dir = "target/work"
-grails.project.target.level = 1.6
-grails.project.source.level = 1.6
+grails.project.target.level = 1.8
+grails.project.source.level = 1.8
+
+this.classLoader.rootLoader.addURL(new File("${basedir}/grails-app/conf/").toURI().toURL())
 
 grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
-	inherits("global")
+	inherits('global') {
+		excludes 'grails-plugin-log4j', 'log4j'
+	}
 	log "error"
 	checksums true
 	legacyResolve false
@@ -29,6 +33,9 @@ grails.project.dependency.resolution = {
 		runtime 'com.amazonaws:aws-java-sdk:1.10.6'
 		compile "org.codehaus.gpars:gpars:1.1.0"
 		runtime 'mysql:mysql-connector-java:5.1.22'
+		compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.0.13'
+		compile group: 'com.sndyuk', name: 'logback-more-appenders', version:'1.2.0'
+		compile group: 'org.fluentd', name: 'fluent-logger', version:'0.3.2'
 	}
 
 	plugins {
@@ -47,7 +54,6 @@ grails.project.dependency.resolution = {
 		compile ":spring-security-core:2.0-RC5"
 		compile ":spring-security-ui:1.0-RC2"
 
-		compile ":slack-logger:1.0.1"
 		compile ":build-test-data:2.4.0"
 		compile ":rest-client-builder:2.1.1"
 
