@@ -77,11 +77,9 @@ class AlfredService {
 			try {
 				checkAlgorithm(algorithmResult)
 			} catch (AugurWorksException e) {
-				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error: ' + e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error', e
 			} catch (e) {
-				log.error e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.error e
 			}
 		}
 	}

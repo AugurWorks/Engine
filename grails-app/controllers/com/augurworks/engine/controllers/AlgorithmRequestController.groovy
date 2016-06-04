@@ -44,12 +44,10 @@ class AlgorithmRequestController {
 			automatedService.runAlgorithm(algorithmRequest, algorithmType)
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
-			log.warn e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 			render([ok: false, error: e.getMessage()] as JSON)
 		} catch (e) {
-			log.error e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -86,8 +84,7 @@ class AlgorithmRequestController {
 			}
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
-			log.error e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -108,8 +105,7 @@ class AlgorithmRequestController {
 			dataRetrievalService.smartSpline(splineRequest)
 			render([ok: true] as JSON)
 		} catch (e) {
-			log.warn e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -143,8 +139,7 @@ class AlgorithmRequestController {
 			algorithmRequest.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 			render([ok: false] as JSON)
 		}
 	}
@@ -154,8 +149,7 @@ class AlgorithmRequestController {
 			algorithmResult.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 			render([ok: false] as JSON)
 		}
 	}

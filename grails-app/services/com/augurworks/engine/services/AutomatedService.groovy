@@ -84,8 +84,7 @@ class AutomatedService {
 				}
 			}
 		} catch (e) {
-			log.error 'Post processing failed: ' + e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error 'Post processing failed', e
 		}
 	}
 

@@ -23,7 +23,6 @@ abstract class RestClient implements ApiClient {
 			}
 		} catch (e) {
 			log.warn e
-			log.debug e.getStackTrace().join('\n      at ')
 		}
 	}
 }

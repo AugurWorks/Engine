@@ -43,8 +43,7 @@ class AutoKickoffService {
 		} catch (AugurWorksException e) {
 			log.warn e.getMessage()
 		} catch (e) {
-			log.error e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 		}
 	}
 
