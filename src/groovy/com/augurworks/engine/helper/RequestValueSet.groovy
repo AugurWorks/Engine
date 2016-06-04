@@ -50,20 +50,20 @@ class RequestValueSet {
 		int startIndex = values.findIndexOf { it.date == startDate }
 		int endIndex = values.findIndexOf { it.date == endDate }
 		Collection<String> errors = []
+		Collection<String> debugs = []
 		if (startIndex == -1 || endIndex == -1) {
-			log.debug '------------------------------'
-			log.debug 'Failed to get data for ' + this.name
+			debugs.push('Failed to get data for ' + this.name)
 		}
 		if (startIndex == -1) {
 			errors.add(this.name + ' does not contain data for the start date, ' + startDate.format(Global.ERROR_DATE_FORMAT))
-			log.debug 'Start date needed: ' + startDate
-			log.debug 'First available date: ' + this.values.first().date
+			debugs.push('Start date needed: ' + startDate)
+			debugs.push('First available date: ' + this.values.first().date)
 			errors.addAll(['Start date needed: ' + startDate, 'First available date: ' + this.values.first().date])
 		}
 		if (endIndex == -1) {
 			errors.add(this.name + ' does not contain data for the end date, ' + endDate.format(Global.ERROR_DATE_FORMAT))
-			log.debug 'End date needed: ' + endDate
-			log.debug 'Last available date: ' + this.values.last().date
+			debugs.push('End date needed: ' + endDate)
+			debugs.push('Last available date: ' + this.values.last().date)
 			errors.addAll(['End date needed: ' + endDate, 'Last available date: ' + this.values.last().date])
 		}
 		if (startIndex + minOffset < 0) {
@@ -71,6 +71,9 @@ class RequestValueSet {
 		}
 		if (endIndex + maxOffset > values.size() - 1) {
 			errors.add(this.name + ' does not contain data all offsets after the end date')
+		}
+		if (debugs.size() != 0) {
+			log.debug(debugs.join('\n'))
 		}
 		if (errors.size() != 0) {
 			throw new AugurWorksException(errors.join('<br />'))

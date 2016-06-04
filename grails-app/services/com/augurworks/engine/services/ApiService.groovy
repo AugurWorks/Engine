@@ -80,7 +80,6 @@ class ApiService {
 			defered.withText('Error: ' + e.getMessage())
 		} catch (e) {
 			log.error e
-			log.debug e.getStackTrace().join('\n      at ')
 			defered.withText('An error has occured, please validate the request in the Engine application')
 		}
 		defered.post()

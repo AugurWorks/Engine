@@ -4,6 +4,7 @@ import grails.converters.JSON
 import grails.transaction.Transactional
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.slf4j.MDC
 
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
@@ -90,15 +91,17 @@ class MachineLearningService {
 	void checkIncompleteAlgorithms() {
 		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, AlgorithmType.MACHINE_LEARNING)
 		algorithmResults.each { AlgorithmResult algorithmResult ->
+			MDC.put('algorithmRequestId', algorithmResult.algorithmRequest.id.toString())
+			MDC.put('algorithmResultId', algorithmResult.id.toString())
 			try {
 				checkAlgorithm(algorithmResult)
 			} catch (AugurWorksException e) {
-				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error: ' + e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error', e
 			} catch (e) {
-				log.error e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.error e
 			}
+			MDC.remove('algorithmRequestId')
+			MDC.remove('algorithmResultId')
 		}
 	}
 
@@ -153,7 +156,7 @@ class MachineLearningService {
 	void checkMachineLearningPrediction(AlgorithmResult algorithmResult) {
 		GetBatchPredictionResult batchPrediction = awsService.getBatchPrediction(algorithmResult.machineLearningModel.batchPredictionId)
 		if (batchPrediction.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
-			log.info 'Machine learning batch prediction complete'
+			log.debug 'Machine learning batch prediction complete'
 			File resultsFile = awsService.getBatchPredictionResults(algorithmResult.machineLearningModel.batchPredictionId)
 			Collection<Double> predictions = parsePredictionOutputFile(resultsFile)
 			addPredictionsToAlgorithmResult(algorithmResult, predictions)
@@ -207,5 +210,6 @@ class MachineLearningService {
 		algorithmResult.machineLearningModel = null
 		algorithmResult.save()
 		model.delete()
+		log.debug 'Machine learning resources deleted for algorithm result' + algorithmResult.id
 	}
 }

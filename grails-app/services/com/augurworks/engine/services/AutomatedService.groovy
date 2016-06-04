@@ -3,6 +3,7 @@ package com.augurworks.engine.services
 import grails.transaction.Transactional
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.slf4j.MDC
 
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
@@ -47,6 +48,10 @@ class AutomatedService {
 	}
 
 	void runAlgorithm(AlgorithmRequest algorithmRequest, AlgorithmType algorithmType) {
+		MDC.put('algorithmRequestId', algorithmRequest.id.toString())
+		MDC.put('algorithmRequestName', algorithmRequest.name)
+		MDC.put('algorithmType', algorithmType.name())
+		log.info('Running algorithm for ' + algorithmRequest.name)
 		if (algorithmType == AlgorithmType.ALFRED) {
 			alfredService.createAlgorithm(algorithmRequest)
 		} else if (algorithmType == AlgorithmType.MACHINE_LEARNING) {
@@ -84,8 +89,7 @@ class AutomatedService {
 				}
 			}
 		} catch (e) {
-			log.error 'Post processing failed: ' + e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error 'Post processing failed', e
 		}
 	}
 

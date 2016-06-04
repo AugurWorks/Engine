@@ -151,8 +151,7 @@ class AwsService {
 			gzis.close()
 			out.close()
 		} catch(IOException e){
-			log.error e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 		}
 		return unzippedFile
 	}
