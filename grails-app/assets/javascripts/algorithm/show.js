@@ -1,3 +1,12 @@
+function initCharts() {
+	init();
+	$('.result:not(.initialized) .data-chart').toArray().forEach(function(me) {
+		$(me).parents('.result').addClass('initialized');
+		var id = $(me).attr('id').split('-')[1];
+		getData(id, lineGraph, '#chart-' + id, '#pending-' + id, true);
+	});
+}
+
 function init() {
 	$('.timeago').timeago();
 	$('span[data-title]').popup({
@@ -55,6 +64,21 @@ function deleteResult(resultId) {
 				$('.ui.popup').remove();
 			} else {
 				swal('Error', 'That result could not be deleted, please try again later', 'error');
+			}
+		}
+	});
+}
+
+function getMore(algorithmResultId, page) {
+	$('#more').addClass('loading');
+	$.ajax({
+		url: '/algorithmRequest/showMore/' + algorithmResultId + '?page=' + page,
+		success: function(html) {
+			$('#results').append(html);
+			initCharts();
+			$('#more').removeClass('loading');
+			if ($('.result').length == total) {
+				$('#more').remove();
 			}
 		}
 	});

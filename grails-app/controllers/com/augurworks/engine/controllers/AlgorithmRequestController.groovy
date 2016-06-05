@@ -21,6 +21,8 @@ import com.augurworks.engine.services.MachineLearningService
 
 class AlgorithmRequestController {
 
+	private static final Integer PAGE_SIZE = 5
+
 	MachineLearningService machineLearningService
 	AlfredService alfredService
 	DataRetrievalService dataRetrievalService
@@ -35,7 +37,15 @@ class AlgorithmRequestController {
 		if (!algorithmRequest) {
 			render(view: '/404')
 		}
-		[algorithm: algorithmRequest]
+		[algorithm: algorithmRequest, algorithmResults: getResults(algorithmRequest, 0), total: AlgorithmResult.countByAlgorithmRequest(algorithmRequest)]
+	}
+
+	def showMore(AlgorithmRequest algorithmRequest, Integer page) {
+		render(template: '/layouts/resultCards', model: [results: getResults(algorithmRequest, page)])
+	}
+
+	private Collection<AlgorithmResult> getResults(AlgorithmRequest algorithmRequest, Integer page) {
+		return AlgorithmResult.findAllByAlgorithmRequest(algorithmRequest, [offset: page * PAGE_SIZE, sort: 'dateCreated', order: 'desc', max: PAGE_SIZE]);
 	}
 
 	def run(AlgorithmRequest algorithmRequest, String type) {
