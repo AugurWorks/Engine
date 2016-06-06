@@ -1,3 +1,7 @@
+String getEnv(String name) {
+	return System.getProperty(name) ?: System.getenv(name)
+}
+
 grails.project.groupId = appName
 
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
@@ -51,35 +55,35 @@ grails.hibernate.cache.queries = false
 
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
-alfred.url = System.getProperty('ALFRED_URL') ?: (System.getenv('ALFRED_URL') ?: 'http://localhost:8081')
-logging.files = System.getProperty('ENGINE_LOGGING_FILES') ?: false
-slack.slash.token = System.getProperty('SLASH_TOKEN') ?: System.getenv('SLASH_TOKEN')
-slack.on = System.getProperty('SLACK_ON') ?: (System.getenv('SLACK_ON') ?: 'false')
+alfred.url = getEnv('ALFRED_URL') ?: 'http://localhost:8081'
+logging.files = getEnv('ENGINE_LOGGING_FILES') ?: false
+slack.slash.token = getEnv('SLASH_TOKEN')
+slack.on = getEnv('SLACK_ON') ?: 'false'
 
 environments {
 	development {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: 'http://localhost:8080')
-		oauth.providers.github.key = System.getProperty('OAUTH_KEY') ?: System.getenv('OAUTH_KEY')
-		oauth.providers.github.secret = System.getProperty('OAUTH_SECRET') ?: System.getenv('OAUTH_SECRET')
+		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
+		oauth.providers.github.key = getEnv('OAUTH_KEY')
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
 		aws.bucket = 'aw-files-dev'
 		augurworks.predictions.channel = '#testing'
 	}
 	test {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: 'http://localhost:8080')
-		oauth.providers.github.key = System.getProperty('OAUTH_KEY') ?: System.getenv('OAUTH_KEY')
-		oauth.providers.github.secret = System.getProperty('OAUTH_SECRET') ?: System.getenv('OAUTH_SECRET')
+		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
+		oauth.providers.github.key = getEnv('OAUTH_KEY')
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
 		aws.bucket = 'aw-files-test'
 		augurworks.predictions.channel = '#testing'
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: 'http://localhost:8080')
-		oauth.providers.github.key = System.getProperty('OAUTH_KEY') ?: System.getenv('OAUTH_KEY')
-		oauth.providers.github.secret = System.getProperty('OAUTH_SECRET') ?: System.getenv('OAUTH_SECRET')
-		aws.bucket = System.getProperty('BUCKET') ?: (System.getenv('BUCKET') ?: 'aw-files-dev')
-		augurworks.predictions.channel = System.getProperty('CHANNEL') ?: (System.getenv('CHANNEL') ?: '#testing')
+		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
+		oauth.providers.github.key = getEnv('OAUTH_KEY')
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
+		aws.bucket = getEnv('BUCKET') ?: 'aw-files-dev'
+		augurworks.predictions.channel = getEnv('CHANNEL') ?: '#testing'
 		grails.plugin.databasemigration.updateOnStart = true
 	}
 }
@@ -97,17 +101,17 @@ oauth {
 
 augurworks {
 	quandl {
-		key = System.getProperty('QUANDL_KEY') ?: System.getenv('QUANDL_KEY')
+		key = getEnv('QUANDL_KEY')
 	}
 	barchart {
-		key = System.getProperty('BARCHART_KEY') ?: System.getenv('BARCHART_KEY')
+		key = getEnv('BARCHART_KEY')
 	}
 	td {
-		key = System.getProperty('TD_KEY') ?: System.getenv('TD_KEY')
+		key = getEnv('TD_KEY')
 	}
 	datePathFormat = 'yyyy/MM/dd/'
 	ml {
-		max = System.getProperty('ML_MAX') ?: (System.getenv('ML_MAX') ?: 10)
+		max = getEnv('ML_MAX') ?: 10
 	}
 }
 
