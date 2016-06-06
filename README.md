@@ -5,17 +5,21 @@ AugurWorks UI Engine 2.0
 A production environment can be built which uses environment variables for all customizable config values. The environment variables are listed below:
 
 - **ALFRED_URL** - Full URL of Alfred container
-- **SERVER_URL** (default: http://[local-ip]:8080) - Full deployed application URL
+- **BARCHART_KEY** - Barchart API key
 - **BUCKET** (default: aw-files-dev) - Bucket for log file placement
 - **CHANNEL** (default: #testing) - Slack channel for prediction output
+- **FLUENTD_HOST** - Fluentd host for centralized logging
+- **HOSTNAME** - Hostname for Fluentd logs
+- **ML_MAX** (default: 10) - Maximum simultaneous machine learning runs
+- **OAUTH_KEY** - GitHub OAuth key
+- **OAUTH_SECRET** - GitHub OAuth secret
 - **RDS_USERNAME** (default: root) - MySQL username
 - **RDS_PASSWORD** - MySQL password
 - **RDS_HOSTNAME** - MySQL host
 - **RDS_PORT** (default: 3306) - MySQL port number
 - **RDS_DB_NAME** (default: engine) - MySQL DB name
-- **ML_MAX** - Maximum simultaneous machine learning runs
-- **FLUENTD_HOST** - Fluentd host for centralized logging
-- **HOSTNAME** - Hostname for Fluentd logs
+- **SERVER_URL** (default: http://[local-ip]:8080) - Full deployed application URL
+- **TD_KEY** - TD API key
 
 ## Local Development
 ### Dependencies

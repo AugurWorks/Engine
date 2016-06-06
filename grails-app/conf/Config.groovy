@@ -1,6 +1,3 @@
-def loc = ['../UserConfig.groovy', 'webapps/ROOT/Jenkins.groovy'].grep { new File(it).exists() }.first()
-def localConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(loc).toURI().toURL())
-
 grails.project.groupId = appName
 
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
@@ -54,7 +51,7 @@ grails.hibernate.cache.queries = false
 
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
-alfred.url = System.getProperty('ALFRED_URL') ?: (System.getenv('ALFRED_URL') ?: (localConfig.alfred.url ?: 'http://localhost:8080'))
+alfred.url = System.getProperty('ALFRED_URL') ?: (System.getenv('ALFRED_URL') ?: 'http://localhost:8081')
 logging.files = System.getProperty('ENGINE_LOGGING_FILES') ?: false
 slack.slash.token = System.getProperty('SLASH_TOKEN') ?: System.getenv('SLASH_TOKEN')
 slack.on = System.getProperty('SLACK_ON') ?: (System.getenv('SLACK_ON') ?: 'false')
@@ -62,25 +59,25 @@ slack.on = System.getProperty('SLACK_ON') ?: (System.getenv('SLACK_ON') ?: 'fals
 environments {
 	development {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = (localConfig.local.ip ?: 'http://localhost') + ':8080'
-		oauth.providers.github.key = localConfig.oauth.github.key
-		oauth.providers.github.secret = localConfig.oauth.github.secret
+		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: 'http://localhost:8080')
+		oauth.providers.github.key = System.getProperty('OAUTH_KEY') ?: System.getenv('OAUTH_KEY')
+		oauth.providers.github.secret = System.getProperty('OAUTH_SECRET') ?: System.getenv('OAUTH_SECRET')
 		aws.bucket = 'aw-files-dev'
 		augurworks.predictions.channel = '#testing'
 	}
 	test {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = (localConfig.local.ip ?: 'http://localhost') + ':8080'
-		oauth.providers.github.key = localConfig.oauth.github.key
-		oauth.providers.github.secret = localConfig.oauth.github.secret
+		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: 'http://localhost:8080')
+		oauth.providers.github.key = System.getProperty('OAUTH_KEY') ?: System.getenv('OAUTH_KEY')
+		oauth.providers.github.secret = System.getProperty('OAUTH_SECRET') ?: System.getenv('OAUTH_SECRET')
 		aws.bucket = 'aw-files-test'
 		augurworks.predictions.channel = '#testing'
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: (localConfig.local.ip ? localConfig.local.ip + ':8080' : null))
-		oauth.providers.github.key = localConfig.oauth.github.key
-		oauth.providers.github.secret = localConfig.oauth.github.secret
+		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: 'http://localhost:8080')
+		oauth.providers.github.key = System.getProperty('OAUTH_KEY') ?: System.getenv('OAUTH_KEY')
+		oauth.providers.github.secret = System.getProperty('OAUTH_SECRET') ?: System.getenv('OAUTH_SECRET')
 		aws.bucket = System.getProperty('BUCKET') ?: (System.getenv('BUCKET') ?: 'aw-files-dev')
 		augurworks.predictions.channel = System.getProperty('CHANNEL') ?: (System.getenv('CHANNEL') ?: '#testing')
 		grails.plugin.databasemigration.updateOnStart = true
@@ -100,13 +97,13 @@ oauth {
 
 augurworks {
 	quandl {
-		key = localConfig.augurworks.quandlKey
+		key = System.getProperty('QUANDL_KEY') ?: System.getenv('QUANDL_KEY')
 	}
 	barchart {
-		key = System.getProperty('BARCHART_KEY') ?: (System.getenv('BARCHART_KEY') ?: (localConfig.augurworks.barchartKey ?: null))
+		key = System.getProperty('BARCHART_KEY') ?: System.getenv('BARCHART_KEY')
 	}
 	td {
-		key = System.getProperty('TD_KEY') ?: (System.getenv('TD_KEY') ?: (localConfig.augurworks.tdKey ?: null))
+		key = System.getProperty('TD_KEY') ?: System.getenv('TD_KEY')
 	}
 	datePathFormat = 'yyyy/MM/dd/'
 	ml {
@@ -123,16 +120,6 @@ grails.cache.config = {
 }
 
 grails.app.context = '/'
-
-grails {
-	plugin {
-		slacklogger {
-			webhook = localConfig.augurworks.slacklogger.webhook
-			botName = 'Engine Errors'
-			channel = '#engine-errors'
-		}
-	}
-}
 
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.augurworks.engine.domains.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.augurworks.engine.domains.UserRole'
