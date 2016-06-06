@@ -13,6 +13,7 @@ import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SingleDataRequest
+import com.augurworks.engine.slack.SlackMessage
 
 @Transactional
 class AutomatedService {
@@ -43,7 +44,17 @@ class AutomatedService {
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(algorithmRequestId)
 		log.info 'Running ' + (algorithmRequest.cronAlgorithms*.name.join(', ') ?: 'no algorithms') + ' for ' + algorithmRequest + ' from a cron job'
 		algorithmRequest.cronAlgorithms.each { AlgorithmType algorithmType ->
-			runAlgorithm(algorithmRequest, algorithmType)
+			try {
+				runAlgorithm(algorithmRequest, algorithmType)
+			} catch (Exception e) {
+				String message = 'An error occured when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name
+				log.error(message, e)
+				new SlackMessage(message, grailsApplication.config.augurworks.predictions.channel)
+					.withBotName('Engine Predictions')
+					.withColor('#444444')
+					.withTitle('Error running ' + algorithmRequest.name)
+					.send()
+			}
 		}
 	}
 
