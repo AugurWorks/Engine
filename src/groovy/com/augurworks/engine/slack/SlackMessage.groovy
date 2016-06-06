@@ -38,7 +38,7 @@ class SlackMessage {
 	}
 
 	void send() {
-		Map config = Holders.config.grails.plugin.slacklogger
+		Map config = Holders.config.slack
 		String formattedMessage = this.link ? this.message + ' (<' + this.link + '|Open>)' : this.message
 		Map field = [
 			title: this.title,

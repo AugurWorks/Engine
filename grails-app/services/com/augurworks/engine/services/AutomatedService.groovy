@@ -61,7 +61,7 @@ class AutomatedService {
 
 	void postProcessing(AlgorithmResult algorithmResult) {
 		try {
-			if (grailsApplication.config.slack.on == 'true') {
+			if (grailsApplication.config.slack.webhook) {
 				AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
 				RequestDataSet requestDataSet = algorithmRequest.dependentRequestDataSet
 				SingleDataRequest singleDataRequest = new SingleDataRequest(
