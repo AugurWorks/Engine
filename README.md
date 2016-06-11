@@ -27,9 +27,7 @@ A production environment can be built which uses environment variables for all c
 - [Docker](https://docs.docker.com/engine/installation/) (Optional)
 
 ### Setup
-After cloning the repo copy **UserConfig.groovy.example** to **UserConfig.groovy** and move it one folder up from this project's root folder. Fill in the appropriate values. Optional config items are marked.
-
-**Engine** uses GitHub OAuth for authentication, so you'll need to set up a [new GitHub OAuth application](https://github.com/settings/applications/new) and place the keys in your **UserConfig.groovy**. The **Authorization callback URL** should be [http://[local-machine-IP]:8080/oauth/github/callback](http://[local-machine-IP]:8080/oauth/github/callback).
+**Engine** uses GitHub OAuth for authentication, so you'll need to set up a [new GitHub OAuth application](https://github.com/settings/applications/new) and add the keys as environment variables matching those above. The **Authorization callback URL** should be [http://[local-machine-IP]:8080/oauth/github/callback](http://[local-machine-IP]:8080/oauth/github/callback).
 
 ### Database
 Run a local MySQL instance with Docker by running the following:
