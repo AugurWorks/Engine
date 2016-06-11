@@ -54,6 +54,11 @@ An example local Docker `run` command is:
 docker run -d --name=alfred -p 8080:8080 274685854631.dkr.ecr.us-east-1.amazonaws.com/alfred:latest
 ```
 
+A fresh Docker container can be built by running the following:
+```bash
+docker build -t engine .
+```
+
 ### Running
 Run the application with `grails run-app`. After the app starts go to [http://[local-machine-IP]:8080](http://[local-machine-IP]:8080), authorize the GitHub OAuth application, then you'll be redirected back to the running application.
 
