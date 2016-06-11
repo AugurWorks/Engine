@@ -60,7 +60,7 @@ class MessagingService {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 					TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
-					println message
+					alfredService.processResult(message)
 				}
 			}
 		try {
