@@ -19,7 +19,11 @@ COPY . /app
 WORKDIR /usr/local
 
 RUN apk update && \
-    apk add --no-cache openjdk8 wget curl tar && \
+    apk add --no-cache openjdk8 wget curl tar tzdata && \
+
+    # Change timezone
+    cp /usr/share/zoneinfo/America/New_York /etc/localtime && \
+    echo "America/New_York" > /etc/timezone && \
 
     # Install Grails
     wget https://github.com/grails/grails-core/releases/download/v$GRAILS_VERSION/grails-$GRAILS_VERSION.zip && \
@@ -51,7 +55,7 @@ RUN apk update && \
     rm -rf /root/.m2 && \
     rm -rf /usr/local/grails-$GRAILS_VERSION && \
     rm -rf /usr/local/share && \
-    apk del wget curl tar && \
+    apk del wget curl tar tzdata && \
     rm -rf /var/cache/apk/* && \
     rm -rf /app
 
