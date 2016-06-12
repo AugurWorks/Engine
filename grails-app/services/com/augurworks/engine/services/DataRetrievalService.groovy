@@ -27,7 +27,7 @@ class DataRetrievalService {
 
 	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(splineRequest)
-		Collection<Date> allDates = rawRequestValues*.dates.flatten().unique()
+		Collection<Date> allDates = rawRequestValues*.dates.flatten().sort().unique()
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (splineRequest.prediction) {
 			int predictionOffset = splineRequest.algorithmRequest.predictionOffset
