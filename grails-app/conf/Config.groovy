@@ -118,7 +118,7 @@ rabbitmq {
 	username = getEnv('RABBITMQ_USERNAME') ?: 'guest'
 	password = getEnv('RABBITMQ_PASSWORD') ?: 'guest'
 	hostname = getEnv('RABBITMQ_HOST') ?: 'rabbitmq'
-	port = getEnv('RABBITMQ_PORT') ?: 5672
+	port = getEnv('RABBITMQ_PORTNUM') ?: 5672
 }
 
 grails.cache.config = {
