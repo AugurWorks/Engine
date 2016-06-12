@@ -32,7 +32,7 @@ A production environment can be built which uses environment variables for all c
 ### Database
 Run a local MySQL instance with Docker by running the following:
 ```bash
-docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=mysql mysql
+docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=engine mysql
 ```
 
 #### Database Migrations
