@@ -13,23 +13,12 @@ ENV TOMCAT_TGZ_URL https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/v$TOM
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 
-# Add app files
-COPY . /app
-
-WORKDIR /usr/local
-
 RUN apk update && \
-    apk add --no-cache openjdk8 wget curl tar tzdata && \
+    apk add --no-cache openjdk8 curl tar tzdata && \
 
     # Change timezone
     cp /usr/share/zoneinfo/America/New_York /etc/localtime && \
     echo "America/New_York" > /etc/timezone && \
-
-    # Install Grails
-    wget https://github.com/grails/grails-core/releases/download/v$GRAILS_VERSION/grails-$GRAILS_VERSION.zip && \
-    unzip grails-$GRAILS_VERSION.zip && \
-    rm -rf grails-$GRAILS_VERSION.zip && \
-    ln -s grails-$GRAILS_VERSION grails && \
 
     # Install Tomcat
     mkdir -p "$CATALINA_HOME" && \
@@ -40,7 +29,21 @@ RUN apk update && \
     tar -xvf tomcat.tar.gz --strip-components=1 && \
     rm bin/*.bat && \
     rm tomcat.tar.gz* && \
-    rm -rf /usr/local/tomcat/webapps/* && \
+    rm -rf /usr/local/tomcat/webapps/*
+
+# Add app files
+COPY . /app
+
+WORKDIR /usr/local
+
+RUN apk update && \
+    apk add --no-cache wget && \
+
+    # Install Grails
+    wget https://github.com/grails/grails-core/releases/download/v$GRAILS_VERSION/grails-$GRAILS_VERSION.zip && \
+    unzip grails-$GRAILS_VERSION.zip && \
+    rm -rf grails-$GRAILS_VERSION.zip && \
+    ln -s grails-$GRAILS_VERSION grails && \
 
     # Build WAR file
     cd /app && \
@@ -55,7 +58,7 @@ RUN apk update && \
     rm -rf /root/.m2 && \
     rm -rf /usr/local/grails-$GRAILS_VERSION && \
     rm -rf /usr/local/share && \
-    apk del wget curl tar tzdata && \
+    apk del wget tzdata && \
     rm -rf /var/cache/apk/* && \
     rm -rf /app
 
