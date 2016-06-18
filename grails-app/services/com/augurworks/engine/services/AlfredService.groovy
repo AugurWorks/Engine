@@ -69,10 +69,14 @@ class AlfredService {
 		MDC.put('algorithmResultId', algorithmResult.id.toString())
 		MDC.put('netId', algorithmResult.alfredModelId)
 
+		log.debug 'Received results message from net ' + algorithmResult.alfredModelId
+
 		algorithmResult.complete = true
 		processResponse(algorithmResult, message.getData())
 		algorithmResult.save(flush: true)
 		automatedService.postProcessing(algorithmResult)
+
+		log.info 'Finished processing message from net ' + algorithmResult.alfredModelId
 
 		MDC.remove('algorithmRequestId')
 		MDC.remove('algorithmResultId')
