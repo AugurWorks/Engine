@@ -36,6 +36,7 @@ grails.project.dependency.resolution = {
 		compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.0.13'
 		compile group: 'com.sndyuk', name: 'logback-more-appenders', version:'1.2.0'
 		compile group: 'org.fluentd', name: 'fluent-logger', version:'0.3.2'
+		compile group: 'com.rabbitmq', name: 'amqp-client', version: '3.6.2'
 	}
 
 	plugins {

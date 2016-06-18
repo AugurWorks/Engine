@@ -55,7 +55,6 @@ grails.hibernate.cache.queries = false
 
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
-alfred.url = getEnv('ALFRED_URL') ?: 'http://localhost:8081'
 logging.files = getEnv('ENGINE_LOGGING_FILES') ?: false
 slack.slash.token = getEnv('SLASH_TOKEN')
 slack.webhook = getEnv('SLACK_WEBHOOK')
@@ -113,6 +112,13 @@ augurworks {
 	ml {
 		max = getEnv('ML_MAX') ?: 10
 	}
+}
+
+rabbitmq {
+	username = getEnv('RABBITMQ_USERNAME') ?: 'guest'
+	password = getEnv('RABBITMQ_PASSWORD') ?: 'guest'
+	hostname = getEnv('RABBITMQ_HOST') ?: 'rabbitmq'
+	port = getEnv('RABBITMQ_PORTNUM') ?: 5672
 }
 
 grails.cache.config = {
