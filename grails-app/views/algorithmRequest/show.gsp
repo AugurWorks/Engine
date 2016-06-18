@@ -22,21 +22,26 @@
 			<button onclick="deleteRequest()" class="ui negative button">Delete</button>
 			<g:link controller="graph" action="line" id="${ algorithm.id }" class="ui button">Graph</g:link>
 			<h2 class="ui header" style="clear: both;">Results</h2>
-			<div class="ui one cards">
-				<g:each in="${ algorithm.algorithmResults.sort { it.dateCreated }.reverse() }" var="result">
-					<g:render template="/layouts/resultCard" model="${ [result: result] }" />
-				</g:each>
+			<div id="results" class="ui one cards">
+				<g:render template="/layouts/resultCards" model="${ [results: algorithmResults] }" />
 			</div>
+			<g:if test="${ total > algorithmResults.size() }">
+				<div class="ui center aligned container" style="margin-top: 1em;">
+					<div id="more" class="ui primary button" onclick="getAdditional(${ algorithm.id })">More</div>
+				</div>
+			</g:if>
 		</div>
 		<script>
+			var total = ${ total };
+			var page = 1;
 			$(function() {
-				init();
-				$('.data-chart').toArray().forEach(function(me) {
-					var id = $(me).attr('id').split('-')[1];
-					getData(id, lineGraph, '#chart-' + id, '#pending-' + id, true);
-				});
+				initCharts();
 				setInterval(refreshAllResultCards, 30000);
 			});
+
+			function getAdditional(algorithmResultId) {
+				getMore(algorithmResultId, page++)
+			}
 		</script>
 	</body>
 </html>

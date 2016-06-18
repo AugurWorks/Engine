@@ -2,18 +2,18 @@ package com.augurworks.engine.helper
 
 import groovy.time.TimeCategory
 
-import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.exceptions.AugurWorksException
 
 class Common {
 
-	static Date calculatePredictionDate(String unit, Date date, int offset) {
+	static Date calculatePredictionDate(Unit unit, Date date, int offset) {
 		use (TimeCategory) {
 			switch (unit) {
-				case 'Day':
+				case Unit.DAY:
 					return date + offset.days
-				case 'Hour':
+				case Unit.HOUR:
 					return date + offset.hours
-				case 'Half Hour':
+				case Unit.HALF_HOUR:
 					return date + (30 * offset).minutes
 				default:
 					throw new AugurWorksException('Unknown prediction date unit: ' + unit)

@@ -3,7 +3,7 @@ package com.augurworks.engine.helper
 import grails.test.mixin.*
 import spock.lang.Specification
 
-import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.exceptions.AugurWorksException
 
 class AggregationSpec extends Specification {
 

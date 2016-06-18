@@ -8,10 +8,10 @@ import java.security.SecureRandom
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import com.augurworks.engine.domains.AlgorithmRequest
-import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.RequestValueSet
 
 @Transactional
@@ -20,18 +20,18 @@ class DataGeneratorService {
 	GrailsApplication grailsApplication
 
 	static final Collection<Map> DEFAULT_REQUESTS = [[
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
-		dependent: 'GSPC',
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
+		dependent: 'TSLA',
 		startOffset: -15,
 		endOffset: -1
 	], [
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
-		dependent: 'GSPC',
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
+		dependent: 'TSLA',
 		startOffset: -22,
 		endOffset: -1
 	], [
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'GSPC', 'JPM', 'ORCL', 'USO'],
-		dependent: 'GSPC',
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
+		dependent: 'TSLA',
 		startOffset: -29,
 		endOffset: -1
 	]]
@@ -48,55 +48,16 @@ class DataGeneratorService {
 		'MSFT'
 	]
 
-	void importQuandlDataSets() {
-		new URL('https://s3.amazonaws.com/quandl-static-content/quandl-stock-code-list.csv').getText().split('\n').tail().each { String line ->
-			Collection<String> row = line.split(',')
-			if (row[2] != 'NA' && row[4] == 'Active') {
-				new DataSet(ticker: row[0], name: row[1], code: row[2], dataColumn: 4).save()
-			}
-		}
-	}
-
-	void importLocalDataSets() {
-		grailsApplication.mainContext.getResource('data/Extra-Data-Sources.csv').file.text.split('\n').tail().each { String line ->
-			Collection<String> row = line.split(',')
-			new DataSet(ticker: row[0], name: row[1], code: row[2], dataColumn: row[3]).save()
-		}
-	}
-
 	void bootstrapDefaultRequests() {
 		DEFAULT_REQUESTS.eachWithIndex { Map requestMap, int index ->
-			Collection<DataSet> algorithmRequestDataSets = requestMap.tickers.collect { String ticker ->
-				return DataSet.findByTicker(ticker)
-			}
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(name: 'Request ' + index, startOffset: requestMap.startOffset, endOffset: requestMap.endOffset, dependantDataSet: DataSet.findByTicker(requestMap.dependent)).save()
-			algorithmRequestDataSets.each { DataSet dataSet ->
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(name: 'Request ' + index, startOffset: requestMap.startOffset, endOffset: requestMap.endOffset, dependantSymbol: requestMap.dependent).save()
+			requestMap.tickers.each { String ticker ->
 				new RequestDataSet(
-					dataSet: dataSet,
-					offset: dataSet.ticker == requestMap.dependent ? 0 : -1,
+					symbol: ticker,
+					name: ticker,
+					datasource: Datasource.TD,
+					offset: ticker == requestMap.dependent ? 0 : -1,
 					aggregation: Aggregation.PERIOD_PERCENT_CHANGE,
-					algorithmRequest: algorithmRequest
-				).save()
-			}
-		}
-	}
-
-	void generateRequest(int requestNumber) {
-		(1..requestNumber).each { int requestCount ->
-			SecureRandom rand = new SecureRandom()
-			Collection<String> tickers = VALID_TICKERS
-			Collection<DataSet> algorithmRequestDataSets = (0..5).collect {
-				String ticker = tickers[rand.nextInt(tickers.size())]
-				tickers -= ticker
-				return DataSet.findByTicker(ticker)
-			}
-			int startOffset = use(TimeCategory) { (Date.parse('yyyy/MM', '2015/06') - new Date()).days }
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(startOffset: startOffset, endOffset: startOffset + 28, dependantDataSet: algorithmRequestDataSets[0]).save()
-			algorithmRequestDataSets.eachWithIndex { DataSet dataSet, int counter ->
-				new RequestDataSet(
-					dataSet: dataSet,
-					offset: counter == 0 ? 0 : -1,
-					aggregation: Aggregation.values()[rand.nextInt(Aggregation.values().size())],
 					algorithmRequest: algorithmRequest
 				).save()
 			}

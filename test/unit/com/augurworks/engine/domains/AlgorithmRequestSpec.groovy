@@ -5,57 +5,15 @@ import grails.test.mixin.*
 import groovy.time.TimeCategory
 import spock.lang.Specification
 
-import com.augurworks.engine.helper.Aggregation
+import com.augurworks.engine.helper.Unit
 
 @TestFor(AlgorithmRequest)
-@Build([AlgorithmRequest])
-@Mock([DataSet, RequestDataSet])
+@Build([AlgorithmRequest, RequestDataSet])
+@Mock([RequestDataSet])
 class AlgorithmRequestSpec extends Specification {
 
 	static final String DATE_FORMAT = 'yyyy-MM-dd'
 	static final String DATE_TIME_FORMAT = 'yyyy-MM-dd HH:mm'
-
-	Map dataSetParams(int num) {
-		return [
-			ticker: 'XX' + num + 'XX',
-			name: 'Stock ' + num,
-			code: 'xxxx',
-			dataColumn: 4
-		]
-	}
-
-	Map requestDataSetParams(int num) {
-		return [
-			dataSet: DataSet.get(num),
-			offset: num
-		]
-	}
-
-	AlgorithmRequest validAlgorithmRequest(Collection<Integer> requestDataSetRange) {
-		int startOffset = dateToOffset('2014-01-01')
-		int endOffset = dateToOffset('2015-01-01')
-		Date dateCreated = Date.parse(DATE_FORMAT, '2015-01-01')
-		Collection<DataSet> dataSets = requestDataSetRange.collect { int id ->
-			return new DataSet(dataSetParams(id)).save()
-		}
-		AlgorithmRequest algorithmRequest = new AlgorithmRequest(
-			name: 'Algorithm Request',
-			startOffset: startOffset,
-			endOffset: endOffset,
-			dateCreated: dateCreated,
-			dependantDataSet: dataSets.first()
-		)
-		algorithmRequest.save()
-		dataSets.eachWithIndex { DataSet dataSet, int counter ->
-			new RequestDataSet(
-				dataSet: dataSet,
-				offset: counter,
-				aggregation: Aggregation.VALUE,
-				algorithmRequest: algorithmRequest
-			).save()
-		}
-		return algorithmRequest
-	}
 
 	int dateToOffset(String dateString) {
 		return dateToOffset(Date.parse(DATE_FORMAT, dateString))
@@ -67,7 +25,7 @@ class AlgorithmRequestSpec extends Specification {
 
 	void "test create algorithm request"() {
 		when:
-		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build()
 
 		then:
 		algorithmRequest.id == 1
@@ -77,7 +35,7 @@ class AlgorithmRequestSpec extends Specification {
 	void "test truncate date (hour)"() {
 		given:
 		Date mockTime = Date.parse(DATE_TIME_FORMAT, startTime)
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: 'Hour')
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: Unit.HOUR)
 
 		when:
 		Date startDate = algorithmRequest.truncateDate('startOffset', mockTime)
@@ -99,7 +57,7 @@ class AlgorithmRequestSpec extends Specification {
 	void "test truncate date (day)"() {
 		given:
 		Date mockTime = Date.parse(DATE_FORMAT, '2016-01-10')
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: 'Day')
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: Unit.DAY)
 
 		when:
 		Date startDate = algorithmRequest.truncateDate('startOffset', mockTime)
@@ -116,11 +74,11 @@ class AlgorithmRequestSpec extends Specification {
 
 	void "test update fields algorithm request"() {
 		given:
-		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
-		DataSet dataSet = new DataSet(dataSetParams(1)).save()
+		RequestDataSet requestDataSet = RequestDataSet.build(symbol: 'Test')
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(requestDataSets: [requestDataSet])
 		Map parameters = [
 			endOffset: end,
-			dependantDataSet: dataSet
+			dependantSymbol: requestDataSet.symbol
 		]
 
 		when:
@@ -128,7 +86,7 @@ class AlgorithmRequestSpec extends Specification {
 
 		then:
 		algorithmRequest.endOffset == end
-		algorithmRequest.dependantDataSet.id == dataSet.id
+		algorithmRequest.dependentRequestDataSet == requestDataSet
 
 		where:
 		end  | dataSetCount
@@ -139,20 +97,11 @@ class AlgorithmRequestSpec extends Specification {
 
 	void "test update data sets to algorithm request"() {
 		given:
-		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
-		Collection<DataSet> dataSets = (0..(dataSetCount - 1)).collect { int id ->
-			return new DataSet(dataSetParams(id)).save()
-		}
-		Collection<Map> dataSetMaps = dataSets.collect { DataSet dataSet ->
-			return [
-				name: dataSet.ticker,
-				aggregation: Aggregation.VALUE.name,
-				offset: 0
-			]
-		}
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(requestDataSets: (0..1).collect { RequestDataSet.build() })
+		Collection<RequestDataSet> requestDataSets = (1..dataSetCount).collect { RequestDataSet.build() }
 
 		when:
-		algorithmRequest.updateDataSets(dataSetMaps)
+		algorithmRequest.updateDataSets(requestDataSets)
 
 		then:
 		algorithmRequest.requestDataSets.size() == dataSetCount
@@ -164,12 +113,12 @@ class AlgorithmRequestSpec extends Specification {
 	void "test get independent request data sets"() {
 		given:
 		int counter = 0
-		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..(size - 1)))
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(requestDataSets: (0..(size - 1)).collect { RequestDataSet.build(symbol: 'Symbol ' + it) })
 		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
 		algorithmRequest.metaClass.getDependentRequestDataSet = { counter++; return requestDataSet }
 
 		when:
-		algorithmRequest.dependantDataSet = requestDataSet.dataSet
+		algorithmRequest.dependantSymbol = requestDataSet.symbol
 		algorithmRequest.save()
 		Collection<RequestDataSet> independent = algorithmRequest.independentRequestDataSets
 
@@ -188,7 +137,7 @@ class AlgorithmRequestSpec extends Specification {
 	void "test get prediction offset"() {
 		given:
 		int counter = 0
-		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(requestDataSets: (0..3).collect { RequestDataSet.build() })
 		algorithmRequest.metaClass.getDependentRequestDataSet = { counter++; return [offset: 10] }
 
 		when:
@@ -204,11 +153,11 @@ class AlgorithmRequestSpec extends Specification {
 
 	void "get dependent request data set"() {
 		given:
-		AlgorithmRequest algorithmRequest = validAlgorithmRequest((0..3))
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(requestDataSets: (0..3).collect { RequestDataSet.build(symbol: 'Symbol ' + it) })
 		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
 
 		when:
-		algorithmRequest.dependantDataSet = requestDataSet.dataSet
+		algorithmRequest.dependantSymbol = requestDataSet.symbol
 		algorithmRequest.save()
 
 		then:

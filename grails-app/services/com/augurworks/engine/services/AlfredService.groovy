@@ -5,11 +5,12 @@ import grails.plugins.rest.client.RestResponse
 import grails.transaction.Transactional
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.slf4j.MDC
 
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
@@ -26,6 +27,8 @@ class AlfredService {
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		String postBody = constructPostBody(algorithmRequest)
 		String trainingId = submitTraining(postBody)
+		MDC.put('netId', trainingId)
+		log.info('Created Alfred algorithm run for ' + algorithmRequest.name)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
@@ -34,12 +37,13 @@ class AlfredService {
 			modelType: AlgorithmType.ALFRED
 		])
 		algorithmResult.save()
+		MDC.remove('netId')
 	}
 
 	String constructPostBody(AlgorithmRequest algorithmRequest) {
 		SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: true)
 		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(splineRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
-			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
+			return (requestValueSetB.name == algorithmRequest.dependantSymbol) <=> (requestValueSetA.name == algorithmRequest.dependantSymbol) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
 		if (!automatedService.areDataSetsCorrectlySized(dataSets.tail(), rowNumber)) {
@@ -74,22 +78,28 @@ class AlfredService {
 	void checkIncompleteAlgorithms() {
 		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, AlgorithmType.ALFRED)
 		algorithmResults.each { AlgorithmResult algorithmResult ->
+			MDC.put('algorithmRequestId', algorithmResult.algorithmRequest.id.toString())
+			MDC.put('algorithmResultId', algorithmResult.id.toString())
+			MDC.put('netId', algorithmResult.alfredModelId)
 			try {
 				checkAlgorithm(algorithmResult)
 			} catch (AugurWorksException e) {
-				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error: ' + e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error', e
 			} catch (e) {
-				log.error e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.error e
 			}
+			MDC.remove('algorithmRequestId')
+			MDC.remove('algorithmResultId')
+			MDC.remove('netId')
 		}
 	}
 
 	void checkAlgorithm(AlgorithmResult algorithmResult) {
+		log.debug('Checking incomplete algorithm result ' + algorithmResult.id)
 		String url = grailsApplication.config.alfred.url
 		RestResponse resp = new RestBuilder().get(url + '/result/' + algorithmResult.alfredModelId)
 		if (resp.status == 200 && resp.text != 'IN_PROGRESS') {
+			log.info('Algorithm result ' + algorithmResult.id + ' is complete')
 			algorithmResult.complete = true
 			if (resp.text != 'UNKNOWN') {
 				processResponse(algorithmResult, resp.text)

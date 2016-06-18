@@ -1,6 +1,6 @@
 package com.augurworks.engine.helper
 
-import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.exceptions.AugurWorksException
 
 class RequestValueSet {
 
@@ -45,35 +45,42 @@ class RequestValueSet {
 		return this
 	}
 
-	RequestValueSet filterValues(Date startDate, Date endDate, int minOffset, int maxOffset) {
+	RequestValueSet filterValues(Unit unit, Date startDate, Date endDate, int minOffset, int maxOffset) {
 		Collection<DataSetValue> values = this.values
 		int startIndex = values.findIndexOf { it.date == startDate }
 		int endIndex = values.findIndexOf { it.date == endDate }
+		Collection<String> errors = []
+		Collection<String> debugs = []
 		if (startIndex == -1 || endIndex == -1) {
-			log.debug '------------------------------'
-			log.debug 'Failed to get data for ' + this.name
+			debugs.push('Failed to get data for ' + this.name)
 		}
 		if (startIndex == -1) {
-			log.debug 'Start date needed: ' + startDate
-			log.debug 'First available date: ' + this.values.first().date
+			errors.add(this.name + ' does not contain data for the start date, ' + startDate.format(Global.ERROR_DATE_FORMAT))
+			debugs.push('Start date needed: ' + startDate)
+			debugs.push('First available date: ' + this.values.first().date)
+			errors.addAll(['Start date needed: ' + startDate, 'First available date: ' + this.values.first().date])
 		}
 		if (endIndex == -1) {
-			log.debug 'End date needed: ' + endDate
-			log.debug 'Last available date: ' + this.values.last().date
-		}
-		if (startIndex == -1) {
-			throw new AugurWorksException(this.name + ' does not contain data for the start date, ' + startDate.format(Global.ERROR_DATE_FORMAT))
-		}
-		if (endIndex == -1) {
-			throw new AugurWorksException(this.name + ' does not contain data for the end date, ' + endDate.format(Global.ERROR_DATE_FORMAT))
+			errors.add(this.name + ' does not contain data for the end date, ' + endDate.format(Global.ERROR_DATE_FORMAT))
+			debugs.push('End date needed: ' + endDate)
+			debugs.push('Last available date: ' + this.values.last().date)
+			errors.addAll(['End date needed: ' + endDate, 'Last available date: ' + this.values.last().date])
 		}
 		if (startIndex + minOffset < 0) {
-			throw new AugurWorksException(this.name + ' does not contain data all offsets before the start date')
+			errors.add(this.name + ' does not contain data all offsets before the start date')
 		}
 		if (endIndex + maxOffset > values.size() - 1) {
-			throw new AugurWorksException(this.name + ' does not contain data all offsets after the end date')
+			errors.add(this.name + ' does not contain data all offsets after the end date')
 		}
-		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)]
+		if (debugs.size() != 0) {
+			log.debug(debugs.join('\n'))
+		}
+		if (errors.size() != 0) {
+			throw new AugurWorksException(errors.join('<br />'))
+		}
+		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)].grep { DataSetValue dataSetValue ->
+			return unit.filterDates.apply(dataSetValue.date, startDate)
+		}
 		return this
 	}
 
@@ -97,10 +104,10 @@ class RequestValueSet {
 		return this
 	}
 
-	RequestValueSet reduceValueRange(Date startDate, Date endDate, int predictionOffset = this.offset) {
+	RequestValueSet reduceValueRange(Unit unit, Date startDate, Date endDate, int predictionOffset = this.offset) {
 		int minOffset = Math.min(this.offset, predictionOffset)
 		int maxOffset = Math.max(this.offset, predictionOffset)
-		return this.filterValues(startDate, endDate, minOffset, maxOffset)
+		return this.filterValues(unit, startDate, endDate, minOffset, maxOffset)
 	}
 
 	String toString() {

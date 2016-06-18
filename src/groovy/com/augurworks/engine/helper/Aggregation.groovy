@@ -2,7 +2,7 @@ package com.augurworks.engine.helper
 
 import java.util.function.BiFunction
 
-import com.augurworks.engine.AugurWorksException
+import com.augurworks.engine.exceptions.AugurWorksException
 
 enum Aggregation {
 	VALUE('Value', this.&identity, this.&identity),

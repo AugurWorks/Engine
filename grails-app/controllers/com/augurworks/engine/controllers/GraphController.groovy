@@ -2,9 +2,9 @@ package com.augurworks.engine.controllers
 
 import grails.converters.JSON
 
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.SplineRequest
 
@@ -23,12 +23,10 @@ class GraphController {
 				Collection<RequestValueSet> data = dataRetrievalService.smartSpline(splineRequest)
 				render([ok: true, data: data*.toMap()] as JSON)
 			} catch (AugurWorksException e) {
-				log.warn e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.error e
 				render([ok: false, error: e.getMessage()] as JSON)
 			} catch (e) {
-				log.error e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.error e
 				render([ok: false, error: e.getMessage()] as JSON)
 			}
 		} else {
@@ -42,7 +40,7 @@ class GraphController {
 				AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
 				SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, now: algorithmResult.dateCreated)
 				Collection<Map> data = dataRetrievalService.smartSpline(splineRequest)*.toMap()
-				String key = algorithmRequest.dependantDataSet.ticker + ' - Prediction'
+				String key = algorithmRequest.dependantSymbol + ' - Prediction'
 				Map prediction = [
 					name: key,
 					offset: algorithmRequest.predictionOffset,
@@ -51,12 +49,10 @@ class GraphController {
 				data.push(prediction)
 				render([ok: true, data: data] as JSON)
 			} catch (AugurWorksException e) {
-				log.warn e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.error e
 				render([ok: false, error: e.getMessage()] as JSON)
 			} catch (e) {
-				log.error e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.error e
 				render([ok: false, error: e.getMessage()] as JSON)
 			}
 		} else {

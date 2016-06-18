@@ -8,6 +8,8 @@
 	<body>
 		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
+		<%@ page import="com.augurworks.engine.helper.Datasource" %>
+		<%@ page import="com.augurworks.engine.helper.Unit" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
 				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
@@ -66,14 +68,14 @@
 					</div>
 					<div class="field">
 						<label>Time Period</label>
-						<g:select name="unit" from="${ ['Day', 'Hour', 'Half Hour'] }" value="${ algorithmRequest?.unit }" />
+						<g:select name="unit" from="${ Unit.values() }" optionValue="name" value="${ algorithmRequest?.unit }" />
 					</div>
 				</div>
-				<h3 class="ui dividing header">Add Data Set</h3>
+				<h3 class="ui dividing header">Search Data Sets</h3>
 				<div class="four fields">
 					<div class="field">
-						<label>Stock</label>
-						<g:select from="${ dataSets }" name="stock" class="ui search dropdown" />
+						<label>Ticker</label>
+						<select id="stock" name="stock" class="ui search dropdown"></select>
 					</div>
 					<div class="field">
 						<label>Interval Offset</label>
@@ -86,6 +88,29 @@
 					<div class="field">
 						<label>Add Data Set</label>
 						<button onclick="addDataSet()" class="ui primary button">Add Data Set</button>
+					</div>
+				</div>
+				<h3 class="ui dividing header">Manually Add Data Set</h3>
+				<div class="five fields">
+					<div class="field">
+						<label>Ticker</label>
+						<g:field type="text" name="stock-manual" />
+					</div>
+					<div class="field">
+						<label>Datasource</label>
+						<g:select from="${ Datasource.values()*.name }" name="datasource" class="ui search dropdown" />
+					</div>
+					<div class="field">
+						<label>Interval Offset</label>
+						<g:field type="number" name="offset-manual" value="0" />
+					</div>
+					<div class="field">
+						<label>Aggregation</label>
+						<g:select from="${ Aggregation.values()*.name }" name="aggregation-manual" class="ui search dropdown" value="Period Percent Change" />
+					</div>
+					<div class="field">
+						<label>Add Data Set</label>
+						<button onclick="addManualDataSet()" class="ui primary button">Add Data Set</button>
 					</div>
 				</div>
 				<div class="fields">
@@ -122,12 +147,14 @@
 					<tbody>
 						<g:each in="${ algorithmRequest?.requestDataSets }" var="requestDataSet">
 							<tr>
+								<input type="hidden" class="name" value="${ requestDataSet.name }" />
+								<input type="hidden" class="datasource" value="${ requestDataSet.datasource }" />
 								<td>
 									<div class="ui radio checkbox">
-										<g:field type="radio" name="dependant" checked="${ algorithmRequest.dependantDataSet == requestDataSet.dataSet }" value="${ requestDataSet.dataSet.id }" />
+										<g:field type="radio" name="dependant" checked="${ algorithmRequest.dependantSymbol == requestDataSet.symbol }" value="${ requestDataSet.symbol }" />
 									</div>
 								</td>
-								<td class="stock">${ requestDataSet.dataSet.toString() }</td>
+								<td class="stock">${ requestDataSet.symbol }</td>
 								<td class="offset">${ requestDataSet.offset }</td>
 								<td class="aggregation">${ requestDataSet.aggregation.name }</td>
 								<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>
@@ -141,6 +168,12 @@
 			var dataSets = [];
 			$(function() {
 				$('.ui.radio.checkbox').checkbox();
+				$('#cronAlgorithms').dropdown();
+				$('#stock').dropdown({
+					apiSettings: {
+						url: '/algorithmRequest/searchSymbol?keyword={query}'
+					}
+				});
 			});
 		</script>
 	</body>

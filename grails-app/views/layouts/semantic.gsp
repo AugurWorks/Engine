@@ -20,6 +20,7 @@
 	</head>
 
 	<body>
+		<%@ page import="com.augurworks.engine.domains.AlgorithmResult" %>
 		<div class="ui inverted blue segment">
 			<div class="ui two column grid">
 				<div class="column">
@@ -63,6 +64,10 @@
 							<g:link controller="requestDataSet" class="item">Request Data Set</g:link>
 						</div>
 					</div>
+					<div class="item" data-title="Algorithms Currently Running">
+						<i class="loading refresh icon"></i>
+						${ AlgorithmResult.countByComplete(false) }
+					</div>
 				</sec:ifAllGranted>
 				<div class="right menu">
 					<sec:ifLoggedIn>
@@ -95,8 +100,11 @@
 
 		<script>
 			$(function() {
-				$('.ui.dropdown').dropdown({
+				$('.menu-wrapper .ui.dropdown').dropdown({
 					on: 'hover'
+				});
+				$('.item[data-title]').popup({
+					position: 'top center'
 				});
 			});
 		</script>

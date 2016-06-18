@@ -7,12 +7,13 @@ import java.util.concurrent.ScheduledFuture
 import javax.annotation.PostConstruct
 
 import org.quartz.CronExpression
+import org.slf4j.MDC
 import org.springframework.scheduling.Trigger
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.scheduling.support.CronTrigger
 
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.jobs.AlgorithmRequestJob
 
 @Transactional
@@ -31,6 +32,8 @@ class AutoKickoffService {
 	}
 
 	void scheduleKickoffJob(AlgorithmRequest algorithmRequest) {
+		MDC.put('algorithmRequestId', algorithmRequest.id.toString())
+		MDC.put('algorithmRequestName', algorithmRequest.name)
 		try {
 			log.info 'Creating cron job for ' + algorithmRequest
 			if (runningJobs[algorithmRequest.id]) {
@@ -43,8 +46,7 @@ class AutoKickoffService {
 		} catch (AugurWorksException e) {
 			log.warn e.getMessage()
 		} catch (e) {
-			log.error e.getMessage()
-			log.debug e.getStackTrace().join('\n      at ')
+			log.error e
 		}
 	}
 

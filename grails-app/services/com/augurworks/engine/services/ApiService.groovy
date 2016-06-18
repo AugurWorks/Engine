@@ -4,10 +4,10 @@ import grails.transaction.Transactional
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.slack.Attachment
 import com.augurworks.engine.slack.SlashMessage
@@ -80,7 +80,6 @@ class ApiService {
 			defered.withText('Error: ' + e.getMessage())
 		} catch (e) {
 			log.error e
-			log.debug e.getStackTrace().join('\n      at ')
 			defered.withText('An error has occured, please validate the request in the Engine application')
 		}
 		defered.post()

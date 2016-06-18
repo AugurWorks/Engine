@@ -3,15 +3,17 @@ package com.augurworks.engine.services
 import grails.converters.JSON
 import grails.transaction.Transactional
 
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.slf4j.MDC
+
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
-import com.augurworks.engine.AugurWorksException
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.domains.DataSet
 import com.augurworks.engine.domains.MachineLearningModel
 import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.RequestValueSet
@@ -21,6 +23,7 @@ import com.augurworks.engine.helper.SplineRequest
 @Transactional
 class MachineLearningService {
 
+	GrailsApplication grailsApplication
 	DataRetrievalService dataRetrievalService
 	AwsService awsService
 	AutomatedService automatedService
@@ -28,6 +31,10 @@ class MachineLearningService {
 	static final MACHINE_LEARNING_COMPLETE_STATUS = 'COMPLETED'
 
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
+		int maxMl = grailsApplication.config.augurworks.ml.max
+		if (AlgorithmResult.countByCompleteAndModelType(false, AlgorithmType.MACHINE_LEARNING) >= maxMl) {
+			throw new AugurWorksException('Maximum simultaneous machine learning runs of ' + maxMl + ' has been reached')
+		}
 		String dataSourceId = createRequestDataSource(algorithmRequest, false)
 		String modelId = awsService.createMLModel(dataSourceId)
 		createAlgorithmResult(algorithmRequest, modelId, dataSourceId)
@@ -49,7 +56,7 @@ class MachineLearningService {
 		File csv = File.createTempFile('AlgorithmRequest-' + algorithmRequest.id, '.csv')
 		SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: prediction, includeDependent: !prediction, now: now)
 		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(splineRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
-			return (requestValueSetB.name == algorithmRequest.dependantDataSet.ticker) <=> (requestValueSetA.name == algorithmRequest.dependantDataSet.ticker) ?: requestValueSetA.name <=> requestValueSetB.name
+			return (requestValueSetB.name == algorithmRequest.dependantSymbol) <=> (requestValueSetA.name == algorithmRequest.dependantSymbol) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
 		if (!automatedService.areDataSetsCorrectlySized(dataSets, rowNumber)) {
@@ -68,15 +75,15 @@ class MachineLearningService {
 			version: '1.0',
 			dataFormat: 'CSV',
 			dataFileContainsHeader: true,
-			attributes: requestDataSets*.dataSet.collect { DataSet dataSet ->
+			attributes: requestDataSets.collect { RequestDataSet requestDataSet ->
 				return [
-					attributeName: dataSet.ticker,
+					attributeName: requestDataSet.symbol,
 					attributeType: 'NUMERIC'
 				]
 			}
 		]
 		if (!prediction) {
-			schema.targetAttributeName = algorithmRequest.dependantDataSet.ticker
+			schema.targetAttributeName = algorithmRequest.dependantSymbol
 		}
 		return schema as JSON
 	}
@@ -84,15 +91,17 @@ class MachineLearningService {
 	void checkIncompleteAlgorithms() {
 		Collection<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByCompleteAndModelType(false, AlgorithmType.MACHINE_LEARNING)
 		algorithmResults.each { AlgorithmResult algorithmResult ->
+			MDC.put('algorithmRequestId', algorithmResult.algorithmRequest.id.toString())
+			MDC.put('algorithmResultId', algorithmResult.id.toString())
 			try {
 				checkAlgorithm(algorithmResult)
 			} catch (AugurWorksException e) {
-				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error: ' + e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error', e
 			} catch (e) {
-				log.error e.getMessage()
-				log.debug e.getStackTrace().join('\n      at ')
+				log.error e
 			}
+			MDC.remove('algorithmRequestId')
+			MDC.remove('algorithmResultId')
 		}
 	}
 
@@ -147,7 +156,7 @@ class MachineLearningService {
 	void checkMachineLearningPrediction(AlgorithmResult algorithmResult) {
 		GetBatchPredictionResult batchPrediction = awsService.getBatchPrediction(algorithmResult.machineLearningModel.batchPredictionId)
 		if (batchPrediction.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
-			log.info 'Machine learning batch prediction complete'
+			log.debug 'Machine learning batch prediction complete'
 			File resultsFile = awsService.getBatchPredictionResults(algorithmResult.machineLearningModel.batchPredictionId)
 			Collection<Double> predictions = parsePredictionOutputFile(resultsFile)
 			addPredictionsToAlgorithmResult(algorithmResult, predictions)
@@ -171,7 +180,7 @@ class MachineLearningService {
 	void addPredictionsToAlgorithmResult(AlgorithmResult algorithmResult, Collection<Double> predictions) {
 		RequestDataSet predictionSet = algorithmResult.algorithmRequest.dependentRequestDataSet
 		SingleDataRequest singleDataRequest = new SingleDataRequest(
-			dataSet: predictionSet.dataSet,
+			symbolResult: predictionSet.toSymbolResult(),
 			offset: predictionSet.offset,
 			startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
 			endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),
@@ -201,5 +210,6 @@ class MachineLearningService {
 		algorithmResult.machineLearningModel = null
 		algorithmResult.save()
 		model.delete()
+		log.debug 'Machine learning resources deleted for algorithm result' + algorithmResult.id
 	}
 }

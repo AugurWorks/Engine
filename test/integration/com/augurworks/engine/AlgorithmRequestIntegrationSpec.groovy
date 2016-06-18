@@ -1,30 +1,38 @@
 package com.augurworks.engine
 
+import grails.converters.JSON
 import grails.test.spock.IntegrationSpec
 
 import com.augurworks.engine.domains.AlgorithmRequest
-import com.augurworks.engine.domains.DataSet
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
+import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.SplineRequest
+import com.augurworks.engine.helper.Unit
+import com.augurworks.engine.rest.BarchartClient
 import com.augurworks.engine.services.DataRetrievalService
 
 class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 
 	DataRetrievalService dataRetrievalService
 
-	AlgorithmRequest createAlgorithmRequest(int startOffset, int endOffset, String dependantDataSetTicker, String unit) {
+	AlgorithmRequest createAlgorithmRequest(Collection<String> symbols, int startOffset, int endOffset, Datasource datasource, Unit unit) {
+		String dependantDataSetTicker = symbols.first()
 		AlgorithmRequest algorithmRequest = new AlgorithmRequest(
 			startOffset: startOffset,
 			endOffset: endOffset,
 			dateCreated: new Date(),
-			dependantDataSet: DataSet.findByTicker(dependantDataSetTicker),
+			dependantSymbol: dependantDataSetTicker,
 			unit: unit
 		)
 		algorithmRequest.save()
-		['.INX', 'AMZN', 'BAC', 'GOOG', 'JPM', 'USO'].each { String ticker ->
+		symbols.each { String ticker ->
 			algorithmRequest.addToRequestDataSets(
-				dataSet: DataSet.findByTicker(ticker),
+				symbol: ticker,
+				name: ticker,
+				datasource: datasource,
 				offset: ticker == dependantDataSetTicker ? 0 : -1,
 				aggregation: Aggregation.PERIOD_PERCENT_CHANGE
 			)
@@ -33,61 +41,48 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 		return algorithmRequest
 	}
 
-	void "test hourly algorithm request retrieval"() {
+	void "test barchart algorithm request retrieval"() {
 		given:
-			AlgorithmRequest hourRequest = createAlgorithmRequest(startOffset, endOffset, '.INX', 'Hour')
-			DataRetrievalService.metaClass.getGoogleAPIText = { String ticker, Date startDate, int intervalMinutes ->
-				return new File('test/resources/hourly-data/Hourly-' + ticker + '.txt').text
+			AlgorithmRequest algorithmRequest = createAlgorithmRequest(['SPM16', 'DLJ16'], startOffset, endOffset, Datasource.BARCHART, unit)
+			BarchartClient.metaClass.makeRequest { SingleDataRequest singleDataRequest ->
+				return JSON.parse(new File('test/resources/barchart/' + (singleDataRequest.unit == Unit.DAY ? 'day' : 'half-hour') + '/' + singleDataRequest.symbolResult.symbol + '.json').text).results
 			}
 
 		when:
-			SplineRequest splineRequest = new SplineRequest(algorithmRequest: hourRequest, prediction: prediction, now: Date.parse('MM/dd/yyyy HH:mm', '02/12/2016 ' + timeString))
+			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: prediction, now: Date.parse('MM/dd/yyyy HH:mm', timeString))
 			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(splineRequest)
 
 		then:
 			notThrown AugurWorksException
-			requestValueSet.size() == 6
+			requestValueSet.size() == 2
 			requestValueSet*.values*.size().max() == maxValuesSize
 			requestValueSet*.values*.size().min() == minValuesSize
 
 		where:
-			startOffset | endOffset | timeString | prediction | maxValuesSize | minValuesSize
-			-4          | -1        | '14:30'    | false      | 4             | 4
-			-4          | -1        | '15:30'    | false      | 4             | 4
-			-6          | -4        | '16:30'    | false      | 3             | 3
-			-5          | -1        | '15:30'    | false      | 5             | 5
-			-4          | -1        | '14:30'    | true       | 5             | 4
-			-4          | -1        | '15:30'    | true       | 5             | 4
-			-6          | -4        | '16:30'    | true       | 4             | 3
-			-5          | -1        | '15:30'    | true       | 6             | 5
-	}
-
-	void "test day algorithm request retrieval"() {
-		given:
-			AlgorithmRequest dayRequest = createAlgorithmRequest(startOffset, endOffset, '.INX', 'Day')
-			DataRetrievalService.metaClass.getQuandlAPIText = { String quandlCode ->
-				return new File('test/resources/daily-data/' + quandlCode.split('/').join('-') + '.csv').text
-			}
-
-		when:
-			SplineRequest splineRequest = new SplineRequest(algorithmRequest: dayRequest, prediction: prediction, now: Date.parse('MM/dd/yyyy', dateString))
-			Collection<RequestValueSet> requestValueSet = dataRetrievalService.smartSpline(splineRequest)
-
-		then:
-			notThrown AugurWorksException
-			requestValueSet.size() == 6
-			requestValueSet*.values*.size().max() == maxValuesSize
-			requestValueSet*.values*.size().min() == minValuesSize
-
-		where:
-			startOffset | endOffset | dateString   | prediction | maxValuesSize | minValuesSize
-			-14         | -1        | '02/12/2016' | false      | 10            | 10
-			-8          | -1        | '02/12/2016' | false      | 6             | 6
-			-17         | -1        | '02/12/2016' | false      | 13            | 13
-			-11         | -8        | '02/12/2016' | false      | 4             | 4
-			-14         | -1        | '02/12/2016' | true       | 11            | 10
-			-8          | -1        | '02/12/2016' | true       | 7             | 6
-			-17         | -1        | '02/12/2016' | true       | 14            | 13
-			-11         | -8        | '02/12/2016' | true       | 5             | 4
+			unit           | startOffset | endOffset | timeString         | prediction | maxValuesSize | minValuesSize
+			Unit.HOUR      | -4          | -1        | '03/31/2016 14:30' | false      | 4             | 4
+			Unit.HOUR      | -4          | -1        | '03/31/2016 15:30' | false      | 4             | 4
+			Unit.HOUR      | -6          | -4        | '03/31/2016 16:30' | false      | 3             | 3
+			Unit.HOUR      | -5          | -1        | '03/31/2016 15:30' | false      | 5             | 5
+			Unit.HOUR      | -4          | -1        | '03/31/2016 14:30' | true       | 5             | 4
+			Unit.HOUR      | -4          | -1        | '03/31/2016 15:30' | true       | 5             | 4
+			Unit.HOUR      | -6          | -4        | '03/31/2016 16:30' | true       | 4             | 3
+			Unit.HOUR      | -5          | -1        | '03/31/2016 15:30' | true       | 6             | 5
+			Unit.HALF_HOUR | -4          | -1        | '03/31/2016 14:30' | false      | 4             | 4
+			Unit.HALF_HOUR | -4          | -1        | '03/31/2016 15:30' | false      | 4             | 4
+			Unit.HALF_HOUR | -6          | -4        | '03/31/2016 16:30' | false      | 3             | 3
+			Unit.HALF_HOUR | -5          | -1        | '03/31/2016 15:30' | false      | 5             | 5
+			Unit.HALF_HOUR | -4          | -1        | '03/31/2016 14:30' | true       | 5             | 4
+			Unit.HALF_HOUR | -4          | -1        | '03/31/2016 15:30' | true       | 5             | 4
+			Unit.HALF_HOUR | -6          | -4        | '03/31/2016 16:30' | true       | 4             | 3
+			Unit.HALF_HOUR | -5          | -1        | '03/31/2016 15:30' | true       | 6             | 5
+			Unit.DAY       | -7          | -1        | '03/31/2016 00:00' | false      | 4             | 4
+			Unit.DAY       | -7          | -1        | '03/31/2016 00:00' | false      | 4             | 4
+			Unit.DAY       | -8          | -3        | '03/31/2016 00:00' | false      | 3             | 3
+			Unit.DAY       | -8          | -1        | '03/31/2016 00:00' | false      | 5             | 5
+			Unit.DAY       | -7          | -1        | '03/31/2016 00:00' | true       | 5             | 4
+			Unit.DAY       | -7          | -2        | '03/31/2016 00:00' | true       | 4             | 3
+			Unit.DAY       | -9          | -3        | '03/31/2016 00:00' | true       | 5             | 4
+			Unit.DAY       | -8          | -1        | '03/31/2016 00:00' | true       | 6             | 5
 	}
 }

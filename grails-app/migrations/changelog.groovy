@@ -275,4 +275,8 @@ databaseChangeLog = {
 	include file: 'aggregation-enum.groovy'
 
 	include file: 'cron-algorithms.groovy'
+
+	include file: 'unit-enum.groovy'
+
+	include file: 'remove-datasets.groovy'
 }

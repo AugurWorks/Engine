@@ -1,7 +1,6 @@
-import com.theconnman.slacklogger.SlackAppender
-
-def loc = ['../UserConfig.groovy', 'webapps/ROOT/Jenkins.groovy'].grep { new File(it).exists() }.first()
-def localConfig = new ConfigSlurper(grailsSettings.grailsEnv).parse(new File(loc).toURI().toURL())
+String getEnv(String name) {
+	return System.getProperty(name) ?: System.getenv(name)
+}
 
 grails.project.groupId = appName
 
@@ -56,35 +55,35 @@ grails.hibernate.cache.queries = false
 
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
-alfred.url = (localConfig.alfred.url ?: 'http://localhost:8080')
-logging.files = System.getProperty('ENGINE_LOGGING_FILES') ?: false
-slack.slash.token = System.getProperty('SLASH_TOKEN') ?: System.getenv('SLASH_TOKEN')
-slack.on = System.getProperty('SLACK_ON') ?: (System.getenv('SLACK_ON') ?: 'false')
+alfred.url = getEnv('ALFRED_URL') ?: 'http://localhost:8081'
+logging.files = getEnv('ENGINE_LOGGING_FILES') ?: false
+slack.slash.token = getEnv('SLASH_TOKEN')
+slack.webhook = getEnv('SLACK_WEBHOOK')
 
 environments {
 	development {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = (localConfig.local.ip ?: 'http://localhost') + ':8080'
-		oauth.providers.github.key = localConfig.oauth.github.key
-		oauth.providers.github.secret = localConfig.oauth.github.secret
+		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
+		oauth.providers.github.key = getEnv('OAUTH_KEY')
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
 		aws.bucket = 'aw-files-dev'
 		augurworks.predictions.channel = '#testing'
 	}
 	test {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = (localConfig.local.ip ?: 'http://localhost') + ':8080'
-		oauth.providers.github.key = localConfig.oauth.github.key
-		oauth.providers.github.secret = localConfig.oauth.github.secret
+		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
+		oauth.providers.github.key = getEnv('OAUTH_KEY')
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
 		aws.bucket = 'aw-files-test'
 		augurworks.predictions.channel = '#testing'
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = System.getProperty('SERVER_URL') ?: (System.getenv('SERVER_URL') ?: (localConfig.local.ip ? localConfig.local.ip + ':8080' : null))
-		oauth.providers.github.key = localConfig.oauth.github.key
-		oauth.providers.github.secret = localConfig.oauth.github.secret
-		aws.bucket = System.getProperty('BUCKET') ?: (System.getenv('BUCKET') ?: 'aw-files-dev')
-		augurworks.predictions.channel = System.getProperty('CHANNEL') ?: (System.getenv('CHANNEL') ?: '#testing')
+		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
+		oauth.providers.github.key = getEnv('OAUTH_KEY')
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
+		aws.bucket = getEnv('BUCKET') ?: 'aw-files-dev'
+		augurworks.predictions.channel = getEnv('CHANNEL') ?: '#testing'
 		grails.plugin.databasemigration.updateOnStart = true
 	}
 }
@@ -102,9 +101,18 @@ oauth {
 
 augurworks {
 	quandl {
-		key = localConfig.augurworks.quandlKey
+		key = getEnv('QUANDL_KEY')
+	}
+	barchart {
+		key = getEnv('BARCHART_KEY')
+	}
+	td {
+		key = getEnv('TD_KEY')
 	}
 	datePathFormat = 'yyyy/MM/dd/'
+	ml {
+		max = getEnv('ML_MAX') ?: 10
+	}
 }
 
 grails.cache.config = {
@@ -115,51 +123,7 @@ grails.cache.config = {
 	}
 }
 
-log4j = {
-	appenders {
-		console name: 'stdout', threshold: org.apache.log4j.Level.ERROR
-		rollingFile name: 'debug', file: 'logs/debug.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.DEBUG
-		rollingFile name: 'info', file: 'logs/info.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.INFO
-		rollingFile name: 'warn', file: 'logs/warn.log', layout: pattern(conversionPattern: '[%p] %d{yyyy-MM-dd HH:mm:ss} %c{2} - %m%n'), threshold: org.apache.log4j.Level.WARN
-		appender new SlackAppender(name: 'slackAppender', layout: pattern(conversionPattern: '%c{2} - %m%n'), threshold: org.apache.log4j.Level.ERROR)
-	}
-
-	warn 'warn': [
-		'grails.app.controllers.com.augurworks.engine',
-		'grails.app.services.com.augurworks.engine',
-		'grails.app.conf.com.augurworks.engine',
-		'grails.app.domain.com.augurworks.engine',
-		'com.augurworks.engine.helper'
-	]
-
-	info 'info': [
-		'grails.app.controllers.com.augurworks.engine',
-		'grails.app.services.com.augurworks.engine',
-		'grails.app.conf.com.augurworks.engine',
-		'grails.app.domain.com.augurworks.engine',
-		'com.augurworks.engine.helper'
-	]
-
-	debug 'debug': [
-		'grails.app.controllers.com.augurworks.engine',
-		'grails.app.services.com.augurworks.engine',
-		'grails.app.conf.com.augurworks.engine',
-		'grails.app.domain.com.augurworks.engine',
-		'com.augurworks.engine.helper'
-	]
-}
-
 grails.app.context = '/'
-
-grails {
-	plugin {
-		slacklogger {
-			webhook = localConfig.augurworks.slacklogger.webhook
-			botName = 'Engine Errors'
-			channel = '#engine-errors'
-		}
-	}
-}
 
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.augurworks.engine.domains.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.augurworks.engine.domains.UserRole'
