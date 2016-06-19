@@ -6,6 +6,7 @@
 		<asset:javascript src="algorithmRequest.js" />
 	</head>
 	<body>
+		<%@ page import="com.augurworks.engine.data.SplineType" %>
 		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
 		<%@ page import="com.augurworks.engine.helper.Datasource" %>
@@ -39,12 +40,16 @@
 				</div>
 			</div>
 			<div class="ui form">
-				<h3 class="ui dividing header">Name and Cron Expression</h3>
+				<h3 class="ui dividing header">Info</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
-				<div class="three fields">
+				<div class="four fields">
 					<div class="field">
 						<label>Name</label>
 						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
+					</div>
+					<div class="field">
+						<label>Spline Type</label>
+						<g:select from="${ SplineType.values() }" name="splineType" optionKey="name" optionValue="description" class="ui search dropdown" value="${ algorithmRequest?.splineType?.name() }" />
 					</div>
 					<div class="field">
 						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
