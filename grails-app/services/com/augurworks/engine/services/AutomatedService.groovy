@@ -12,7 +12,7 @@ import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
-import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.slack.SlackMessage
 
 @Transactional

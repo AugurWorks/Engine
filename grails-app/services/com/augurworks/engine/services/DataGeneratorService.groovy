@@ -10,9 +10,9 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
-import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
-import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.model.DataSetValue
+import com.augurworks.engine.model.RequestValueSet
 
 @Transactional
 class DataGeneratorService {

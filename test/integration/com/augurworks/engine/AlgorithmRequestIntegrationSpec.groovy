@@ -9,8 +9,8 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.Datasource
-import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.helper.Unit
+import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.rest.BarchartClient
 import com.augurworks.engine.services.DataRetrievalService
 

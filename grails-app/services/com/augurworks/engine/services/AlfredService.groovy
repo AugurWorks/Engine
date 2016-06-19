@@ -12,8 +12,8 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
-import com.augurworks.engine.helper.RequestValueSet
 import com.augurworks.engine.messaging.TrainingMessage
+import com.augurworks.engine.model.RequestValueSet
 
 @Transactional
 class AlfredService {

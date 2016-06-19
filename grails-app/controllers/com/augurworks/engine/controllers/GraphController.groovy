@@ -6,7 +6,7 @@ import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.exceptions.AugurWorksException
-import com.augurworks.engine.helper.RequestValueSet
+import com.augurworks.engine.model.RequestValueSet
 
 class GraphController {
 

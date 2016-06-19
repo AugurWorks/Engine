@@ -3,7 +3,7 @@ package com.augurworks.engine.services
 import grails.test.mixin.*
 import spock.lang.Specification
 
-import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.model.DataSetValue;
 
 @TestFor(DataGeneratorService)
 class DataGeneratorServiceSpec extends Specification {

@@ -1,8 +1,8 @@
 package com.augurworks.engine.data
 
 import com.augurworks.engine.helper.Aggregation
-import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Unit
+import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.rest.SymbolResult
 
 class SingleDataRequest {
