@@ -95,15 +95,21 @@ class RequestValueSet {
 		if (allDates.size() == 0) {
 			throw new AugurWorksException('The date range provided for ' + this.name + ' does not contain any dates')
 		}
-		allDates[1..-1].eachWithIndex { Date date, int index ->
-			DataSetValue dataSetValue = values[index + 1]
-			if (!dataSetValue || dataSetValue.date != date) {
-				DataSetValue oldDataSetValue = values[index]
-				DataSetValue newDataSetValue = new DataSetValue(date, oldDataSetValue.value)
-				values = values.plus(index + 1, newDataSetValue)
+		if (allDates.size() > values.size()) {
+			allDates[1..-1].eachWithIndex { Date date, int index ->
+				DataSetValue dataSetValue = values[index + 1]
+				if (!dataSetValue || dataSetValue.date != date) {
+					DataSetValue oldDataSetValue = values[index]
+					DataSetValue newDataSetValue = new DataSetValue(date, oldDataSetValue.value)
+					values = values.plus(index + 1, newDataSetValue)
+				}
+			}
+			this.values = values
+		} else if (allDates.size() < this.values.size()) {
+			this.values = values.grep { DataSetValue dataSetValue ->
+				return allDates.contains(dataSetValue.date)
 			}
 		}
-		this.values = values
 		return this
 	}
 
