@@ -1,7 +1,7 @@
 package com.augurworks.engine.rest
 
+import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.helper.DataSetValue
-import com.augurworks.engine.helper.SingleDataRequest
 
 interface ApiClient {
 

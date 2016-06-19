@@ -5,6 +5,7 @@ import grails.transaction.Transactional
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.slf4j.MDC
 
+import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.RequestDataSet
@@ -12,7 +13,6 @@ import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.RequestValueSet
-import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.slack.SlackMessage
 
 @Transactional

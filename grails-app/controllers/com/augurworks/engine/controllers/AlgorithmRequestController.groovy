@@ -4,6 +4,7 @@ import grails.converters.JSON
 
 import org.quartz.CronExpression
 
+import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.RequestDataSet
@@ -11,7 +12,6 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Datasource
-import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.services.AlfredService
 import com.augurworks.engine.services.AutoKickoffService

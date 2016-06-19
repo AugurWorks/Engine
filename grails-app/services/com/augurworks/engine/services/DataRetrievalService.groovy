@@ -6,12 +6,12 @@ import groovyx.gpars.GParsPool
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
+import com.augurworks.engine.data.SingleDataRequest
+import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.RequestValueSet
-import com.augurworks.engine.helper.SingleDataRequest
-import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.rest.SymbolResult
 
 @Transactional
