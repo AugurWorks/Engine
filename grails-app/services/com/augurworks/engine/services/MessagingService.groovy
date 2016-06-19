@@ -10,6 +10,7 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.AMQP
+import com.rabbitmq.client.AlreadyClosedException
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.ConnectionFactory
@@ -50,6 +51,8 @@ class MessagingService {
 
 			initResultConsumer(resultChannel)
 		} catch (Exception e) {
+			trainingChannel = null
+			resultChannel = null
 			log.error("Could not connect to RabbitMQ", e)
 		}
 	}
@@ -78,6 +81,9 @@ class MessagingService {
 		}
 		try {
 			trainingChannel.basicPublish("", TRAINING_CHANNEL, null, mapper.writeValueAsBytes(message))
+		} catch (AlreadyClosedException e) {
+			init()
+			sendTrainingMessage(message)
 		} catch (IOException e) {
 			log.error("An error occurred when publishing a message for net {}", message.getNetId(), e)
 			throw new AugurWorksException(errorMessage)
