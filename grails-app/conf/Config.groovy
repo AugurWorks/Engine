@@ -63,24 +63,24 @@ environments {
 	development {
 		grails.logging.jul.usebridge = true
 		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY')
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
+		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = 'aw-files-dev'
 		augurworks.predictions.channel = '#testing'
 	}
 	test {
 		grails.logging.jul.usebridge = true
 		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY')
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
+		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = 'aw-files-test'
 		augurworks.predictions.channel = '#testing'
 	}
 	production {
 		grails.logging.jul.usebridge = false
 		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY')
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
+		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = getEnv('BUCKET') ?: 'aw-files-dev'
 		augurworks.predictions.channel = getEnv('CHANNEL') ?: '#testing'
 		grails.plugin.databasemigration.updateOnStart = true

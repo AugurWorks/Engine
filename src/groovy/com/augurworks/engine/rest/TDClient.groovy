@@ -10,11 +10,11 @@ import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClientBuilder
 
+import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.exceptions.AugurWorksException
-import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
-import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.Unit
+import com.augurworks.engine.model.DataSetValue
 
 class TDClient extends RestClient {
 

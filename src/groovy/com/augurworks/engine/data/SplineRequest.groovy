@@ -1,4 +1,4 @@
-package com.augurworks.engine.helper
+package com.augurworks.engine.data
 
 import com.augurworks.engine.domains.AlgorithmRequest
 

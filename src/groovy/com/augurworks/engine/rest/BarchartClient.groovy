@@ -7,10 +7,10 @@ import groovy.json.JsonBuilder
 import org.apache.commons.lang.time.DateUtils
 import org.joda.time.DateTime
 
-import com.augurworks.engine.helper.DataSetValue
+import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.helper.Datasource
-import com.augurworks.engine.helper.SingleDataRequest
 import com.augurworks.engine.helper.Unit
+import com.augurworks.engine.model.DataSetValue
 
 class BarchartClient extends RestClient {
 

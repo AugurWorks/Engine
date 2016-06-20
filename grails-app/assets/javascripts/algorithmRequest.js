@@ -36,6 +36,7 @@ function submitRequest(overwrite) {
 			startOffset: $('#startOffset').val(),
 			endOffset: $('#endOffset').val(),
 			unit: $('#unit').val(),
+			splineType: $('#splineType').val(),
 			cronExpression: $('#cronExpression').val(),
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
 			overwrite: overwrite
@@ -65,6 +66,7 @@ function checkRequest() {
 			startOffset: $('#startOffset').val(),
 			endOffset: $('#endOffset').val(),
 			unit: $('#unit').val(),
+			splineType: $('#splineType').val(),
 			cronExpression: $('#cronExpression').val()
 		},
 		success: function(data) {

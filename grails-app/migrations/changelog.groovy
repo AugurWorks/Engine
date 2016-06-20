@@ -279,4 +279,6 @@ databaseChangeLog = {
 	include file: 'unit-enum.groovy'
 
 	include file: 'remove-datasets.groovy'
+
+	include file: 'spline-type.groovy'
 }

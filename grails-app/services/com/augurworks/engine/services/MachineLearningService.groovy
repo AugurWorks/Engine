@@ -8,6 +8,8 @@ import org.slf4j.MDC
 
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
+import com.augurworks.engine.data.SingleDataRequest
+import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.MachineLearningModel
@@ -16,9 +18,7 @@ import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
-import com.augurworks.engine.helper.RequestValueSet
-import com.augurworks.engine.helper.SingleDataRequest
-import com.augurworks.engine.helper.SplineRequest
+import com.augurworks.engine.model.RequestValueSet
 
 @Transactional
 class MachineLearningService {

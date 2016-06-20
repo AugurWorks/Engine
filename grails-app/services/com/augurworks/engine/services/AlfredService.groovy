@@ -1,11 +1,10 @@
 package com.augurworks.engine.services
 
-import grails.plugins.rest.client.RestBuilder
-import grails.plugins.rest.client.RestResponse
 import grails.transaction.Transactional
 
 import org.slf4j.MDC
 
+import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
@@ -13,9 +12,8 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
-import com.augurworks.engine.helper.RequestValueSet
-import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.messaging.TrainingMessage
+import com.augurworks.engine.model.RequestValueSet
 
 @Transactional
 class AlfredService {

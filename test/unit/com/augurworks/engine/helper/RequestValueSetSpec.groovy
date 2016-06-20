@@ -5,6 +5,8 @@ import groovy.time.TimeCategory
 import spock.lang.Specification
 
 import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.model.DataSetValue;
+import com.augurworks.engine.model.RequestValueSet;
 
 class RequestValueSetSpec extends Specification {
 
