@@ -19,6 +19,7 @@ A production environment can be built which uses environment variables for all c
 - **RABBITMQ_PASSWORD** (default: guest) - RabbitMQ password
 - **RABBITMQ_HOST** (default: rabbitmq) - RabbitMQ hostname
 - **RABBITMQ_PORT** (default: 5672) - RabbitMQ port
+- **RABBITMQ_ENV** (Optional) - RabbitMQ environment (used to distinguish channels)
 - **RDS_USERNAME** (default: root) - MySQL username
 - **RDS_PASSWORD** - MySQL password
 - **RDS_HOSTNAME** - MySQL host

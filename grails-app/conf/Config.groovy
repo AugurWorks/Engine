@@ -40,7 +40,7 @@ grails {
 	}
 }
 
- 
+
 grails.converters.encoding = "UTF-8"
 grails.scaffolding.templates.domainSuffix = 'Instance'
 
@@ -119,6 +119,7 @@ rabbitmq {
 	password = getEnv('RABBITMQ_PASSWORD') ?: 'guest'
 	hostname = getEnv('RABBITMQ_HOST') ?: 'rabbitmq'
 	port = getEnv('RABBITMQ_PORTNUM') ?: 5672
+	env = getEnv('RABBITMQ_ENV')
 }
 
 grails.cache.config = {

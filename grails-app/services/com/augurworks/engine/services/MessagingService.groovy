@@ -21,8 +21,11 @@ import com.rabbitmq.client.Envelope
 @Transactional
 class MessagingService {
 
-	public static final String TRAINING_CHANNEL = "nets.training"
-	public static final String RESULTS_CHANNEL = "nets.results"
+	public static final String ROOT_TRAINING_CHANNEL = "nets.training"
+	public static final String ROOT_RESULTS_CHANNEL = "nets.results"
+
+	public String trainingChannelName
+	public String resultsChannelName
 
 	private final ObjectMapper mapper = new ObjectMapper()
 
@@ -43,11 +46,19 @@ class MessagingService {
 			factory.setPort(grailsApplication.config.rabbitmq.port)
 			Connection connection = factory.newConnection()
 
-			trainingChannel = connection.createChannel()
-			trainingChannel.queueDeclare(TRAINING_CHANNEL, false, false, false, null)
+			String channelPostfix = grailsApplication.config.rabbitmq.env ? '.' + grailsApplication.config.rabbitmq.env : ''
 
+			trainingChannelName = ROOT_TRAINING_CHANNEL + channelPostfix
+			resultsChannelName = ROOT_RESULTS_CHANNEL + channelPostfix
+
+
+			log.info('Connecting to RabbitMQ channel ' + trainingChannelName)
+			trainingChannel = connection.createChannel()
+			trainingChannel.queueDeclare(trainingChannelName, false, false, false, null)
+
+			log.info('Connecting to RabbitMQ channel ' + resultsChannelName)
 			resultChannel = connection.createChannel()
-			resultChannel.queueDeclare(RESULTS_CHANNEL, false, false, false, null)
+			resultChannel.queueDeclare(resultsChannelName, false, false, false, null)
 
 			initResultConsumer(resultChannel)
 		} catch (Exception e) {
@@ -58,7 +69,7 @@ class MessagingService {
 	}
 
 	private void initResultConsumer(Channel resultChannel) {
-		log.info("Starting results consumer")
+		log.debug("Starting results consumer")
 		Consumer consumer = new DefaultConsumer(trainingChannel) {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -67,7 +78,7 @@ class MessagingService {
 				}
 			}
 		try {
-			resultChannel.basicConsume(RESULTS_CHANNEL, true, consumer)
+			resultChannel.basicConsume(resultsChannelName, true, consumer)
 		} catch (IOException e) {
 			log.error("Results consumer failed to initialize", e)
 		}
@@ -80,7 +91,7 @@ class MessagingService {
 			throw new AugurWorksException(errorMessage)
 		}
 		try {
-			trainingChannel.basicPublish("", TRAINING_CHANNEL, null, mapper.writeValueAsBytes(message))
+			trainingChannel.basicPublish("", trainingChannelName, null, mapper.writeValueAsBytes(message))
 		} catch (AlreadyClosedException e) {
 			init()
 			sendTrainingMessage(message)
