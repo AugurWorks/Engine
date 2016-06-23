@@ -65,7 +65,6 @@ class AlfredService {
 
 		MDC.put('algorithmRequestId', algorithmResult.algorithmRequest.id.toString())
 		MDC.put('algorithmResultId', algorithmResult.id.toString())
-		MDC.put('netId', algorithmResult.alfredModelId)
 
 		log.debug 'Received results message from net ' + algorithmResult.alfredModelId
 
@@ -78,7 +77,6 @@ class AlfredService {
 
 		MDC.remove('algorithmRequestId')
 		MDC.remove('algorithmResultId')
-		MDC.remove('netId')
 	}
 
 	void processResponse(AlgorithmResult algorithmResult, String text) {

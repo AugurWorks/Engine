@@ -6,6 +6,8 @@ import javax.annotation.PostConstruct
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
+import org.slf4j.MDC
+
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -74,7 +76,14 @@ class MessagingService {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 					TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
-					alfredService.processResult(message)
+					MDC.put('netId', message.getNetId())
+					log.debug 'Consuming message for net ' + message.getNetId()
+					try {
+						alfredService.processResult(message)
+					} catch (Exception e) {
+						log.error e
+					}
+					MDC.remove('netId')
 				}
 			}
 		try {
