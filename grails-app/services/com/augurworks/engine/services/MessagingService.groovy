@@ -72,7 +72,7 @@ class MessagingService {
 
 	private void initResultConsumer(Channel resultChannel) {
 		log.debug("Starting results consumer")
-		Consumer consumer = new DefaultConsumer(trainingChannel) {
+		Consumer consumer = new DefaultConsumer(resultChannel) {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 					try {
