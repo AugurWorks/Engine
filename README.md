@@ -10,6 +10,7 @@ A production environment can be built which uses environment variables for all c
 - **BARCHART_KEY** - Barchart API key
 - **BUCKET** (default: aw-files-dev) - Bucket for log file placement
 - **CHANNEL** (default: #testing) - Slack channel for prediction output
+- **ENV** (default: DEV) - Environment field for logging
 - **FLUENTD_HOST** - Fluentd host for centralized logging
 - **HOSTNAME** - Hostname for Fluentd logs
 - **ML_MAX** (default: 10) - Maximum simultaneous machine learning runs
