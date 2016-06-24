@@ -75,15 +75,15 @@ class MessagingService {
 		Consumer consumer = new DefaultConsumer(trainingChannel) {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-					TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
-					MDC.put('netId', message.getNetId())
-					log.debug 'Consuming message for net ' + message.getNetId()
 					try {
+						TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
+						MDC.put('netId', message.getNetId())
+						log.debug 'Consuming message for net ' + message.getNetId()
 						alfredService.processResult(message)
+						MDC.remove('netId')
 					} catch (Exception e) {
 						log.error e
 					}
-					MDC.remove('netId')
 				}
 			}
 		try {
