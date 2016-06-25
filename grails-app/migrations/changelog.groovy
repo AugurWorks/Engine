@@ -281,4 +281,6 @@ databaseChangeLog = {
 	include file: 'remove-datasets.groovy'
 
 	include file: 'spline-type.groovy'
+
+	include file: 'data-type.groovy'
 }
