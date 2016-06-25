@@ -40,7 +40,7 @@ class BarchartClient extends RestClient {
 			if (dataRequest.unit == Unit.DAY) {
 				date = DateUtils.truncate(date, Calendar.DATE)
 			}
-			return new DataSetValue(date, result.close)
+			return new DataSetValue(date, result[dataRequest.dataType.name().toLowerCase()])
 		}
 	}
 
