@@ -48,7 +48,7 @@ class MessagingService {
 			factory.setPort(grailsApplication.config.rabbitmq.port)
 			Connection connection = factory.newConnection()
 
-			String channelPostfix = grailsApplication.config.rabbitmq.env ? '.' + grailsApplication.config.rabbitmq.env : ''
+			String channelPostfix = grailsApplication.config.rabbitmq.env ? '.' + grailsApplication.config.rabbitmq.env.toLowerCase() : ''
 
 			trainingChannelName = ROOT_TRAINING_CHANNEL + channelPostfix
 			resultsChannelName = ROOT_RESULTS_CHANNEL + channelPostfix
