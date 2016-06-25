@@ -12,6 +12,7 @@ import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.services.AlfredService
@@ -127,7 +128,8 @@ class AlgorithmRequestController {
 			name: dataSet.name,
 			datasource: Datasource[dataSet.datasource.toUpperCase()],
 			offset: dataSet.offset,
-			aggregation: Aggregation.findByName(dataSet.aggregation)
+			aggregation: Aggregation.findByName(dataSet.aggregation),
+			dataType: DataType.findByName(dataSet.dataType)
 		)
 	}
 

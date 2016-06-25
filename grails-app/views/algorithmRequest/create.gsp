@@ -10,6 +10,7 @@
 		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
 		<%@ page import="com.augurworks.engine.helper.Datasource" %>
+		<%@ page import="com.augurworks.engine.helper.DataType" %>
 		<%@ page import="com.augurworks.engine.helper.Unit" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
@@ -77,7 +78,7 @@
 					</div>
 				</div>
 				<h3 class="ui dividing header">Search Data Sets</h3>
-				<div class="four fields">
+				<div class="five fields">
 					<div class="field">
 						<label>Ticker</label>
 						<select id="stock" name="stock" class="ui search dropdown"></select>
@@ -91,12 +92,16 @@
 						<g:select from="${ Aggregation.values()*.name }" name="aggregation" class="ui search dropdown" value="Period Percent Change" />
 					</div>
 					<div class="field">
+						<label>Data Type</label>
+						<g:select from="${ DataType.values()*.name }" name="dataType" class="ui dropdown" value="Close" />
+					</div>
+					<div class="field">
 						<label>Add Data Set</label>
 						<button onclick="addDataSet()" class="ui primary button">Add Data Set</button>
 					</div>
 				</div>
 				<h3 class="ui dividing header">Manually Add Data Set</h3>
-				<div class="five fields">
+				<div class="six fields">
 					<div class="field">
 						<label>Ticker</label>
 						<g:field type="text" name="stock-manual" />
@@ -112,6 +117,10 @@
 					<div class="field">
 						<label>Aggregation</label>
 						<g:select from="${ Aggregation.values()*.name }" name="aggregation-manual" class="ui search dropdown" value="Period Percent Change" />
+					</div>
+					<div class="field">
+						<label>Data Type</label>
+						<g:select from="${ DataType.values()*.name }" name="dataType-manual" class="ui dropdown" value="Close" />
 					</div>
 					<div class="field">
 						<label>Add Data Set</label>
@@ -146,6 +155,7 @@
 							<th>Stock</th>
 							<th>Interval Offset</th>
 							<th>Aggregation</th>
+							<th>Data Type</th>
 							<th>Remove</th>
 						</tr>
 					</thead>
@@ -162,6 +172,7 @@
 								<td class="stock">${ requestDataSet.symbol }</td>
 								<td class="offset">${ requestDataSet.offset }</td>
 								<td class="aggregation">${ requestDataSet.aggregation.name }</td>
+								<td class="dataType">${ requestDataSet.dataType.name }</td>
 								<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>
 							</tr>
 						</g:each>
