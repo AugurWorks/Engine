@@ -187,7 +187,8 @@ class MachineLearningService {
 			unit: algorithmResult.algorithmRequest.unit,
 			minOffset: predictionSet.offset,
 			maxOffset: predictionSet.offset,
-			aggregation: predictionSet.aggregation
+			aggregation: predictionSet.aggregation,
+			dataType: predictionSet.dataType
 		)
 		RequestValueSet requestValueSet = dataRetrievalService.getSingleRequestValues(singleDataRequest)
 		Collection<Date> predictionDates = requestValueSet.dates

@@ -83,7 +83,8 @@ class AutomatedService {
 					unit: algorithmResult.algorithmRequest.unit,
 					minOffset: requestDataSet.offset,
 					maxOffset: requestDataSet.offset,
-					aggregation: Aggregation.VALUE
+					aggregation: Aggregation.VALUE,
+					dataType: requestDataSet.dataType
 				)
 				RequestValueSet predictionActuals = dataRetrievalService.getSingleRequestValues(singleDataRequest)
 				if (algorithmResult.futureValue) {
