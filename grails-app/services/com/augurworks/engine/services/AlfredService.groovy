@@ -46,7 +46,10 @@ class AlfredService {
 		}
 		int rowNumber = dataSets*.values*.size().max()
 		if (!automatedService.areDataSetsCorrectlySized(dataSets.tail(), rowNumber)) {
-			throw new AugurWorksException('Request datasets aren\'t all the same length')
+			String dataSetLengths = dataSets.tail().collect { RequestValueSet dataSet ->
+				return dataSet.name + ' - ' + dataSet.offset + ': ' + dataSet.values.size() + ' dates'
+			}.join(', ')
+			throw new AugurWorksException('Request datasets aren\'t all the same length (' + dataSetLengths + ')')
 		}
 		/*if (dataSets.first().values.size() != rowNumber - 1) {
 		 throw new AugurWorksException('Dependant data set not sized correctly compared to independant data sets')
