@@ -50,7 +50,8 @@ class DataRetrievalService {
 					unit: splineRequest.algorithmRequest.unit,
 					minOffset: minOffset,
 					maxOffset: maxOffset,
-					aggregation: requestDataSet.aggregation
+					aggregation: requestDataSet.aggregation,
+					dataType: requestDataSet.dataType
 				)
 				return getSingleRequestValues(singleDataRequest)
 			}

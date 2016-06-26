@@ -47,7 +47,7 @@ class TDClient extends RestClient {
 			throw new AugurWorksException('More results returned than expected')
 		}
 		return parsedResults.first().values.collect { Map result ->
-			return new DataSetValue(result.date, result.close)
+			return new DataSetValue(result.date, result[dataRequest.dataType.name().toLowerCase()])
 		}
 	}
 
