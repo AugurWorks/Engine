@@ -79,7 +79,8 @@ class AlgorithmRequestController {
 			Collection<RequestDataSet> dataSets = rawDataSets.collect { Map dataSet ->
 				return parseDataSet(dataSet)
 			}
-			String dependantSymbol = rawDataSets.grep { it.dependant }.first().symbol
+			Map dependant = rawDataSets.grep { it.dependant }.first()
+			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
 			if (overwrite && id) {
 				AlgorithmRequest deleteRequest = AlgorithmRequest.get(id)
 				autoKickoffService.clearJob(deleteRequest)
@@ -110,7 +111,8 @@ class AlgorithmRequestController {
 			Collection<RequestDataSet> dataSets = rawDataSets.collect { Map dataSet ->
 				return parseDataSet(dataSet)
 			}
-			String dependantSymbol = rawDataSets.grep { it.dependant }.first().symbol
+			Map dependant = rawDataSets.grep { it.dependant }.first()
+			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
 			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], cronExpression, [], dependantSymbol)
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)

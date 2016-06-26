@@ -50,7 +50,7 @@ class DataGeneratorService {
 
 	void bootstrapDefaultRequests() {
 		DEFAULT_REQUESTS.eachWithIndex { Map requestMap, int index ->
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(name: 'Request ' + index, startOffset: requestMap.startOffset, endOffset: requestMap.endOffset, dependantSymbol: requestMap.dependent).save()
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(name: 'Request ' + index, startOffset: requestMap.startOffset, endOffset: requestMap.endOffset, dependantSymbol: requestMap.dependent + ' - CLOSE').save()
 			requestMap.tickers.each { String ticker ->
 				new RequestDataSet(
 					symbol: ticker,

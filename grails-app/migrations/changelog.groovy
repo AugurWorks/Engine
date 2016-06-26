@@ -283,4 +283,6 @@ databaseChangeLog = {
 	include file: 'spline-type.groovy'
 
 	include file: 'data-type.groovy'
+
+	include file: 'data-type-dependant.groovy'
 }

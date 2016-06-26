@@ -82,11 +82,15 @@ class AlgorithmRequest {
 	}
 
 	RequestDataSet getDependentRequestDataSet() {
+		Collection<String> dependentFields = this.dependantSymbol.split(' - ')
 		Collection<RequestDataSet> matching = this.requestDataSets.grep { RequestDataSet requestDataSet ->
-			return requestDataSet.symbol == this.dependantSymbol
+			return requestDataSet.symbol == dependentFields[0] && requestDataSet.dataType.name() == dependentFields[1]
 		}
-		if (matching.size() != 1) {
+		if (matching.size() == 0) {
 			throw new AugurWorksException('Prediction data set not found')
+		}
+		if (matching.size() > 1) {
+			throw new AugurWorksException('Multiple prediction data sets found')
 		}
 		return matching.first()
 	}
