@@ -58,16 +58,18 @@ class RequestValueSet {
 			debugs.push('Failed to get data for ' + this.name)
 		}
 		if (startIndex == -1) {
+			String first = this.values.size() > 0 ? this.values.first().date : 'None'
 			errors.add(this.name + ' does not contain data for the start date, ' + startDate.format(Global.ERROR_DATE_FORMAT))
 			debugs.push('Start date needed: ' + startDate)
-			debugs.push('First available date: ' + this.values.first().date)
-			errors.addAll(['Start date needed: ' + startDate, 'First available date: ' + this.values.first().date])
+			debugs.push('First available date: ' + first)
+			errors.addAll(['Start date needed: ' + startDate, 'First available date: ' + first])
 		}
 		if (endIndex == -1) {
+			String last = this.values.size() > 0 ? this.values.last().date : 'None'
 			errors.add(this.name + ' does not contain data for the end date, ' + endDate.format(Global.ERROR_DATE_FORMAT))
 			debugs.push('End date needed: ' + endDate)
-			debugs.push('Last available date: ' + this.values.last().date)
-			errors.addAll(['End date needed: ' + endDate, 'Last available date: ' + this.values.last().date])
+			debugs.push('Last available date: ' + last)
+			errors.addAll(['End date needed: ' + endDate, 'Last available date: ' + last])
 		}
 		if (startIndex + minOffset < 0) {
 			errors.add(this.name + ' does not contain data all offsets before the start date')
