@@ -5,20 +5,20 @@ import grails.transaction.Transactional
 import javax.annotation.PostConstruct
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
-
 import org.slf4j.MDC
 
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.AMQP
-import com.rabbitmq.client.AlreadyClosedException
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.Consumer
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
+import com.rabbitmq.client.ShutdownListener
+import com.rabbitmq.client.ShutdownSignalException
 
 @Transactional
 class MessagingService {
@@ -46,7 +46,17 @@ class MessagingService {
 			factory.setPassword(grailsApplication.config.rabbitmq.password)
 			factory.setHost(grailsApplication.config.rabbitmq.hostname)
 			factory.setPort(grailsApplication.config.rabbitmq.port)
+			factory.setRequestedHeartbeat(1)
+			factory.setConnectionTimeout(5000)
+			factory.setAutomaticRecoveryEnabled(true)
+			factory.setTopologyRecoveryEnabled(true)
 			Connection connection = factory.newConnection()
+
+			connection.addShutdownListener(new ShutdownListener() {
+				public void shutdownCompleted(ShutdownSignalException e) {
+					log.error('RabbitMQ connection lost', e)
+				}
+			});
 
 			String channelPostfix = grailsApplication.config.rabbitmq.env ? '.' + grailsApplication.config.rabbitmq.env.toLowerCase() : ''
 
@@ -101,9 +111,6 @@ class MessagingService {
 		}
 		try {
 			trainingChannel.basicPublish("", trainingChannelName, null, mapper.writeValueAsBytes(message))
-		} catch (AlreadyClosedException e) {
-			init()
-			sendTrainingMessage(message)
 		} catch (IOException e) {
 			log.error("An error occurred when publishing a message for net {}", message.getNetId(), e)
 			throw new AugurWorksException(errorMessage)
