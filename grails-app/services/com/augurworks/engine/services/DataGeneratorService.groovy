@@ -10,6 +10,7 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
+import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
@@ -68,7 +69,7 @@ class DataGeneratorService {
 		int days = 5
 		Date startDate = use (TimeCategory) { new Date() - days.days }
 		Collection<DataSetValue> values = generateIntraDayData(ticker, startDate, days, 15)
-		return new RequestValueSet(ticker, 0, values)
+		return new RequestValueSet(ticker, DataType.CLOSE, 0, values)
 	}
 
 	Collection<DataSetValue> generateIntraDayData(String ticker, Date startDate, int days, int intervalLength) {

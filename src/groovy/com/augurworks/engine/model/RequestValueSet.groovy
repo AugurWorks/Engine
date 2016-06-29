@@ -2,17 +2,20 @@ package com.augurworks.engine.model
 
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
+import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.Unit
 
 class RequestValueSet {
 
 	String name
+	DataType dataType
 	int offset
 	Collection<DataSetValue> values
 
-	RequestValueSet(String name, int offset, Collection<DataSetValue> values) {
+	RequestValueSet(String name, DataType dataType, int offset, Collection<DataSetValue> values) {
 		this.name = name
+		this.dataType = dataType
 		this.offset = offset
 		this.values = values
 	}
