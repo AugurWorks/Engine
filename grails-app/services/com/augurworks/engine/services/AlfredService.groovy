@@ -42,7 +42,8 @@ class AlfredService {
 	String constructPostBody(AlgorithmRequest algorithmRequest) {
 		SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: true)
 		Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(splineRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
-			return (requestValueSetB.name == algorithmRequest.dependantSymbol) <=> (requestValueSetA.name == algorithmRequest.dependantSymbol) ?: requestValueSetA.name <=> requestValueSetB.name
+			Collection<String> dependantFields = algorithmRequest.dependantSymbol.split(' - ')
+			return (requestValueSetB.name == dependantFields[0] && requestValueSetB.dataType.name() == dependantFields[1]) <=> (requestValueSetA.name == dependantFields[0] && requestValueSetA.dataType.name() == dependantFields[1]) ?: requestValueSetA.name <=> requestValueSetB.name
 		}
 		int rowNumber = dataSets*.values*.size().max()
 		if (!automatedService.areDataSetsCorrectlySized(dataSets.tail(), rowNumber)) {
