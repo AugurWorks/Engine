@@ -161,12 +161,13 @@
 					</thead>
 					<tbody>
 						<g:each in="${ algorithmRequest?.requestDataSets }" var="requestDataSet">
+							<g:set var="dependantFields" value="${ algorithmRequest.dependantSymbol.split(' - ') }" />
 							<tr>
 								<input type="hidden" class="name" value="${ requestDataSet.name }" />
 								<input type="hidden" class="datasource" value="${ requestDataSet.datasource }" />
 								<td>
 									<div class="ui radio checkbox">
-										<g:field type="radio" name="dependant" checked="${ algorithmRequest.dependantSymbol == requestDataSet.symbol }" value="${ requestDataSet.symbol }" />
+										<g:field type="radio" name="dependant" checked="${ dependantFields[0] == requestDataSet.symbol && dependantFields[1] == requestDataSet.dataType.name() }" value="${ requestDataSet.symbol }" />
 									</div>
 								</td>
 								<td class="stock">${ requestDataSet.symbol }</td>

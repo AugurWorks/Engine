@@ -3,6 +3,8 @@ package com.augurworks.engine.controllers
 import grails.converters.JSON
 
 import org.quartz.CronExpression
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.data.SplineType
@@ -22,6 +24,8 @@ import com.augurworks.engine.services.DataRetrievalService
 import com.augurworks.engine.services.MachineLearningService
 
 class AlgorithmRequestController {
+
+	private static final Logger log = LoggerFactory.getLogger(AlgorithmRequestController.class)
 
 	private static final Integer PAGE_SIZE = 5
 
@@ -56,10 +60,10 @@ class AlgorithmRequestController {
 			automatedService.runAlgorithm(algorithmRequest, algorithmType)
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false, error: e.getMessage()] as JSON)
 		} catch (e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -79,7 +83,8 @@ class AlgorithmRequestController {
 			Collection<RequestDataSet> dataSets = rawDataSets.collect { Map dataSet ->
 				return parseDataSet(dataSet)
 			}
-			String dependantSymbol = rawDataSets.grep { it.dependant }.first().symbol
+			Map dependant = rawDataSets.grep { it.dependant }.first()
+			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
 			if (overwrite && id) {
 				AlgorithmRequest deleteRequest = AlgorithmRequest.get(id)
 				autoKickoffService.clearJob(deleteRequest)
@@ -96,7 +101,7 @@ class AlgorithmRequestController {
 			}
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -110,14 +115,15 @@ class AlgorithmRequestController {
 			Collection<RequestDataSet> dataSets = rawDataSets.collect { Map dataSet ->
 				return parseDataSet(dataSet)
 			}
-			String dependantSymbol = rawDataSets.grep { it.dependant }.first().symbol
+			Map dependant = rawDataSets.grep { it.dependant }.first()
+			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
 			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], cronExpression, [], dependantSymbol)
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)
 			render([ok: true] as JSON)
 		} catch (e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -153,7 +159,7 @@ class AlgorithmRequestController {
 			algorithmRequest.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false] as JSON)
 		}
 	}
@@ -163,7 +169,7 @@ class AlgorithmRequestController {
 			algorithmResult.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false] as JSON)
 		}
 	}
