@@ -66,11 +66,11 @@ class MessagingService {
 
 			log.info('Connecting to RabbitMQ channel ' + trainingChannelName)
 			trainingChannel = connection.createChannel()
-			trainingChannel.queueDeclare(trainingChannelName, false, false, false, null)
+			trainingChannel.queueDeclare(trainingChannelName, true, false, false, null)
 
 			log.info('Connecting to RabbitMQ channel ' + resultsChannelName)
 			resultChannel = connection.createChannel()
-			resultChannel.queueDeclare(resultsChannelName, false, false, false, null)
+			resultChannel.queueDeclare(resultsChannelName, true, false, false, null)
 
 			initResultConsumer(resultChannel)
 		} catch (Exception e) {
