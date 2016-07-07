@@ -6,12 +6,12 @@ import groovyx.gpars.GParsPool
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
+import com.augurworks.engine.data.SingleDataRequest
+import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.RequestDataSet
-import com.augurworks.engine.helper.DataSetValue
 import com.augurworks.engine.helper.Datasource
-import com.augurworks.engine.helper.RequestValueSet
-import com.augurworks.engine.helper.SingleDataRequest
-import com.augurworks.engine.helper.SplineRequest
+import com.augurworks.engine.model.DataSetValue
+import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.rest.SymbolResult
 
 @Transactional
@@ -27,7 +27,7 @@ class DataRetrievalService {
 
 	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(splineRequest)
-		Collection<Date> allDates = rawRequestValues*.dates.flatten().sort().unique()
+		Collection<Date> allDates = splineRequest.algorithmRequest.splineType.reduceDates.apply(rawRequestValues*.dates)
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (splineRequest.prediction) {
 			int predictionOffset = splineRequest.algorithmRequest.predictionOffset
@@ -50,7 +50,8 @@ class DataRetrievalService {
 					unit: splineRequest.algorithmRequest.unit,
 					minOffset: minOffset,
 					maxOffset: maxOffset,
-					aggregation: requestDataSet.aggregation
+					aggregation: requestDataSet.aggregation,
+					dataType: requestDataSet.dataType
 				)
 				return getSingleRequestValues(singleDataRequest)
 			}
@@ -67,6 +68,6 @@ class DataRetrievalService {
 
 	RequestValueSet getSingleRequestValues(SingleDataRequest singleDataRequest) {
 		Collection<DataSetValue> values = singleDataRequest.getHistory()
-		return new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.unit, singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
+		return new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.unit, singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
 	}
 }

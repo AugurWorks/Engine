@@ -5,6 +5,8 @@ import groovy.time.TimeCategory
 import spock.lang.Specification
 
 import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.model.DataSetValue
+import com.augurworks.engine.model.RequestValueSet
 
 class RequestValueSetSpec extends Specification {
 
@@ -28,7 +30,7 @@ class RequestValueSetSpec extends Specification {
 				return new DataSetValue(date, i.toString().toDouble())
 			}
 		]
-		return new RequestValueSet(validParams.name, validParams.offset, validParams.values)
+		return new RequestValueSet(validParams.name, DataType.CLOSE, validParams.offset, validParams.values)
 	}
 
 	Collection<Date> generateDates(int valueCount) {

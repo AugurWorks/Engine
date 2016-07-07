@@ -78,7 +78,7 @@ class AlgorithmRequestSpec extends Specification {
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(requestDataSets: [requestDataSet])
 		Map parameters = [
 			endOffset: end,
-			dependantSymbol: requestDataSet.symbol
+			dependantSymbol: requestDataSet.symbol + ' - CLOSE'
 		]
 
 		when:
@@ -157,7 +157,7 @@ class AlgorithmRequestSpec extends Specification {
 		RequestDataSet requestDataSet = algorithmRequest.requestDataSets[requestDataSetNum]
 
 		when:
-		algorithmRequest.dependantSymbol = requestDataSet.symbol
+		algorithmRequest.dependantSymbol = requestDataSet.symbol + ' - CLOSE'
 		algorithmRequest.save()
 
 		then:

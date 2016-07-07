@@ -40,7 +40,7 @@ grails {
 	}
 }
 
- 
+
 grails.converters.encoding = "UTF-8"
 grails.scaffolding.templates.domainSuffix = 'Instance'
 
@@ -55,7 +55,6 @@ grails.hibernate.cache.queries = false
 
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
-alfred.url = getEnv('ALFRED_URL') ?: 'http://localhost:8081'
 logging.files = getEnv('ENGINE_LOGGING_FILES') ?: false
 slack.slash.token = getEnv('SLASH_TOKEN')
 slack.webhook = getEnv('SLACK_WEBHOOK')
@@ -64,24 +63,24 @@ environments {
 	development {
 		grails.logging.jul.usebridge = true
 		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY')
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
+		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = 'aw-files-dev'
 		augurworks.predictions.channel = '#testing'
 	}
 	test {
 		grails.logging.jul.usebridge = true
 		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY')
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
+		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = 'aw-files-test'
 		augurworks.predictions.channel = '#testing'
 	}
 	production {
 		grails.logging.jul.usebridge = false
 		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY')
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET')
+		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
+		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = getEnv('BUCKET') ?: 'aw-files-dev'
 		augurworks.predictions.channel = getEnv('CHANNEL') ?: '#testing'
 		grails.plugin.databasemigration.updateOnStart = true
@@ -113,6 +112,14 @@ augurworks {
 	ml {
 		max = getEnv('ML_MAX') ?: 10
 	}
+}
+
+rabbitmq {
+	username = getEnv('RABBITMQ_USERNAME') ?: 'guest'
+	password = getEnv('RABBITMQ_PASSWORD') ?: 'guest'
+	hostname = getEnv('RABBITMQ_HOST') ?: 'rabbitmq'
+	port = getEnv('RABBITMQ_PORTNUM') ?: 5672
+	env = getEnv('ENV') ?: 'DEV'
 }
 
 grails.cache.config = {

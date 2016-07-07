@@ -1,5 +1,6 @@
 package com.augurworks.engine.domains
 
+import com.augurworks.engine.data.SplineType
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Unit
@@ -13,6 +14,7 @@ class AlgorithmRequest {
 	String dependantSymbol
 	Unit unit = Unit.DAY
 	String cronExpression
+	SplineType splineType = SplineType.FILL
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType]
 
@@ -80,11 +82,15 @@ class AlgorithmRequest {
 	}
 
 	RequestDataSet getDependentRequestDataSet() {
+		Collection<String> dependentFields = this.dependantSymbol.split(' - ')
 		Collection<RequestDataSet> matching = this.requestDataSets.grep { RequestDataSet requestDataSet ->
-			return requestDataSet.symbol == this.dependantSymbol
+			return requestDataSet.symbol == dependentFields[0] && requestDataSet.dataType.name() == dependentFields[1]
 		}
-		if (matching.size() != 1) {
+		if (matching.size() == 0) {
 			throw new AugurWorksException('Prediction data set not found')
+		}
+		if (matching.size() > 1) {
+			throw new AugurWorksException('Multiple prediction data sets found')
 		}
 		return matching.first()
 	}

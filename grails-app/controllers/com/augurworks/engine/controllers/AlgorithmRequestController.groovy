@@ -3,15 +3,19 @@ package com.augurworks.engine.controllers
 import grails.converters.JSON
 
 import org.quartz.CronExpression
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
+import com.augurworks.engine.data.SplineRequest
+import com.augurworks.engine.data.SplineType
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Datasource
-import com.augurworks.engine.helper.SplineRequest
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.services.AlfredService
 import com.augurworks.engine.services.AutoKickoffService
@@ -20,6 +24,8 @@ import com.augurworks.engine.services.DataRetrievalService
 import com.augurworks.engine.services.MachineLearningService
 
 class AlgorithmRequestController {
+
+	private static final Logger log = LoggerFactory.getLogger(AlgorithmRequestController.class)
 
 	private static final Integer PAGE_SIZE = 5
 
@@ -54,10 +60,10 @@ class AlgorithmRequestController {
 			automatedService.runAlgorithm(algorithmRequest, algorithmType)
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false, error: e.getMessage()] as JSON)
 		} catch (e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -70,20 +76,21 @@ class AlgorithmRequestController {
 		[algorithmRequest: algorithmRequest]
 	}
 
-	def submitRequest(String name, int startOffset, int endOffset, String unit, String cronExpression, Long id, boolean overwrite) {
+	def submitRequest(String name, int startOffset, int endOffset, String unit, String splineType, String cronExpression, Long id, boolean overwrite) {
 		try {
 			Collection<String> cronAlgorithms = JSON.parse(params.cronAlgorithms)
 			Collection<Map> rawDataSets = JSON.parse(params.dataSets)
 			Collection<RequestDataSet> dataSets = rawDataSets.collect { Map dataSet ->
 				return parseDataSet(dataSet)
 			}
-			String dependantSymbol = rawDataSets.grep { it.dependant }.first().symbol
+			Map dependant = rawDataSets.grep { it.dependant }.first()
+			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
 			if (overwrite && id) {
 				AlgorithmRequest deleteRequest = AlgorithmRequest.get(id)
 				autoKickoffService.clearJob(deleteRequest)
 				deleteRequest?.delete(flush: true)
 			}
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], cronExpression, cronAlgorithms, dependantSymbol)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], SplineType[splineType], cronExpression, cronAlgorithms, dependantSymbol)
 			algorithmRequest.save()
 			if (algorithmRequest.hasErrors()) {
 				throw new AugurWorksException('The request could not be created, please check that the name is unique.')
@@ -94,12 +101,12 @@ class AlgorithmRequestController {
 			}
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
 
-	def checkRequest(int startOffset, int endOffset, String unit, String cronExpression) {
+	def checkRequest(int startOffset, int endOffset, String unit, String splineType, String cronExpression) {
 		try {
 			if (cronExpression && !CronExpression.isValidExpression(cronExpression)) {
 				throw new AugurWorksException('Invalid Cron Expression')
@@ -108,14 +115,15 @@ class AlgorithmRequestController {
 			Collection<RequestDataSet> dataSets = rawDataSets.collect { Map dataSet ->
 				return parseDataSet(dataSet)
 			}
-			String dependantSymbol = rawDataSets.grep { it.dependant }.first().symbol
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], cronExpression, [], dependantSymbol)
+			Map dependant = rawDataSets.grep { it.dependant }.first()
+			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], cronExpression, [], dependantSymbol)
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)
 			render([ok: true] as JSON)
 		} catch (e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -126,16 +134,18 @@ class AlgorithmRequestController {
 			name: dataSet.name,
 			datasource: Datasource[dataSet.datasource.toUpperCase()],
 			offset: dataSet.offset,
-			aggregation: Aggregation.findByName(dataSet.aggregation)
+			aggregation: Aggregation.findByName(dataSet.aggregation),
+			dataType: DataType.findByName(dataSet.dataType)
 		)
 	}
 
-	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, String cronExpression, Collection<String> cronAlgorithms, String dependantSymbol) {
+	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, SplineType splineType, String cronExpression, Collection<String> cronAlgorithms, String dependantSymbol) {
 		Map parameters = [
 			name: name,
 			startOffset: startOffset,
 			endOffset: endOffset,
 			unit: unit,
+			splineType: splineType,
 			cronExpression: cronExpression,
 			cronAlgorithms: cronAlgorithms.collect { AlgorithmType.findByName(it) },
 			dependantSymbol: dependantSymbol
@@ -149,7 +159,7 @@ class AlgorithmRequestController {
 			algorithmRequest.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false] as JSON)
 		}
 	}
@@ -159,7 +169,7 @@ class AlgorithmRequestController {
 			algorithmResult.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e
+			log.error e.getMessage(), e
 			render([ok: false] as JSON)
 		}
 	}

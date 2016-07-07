@@ -1,14 +1,14 @@
 function addDataSet() {
 	var stockInfo = $('#stock').val().split('-');
-	addDataSetRow($('#stock option:selected').text(), stockInfo[0], stockInfo[1], $('#offset').val(), $('#aggregation').val());
+	addDataSetRow($('#stock option:selected').text(), stockInfo[0], stockInfo[1], $('#offset').val(), $('#aggregation').val(), $('#dataType').val());
 }
 
 function addManualDataSet() {
 	var ticker = $('#stock-manual').val();
-	addDataSetRow(ticker, ticker, $('#datasource').val(), $('#offset-manual').val(), $('#aggregation-manual').val());
+	addDataSetRow(ticker, ticker, $('#datasource').val(), $('#offset-manual').val(), $('#aggregation-manual').val(), $('#dataType-manual').val());
 }
 
-function addDataSetRow(name, ticker, datasource, offset, aggregation) {
+function addDataSetRow(name, ticker, datasource, offset, aggregation, dataType) {
 	var html = '<tr>';
 	html += '<input type="hidden" class="name" value="' + name + '" />';
 	html += '<input type="hidden" class="datasource" value="' + datasource + '" />';
@@ -16,6 +16,7 @@ function addDataSetRow(name, ticker, datasource, offset, aggregation) {
 	html += '<td class="stock">' + ticker + '</td>';
 	html += '<td class="offset">' + offset + '</td>';
 	html += '<td class="aggregation">' + aggregation + '</td>';
+	html += '<td class="dataType">' + dataType + '</td>';
 	html += '<td><button onclick="removeRow(this)" class="ui button">Remove</button></td>';
 	html += '</tr>';
 	$('#dataSets tbody').append(html);
@@ -36,6 +37,7 @@ function submitRequest(overwrite) {
 			startOffset: $('#startOffset').val(),
 			endOffset: $('#endOffset').val(),
 			unit: $('#unit').val(),
+			splineType: $('#splineType').val(),
 			cronExpression: $('#cronExpression').val(),
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
 			overwrite: overwrite
@@ -65,6 +67,7 @@ function checkRequest() {
 			startOffset: $('#startOffset').val(),
 			endOffset: $('#endOffset').val(),
 			unit: $('#unit').val(),
+			splineType: $('#splineType').val(),
 			cronExpression: $('#cronExpression').val()
 		},
 		success: function(data) {
@@ -103,6 +106,7 @@ function getDataSets() {
 			datasource: $(d).children('.datasource').val(),
 			offset: $(d).children('.offset').text(),
 			aggregation: $(d).children('.aggregation').text(),
+			dataType: $(d).children('.dataType').text(),
 			dependant: $(d).find('input[name=dependant]').is(':checked')
 		}
 	});
