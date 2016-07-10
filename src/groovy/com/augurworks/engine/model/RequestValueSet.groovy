@@ -130,7 +130,7 @@ class RequestValueSet {
 
 	Map toMap() {
 		return [
-			name: name,
+			name: name + ' - ' + dataType.name()[0],
 			offset: offset,
 			values: values*.toMap()
 		]

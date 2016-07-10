@@ -20,22 +20,12 @@ class DataGeneratorService {
 
 	GrailsApplication grailsApplication
 
-	static final Collection<Map> DEFAULT_REQUESTS = [[
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
+	static final Map DEFAULT_REQUEST = [
+		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'TSLA', 'JPM', 'ORCL', 'USO'],
 		dependent: 'TSLA',
 		startOffset: -15,
 		endOffset: -1
-	], [
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
-		dependent: 'TSLA',
-		startOffset: -22,
-		endOffset: -1
-	], [
-		tickers: ['AAPL', 'BAC', 'GE', 'GOOG', 'GS', 'TSLA', 'JPM', 'ORCL', 'USO'],
-		dependent: 'TSLA',
-		startOffset: -29,
-		endOffset: -1
-	]]
+	]
 
 	static final Collection<String> VALID_TICKERS = [
 		'AAPL',
@@ -50,14 +40,14 @@ class DataGeneratorService {
 	]
 
 	void bootstrapDefaultRequests() {
-		DEFAULT_REQUESTS.eachWithIndex { Map requestMap, int index ->
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(name: 'Request ' + index, startOffset: requestMap.startOffset, endOffset: requestMap.endOffset, dependantSymbol: requestMap.dependent + ' - CLOSE').save()
-			requestMap.tickers.each { String ticker ->
+		['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursdy', 'Friday'].eachWithIndex { String day, int index ->
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(name: day + ' Test', startOffset: DEFAULT_REQUEST.startOffset - index, endOffset: DEFAULT_REQUEST.endOffset - index, dependantSymbol: DEFAULT_REQUEST.dependent + ' - CLOSE').save()
+			DEFAULT_REQUEST.tickers.each { String ticker ->
 				new RequestDataSet(
 					symbol: ticker,
 					name: ticker,
 					datasource: Datasource.TD,
-					offset: ticker == requestMap.dependent ? 0 : -1,
+					offset: ticker == DEFAULT_REQUEST.dependent ? 0 : -1,
 					aggregation: Aggregation.PERIOD_PERCENT_CHANGE,
 					algorithmRequest: algorithmRequest
 				).save()
