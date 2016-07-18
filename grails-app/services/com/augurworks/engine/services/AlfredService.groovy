@@ -85,7 +85,7 @@ class AlfredService {
 
 	void processResponse(AlgorithmResult algorithmResult, String text) {
 		Collection<String> lines = text.split('\n')
-		lines[4..(lines.size() - 1)].each { String line ->
+		lines[0..(lines.size() - 1)].each { String line ->
 			Collection<String> cols = line.split(' ')
 			new PredictedValue(
 				date: Date.parse(Global.ALFRED_DATE_FORMAT, cols[0]),
