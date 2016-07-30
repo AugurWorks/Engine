@@ -8,6 +8,7 @@ import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
+import com.augurworks.engine.domains.TrainingStat
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
@@ -75,6 +76,12 @@ class AlfredService {
 		algorithmResult.complete = true
 		processResponse(algorithmResult, message.getData())
 		algorithmResult.save(flush: true)
+
+		List<TrainingStat> trainingStats = message.getTrainingStats()
+		trainingStats.each { TrainingStat trainingStat ->
+			trainingStat.save()
+		}
+
 		automatedService.postProcessing(algorithmResult)
 
 		log.info 'Finished processing message from net ' + algorithmResult.alfredModelId
