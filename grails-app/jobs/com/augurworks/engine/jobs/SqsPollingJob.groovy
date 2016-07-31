@@ -21,16 +21,21 @@ class SqsPollingJob {
 	
 	AmazonSQSClient sqsClient = new AmazonSQSClient()
 
-	static triggers = {
-		simple repeatInterval: 20000
+	void execute() {
+		if (grailsApplication.config.messaging.lambda) {
+			while (true) {
+				pollSqs()
+			}
+		}
 	}
 
-	void execute() {
+	void pollSqs() {
 		String queueName = grailsApplication.config.messaging.sqsName
-		if (grailsApplication.config.messaging.lambda) {
+		try {
 			ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest()
 				.withQueueUrl(queueName)
 				.withWaitTimeSeconds(20)
+				.withMaxNumberOfMessages(10)
 			ReceiveMessageResult receiveMessageResult = sqsClient.receiveMessage(receiveMessageRequest)
 			Collection<Message> messages = receiveMessageResult.getMessages()
 			messages.each { Message message ->
@@ -42,6 +47,9 @@ class SqsPollingJob {
 					log.error('Error occured during message processing', e)
 				}
 			}
+		} catch (Exception e) {
+			log.error('Error polling for SQS messages', e)
+			sleep 10000
 		}
 	}
 }

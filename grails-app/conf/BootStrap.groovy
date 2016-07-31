@@ -2,6 +2,7 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.Role
 import com.augurworks.engine.domains.User
 import com.augurworks.engine.domains.UserRole
+import com.augurworks.engine.jobs.SqsPollingJob
 import com.augurworks.engine.services.AutoKickoffService
 import com.augurworks.engine.services.DataGeneratorService
 
@@ -30,5 +31,7 @@ class BootStrap {
 		AlgorithmRequest.findAllByCronExpressionIsNotNull().each { AlgorithmRequest algorithmRequest ->
 			autoKickoffService.scheduleKickoffJob(algorithmRequest)
 		}
+
+		SqsPollingJob.triggerNow()
 	}
 }
