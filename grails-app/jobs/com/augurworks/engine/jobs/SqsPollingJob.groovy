@@ -8,6 +8,7 @@ import com.amazonaws.services.sqs.model.DeleteMessageBatchRequestEntry
 import com.amazonaws.services.sqs.model.Message
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest
 import com.amazonaws.services.sqs.model.ReceiveMessageResult
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.services.AlfredService
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -42,13 +43,17 @@ class SqsPollingJob {
 				TrainingMessage trainingMessage = mapper.readValue(message.getBody(), TrainingMessage.class)
 				try {
 					alfredService.processResult(trainingMessage)
-					sqsClient.deleteMessage(queueName, message.getReceiptHandle())
+				} catch (AugurWorksException e) {
+					log.warn e
 				} catch (Exception e) {
-					log.error('Error occured during message processing', e)
+					e.printStackTrace()
+					log.error e
+				} finally {
+					sqsClient.deleteMessage(queueName, message.getReceiptHandle())
 				}
 			}
 		} catch (Exception e) {
-			log.error('Error polling for SQS messages', e)
+			log.error e
 			sleep 10000
 		}
 	}
