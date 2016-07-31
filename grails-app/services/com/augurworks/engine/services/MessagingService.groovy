@@ -23,7 +23,7 @@ import com.rabbitmq.client.ShutdownSignalException
 
 @Transactional
 class MessagingService {
-	
+
 	private static final String SQS_NAME_KEY = 'sqsName'
 	public static final String ROOT_TRAINING_CHANNEL = "nets.training"
 	public static final String ROOT_RESULTS_CHANNEL = "nets.results"
@@ -45,7 +45,7 @@ class MessagingService {
 			rabbitMQInit()
 		}
 	}
-	
+
 	private void rabbitMQInit() {
 		log.info('Initializing RabbitMQ connections')
 		try {
@@ -110,7 +110,7 @@ class MessagingService {
 			log.error("Results consumer failed to initialize", e)
 		}
 	}
-	
+
 	void sendTrainingMessage(TrainingMessage message) {
 		if (grailsApplication.config.messaging.lambda) {
 			Map<String, String> metadata = [:]

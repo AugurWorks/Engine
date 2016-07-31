@@ -13,7 +13,7 @@ public class TrainingMessage implements Serializable {
 
 	private final String netId
 	private final String data
-	
+
 	private Map<String, String> metadata
 	private List<TrainingStat> trainingStats
 

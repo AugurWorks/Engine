@@ -67,7 +67,7 @@ class AlfredService {
 
 	void processResult(TrainingMessage message) {
 		AlgorithmResult algorithmResult = AlgorithmResult.findByAlfredModelId(message.getNetId())
-		
+
 		if (algorithmResult == null) {
 			throw new AugurWorksException('Algorithm ' + message.getNetId() + ' doesn\' exist')
 		}
