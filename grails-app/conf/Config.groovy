@@ -59,28 +59,30 @@ logging.files = getEnv('ENGINE_LOGGING_FILES') ?: false
 slack.slash.token = getEnv('SLASH_TOKEN')
 slack.webhook = getEnv('SLACK_WEBHOOK')
 
+grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
+oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
+oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
+
+messaging {
+	lambda = getEnv('LAMBDA_ON') ?: false
+	sqsName = getEnv('SQS_NAME')
+	snsTopicArn = getEnv('SNS_TOPIC_ARN')
+}
+
+
 environments {
 	development {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = 'aw-files-dev'
 		augurworks.predictions.channel = '#testing'
 	}
 	test {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = 'aw-files-test'
 		augurworks.predictions.channel = '#testing'
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = getEnv('BUCKET') ?: 'aw-files-dev'
 		augurworks.predictions.channel = getEnv('CHANNEL') ?: '#testing'
 		grails.plugin.databasemigration.updateOnStart = true
