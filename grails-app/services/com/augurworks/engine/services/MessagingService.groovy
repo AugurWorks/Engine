@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.slf4j.MDC
 
+import com.amazonaws.services.sns.AmazonSNSClient
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -23,6 +24,7 @@ import com.rabbitmq.client.ShutdownSignalException
 @Transactional
 class MessagingService {
 
+	private static final String SQS_NAME_KEY = 'sqsName'
 	public static final String ROOT_TRAINING_CHANNEL = "nets.training"
 	public static final String ROOT_RESULTS_CHANNEL = "nets.results"
 
@@ -39,6 +41,12 @@ class MessagingService {
 
 	@PostConstruct
 	private void init() {
+		if (!grailsApplication.config.messaging.lambda) {
+			rabbitMQInit()
+		}
+	}
+
+	private void rabbitMQInit() {
 		log.info('Initializing RabbitMQ connections')
 		try {
 			ConnectionFactory factory = new ConnectionFactory()
@@ -103,8 +111,17 @@ class MessagingService {
 		}
 	}
 
-
 	void sendTrainingMessage(TrainingMessage message) {
+		if (grailsApplication.config.messaging.lambda) {
+			Map<String, String> metadata = [:]
+			metadata.put(SQS_NAME_KEY, grailsApplication.config.messaging.sqsName)
+			sendSNSTrainingMessage(message.withMetadata(metadata))
+		} else {
+			sendRabbitMQTrainingMessage(message)
+		}
+	}
+
+	void sendRabbitMQTrainingMessage(TrainingMessage message) {
 		String errorMessage = 'Unable to submit training message, the messaging bus is currently unavailable'
 		if (trainingChannel == null) {
 			throw new AugurWorksException(errorMessage)
@@ -115,5 +132,11 @@ class MessagingService {
 			log.error("An error occurred when publishing a message for net {}", message.getNetId(), e)
 			throw new AugurWorksException(errorMessage)
 		}
+	}
+	
+	void sendSNSTrainingMessage(TrainingMessage message) {
+		AmazonSNSClient snsClient = new AmazonSNSClient()
+		String snsTopicArn = grailsApplication.config.messaging.snsTopicArn
+		snsClient.publish(snsTopicArn, mapper.writeValueAsString(message))
 	}
 }

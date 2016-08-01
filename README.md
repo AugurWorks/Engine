@@ -13,6 +13,7 @@ A production environment can be built which uses environment variables for all c
 - **ENV** (default: DEV) - Environment field for logging and RabbitMQ channel postfix
 - **FLUENTD_HOST** - Fluentd host for centralized logging
 - **HOSTNAME** - Hostname for Fluentd logs
+- **LAMBDA_ON** (default; false) - True if being used with AWS Lambda
 - **ML_MAX** (default: 10) - Maximum simultaneous machine learning runs
 - **OAUTH_KEY** - GitHub OAuth key
 - **OAUTH_SECRET** - GitHub OAuth secret
@@ -26,6 +27,8 @@ A production environment can be built which uses environment variables for all c
 - **RDS_PORT** (default: 3306) - MySQL port number
 - **RDS_DB_NAME** (default: engine) - MySQL DB name
 - **SERVER_URL** (default: http://[local-ip]:8080) - Full deployed application URL
+- **SNS_TOPIC_ARN** - SNS Topic Name, only used if **LAMBDA_ON** is true
+- **SQS_NAME** - SQS Queue Name, only used if **LAMBDA_ON** is true
 - **TD_KEY** - TD API key
 
 ## Local Development
