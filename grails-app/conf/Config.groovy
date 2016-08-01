@@ -64,7 +64,7 @@ oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
 oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 
 messaging {
-	lambda = getEnv('LAMBDA_ON') ?: false
+	lambda = Boolean.valueOf(getEnv('LAMBDA_ON')) ?: false
 	sqsName = getEnv('SQS_NAME')
 	snsTopicArn = getEnv('SNS_TOPIC_ARN')
 }
