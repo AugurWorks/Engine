@@ -9,10 +9,10 @@ databaseChangeLog = {
 
 		grailsChange{
 			change{
-				String updateDays = 'update AlgorithmRequest a set a.alfred_envrironment=DOCKER where a.unit=DAY'
+				String updateDays = "update AlgorithmRequest a set a.alfredEnvironment='DOCKER' where a.unit='DAY'"
 				AlgorithmRequest.executeUpdate(updateDays)
 
-				String updateIntradays = 'update AlgorithmRequest a set a.alfred_envrironment=LAMBDA where a.unit!=DAY'
+				String updateIntradays = "update AlgorithmRequest a set a.alfredEnvironment='LAMBDA' where a.unit!='DAY'"
 				AlgorithmRequest.executeUpdate(updateIntradays)
 			}
 		}
