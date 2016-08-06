@@ -19,14 +19,12 @@ class SqsPollingJob {
 	AlfredService alfredService
 
 	private final ObjectMapper mapper = new ObjectMapper()
-	
+
 	AmazonSQSClient sqsClient = new AmazonSQSClient()
 
 	void execute() {
-		if (grailsApplication.config.messaging.lambda) {
-			while (true) {
-				pollSqs()
-			}
+		while (true) {
+			pollSqs()
 		}
 	}
 
