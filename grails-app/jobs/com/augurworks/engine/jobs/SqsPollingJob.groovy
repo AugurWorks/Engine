@@ -23,13 +23,14 @@ class SqsPollingJob {
 	AmazonSQSClient sqsClient = new AmazonSQSClient()
 
 	void execute() {
+		String queueName = grailsApplication.config.messaging.sqsName
+		log.info 'Starting SQS polling for ' + queueName
 		while (true) {
-			pollSqs()
+			pollSqs(queueName)
 		}
 	}
 
-	void pollSqs() {
-		String queueName = grailsApplication.config.messaging.sqsName
+	void pollSqs(String queueName) {
 		try {
 			ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest()
 				.withQueueUrl(queueName)
