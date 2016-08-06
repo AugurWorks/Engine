@@ -13,6 +13,7 @@ import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
+import com.augurworks.engine.helper.AlfredEnvironment
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Datasource
@@ -76,7 +77,7 @@ class AlgorithmRequestController {
 		[algorithmRequest: algorithmRequest]
 	}
 
-	def submitRequest(String name, int startOffset, int endOffset, String unit, String splineType, String cronExpression, Long id, boolean overwrite) {
+	def submitRequest(String name, int startOffset, int endOffset, String unit, String splineType, String alfredEnvironment, String cronExpression, Long id, boolean overwrite) {
 		try {
 			Collection<String> cronAlgorithms = JSON.parse(params.cronAlgorithms)
 			Collection<Map> rawDataSets = JSON.parse(params.dataSets)
@@ -90,7 +91,7 @@ class AlgorithmRequestController {
 				autoKickoffService.clearJob(deleteRequest)
 				deleteRequest?.delete(flush: true)
 			}
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], SplineType[splineType], cronExpression, cronAlgorithms, dependantSymbol)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], SplineType[splineType], AlfredEnvironment.findByName(alfredEnvironment), cronExpression, cronAlgorithms, dependantSymbol)
 			algorithmRequest.save()
 			if (algorithmRequest.hasErrors()) {
 				throw new AugurWorksException('The request could not be created, please check that the name is unique.')
@@ -117,7 +118,7 @@ class AlgorithmRequestController {
 			}
 			Map dependant = rawDataSets.grep { it.dependant }.first()
 			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], cronExpression, [], dependantSymbol)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], null, cronExpression, [], dependantSymbol)
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)
@@ -139,13 +140,14 @@ class AlgorithmRequestController {
 		)
 	}
 
-	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, SplineType splineType, String cronExpression, Collection<String> cronAlgorithms, String dependantSymbol) {
+	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, SplineType splineType, AlfredEnvironment alfredEnvironment, String cronExpression, Collection<String> cronAlgorithms, String dependantSymbol) {
 		Map parameters = [
 			name: name,
 			startOffset: startOffset,
 			endOffset: endOffset,
 			unit: unit,
 			splineType: splineType,
+			alfredEnvironment: alfredEnvironment,
 			cronExpression: cronExpression,
 			cronAlgorithms: cronAlgorithms.collect { AlgorithmType.findByName(it) },
 			dependantSymbol: dependantSymbol

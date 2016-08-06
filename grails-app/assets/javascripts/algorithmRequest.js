@@ -38,6 +38,7 @@ function submitRequest(overwrite) {
 			endOffset: $('#endOffset').val(),
 			unit: $('#unit').val(),
 			splineType: $('#splineType').val(),
+			alfredEnvironment: $('#alfredEnvironment').val(),
 			cronExpression: $('#cronExpression').val(),
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
 			overwrite: overwrite
