@@ -2,6 +2,7 @@ package com.augurworks.engine.domains
 
 import com.augurworks.engine.data.SplineType
 import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.helper.AlfredEnvironment
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Unit
 
@@ -14,6 +15,7 @@ class AlgorithmRequest {
 	String dependantSymbol
 	Unit unit = Unit.DAY
 	String cronExpression
+	AlfredEnvironment alfredEnvironment = AlfredEnvironment.LAMBDA
 	SplineType splineType = SplineType.FILL
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType]
