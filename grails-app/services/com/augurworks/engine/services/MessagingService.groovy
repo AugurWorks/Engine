@@ -25,6 +25,9 @@ import com.rabbitmq.client.ShutdownSignalException
 class MessagingService {
 
 	private static final String SQS_NAME_KEY = 'sqsName'
+	private static final String FLUENT_HOST_KEY = 'fluentHost'
+	private static final String LOGGING_ENV_KEY = 'loggingEnv'
+
 	public static final String ROOT_TRAINING_CHANNEL = "nets.training"
 	public static final String ROOT_RESULTS_CHANNEL = "nets.results"
 
@@ -112,12 +115,14 @@ class MessagingService {
 	}
 
 	void sendTrainingMessage(TrainingMessage message) {
+		Map<String, String> metadata = [:]
+		metadata.put(FLUENT_HOST_KEY, grailsApplication.config.logging.fluentHost)
+		metadata.put(LOGGING_ENV_KEY, grailsApplication.config.logging.env)
 		if (grailsApplication.config.messaging.lambda) {
-			Map<String, String> metadata = [:]
 			metadata.put(SQS_NAME_KEY, grailsApplication.config.messaging.sqsName)
 			sendSNSTrainingMessage(message.withMetadata(metadata))
 		} else {
-			sendRabbitMQTrainingMessage(message)
+			sendRabbitMQTrainingMessage(message.withMetadata(metadata))
 		}
 	}
 

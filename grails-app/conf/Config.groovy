@@ -69,6 +69,10 @@ messaging {
 	snsTopicArn = getEnv('SNS_TOPIC_ARN')
 }
 
+logging {
+	fluentHost = getEnv('FLUENTD_HOST')
+	env = getEnv('ENV') ?: 'DEV'
+}
 
 environments {
 	development {
