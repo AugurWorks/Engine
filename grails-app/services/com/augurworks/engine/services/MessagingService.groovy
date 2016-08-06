@@ -41,14 +41,8 @@ class MessagingService {
 
 	private Channel trainingChannel
 	private Channel resultChannel
-
+	
 	@PostConstruct
-	private void init() {
-		if (!grailsApplication.config.messaging.lambda) {
-			rabbitMQInit()
-		}
-	}
-
 	private void rabbitMQInit() {
 		log.info('Initializing RabbitMQ connections')
 		try {
@@ -114,11 +108,11 @@ class MessagingService {
 		}
 	}
 
-	void sendTrainingMessage(TrainingMessage message) {
+	void sendTrainingMessage(TrainingMessage message, boolean useLambda) {
 		Map<String, String> metadata = [:]
 		metadata.put(FLUENT_HOST_KEY, grailsApplication.config.logging.fluentHost)
 		metadata.put(LOGGING_ENV_KEY, grailsApplication.config.logging.env)
-		if (grailsApplication.config.messaging.lambda) {
+		if (useLambda) {
 			metadata.put(SQS_NAME_KEY, grailsApplication.config.messaging.sqsName)
 			sendSNSTrainingMessage(message.withMetadata(metadata))
 		} else {

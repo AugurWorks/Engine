@@ -64,14 +64,13 @@ oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
 oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 
 messaging {
-	lambda = Boolean.valueOf(getEnv('LAMBDA_ON')) ?: false
-	sqsName = getEnv('SQS_NAME')
-	snsTopicArn = getEnv('SNS_TOPIC_ARN')
+	sqsName = getEnv('SQS_NAME') ?: 'Training-Results-Local'
+	snsTopicArn = getEnv('SNS_TOPIC_ARN') ?: 'arn:aws:sns:us-east-1:274685854631:Alfred-Training-Local'
 }
 
 logging {
 	fluentHost = getEnv('FLUENTD_HOST')
-	env = getEnv('ENV') ?: 'DEV'
+	env = getEnv('ENV') ?: 'LOCAL'
 }
 
 environments {
