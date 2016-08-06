@@ -10,6 +10,7 @@ import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.TrainingStat
 import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.helper.AlfredEnvironment
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
@@ -28,7 +29,7 @@ class AlfredService {
 		MDC.put('netId', netId)
 		log.info('Created Alfred algorithm run for ' + algorithmRequest.name)
 		String postBody = constructPostBody(algorithmRequest)
-		messagingService.sendTrainingMessage(new TrainingMessage(netId, postBody))
+		messagingService.sendTrainingMessage(new TrainingMessage(netId, postBody), algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
