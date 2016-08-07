@@ -23,6 +23,7 @@ class AlfredService {
 	DataRetrievalService dataRetrievalService
 	AutomatedService automatedService
 	MessagingService messagingService
+	AutoScalingService autoScalingService
 
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		String netId = UUID.randomUUID().toString()
@@ -39,6 +40,10 @@ class AlfredService {
 		])
 		algorithmResult.save()
 		MDC.remove('netId')
+
+		if (algorithmRequest.alfredEnvironment == AlfredEnvironment.DOCKER) {
+			autoScalingService.checkSpinUp()
+		}
 	}
 
 	String constructPostBody(AlgorithmRequest algorithmRequest) {

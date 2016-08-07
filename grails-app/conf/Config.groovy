@@ -73,6 +73,10 @@ logging {
 	env = getEnv('ENV') ?: 'LOCAL'
 }
 
+autoscaling {
+	name = getEnv('ASG_NAME')
+}
+
 environments {
 	development {
 		grails.logging.jul.usebridge = true
