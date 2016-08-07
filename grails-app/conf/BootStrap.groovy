@@ -17,7 +17,10 @@ class BootStrap {
 	}
 
 	def init = { servletContext ->
-		println 'Bootstrapping'
+		log.info 'Starting bootstrap'
+
+		SqsPollingJob.triggerNow()
+
 		if (Role.count() == 0) {
 			Role adminRole = new Role(authority: "ROLE_ADMIN").save()
 			Role userRole = new Role(authority: "ROLE_USER").save()
@@ -32,6 +35,6 @@ class BootStrap {
 			autoKickoffService.scheduleKickoffJob(algorithmRequest)
 		}
 
-		SqsPollingJob.triggerNow()
+		log.info 'Finished bootstrapping'
 	}
 }
