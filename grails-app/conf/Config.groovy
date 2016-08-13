@@ -146,6 +146,7 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.augurworks
 grails.plugin.springsecurity.authority.className = 'com.augurworks.engine.domains.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/**':								['permitAll'],
+	'/home/dashboard':					['ROLE_ADMIN'],
 	'/graph/**':						['ROLE_ADMIN'],
 	'/algorithmRequest/**':				['ROLE_ADMIN'],
 	'/algorithmResult/**':				['ROLE_ADMIN'],
