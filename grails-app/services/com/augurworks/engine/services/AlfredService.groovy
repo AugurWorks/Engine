@@ -72,6 +72,7 @@ class AlfredService {
 	}
 
 	void processResult(TrainingMessage message) {
+		MDC.put('netId', message.getNetId())
 		AlgorithmResult algorithmResult = AlgorithmResult.findByAlfredModelId(message.getNetId())
 
 		if (algorithmResult == null) {
@@ -95,7 +96,8 @@ class AlfredService {
 		automatedService.postProcessing(algorithmResult)
 
 		log.info 'Finished processing message from net ' + algorithmResult.alfredModelId
-
+		
+		MDC.remove('netId')
 		MDC.remove('algorithmRequestId')
 		MDC.remove('algorithmResultId')
 	}
