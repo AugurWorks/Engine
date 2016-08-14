@@ -16,21 +16,26 @@ import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.model.RequestValueSet
+import com.fasterxml.jackson.databind.ObjectMapper
 
 @Transactional
 class AlfredService {
+
+	private final ObjectMapper mapper = new ObjectMapper()
 
 	DataRetrievalService dataRetrievalService
 	AutomatedService automatedService
 	MessagingService messagingService
 	AutoScalingService autoScalingService
+	AwsService awsService
 
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		String netId = UUID.randomUUID().toString()
 		MDC.put('netId', netId)
 		log.info('Created Alfred algorithm run for ' + algorithmRequest.name)
 		String postBody = constructPostBody(algorithmRequest)
-		messagingService.sendTrainingMessage(new TrainingMessage(netId, postBody), algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
+		TrainingMessage message = new TrainingMessage(netId, postBody)
+		messagingService.sendTrainingMessage(message, algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
@@ -43,6 +48,12 @@ class AlfredService {
 
 		if (algorithmRequest.alfredEnvironment == AlfredEnvironment.DOCKER) {
 			autoScalingService.checkSpinUp()
+		}
+
+		try {
+			awsService.uploadToS3('alfred', 'alfred-' + netId + '.json', mapper.writeValueAsString(message))
+		} catch (Exception e) {
+			log.error('Error uploading Alfred data to S3', e)
 		}
 	}
 

@@ -80,8 +80,16 @@ class AwsService {
 	String uploadToS3(File file) {
 		AmazonS3Client s3 = new AmazonS3Client()
 		String bucket = bucket()
-		String path = new Date().format(Global.DATE_FORMAT) + file.name
+		String path = new Date().format(Global.S3_DATE_FORMAT) + file.name
 		s3.putObject(bucket, path, file)
+		return path
+	}
+
+	String uploadToS3(String prefix, String fileName, String content) {
+		AmazonS3Client s3 = new AmazonS3Client()
+		String bucket = bucket()
+		String path = prefix + '/' + new Date().format(Global.S3_DATE_FORMAT) + fileName
+		s3.putObject(bucket, path, content)
 		return path
 	}
 
