@@ -2,7 +2,7 @@
 AugurWorks UI Engine 2.0
 
 ## Requirements
-Requires **alfred:1.6.0** or later
+Requires **alfred:2.0.0** or later
 
 ## Deployment
 A production environment can be built which uses environment variables for all customizable config values. The environment variables are listed below:
