@@ -8,6 +8,7 @@
 	<body>
 		<%@ page import="com.augurworks.engine.data.SplineType" %>
 		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
+		<%@ page import="com.augurworks.engine.helper.AlfredEnvironment" %>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
 		<%@ page import="com.augurworks.engine.helper.Datasource" %>
 		<%@ page import="com.augurworks.engine.helper.DataType" %>
@@ -43,7 +44,7 @@
 			<div class="ui form">
 				<h3 class="ui dividing header">Info</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
-				<div class="four fields">
+				<div class="five fields">
 					<div class="field">
 						<label>Name</label>
 						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
@@ -55,6 +56,10 @@
 					<div class="field">
 						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
 						<g:field type="text" name="cronExpression" value="${ algorithmRequest ? algorithmRequest?.cronExpression : '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
+					</div>
+					<div class="field">
+						<label>Alfred Environment</label>
+						<g:select from="${ AlfredEnvironment.values()*.name }" name="alfredEnvironment" class="ui search dropdown" value="${ algorithmRequest?.alfredEnvironment?.name }" />
 					</div>
 					<div class="field">
 						<label>Cron Algorithms</label>

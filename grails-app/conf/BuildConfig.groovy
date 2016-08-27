@@ -30,7 +30,7 @@ grails.project.dependency.resolution = {
 	}
 
 	dependencies {
-		runtime 'com.amazonaws:aws-java-sdk:1.10.6'
+		runtime 'com.amazonaws:aws-java-sdk:1.11.26'
 		compile "org.codehaus.gpars:gpars:1.1.0"
 		runtime 'mysql:mysql-connector-java:5.1.22'
 		compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.0.13'

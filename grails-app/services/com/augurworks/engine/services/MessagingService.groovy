@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.slf4j.MDC
 
+import com.amazonaws.services.sns.AmazonSNSClient
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -23,6 +24,10 @@ import com.rabbitmq.client.ShutdownSignalException
 @Transactional
 class MessagingService {
 
+	private static final String SQS_NAME_KEY = 'sqsName'
+	private static final String FLUENT_HOST_KEY = 'fluentHost'
+	private static final String LOGGING_ENV_KEY = 'loggingEnv'
+
 	public static final String ROOT_TRAINING_CHANNEL = "nets.training"
 	public static final String ROOT_RESULTS_CHANNEL = "nets.results"
 
@@ -36,9 +41,9 @@ class MessagingService {
 
 	private Channel trainingChannel
 	private Channel resultChannel
-
+	
 	@PostConstruct
-	private void init() {
+	private void rabbitMQInit() {
 		log.info('Initializing RabbitMQ connections')
 		try {
 			ConnectionFactory factory = new ConnectionFactory()
@@ -87,10 +92,7 @@ class MessagingService {
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 					try {
 						TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
-						MDC.put('netId', message.getNetId())
-						log.debug 'Consuming message for net ' + message.getNetId()
 						alfredService.processResult(message)
-						MDC.remove('netId')
 					} catch (Exception e) {
 						log.error e
 					}
@@ -103,8 +105,19 @@ class MessagingService {
 		}
 	}
 
+	void sendTrainingMessage(TrainingMessage message, boolean useLambda) {
+		Map<String, String> metadata = [:]
+		metadata.put(FLUENT_HOST_KEY, grailsApplication.config.logging.fluentHost)
+		metadata.put(LOGGING_ENV_KEY, grailsApplication.config.logging.env)
+		if (useLambda) {
+			metadata.put(SQS_NAME_KEY, grailsApplication.config.messaging.sqsName)
+			sendSNSTrainingMessage(message.withMetadata(metadata))
+		} else {
+			sendRabbitMQTrainingMessage(message.withMetadata(metadata))
+		}
+	}
 
-	void sendTrainingMessage(TrainingMessage message) {
+	void sendRabbitMQTrainingMessage(TrainingMessage message) {
 		String errorMessage = 'Unable to submit training message, the messaging bus is currently unavailable'
 		if (trainingChannel == null) {
 			throw new AugurWorksException(errorMessage)
@@ -115,5 +128,11 @@ class MessagingService {
 			log.error("An error occurred when publishing a message for net {}", message.getNetId(), e)
 			throw new AugurWorksException(errorMessage)
 		}
+	}
+	
+	void sendSNSTrainingMessage(TrainingMessage message) {
+		AmazonSNSClient snsClient = new AmazonSNSClient()
+		String snsTopicArn = grailsApplication.config.messaging.snsTopicArn
+		snsClient.publish(snsTopicArn, mapper.writeValueAsString(message))
 	}
 }

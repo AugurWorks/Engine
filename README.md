@@ -2,7 +2,7 @@
 AugurWorks UI Engine 2.0
 
 ## Requirements
-Requires **alfred:1.6.0** or later
+Requires **alfred:2.0.0** or later
 
 ## Deployment
 A production environment can be built which uses environment variables for all customizable config values. The environment variables are listed below:
@@ -26,6 +26,8 @@ A production environment can be built which uses environment variables for all c
 - **RDS_PORT** (default: 3306) - MySQL port number
 - **RDS_DB_NAME** (default: engine) - MySQL DB name
 - **SERVER_URL** (default: http://[local-ip]:8080) - Full deployed application URL
+- **SNS_TOPIC_ARN** - SNS Topic Name, only used if **LAMBDA_ON** is true
+- **SQS_NAME** - SQS Queue Name, only used if **LAMBDA_ON** is true
 - **TD_KEY** - TD API key
 
 ## Local Development

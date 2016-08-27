@@ -285,4 +285,8 @@ databaseChangeLog = {
 	include file: 'data-type.groovy'
 
 	include file: 'data-type-dependant.groovy'
+
+	include file: 'alfred-stats.groovy'
+
+	include file: 'alfred-environment.groovy'
 }

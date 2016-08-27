@@ -59,28 +59,37 @@ logging.files = getEnv('ENGINE_LOGGING_FILES') ?: false
 slack.slash.token = getEnv('SLASH_TOKEN')
 slack.webhook = getEnv('SLACK_WEBHOOK')
 
+grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
+oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
+oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
+
+messaging {
+	sqsName = getEnv('SQS_NAME') ?: 'Training-Results-Local'
+	snsTopicArn = getEnv('SNS_TOPIC_ARN') ?: 'arn:aws:sns:us-east-1:274685854631:Alfred-Training-Local'
+}
+
+logging {
+	fluentHost = getEnv('FLUENTD_HOST')
+	env = getEnv('ENV') ?: 'LOCAL'
+}
+
+autoscaling {
+	name = getEnv('ASG_NAME')
+}
+
 environments {
 	development {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = 'aw-files-dev'
 		augurworks.predictions.channel = '#testing'
 	}
 	test {
 		grails.logging.jul.usebridge = true
-		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = 'aw-files-test'
 		augurworks.predictions.channel = '#testing'
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
-		oauth.providers.github.key = getEnv('OAUTH_KEY') ?: 'xxxx'
-		oauth.providers.github.secret = getEnv('OAUTH_SECRET') ?: 'xxxx'
 		aws.bucket = getEnv('BUCKET') ?: 'aw-files-dev'
 		augurworks.predictions.channel = getEnv('CHANNEL') ?: '#testing'
 		grails.plugin.databasemigration.updateOnStart = true
@@ -137,6 +146,7 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.augurworks
 grails.plugin.springsecurity.authority.className = 'com.augurworks.engine.domains.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	'/**':								['permitAll'],
+	'/home/dashboard':					['ROLE_ADMIN'],
 	'/graph/**':						['ROLE_ADMIN'],
 	'/algorithmRequest/**':				['ROLE_ADMIN'],
 	'/algorithmResult/**':				['ROLE_ADMIN'],

@@ -8,26 +8,34 @@ import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
+import com.augurworks.engine.domains.TrainingStat
 import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.helper.AlfredEnvironment
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.model.RequestValueSet
+import com.fasterxml.jackson.databind.ObjectMapper
 
 @Transactional
 class AlfredService {
 
+	private final ObjectMapper mapper = new ObjectMapper()
+
 	DataRetrievalService dataRetrievalService
 	AutomatedService automatedService
 	MessagingService messagingService
+	AutoScalingService autoScalingService
+	AwsService awsService
 
 	void createAlgorithm(AlgorithmRequest algorithmRequest) {
 		String netId = UUID.randomUUID().toString()
 		MDC.put('netId', netId)
 		log.info('Created Alfred algorithm run for ' + algorithmRequest.name)
 		String postBody = constructPostBody(algorithmRequest)
-		messagingService.sendTrainingMessage(new TrainingMessage(netId, postBody))
+		TrainingMessage message = new TrainingMessage(netId, postBody)
+		messagingService.sendTrainingMessage(message, algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
@@ -37,6 +45,16 @@ class AlfredService {
 		])
 		algorithmResult.save()
 		MDC.remove('netId')
+
+		if (algorithmRequest.alfredEnvironment == AlfredEnvironment.DOCKER) {
+			autoScalingService.checkSpinUp()
+		}
+
+		try {
+			awsService.uploadToS3('alfred', 'alfred-' + netId + '.json', mapper.writeValueAsString(message))
+		} catch (Exception e) {
+			log.error('Error uploading Alfred data to S3', e)
+		}
 	}
 
 	String constructPostBody(AlgorithmRequest algorithmRequest) {
@@ -65,7 +83,12 @@ class AlfredService {
 	}
 
 	void processResult(TrainingMessage message) {
+		MDC.put('netId', message.getNetId())
 		AlgorithmResult algorithmResult = AlgorithmResult.findByAlfredModelId(message.getNetId())
+
+		if (algorithmResult == null) {
+			throw new AugurWorksException('Algorithm ' + message.getNetId() + ' doesn\' exist')
+		}
 
 		MDC.put('algorithmRequestId', algorithmResult.algorithmRequest.id.toString())
 		MDC.put('algorithmResultId', algorithmResult.id.toString())
@@ -75,17 +98,24 @@ class AlfredService {
 		algorithmResult.complete = true
 		processResponse(algorithmResult, message.getData())
 		algorithmResult.save(flush: true)
+
+		List<TrainingStat> trainingStats = message.getTrainingStats()
+		trainingStats.each { TrainingStat trainingStat ->
+			trainingStat.save()
+		}
+
 		automatedService.postProcessing(algorithmResult)
 
 		log.info 'Finished processing message from net ' + algorithmResult.alfredModelId
-
+		
+		MDC.remove('netId')
 		MDC.remove('algorithmRequestId')
 		MDC.remove('algorithmResultId')
 	}
 
 	void processResponse(AlgorithmResult algorithmResult, String text) {
 		Collection<String> lines = text.split('\n')
-		lines[4..(lines.size() - 1)].each { String line ->
+		lines[0..(lines.size() - 1)].each { String line ->
 			Collection<String> cols = line.split(' ')
 			new PredictedValue(
 				date: Date.parse(Global.ALFRED_DATE_FORMAT, cols[0]),
