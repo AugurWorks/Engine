@@ -19,4 +19,8 @@ class SymbolResult {
 		Collection<String> parts = value.split('-')
 		return new SymbolResult(symbol: parts[0], datasource: Datasource[parts[1]])
 	}
+
+	String toString() {
+		return datasource.name + ' ' + symbol + ' - ' + name
+	}
 }
