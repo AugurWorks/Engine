@@ -55,9 +55,9 @@ grails.project.dependency.resolution = {
 		compile ":spring-security-core:2.0-RC5"
 		compile ":spring-security-ui:1.0-RC2"
 
-		compile ":build-test-data:2.4.0"
 		compile ":rest-client-builder:2.1.1"
 
+		test ":build-test-data:2.4.0"
 		test ":codenarc:0.22"
 		test ":code-coverage:2.0.3-3"
 	}
