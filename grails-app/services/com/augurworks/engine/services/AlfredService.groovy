@@ -73,7 +73,7 @@ class AlfredService {
 		/*if (dataSets.first().values.size() != rowNumber - 1) {
 		 throw new AugurWorksException('Dependant data set not sized correctly compared to independant data sets')
 		 }*/
-		Collection<String> lines = ['net ' + (dataSets.size() - 1) + ',5', 'train 1,2500,0.1,2500,0.01', 'TITLES ' + dataSets.tail()*.name.join(',')
+		Collection<String> lines = ['net ' + (dataSets.size() - 1) + ',5', 'train 1,700,0.1,700,0.01', 'TITLES ' + dataSets.tail()*.name.join(',')
 		]+ (0..(rowNumber - 1)).collect { int row ->
 			// TO-DO: Will not work for predictions of more than one period
 			Date date = dataSets*.values.first()[row]?.date ?: Common.calculatePredictionDate(algorithmRequest.unit, dataSets*.values.first()[row - 1].date, 1)
