@@ -70,7 +70,7 @@ class AlgorithmRequestController {
 	}
 
 	def resultCard(AlgorithmResult algorithmResult) {
-		render(template: '/layouts/resultCard', model: [result: algorithmResult])
+		render(template: '/layouts/resultCard', model: [result: algorithmResult, title: true])
 	}
 
 	def create(AlgorithmRequest algorithmRequest) {
