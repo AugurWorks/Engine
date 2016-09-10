@@ -10,7 +10,8 @@ import org.apache.commons.lang.time.DateUtils
 enum Unit {
 	DAY('Day', 1, filterDate('days', 1), this.&calculateDay),
 	HOUR('Hour', 60, filterDate('minutes', 60), this.&calculateHour),
-	HALF_HOUR('Half Hour', 30, filterDate('minutes', 30), this.&calculateHalfHour)
+	HALF_HOUR('Half Hour', 30, filterDate('minutes', 30), this.&calculateHalfHour),
+	FIFTEEN_MINUTES('Fifteen Minutes', 15, filterDate('minutes', 15), this.&calculateFifteenMinutes)
 
 	String name
 	int interval
@@ -56,6 +57,14 @@ enum Unit {
 				date += 30.minutes
 			}
 			date += (30 * offset).minutes
+			return date
+		}
+	}
+
+	private static Date calculateFifteenMinutes(Date startDate, Integer offset) {
+		use(TimeCategory) {
+			Date date = DateUtils.truncate(startDate, Calendar.HOUR)
+			date += (15 * (offset + (Integer) Math.floor(startDate[Calendar.MINUTE] / 15))).minutes
 			return date
 		}
 	}

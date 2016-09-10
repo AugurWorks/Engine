@@ -15,6 +15,8 @@ class Common {
 					return date + offset.hours
 				case Unit.HALF_HOUR:
 					return date + (30 * offset).minutes
+				case Unit.FIFTEEN_MINUTES:
+					return date + (15 * offset).minutes
 				default:
 					throw new AugurWorksException('Unknown prediction date unit: ' + unit)
 			}
