@@ -59,7 +59,7 @@ class TDClient extends RestClient {
 			startdate: startDate.format(dateFormat),
 			enddate: dataRequest.endDate.format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
-			intervalduration: dataRequest.unit.interval.toString() ?: '1'
+			intervalduration: dataRequest.unit == Unit.DAY ? '1' : '15'
 		]
 		return parameters
 	}
