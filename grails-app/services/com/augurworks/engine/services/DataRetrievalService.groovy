@@ -5,6 +5,7 @@ import grails.transaction.Transactional
 import groovyx.gpars.GParsPool
 
 import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.slf4j.MDC
 
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.data.SplineRequest
@@ -67,7 +68,16 @@ class DataRetrievalService {
 	}
 
 	RequestValueSet getSingleRequestValues(SingleDataRequest singleDataRequest) {
-		Collection<DataSetValue> values = singleDataRequest.getHistory()
-		return new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.unit, singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
+		MDC.put('ticker', singleDataRequest.symbolResult.toString())
+		try {
+			Collection<DataSetValue> values = singleDataRequest.getHistory()
+			RequestValueSet requestValueSet = new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.unit, singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
+			MDC.remove('ticker')
+			return requestValueSet
+		} catch (Exception e) {
+			log.error('Unable to get history for ' + singleDataRequest.symbolResult.toString(), e)
+			MDC.remove('ticker')
+			throw e
+		}
 	}
 }
