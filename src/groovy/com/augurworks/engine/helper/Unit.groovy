@@ -51,18 +51,18 @@ enum Unit {
 	}
 
 	private static Date calculateHalfHour(Date startDate, Integer offset) {
-		use(TimeCategory) {
-			Date date = DateUtils.truncate(startDate, Calendar.HOUR)
-			date += (15 * (Integer) Math.floor(startDate[Calendar.MINUTE] / 15)).minutes
-			date += (30 * offset).minutes
-			return date
-		}
+		return calculateMinuteOffset(startDate, offset, 30)
 	}
 
 	private static Date calculateFifteenMinutes(Date startDate, Integer offset) {
+		return calculateMinuteOffset(startDate, offset, 15)
+	}
+
+	private static Date calculateMinuteOffset(Date startDate, Integer offset, Integer minutes) {
 		use(TimeCategory) {
 			Date date = DateUtils.truncate(startDate, Calendar.HOUR)
-			date += (15 * (offset + (Integer) Math.floor(startDate[Calendar.MINUTE] / 15))).minutes
+			date += (15 * (Integer) Math.floor(startDate[Calendar.MINUTE] / 15)).minutes
+			date += (minutes * offset).minutes
 			return date
 		}
 	}
