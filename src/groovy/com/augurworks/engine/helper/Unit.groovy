@@ -41,13 +41,7 @@ enum Unit {
 	}
 
 	private static Date calculateHour(Date startDate, Integer offset) {
-		use(TimeCategory) {
-			Date date = DateUtils.truncate(startDate, Calendar.HOUR) + offset.hours
-			if (startDate[Calendar.MINUTE] >= 30) {
-				date[Calendar.MINUTE] = 30
-			}
-			return date
-		}
+		return calculateMinuteOffset(startDate, offset, 60)
 	}
 
 	private static Date calculateHalfHour(Date startDate, Integer offset) {

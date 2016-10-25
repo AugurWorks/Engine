@@ -52,7 +52,9 @@ class RequestValueSet {
 	}
 
 	RequestValueSet filterValues(Unit unit, Date startDate, Date endDate, int minOffset, int maxOffset) {
-		Collection<DataSetValue> values = this.values
+		Collection<DataSetValue> values = this.values.grep { DataSetValue dataSetValue ->
+			return unit.filterDates.apply(dataSetValue.date, startDate)
+		}
 		int startIndex = values.findIndexOf { it.date == startDate }
 		int endIndex = values.findIndexOf { it.date == endDate }
 		Collection<String> errors = []
@@ -86,9 +88,7 @@ class RequestValueSet {
 		if (errors.size() != 0) {
 			throw new AugurWorksException(errors.join('<br />'))
 		}
-		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)].grep { DataSetValue dataSetValue ->
-			return unit.filterDates.apply(dataSetValue.date, startDate)
-		}
+		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)]
 		return this
 	}
 
