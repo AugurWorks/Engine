@@ -1,5 +1,8 @@
 package com.augurworks.engine.rest
 
+import grails.converters.JSON
+import grails.plugin.cache.GrailsCacheManager
+import grails.plugin.cache.GrailsValueWrapper
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
 import groovy.json.JsonBuilder
@@ -21,6 +24,8 @@ class BarchartClient extends RestClient {
 	private final symbolLookup = barchartRoot + '/getSymbolLookUp.json'
 
 	private final apiKey
+
+	GrailsCacheManager grailsCacheManager = Holders.grailsApplication.mainContext.getBean('grailsCacheManager')
 
 	BarchartClient() {
 		apiKey = Holders.config.augurworks.barchart.key
@@ -69,6 +74,16 @@ class BarchartClient extends RestClient {
 		String fullUrl = url + '?' + parameters.collect { String key, String value ->
 			return key + '=' + URLEncoder.encode(value)
 		}.join('&')
-		return new RestBuilder().get(fullUrl).json?.results ?: []
+		return JSON.parse(barchartRequest(fullUrl))?.results ?: []
+	}
+
+	private String barchartRequest(String url) {
+		GrailsValueWrapper cache = grailsCacheManager.getCache('externalData').get(url)
+		if (cache) {
+			return cache.get()
+		}
+		String result = new RestBuilder().get(url).text
+		grailsCacheManager.getCache('externalData').put(url, result)
+		return result
 	}
 }

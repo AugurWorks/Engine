@@ -1,5 +1,8 @@
 package com.augurworks.engine.rest
 
+import grails.converters.JSON
+import grails.plugin.cache.GrailsCacheManager
+import grails.plugin.cache.GrailsValueWrapper
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
 import groovy.json.JsonBuilder
@@ -9,6 +12,7 @@ import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClientBuilder
+import org.joda.time.DateTime
 
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.exceptions.AugurWorksException
@@ -26,6 +30,8 @@ class TDClient extends RestClient {
 
 	private final sourceId
 
+	GrailsCacheManager grailsCacheManager = Holders.grailsApplication.mainContext.getBean('grailsCacheManager')
+
 	TDClient() {
 		sourceId = Holders.config.augurworks.td.key
 	}
@@ -40,14 +46,13 @@ class TDClient extends RestClient {
 	}
 
 	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
-		DataInputStream binaryResults = makeBinaryRequest(historyLookup, dataRequestToMap(dataRequest))
-		Collection<Map> parsedResults = parseGetHistoryBinary(binaryResults)
+		Collection<Map> parsedResults = JSON.parse(tdJsonResults(generateUrl(historyLookup, dataRequestToMap(dataRequest))))
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(parsedResults).toPrettyString())
 		if (parsedResults.size() > 1) {
 			throw new AugurWorksException('More results returned than expected')
 		}
 		return parsedResults.first().values.collect { Map result ->
-			return new DataSetValue(result.date, result[dataRequest.dataType.name().toLowerCase()])
+			return new DataSetValue(new DateTime(result.date).toDate(), result[dataRequest.dataType.name().toLowerCase()])
 		}
 	}
 
@@ -69,9 +74,19 @@ class TDClient extends RestClient {
 		return new RestBuilder().get(fullUrl).xml
 	}
 
-	private DataInputStream makeBinaryRequest(String url, Map parameters) {
-		String fullUrl = generateUrl(url, parameters)
-		HttpGet req = new HttpGet(fullUrl)
+	private String tdJsonResults(String url) {
+		GrailsValueWrapper cache = grailsCacheManager.getCache('externalData').get(url)
+		if (cache) {
+			return cache.get()
+		}
+		DataInputStream binaryResults = makeBinaryRequest(url)
+		String result = new JsonBuilder(parseGetHistoryBinary(binaryResults)).toString()
+		grailsCacheManager.getCache('externalData').put(url, result)
+		return result
+	}
+
+	private DataInputStream makeBinaryRequest(String url) {
+		HttpGet req = new HttpGet(url)
 		HttpClient client = HttpClientBuilder.create().build()
 		HttpResponse resp = client.execute(req)
 		return new DataInputStream(resp.getEntity().getContent())

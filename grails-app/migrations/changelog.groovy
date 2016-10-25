@@ -289,4 +289,6 @@ databaseChangeLog = {
 	include file: 'alfred-stats.groovy'
 
 	include file: 'alfred-environment.groovy'
+
+	include file: 'prediction-actuals-values.groovy'
 }
