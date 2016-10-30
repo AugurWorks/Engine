@@ -5,7 +5,7 @@
 		<title>Alfred Dashboard</title>
 	</head>
 	<body>
-		<%@ page import="TrainingStopReason" %>
+		<%@ page import="com.augurworks.engine.helper.TrainingStopReason" %>
 		<div class="ui segment">
 			<h2 class="ui floated left header">
 				<i class="dashboard icon"></i>
