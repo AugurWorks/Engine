@@ -12,12 +12,14 @@ class PredictedValue {
 
 	Date date
 	double value
+	Double actual
 
 	static belongsTo = [algorithmResult: AlgorithmResult]
 
 	static constraints = {
 		date()
 		value()
+		actual nullable: true
 	}
 
 	String toString() {
