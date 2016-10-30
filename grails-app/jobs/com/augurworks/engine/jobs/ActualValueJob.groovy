@@ -6,7 +6,9 @@ class ActualValueJob {
 
 	ActualValueService actualValueService
 
-	def cronExpression = '0 0 2 * * ?'
+	static triggers = {
+		cron name: 'nightly', startDelay: 10000, cronExpression: '0 0 2 * * ?'
+	}
 
 	void execute() {
 		actualValueService.fillOutPredictedValues()
