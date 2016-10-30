@@ -30,7 +30,12 @@ grails.project.dependency.resolution = {
 	}
 
 	dependencies {
-		runtime 'com.amazonaws:aws-java-sdk:1.11.26'
+		compile 'com.amazonaws:aws-java-sdk-autoscaling:1.11.26'
+		compile 'com.amazonaws:aws-java-sdk-lambda:1.11.26'
+		compile 'com.amazonaws:aws-java-sdk-machinelearning:1.11.26'
+		compile 'com.amazonaws:aws-java-sdk-s3:1.11.26'
+		compile 'com.amazonaws:aws-java-sdk-sqs:1.11.26'
+		compile 'com.amazonaws:aws-java-sdk-sns:1.11.26'
 		compile "org.codehaus.gpars:gpars:1.1.0"
 		runtime 'mysql:mysql-connector-java:5.1.22'
 		compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.0.13'
@@ -53,7 +58,6 @@ grails.project.dependency.resolution = {
 		runtime ":hibernate4:4.3.8.1"
 		compile ":asset-pipeline:2.3.2"
 		compile ":spring-security-core:2.0-RC5"
-		compile ":spring-security-ui:1.0-RC2"
 
 		compile ":rest-client-builder:2.1.1"
 
