@@ -1,6 +1,8 @@
 package com.augurworks.engine.services
 
 import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import java.util.concurrent.ScheduledFuture
 
@@ -19,6 +21,8 @@ import com.augurworks.engine.jobs.AlgorithmRequestJob
 @Transactional
 class AutoKickoffService {
 
+	private static final Logger log = LoggerFactory.getLogger(AutoKickoffService)
+
 	@SuppressWarnings("GrailsStatelessService")
 	Map<Long, ScheduledFuture> runningJobs = [:]
 
@@ -35,23 +39,23 @@ class AutoKickoffService {
 		MDC.put('algorithmRequestId', algorithmRequest.id.toString())
 		MDC.put('algorithmRequestName', algorithmRequest.name)
 		try {
-			log.info 'Creating cron job for ' + algorithmRequest
+			log.info('Creating cron job for ' + algorithmRequest)
 			if (runningJobs[algorithmRequest.id]) {
 				clearJob(algorithmRequest)
 			}
 			Trigger trigger = createTrigger(algorithmRequest)
 			Runnable job = new AlgorithmRequestJob(algorithmRequest.id)
 			runningJobs[algorithmRequest.id] = executor.schedule(job, trigger)
-			log.info runningJobs.keySet().size() + ' total jobs scheduled'
+			log.info(runningJobs.keySet().size() + ' total jobs scheduled')
 		} catch (AugurWorksException e) {
-			log.warn e.getMessage()
+			log.warn(e.getMessage())
 		} catch (e) {
-			log.error e
+			log.error('An error occured during a job kickoff', e)
 		}
 	}
 
 	void clearJob(AlgorithmRequest algorithmRequest) {
-		log.info 'Clearing cron job for ' + algorithmRequest
+		log.info('Clearing cron job for ' + algorithmRequest)
 		runningJobs[algorithmRequest.id]?.cancel(false)
 		runningJobs.remove(algorithmRequest.id)
 	}

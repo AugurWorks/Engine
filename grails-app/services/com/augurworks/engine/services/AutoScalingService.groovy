@@ -7,9 +7,13 @@ import com.amazonaws.services.autoscaling.model.SetDesiredCapacityRequest
 import com.augurworks.engine.exceptions.AugurWorksException
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 @Transactional
 class AutoScalingService {
+
+	private static final Logger log = LoggerFactory.getLogger(AutoScalingService)
 
 	GrailsApplication grailsApplication
 
@@ -28,7 +32,7 @@ class AutoScalingService {
 		}
 		AutoScalingGroup asg = asgs.first()
 		if (asg.getDesiredCapacity() == 0) {
-			log.info 'ASG ' + asgName + ' size is 0, spinning up an instance'
+			log.info('ASG ' + asgName + ' size is 0, spinning up an instance')
 			asgClient.setDesiredCapacity(new SetDesiredCapacityRequest().withAutoScalingGroupName(asgName).withDesiredCapacity(1))
 		}
 	}

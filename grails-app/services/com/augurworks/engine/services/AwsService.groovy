@@ -7,11 +7,15 @@ import com.amazonaws.services.s3.model.S3Object
 import com.augurworks.engine.helper.Global
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import java.util.zip.GZIPInputStream
 
 @Transactional
 class AwsService {
+
+	private static final Logger log = LoggerFactory.getLogger(AwsService)
 
 	static final String BATCH_PREDICTION_URI = 'predictions'
 
@@ -143,7 +147,7 @@ class AwsService {
 			gzis.close()
 			out.close()
 		} catch(IOException e){
-			log.error e
+			log.error(e.getMessage(), e)
 		}
 		return unzippedFile
 	}

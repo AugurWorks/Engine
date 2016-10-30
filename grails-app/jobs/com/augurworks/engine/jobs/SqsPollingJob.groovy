@@ -9,8 +9,12 @@ import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.services.AlfredService
 import com.fasterxml.jackson.databind.ObjectMapper
 import grails.core.GrailsApplication
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class SqsPollingJob {
+
+	private static final Logger log = LoggerFactory.getLogger(SqsPollingJob)
 
 	GrailsApplication grailsApplication
 	AlfredService alfredService
@@ -21,7 +25,7 @@ class SqsPollingJob {
 
 	void execute() {
 		String queueName = grailsApplication.config.messaging.sqsName
-		log.info 'Starting SQS polling for ' + queueName
+		log.info('Starting SQS polling for ' + queueName)
 		while (true) {
 			pollSqs(queueName)
 		}
@@ -40,16 +44,15 @@ class SqsPollingJob {
 				try {
 					alfredService.processResult(trainingMessage)
 				} catch (AugurWorksException e) {
-					log.warn e
+					log.warn(e.getMessage(), e)
 				} catch (Exception e) {
-					e.printStackTrace()
-					log.error e
+					log.error(e.getMessage(), e)
 				} finally {
 					sqsClient.deleteMessage(queueName, message.getReceiptHandle())
 				}
 			}
 		} catch (Exception e) {
-			log.error e
+			log.error(e.getMessage(), e)
 			sleep 10000
 		}
 	}

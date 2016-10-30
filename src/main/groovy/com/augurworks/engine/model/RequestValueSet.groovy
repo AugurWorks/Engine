@@ -5,8 +5,12 @@ import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.helper.Unit
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class RequestValueSet {
+
+	private static final Logger log = LoggerFactory.getLogger(RequestValueSet)
 
 	String name
 	DataType dataType

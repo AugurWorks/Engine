@@ -7,11 +7,15 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.*
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import javax.annotation.PostConstruct
 
 @Transactional
 class MessagingService {
+
+	private static final Logger log = LoggerFactory.getLogger(MessagingService)
 
 	private static final String SQS_NAME_KEY = 'sqsName'
 	private static final String FLUENT_HOST_KEY = 'fluentHost'
@@ -83,7 +87,7 @@ class MessagingService {
 						TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
 						alfredService.processResult(message)
 					} catch (Exception e) {
-						log.error e
+						log.error(e.getMessage(), e)
 					}
 				}
 			}

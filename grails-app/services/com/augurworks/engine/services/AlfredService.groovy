@@ -1,7 +1,8 @@
 package com.augurworks.engine.services
 
 import grails.transaction.Transactional
-
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 
 import com.augurworks.engine.data.SplineRequest
@@ -20,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 @Transactional
 class AlfredService {
+
+	private static final Logger log = LoggerFactory.getLogger(AlfredService)
 
 	private final ObjectMapper mapper = new ObjectMapper()
 
@@ -93,7 +96,7 @@ class AlfredService {
 		MDC.put('algorithmRequestId', algorithmResult.algorithmRequest.id.toString())
 		MDC.put('algorithmResultId', algorithmResult.id.toString())
 
-		log.debug 'Received results message from net ' + algorithmResult.alfredModelId
+		log.debug('Received results message from net ' + algorithmResult.alfredModelId)
 
 		algorithmResult.complete = true
 		processResponse(algorithmResult, message.getData())
@@ -106,7 +109,7 @@ class AlfredService {
 
 		automatedService.postProcessing(algorithmResult)
 
-		log.info 'Finished processing message from net ' + algorithmResult.alfredModelId
+		log.info('Finished processing message from net ' + algorithmResult.alfredModelId)
 		
 		MDC.remove('netId')
 		MDC.remove('algorithmRequestId')

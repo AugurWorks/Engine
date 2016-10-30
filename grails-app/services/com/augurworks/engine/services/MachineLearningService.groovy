@@ -12,10 +12,14 @@ import com.augurworks.engine.model.RequestValueSet
 import grails.converters.JSON
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 
 @Transactional
 class MachineLearningService {
+
+	private static final Logger log = LoggerFactory.getLogger(MachineLearningService)
 
 	GrailsApplication grailsApplication
 	DataRetrievalService dataRetrievalService
@@ -90,9 +94,9 @@ class MachineLearningService {
 			try {
 				checkAlgorithm(algorithmResult)
 			} catch (AugurWorksException e) {
-				log.warn 'Algorithm Result ' + algorithmResult.id + ' had an error', e
+				log.warn('Algorithm Result ' + algorithmResult.id + ' had an error', e)
 			} catch (e) {
-				log.error e
+				log.error(e.getMessage(), e)
 			}
 			MDC.remove('algorithmRequestId')
 			MDC.remove('algorithmResultId')
@@ -132,7 +136,7 @@ class MachineLearningService {
 	void checkMachineLearningModel(AlgorithmResult algorithmResult) {
 		GetMLModelResult mlModel = awsService.getMLModel(algorithmResult.machineLearningModel.modelId)
 		if (mlModel.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
-			log.info 'Machine learning model complete, generating batch prediction'
+			log.info('Machine learning model complete, generating batch prediction')
 			generateMachineLearningResult(algorithmResult)
 		}
 	}
@@ -150,7 +154,7 @@ class MachineLearningService {
 	void checkMachineLearningPrediction(AlgorithmResult algorithmResult) {
 		GetBatchPredictionResult batchPrediction = awsService.getBatchPrediction(algorithmResult.machineLearningModel.batchPredictionId)
 		if (batchPrediction.getStatus() == MACHINE_LEARNING_COMPLETE_STATUS) {
-			log.debug 'Machine learning batch prediction complete'
+			log.debug('Machine learning batch prediction complete')
 			File resultsFile = awsService.getBatchPredictionResults(algorithmResult.machineLearningModel.batchPredictionId)
 			Collection<Double> predictions = parsePredictionOutputFile(resultsFile)
 			addPredictionsToAlgorithmResult(algorithmResult, predictions)
@@ -205,6 +209,6 @@ class MachineLearningService {
 		algorithmResult.machineLearningModel = null
 		algorithmResult.save()
 		model.delete()
-		log.debug 'Machine learning resources deleted for algorithm result' + algorithmResult.id
+		log.debug('Machine learning resources deleted for algorithm result' + algorithmResult.id)
 	}
 }

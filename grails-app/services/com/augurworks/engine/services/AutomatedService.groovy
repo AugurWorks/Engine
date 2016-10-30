@@ -11,10 +11,14 @@ import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.slack.SlackMessage
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.slf4j.MDC
 
 @Transactional
 class AutomatedService {
+
+	private static final Logger log = LoggerFactory.getLogger(AutomatedService)
 
 	GrailsApplication grailsApplication
 	MachineLearningService machineLearningService
@@ -22,12 +26,12 @@ class AutomatedService {
 	DataRetrievalService dataRetrievalService
 
 	void runAllDailyAlgorithms() {
-		log.info 'Running all algorithms'
+		log.info('Running all algorithms')
 		AlgorithmRequest.findAllByUnit('Day').each { AlgorithmRequest req ->
 			try {
 				runAllAlgorithmTypes(req)
 			} catch (e) {
-				log.warn 'Error submitting ' + req + ': ' + e.message
+				log.warn('Error submitting ' + req + ': ' + e.message)
 			}
 		}
 	}
@@ -40,7 +44,7 @@ class AutomatedService {
 
 	void runCronAlgorithms(long algorithmRequestId) {
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.get(algorithmRequestId)
-		log.info 'Running ' + (algorithmRequest.cronAlgorithms*.name.join(', ') ?: 'no algorithms') + ' for ' + algorithmRequest + ' from a cron job'
+		log.info('Running ' + (algorithmRequest.cronAlgorithms*.name.join(', ') ?: 'no algorithms') + ' for ' + algorithmRequest + ' from a cron job')
 		algorithmRequest.cronAlgorithms.each { AlgorithmType algorithmType ->
 			try {
 				runAlgorithm(algorithmRequest, algorithmType)
@@ -91,15 +95,15 @@ class AutomatedService {
 					if (futureDate == algorithmResult.futureValue.date) {
 						actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
 					} else {
-						log.warn 'Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up'
-						log.info '- Last actual date: ' + predictionActuals.values.last().date
-						log.info '- Last prediction date: ' + algorithmResult.futureValue.date
+						log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
+						log.info('- Last actual date: ' + predictionActuals.values.last().date)
+						log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
 					}
 					algorithmResult.futureValue?.sendToSlack(actualValue)
 				}
 			}
 		} catch (e) {
-			log.error 'Post processing failed', e
+			log.error('Post processing failed', e)
 		}
 	}
 

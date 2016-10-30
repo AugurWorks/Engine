@@ -24,7 +24,7 @@ class BootStrap {
 	}
 
 	def init = { servletContext ->
-		log.info 'Starting bootstrap'
+		log.info('Starting bootstrap')
 
 		SqsPollingJob.triggerNow()
 
@@ -42,6 +42,6 @@ class BootStrap {
 			autoKickoffService.scheduleKickoffJob(algorithmRequest)
 		}
 
-		log.info 'Finished bootstrapping'
+		log.info('Finished bootstrapping')
 	}
 }
