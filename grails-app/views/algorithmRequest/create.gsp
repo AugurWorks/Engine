@@ -6,13 +6,13 @@
 		<asset:javascript src="algorithmRequest.js" />
 	</head>
 	<body>
-		<%@ page import="com.augurworks.engine.data.SplineType" %>
-		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
-		<%@ page import="com.augurworks.engine.helper.AlfredEnvironment" %>
-		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
-		<%@ page import="com.augurworks.engine.helper.Datasource" %>
-		<%@ page import="com.augurworks.engine.helper.DataType" %>
-		<%@ page import="com.augurworks.engine.helper.Unit" %>
+		<%@ page import="SplineType" %>
+		<%@ page import="Aggregation" %>
+		<%@ page import="AlfredEnvironment" %>
+		<%@ page import="AlgorithmType" %>
+		<%@ page import="Datasource" %>
+		<%@ page import="DataType" %>
+		<%@ page import="Unit" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
 				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>

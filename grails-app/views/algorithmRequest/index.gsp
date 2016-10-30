@@ -6,7 +6,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.1/jquery.timeago.min.js"></script>
 	</head>
 	<body>
-		<%@ page import="com.augurworks.engine.helper.Global" %>
+		<%@ page import="Global" %>
 		<div class="ui segment">
 			<h1 class="ui floated left header">Algorithm Requests</h1>
 			<g:link controller="algorithmRequest" action="create" class="ui primary button" style="float: right;">New Request</g:link>

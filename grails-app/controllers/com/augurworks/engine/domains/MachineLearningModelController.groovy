@@ -2,5 +2,5 @@ package com.augurworks.engine.domains
 
 class MachineLearningModelController {
 
-	def scaffold = true
+	static scaffold = MachineLearningModel
 }

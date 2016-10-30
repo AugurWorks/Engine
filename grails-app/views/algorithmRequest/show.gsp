@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" type="text/css">
 	</head>
 	<body>
-		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
+		<%@ page import="AlgorithmType" %>
 		<div class="ui segment">
 			<h1 class="ui header">${ algorithm.name }</h1>
 			<input type="hidden" id="id" value="${ algorithm.id }" />

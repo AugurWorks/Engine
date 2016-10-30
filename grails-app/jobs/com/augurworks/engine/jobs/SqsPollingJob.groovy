@@ -1,10 +1,6 @@
 package com.augurworks.engine.jobs
 
-import org.codehaus.groovy.grails.commons.GrailsApplication
-
 import com.amazonaws.services.sqs.AmazonSQSClient
-import com.amazonaws.services.sqs.model.DeleteMessageBatchRequest
-import com.amazonaws.services.sqs.model.DeleteMessageBatchRequestEntry
 import com.amazonaws.services.sqs.model.Message
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest
 import com.amazonaws.services.sqs.model.ReceiveMessageResult
@@ -12,6 +8,7 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.services.AlfredService
 import com.fasterxml.jackson.databind.ObjectMapper
+import grails.core.GrailsApplication
 
 class SqsPollingJob {
 

@@ -18,11 +18,6 @@ class TrainingStat {
     Date dateCreated
 
     static constraints = {
-        netId()
-        dateCreated()
-        roundsTrained()
-        rmsError()
-        rowCount()
         trainingStopReason nullable: true
     }
 }

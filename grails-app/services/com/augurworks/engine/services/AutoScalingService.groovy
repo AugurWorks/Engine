@@ -1,17 +1,12 @@
 package com.augurworks.engine.services
 
-import grails.transaction.Transactional
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
-
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClient
 import com.amazonaws.services.autoscaling.model.AutoScalingGroup
 import com.amazonaws.services.autoscaling.model.DescribeAutoScalingGroupsRequest
 import com.amazonaws.services.autoscaling.model.SetDesiredCapacityRequest
-import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.exceptions.AugurWorksException
-import com.augurworks.engine.helper.AlfredEnvironment
-import com.augurworks.engine.helper.AlgorithmType
+import grails.core.GrailsApplication
+import grails.transaction.Transactional
 
 @Transactional
 class AutoScalingService {

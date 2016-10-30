@@ -17,10 +17,6 @@ class RequestDataSet {
 	static belongsTo = [algorithmRequest: AlgorithmRequest]
 
 	static constraints = {
-		symbol()
-		datasource()
-		offset()
-		aggregation()
 	}
 
 	String toString() {

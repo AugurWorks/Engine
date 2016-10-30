@@ -17,11 +17,6 @@ class AlgorithmResult {
 	static belongsTo = [algorithmRequest: AlgorithmRequest]
 
 	static constraints = {
-		dateCreated()
-		startDate()
-		endDate()
-		complete()
-		modelType()
 		machineLearningModel nullable: true
 		alfredModelId nullable: true
 	}

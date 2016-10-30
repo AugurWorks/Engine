@@ -22,11 +22,6 @@ class AlgorithmRequest {
 
 	static constraints = {
 		name unique: true
-		startOffset()
-		endOffset()
-		dateCreated()
-		dependantSymbol()
-		unit()
 		cronExpression nullable: true
 	}
 

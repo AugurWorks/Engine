@@ -1,24 +1,18 @@
 package com.augurworks.engine.services
 
-import grails.converters.JSON
-import grails.transaction.Transactional
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
-import org.slf4j.MDC
-
 import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
 import com.amazonaws.services.machinelearning.model.GetMLModelResult
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.data.SplineRequest
-import com.augurworks.engine.domains.AlgorithmRequest
-import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.domains.MachineLearningModel
-import com.augurworks.engine.domains.PredictedValue
-import com.augurworks.engine.domains.RequestDataSet
+import com.augurworks.engine.domains.*
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.model.RequestValueSet
+import grails.converters.JSON
+import grails.core.GrailsApplication
+import grails.transaction.Transactional
+import org.slf4j.MDC
 
 @Transactional
 class MachineLearningService {

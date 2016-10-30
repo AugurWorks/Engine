@@ -1,10 +1,5 @@
 package com.augurworks.engine.services
 
-import grails.transaction.Transactional
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
-import org.slf4j.MDC
-
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
@@ -14,6 +9,9 @@ import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.slack.SlackMessage
+import grails.core.GrailsApplication
+import grails.transaction.Transactional
+import org.slf4j.MDC
 
 @Transactional
 class AutomatedService {

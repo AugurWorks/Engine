@@ -9,7 +9,6 @@ import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
-import com.augurworks.engine.model.RequestValueSet
 
 @Transactional
 class ActualValueService {
