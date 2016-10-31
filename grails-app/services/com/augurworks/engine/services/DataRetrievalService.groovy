@@ -1,12 +1,5 @@
 package com.augurworks.engine.services
 
-import grails.plugin.cache.GrailsCacheManager
-import grails.transaction.Transactional
-import groovyx.gpars.GParsPool
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
-import org.slf4j.MDC
-
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.RequestDataSet
@@ -14,6 +7,11 @@ import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.rest.SymbolResult
+import grails.core.GrailsApplication
+import grails.plugin.cache.GrailsCacheManager
+import grails.transaction.Transactional
+import groovyx.gpars.GParsPool
+import org.slf4j.MDC
 
 @Transactional
 class DataRetrievalService {

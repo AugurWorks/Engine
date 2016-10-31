@@ -9,7 +9,6 @@ import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
-import com.augurworks.engine.model.RequestValueSet
 
 @Transactional
 class ActualValueService {
@@ -17,7 +16,7 @@ class ActualValueService {
 	void fillOutPredictedValues() {
 		Date yesterday = new Date(new Date().getTime() - 24 * 3600 * 1000)
 		List<PredictedValue> predictedValues = PredictedValue.findAllByActualIsNullAndDateLessThan(yesterday)
-		log.info 'Filling out ' + predictedValues.size() + ' predicted values'
+		log.info('Filling out ' + predictedValues.size() + ' predicted values')
 		predictedValues.each { PredictedValue predictedValue ->
 			try {
 				RequestDataSet requestDataSet = predictedValue.algorithmResult.algorithmRequest.getDependentRequestDataSet()
@@ -42,12 +41,12 @@ class ActualValueService {
 					predictedValue.actual = actualValue.value
 					predictedValue.save()
 				} else {
-					log.warn 'No actual value found for predicted value ' + predictedValue.id
+					log.warn('No actual value found for predicted value ' + predictedValue.id)
 				}
 			} catch(Exception e) {
-				log.error 'Error getting actual value', e
+				log.error('Error getting actual value', e)
 			}
 		}
-		log.info 'Finished filling out predicted values'
+		log.info('Finished filling out predicted values')
 	}
 }

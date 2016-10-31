@@ -1,12 +1,5 @@
 package com.augurworks.engine.services
 
-import grails.transaction.Transactional
-import groovy.time.TimeCategory
-
-import java.security.SecureRandom
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
-
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
@@ -14,6 +7,11 @@ import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
+import grails.core.GrailsApplication
+import grails.transaction.Transactional
+import groovy.time.TimeCategory
+
+import java.security.SecureRandom
 
 @Transactional
 class DataGeneratorService {

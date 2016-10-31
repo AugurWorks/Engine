@@ -2,5 +2,5 @@ package com.augurworks.engine.domains
 
 class RequestDataSetController {
 
-	static scaffold = true
+	static scaffold = RequestDataSet
 }

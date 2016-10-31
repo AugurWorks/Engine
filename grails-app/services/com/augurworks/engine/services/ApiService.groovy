@@ -1,9 +1,5 @@
 package com.augurworks.engine.services
 
-import grails.transaction.Transactional
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
-
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
@@ -11,9 +7,15 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.slack.Attachment
 import com.augurworks.engine.slack.SlashMessage
+import grails.core.GrailsApplication
+import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 @Transactional
 class ApiService {
+
+	private static final Logger log = LoggerFactory.getLogger(ApiService)
 
 	GrailsApplication grailsApplication
 	AutomatedService automatedService
@@ -79,7 +81,7 @@ class ApiService {
 		} catch (AugurWorksException e) {
 			defered.withText('Error: ' + e.getMessage())
 		} catch (e) {
-			log.error e
+			log.error(e.getMessage(), e)
 			defered.withText('An error has occured, please validate the request in the Engine application')
 		}
 		defered.post()

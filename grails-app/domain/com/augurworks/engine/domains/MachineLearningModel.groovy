@@ -8,8 +8,6 @@ class MachineLearningModel {
 	String batchPredictionId
 
 	static constraints = {
-		trainingDataSourceId()
-		modelId()
 		predictionDataSourceId nullable: true
 		batchPredictionId nullable: true
 	}

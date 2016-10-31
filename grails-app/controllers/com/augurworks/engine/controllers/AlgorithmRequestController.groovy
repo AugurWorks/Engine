@@ -26,7 +26,7 @@ import com.augurworks.engine.services.MachineLearningService
 
 class AlgorithmRequestController {
 
-	private static final Logger log = LoggerFactory.getLogger(AlgorithmRequestController.class)
+	private static final Logger log = LoggerFactory.getLogger(AlgorithmRequestController)
 
 	private static final Integer PAGE_SIZE = 5
 
@@ -61,10 +61,10 @@ class AlgorithmRequestController {
 			automatedService.runAlgorithm(algorithmRequest, algorithmType)
 			render([ok: true] as JSON)
 		} catch (AugurWorksException e) {
-			log.error e.getMessage(), e
+			log.error(e.getMessage(), e)
 			render([ok: false, error: e.getMessage()] as JSON)
 		} catch (e) {
-			log.error e.getMessage(), e
+			log.error(e.getMessage(), e)
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -102,7 +102,7 @@ class AlgorithmRequestController {
 			}
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
-			log.error e.getMessage(), e
+			log.error(e.getMessage(), e)
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -124,7 +124,7 @@ class AlgorithmRequestController {
 			dataRetrievalService.smartSpline(splineRequest)
 			render([ok: true] as JSON)
 		} catch (e) {
-			log.error e.getMessage(), e
+			log.error(e.getMessage(), e)
 			render([ok: false, error: e.getMessage()] as JSON)
 		}
 	}
@@ -161,7 +161,7 @@ class AlgorithmRequestController {
 			algorithmRequest.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e.getMessage(), e
+			log.error(e.getMessage(), e)
 			render([ok: false] as JSON)
 		}
 	}
@@ -171,7 +171,7 @@ class AlgorithmRequestController {
 			algorithmResult.delete(flush: true)
 			render([ok: true] as JSON)
 		} catch(e) {
-			log.error e.getMessage(), e
+			log.error(e.getMessage(), e)
 			render([ok: false] as JSON)
 		}
 	}

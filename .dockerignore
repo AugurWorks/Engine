@@ -1,4 +1,5 @@
-target
-target-eclipse
+.gradle
+.idea
+build
+libs
 logs
-.settings

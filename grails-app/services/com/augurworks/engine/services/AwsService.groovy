@@ -1,33 +1,21 @@
 package com.augurworks.engine.services
 
-import grails.transaction.Transactional
-
-import java.util.zip.GZIPInputStream
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
-
 import com.amazonaws.services.machinelearning.AmazonMachineLearningClient
-import com.amazonaws.services.machinelearning.model.CreateBatchPredictionRequest
-import com.amazonaws.services.machinelearning.model.CreateBatchPredictionResult
-import com.amazonaws.services.machinelearning.model.CreateDataSourceFromS3Request
-import com.amazonaws.services.machinelearning.model.CreateDataSourceFromS3Result
-import com.amazonaws.services.machinelearning.model.CreateMLModelRequest
-import com.amazonaws.services.machinelearning.model.CreateMLModelResult
-import com.amazonaws.services.machinelearning.model.DeleteBatchPredictionRequest
-import com.amazonaws.services.machinelearning.model.DeleteDataSourceRequest
-import com.amazonaws.services.machinelearning.model.DeleteMLModelRequest
-import com.amazonaws.services.machinelearning.model.GetBatchPredictionRequest
-import com.amazonaws.services.machinelearning.model.GetBatchPredictionResult
-import com.amazonaws.services.machinelearning.model.GetMLModelRequest
-import com.amazonaws.services.machinelearning.model.GetMLModelResult
-import com.amazonaws.services.machinelearning.model.MLModelType
-import com.amazonaws.services.machinelearning.model.S3DataSpec
+import com.amazonaws.services.machinelearning.model.*
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.model.S3Object
 import com.augurworks.engine.helper.Global
+import grails.core.GrailsApplication
+import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+import java.util.zip.GZIPInputStream
 
 @Transactional
 class AwsService {
+
+	private static final Logger log = LoggerFactory.getLogger(AwsService)
 
 	static final String BATCH_PREDICTION_URI = 'predictions'
 
@@ -159,7 +147,7 @@ class AwsService {
 			gzis.close()
 			out.close()
 		} catch(IOException e){
-			log.error e
+			log.error(e.getMessage(), e)
 		}
 		return unzippedFile
 	}

@@ -6,8 +6,6 @@ grails.project.work.dir = "target/work"
 grails.project.target.level = 1.8
 grails.project.source.level = 1.8
 
-this.classLoader.rootLoader.addURL(new File("${basedir}/grails-app/conf/").toURI().toURL())
-
 grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
 	inherits('global') {

@@ -1,14 +1,12 @@
 package com.augurworks.engine.controllers
 
-import grails.converters.JSON
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
-
 import com.augurworks.engine.domains.Role
 import com.augurworks.engine.domains.User
 import com.augurworks.engine.domains.UserRole
+import grails.converters.JSON
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 
 class GithubController {
 
