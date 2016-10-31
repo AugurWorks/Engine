@@ -4,6 +4,8 @@ String getEnv(String name) {
 
 grails.project.groupId = appName
 
+version = "${appVersion}"
+
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
 grails.mime.types = [
 		all:           '*/*',
