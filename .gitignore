@@ -8,6 +8,7 @@ UserConfig.groovy
 *.db
 *.db.old
 .idea
-gradle*
+gradle/
+gradlew*
 build
 .gradle
