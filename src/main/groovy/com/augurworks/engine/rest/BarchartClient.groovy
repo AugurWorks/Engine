@@ -9,6 +9,7 @@ import grails.plugin.cache.Cacheable
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
 import groovy.json.JsonBuilder
+import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.time.DateUtils
 import org.joda.time.DateTime
 
@@ -66,8 +67,8 @@ class BarchartClient extends RestClient {
 
 	private Collection<Map> makeRequest(String url, Map parameters) {
 		parameters.apikey = apiKey
-		String fullUrl = url + '?' + parameters.collect { String key, String value ->
-			return key + '=' + URLEncoder.encode(value)
+		String fullUrl = url + '?' + parameters.keySet().grep { String key -> StringUtils.isNotBlank(parameters[key]) }.collect { String key ->
+			return key + '=' + URLEncoder.encode(parameters[key])
 		}.join('&')
 		return JSON.parse(barchartRequest(fullUrl))?.results ?: []
 	}

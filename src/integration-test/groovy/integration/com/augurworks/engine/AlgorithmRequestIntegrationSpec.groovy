@@ -1,8 +1,5 @@
 package com.augurworks.engine
 
-import grails.converters.JSON
-import grails.test.spock.IntegrationSpec
-
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
@@ -13,12 +10,18 @@ import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.rest.BarchartClient
 import com.augurworks.engine.services.DataRetrievalService
+import grails.converters.JSON
+import grails.test.mixin.integration.Integration
+import org.springframework.test.annotation.Rollback
+import spock.lang.Specification
 
-class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
+@Integration
+@Rollback
+class AlgorithmRequestIntegrationSpec extends Specification {
 
 	DataRetrievalService dataRetrievalService
 
-	AlgorithmRequest createAlgorithmRequest(Collection<String> symbols, int startOffset, int endOffset, Datasource datasource, Unit unit) {
+	private AlgorithmRequest createAlgorithmRequest(Collection<String> symbols, int startOffset, int endOffset, Datasource datasource, Unit unit) {
 		String dependantDataSetTicker = symbols.first()
 		AlgorithmRequest algorithmRequest = new AlgorithmRequest(
 			startOffset: startOffset,
@@ -27,7 +30,6 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 			dependantSymbol: dependantDataSetTicker,
 			unit: unit
 		)
-		algorithmRequest.save()
 		symbols.each { String ticker ->
 			algorithmRequest.addToRequestDataSets(
 				symbol: ticker,
@@ -37,7 +39,6 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 				aggregation: Aggregation.PERIOD_PERCENT_CHANGE
 			)
 		}
-		algorithmRequest.save(flush: true)
 		return algorithmRequest
 	}
 
@@ -45,7 +46,7 @@ class AlgorithmRequestIntegrationSpec extends IntegrationSpec {
 		given:
 			AlgorithmRequest algorithmRequest = createAlgorithmRequest(['SPM16', 'DLJ16'], startOffset, endOffset, Datasource.BARCHART, unit)
 			BarchartClient.metaClass.makeRequest { SingleDataRequest singleDataRequest ->
-				return JSON.parse(new File('test/resources/barchart/' + (singleDataRequest.unit == Unit.DAY ? 'day' : 'half-hour') + '/' + singleDataRequest.symbolResult.symbol + '.json').text).results
+				return JSON.parse(new File('src/test/resources/barchart/' + (singleDataRequest.unit == Unit.DAY ? 'day' : 'half-hour') + '/' + singleDataRequest.symbolResult.symbol + '.json').text).results
 			}
 
 		when:
