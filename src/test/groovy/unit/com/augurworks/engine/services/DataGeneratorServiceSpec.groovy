@@ -8,7 +8,7 @@ import com.augurworks.engine.model.DataSetValue;
 @TestFor(DataGeneratorService)
 class DataGeneratorServiceSpec extends Specification {
 
-	void "test generate intra-day data"() {
+	void "test generate intraday data"() {
 		given:
 		service.metaClass.generateRandomSeed = { String seedTicker ->
 			return 1

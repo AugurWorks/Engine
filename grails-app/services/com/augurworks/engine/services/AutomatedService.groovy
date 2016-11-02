@@ -49,7 +49,7 @@ class AutomatedService {
 			try {
 				runAlgorithm(algorithmRequest, algorithmType)
 			} catch (Exception e) {
-				String message = 'An error occured when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name
+				String message = 'An error occurred when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name
 				log.error(message, e)
 				new SlackMessage(message, grailsApplication.config.augurworks.predictions.channel)
 					.withBotName('Engine Predictions')

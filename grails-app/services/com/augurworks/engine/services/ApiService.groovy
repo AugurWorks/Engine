@@ -71,20 +71,20 @@ class ApiService {
 	}
 
 	void runRequest(String responseUrl, String requestName, String userName, AlgorithmType algorithmType, int requestCount) {
-		SlashMessage defered = new SlashMessage().withUrl(responseUrl)
+		SlashMessage deferred = new SlashMessage().withUrl(responseUrl)
 		try {
 			AlgorithmRequest algorithmRequest = AlgorithmRequest.findByNameIlike(requestName)
 			(1..requestCount).each {
 				automatedService.runAlgorithm(algorithmRequest, algorithmType)
 			}
-			defered.withText('@' + userName + ' kicked off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + algorithmType.name + ' run(s) for ' + algorithmRequest.name).isInChannel()
+			deferred.withText('@' + userName + ' kicked off ' + (requestCount == 1 ? 'a(n)' : requestCount) + ' ' + algorithmType.name + ' run(s) for ' + algorithmRequest.name).isInChannel()
 		} catch (AugurWorksException e) {
-			defered.withText('Error: ' + e.getMessage())
+			deferred.withText('Error: ' + e.getMessage())
 		} catch (e) {
 			log.error(e.getMessage(), e)
-			defered.withText('An error has occured, please validate the request in the Engine application')
+			deferred.withText('An error has occurred, please validate the request in the Engine application')
 		}
-		defered.post()
+		deferred.post()
 	}
 
 	String getHelpMessage() {

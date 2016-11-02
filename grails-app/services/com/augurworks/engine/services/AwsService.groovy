@@ -138,13 +138,13 @@ class AwsService {
 		File unzippedFile = File.createTempFile('UnzippedFile', '.csv')
 		byte[] buffer = new byte[1024]
 		try {
-			GZIPInputStream gzis =  new GZIPInputStream(new FileInputStream(zippedFile))
+			GZIPInputStream gzip =  new GZIPInputStream(new FileInputStream(zippedFile))
 			FileOutputStream out = new FileOutputStream(unzippedFile)
 			int len
-			while ((len = gzis.read(buffer)) > 0) {
+			while ((len = gzip.read(buffer)) > 0) {
 				out.write(buffer, 0, len)
 			}
-			gzis.close()
+			gzip.close()
 			out.close()
 		} catch(IOException e){
 			log.error(e.getMessage(), e)

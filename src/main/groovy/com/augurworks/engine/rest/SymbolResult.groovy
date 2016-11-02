@@ -15,7 +15,7 @@ class SymbolResult {
 		]
 	}
 
-	static SymbolResult fromDropdownValue(String value) {
+	static SymbolResult fromDropDownValue(String value) {
 		Collection<String> parts = value.split('-')
 		return new SymbolResult(symbol: parts[0], datasource: Datasource[parts[1]])
 	}
