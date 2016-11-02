@@ -9,9 +9,13 @@ import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 @Transactional
 class ActualValueService {
+
+	private static final Logger log = LoggerFactory.getLogger(ActualValueService)
 
 	void fillOutPredictedValues() {
 		Date yesterday = new Date(new Date().getTime() - 24 * 3600 * 1000)
@@ -21,7 +25,7 @@ class ActualValueService {
 			try {
 				RequestDataSet requestDataSet = predictedValue.algorithmResult.algorithmRequest.getDependentRequestDataSet()
 				Date startDate = DateUtils.truncate(predictedValue.date, Calendar.DATE)
-				Date endDate = startDate.next()
+				Date endDate = ++startDate
 				SingleDataRequest dataRequest = new SingleDataRequest(
 					symbolResult: requestDataSet.toSymbolResult(),
 					offset: requestDataSet.offset,

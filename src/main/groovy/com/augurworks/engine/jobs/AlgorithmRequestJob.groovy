@@ -10,8 +10,6 @@ class AlgorithmRequestJob implements Runnable {
 
 	long algorithmRequestId
 
-	AlgorithmRequestJob() { }
-
 	AlgorithmRequestJob(long algorithmRequestId) {
 		this.algorithmRequestId = algorithmRequestId
 	}
