@@ -49,7 +49,7 @@ class AutomatedService {
 			try {
 				runAlgorithm(algorithmRequest, algorithmType)
 			} catch (Exception e) {
-				String message = 'An error occured when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name
+				String message = 'An error occurred when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name
 				log.error(message, e)
 				new SlackMessage(message, grailsApplication.config.augurworks.predictions.channel)
 					.withBotName('Engine Predictions')
@@ -90,16 +90,15 @@ class AutomatedService {
 				)
 				RequestValueSet predictionActuals = dataRetrievalService.getSingleRequestValues(singleDataRequest)
 				if (algorithmResult.futureValue) {
-					Double actualValue
 					Date futureDate = Common.calculatePredictionDate(algorithmResult.algorithmRequest.unit, predictionActuals.values.last().date, 1)
 					if (futureDate == algorithmResult.futureValue.date) {
-						actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
+						Double actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
+						algorithmResult.futureValue?.sendToSlack(actualValue)
 					} else {
 						log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
 						log.info('- Last actual date: ' + predictionActuals.values.last().date)
 						log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
 					}
-					algorithmResult.futureValue?.sendToSlack(actualValue)
 				}
 			}
 		} catch (e) {

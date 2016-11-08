@@ -7,7 +7,7 @@ public enum TrainingStopReason {
     BROKE_LOCAL_MAX("Broke at local maximum"),
     ;
 
-    private String explanation;
+    private final String explanation;
 
     TrainingStopReason(String explanation) {
         this.explanation = explanation;

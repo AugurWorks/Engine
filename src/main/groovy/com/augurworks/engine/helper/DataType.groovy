@@ -15,7 +15,7 @@ enum DataType {
 
 	private static final Map<String, DataType> DATA_TYPE_MAP = [:]
 	static {
-		DataType.values().each { DataType dataType ->
+		values().each { DataType dataType ->
 			DATA_TYPE_MAP[dataType.name] = dataType
 		}
 	}

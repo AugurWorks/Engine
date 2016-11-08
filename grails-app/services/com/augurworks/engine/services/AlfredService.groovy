@@ -74,7 +74,7 @@ class AlfredService {
 			throw new AugurWorksException('Request datasets aren\'t all the same length (' + dataSetLengths + ')')
 		}
 		/*if (dataSets.first().values.size() != rowNumber - 1) {
-		 throw new AugurWorksException('Dependant data set not sized correctly compared to independant data sets')
+		 throw new AugurWorksException('Dependant data set not sized correctly compared to independent data sets')
 		 }*/
 		Collection<String> lines = ['net ' + (dataSets.size() - 1) + ',5', 'train 1,700,0.1,700,0.000001', 'TITLES ' + dataSets.tail()*.name.join(',')
 		]+ (0..(rowNumber - 1)).collect { int row ->
@@ -90,7 +90,7 @@ class AlfredService {
 		AlgorithmResult algorithmResult = AlgorithmResult.findByAlfredModelId(message.getNetId())
 
 		if (algorithmResult == null) {
-			throw new AugurWorksException('Algorithm ' + message.getNetId() + ' doesn\' exist')
+			throw new AugurWorksException('Algorithm ' + message.getNetId() + ' doesn\'t exist')
 		}
 
 		MDC.put('algorithmRequestId', algorithmResult.algorithmRequest.id.toString())

@@ -42,7 +42,7 @@ enum Aggregation {
 		if (previousValue == null) {
 			return null
 		}
-		if (previousValue == 0) {
+		if (previousValue == 0D) {
 			throw new AugurWorksException('Invalid previous value for period percentage change: 0')
 		}
 		return 100 * (currentValue - previousValue) / previousValue

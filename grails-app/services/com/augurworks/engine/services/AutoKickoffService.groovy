@@ -50,7 +50,7 @@ class AutoKickoffService {
 		} catch (AugurWorksException e) {
 			log.warn(e.getMessage())
 		} catch (e) {
-			log.error('An error occured during a job kickoff', e)
+			log.error('An error occurred during a job kickoff', e)
 		}
 	}
 

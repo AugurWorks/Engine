@@ -26,11 +26,11 @@ class AutoScalingService {
 
 	private void checkAsg(String asgName) {
 		AmazonAutoScalingClient asgClient = new AmazonAutoScalingClient()
-		List<AutoScalingGroup> asgs = asgClient.describeAutoScalingGroups(new DescribeAutoScalingGroupsRequest().withAutoScalingGroupNames(asgName)).getAutoScalingGroups()
-		if (asgs.size() != 1) {
-			throw new AugurWorksException('Unanticipated number of ASGs: ' + asgs*.getAutoScalingGroupName().join(', '))
+		List<AutoScalingGroup> autoScalingGroups = asgClient.describeAutoScalingGroups(new DescribeAutoScalingGroupsRequest().withAutoScalingGroupNames(asgName)).getAutoScalingGroups()
+		if (autoScalingGroups.size() != 1) {
+			throw new AugurWorksException('Unanticipated number of ASGs: ' + autoScalingGroups*.getAutoScalingGroupName().join(', '))
 		}
-		AutoScalingGroup asg = asgs.first()
+		AutoScalingGroup asg = autoScalingGroups.first()
 		if (asg.getDesiredCapacity() == 0) {
 			log.info('ASG ' + asgName + ' size is 0, spinning up an instance')
 			asgClient.setDesiredCapacity(new SetDesiredCapacityRequest().withAutoScalingGroupName(asgName).withDesiredCapacity(1))

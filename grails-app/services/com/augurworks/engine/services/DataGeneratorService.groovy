@@ -38,7 +38,7 @@ class DataGeneratorService {
 	]
 
 	void bootstrapDefaultRequests() {
-		['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursdy', 'Friday'].eachWithIndex { String day, int index ->
+		['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].eachWithIndex { String day, int index ->
 			AlgorithmRequest algorithmRequest = new AlgorithmRequest(name: day + ' Test', startOffset: DEFAULT_REQUEST.startOffset - index, endOffset: DEFAULT_REQUEST.endOffset - index, dependantSymbol: DEFAULT_REQUEST.dependent + ' - CLOSE').save()
 			DEFAULT_REQUEST.tickers.each { String ticker ->
 				new RequestDataSet(
