@@ -34,7 +34,7 @@ RUN apk add --no-cache wget bash libstdc++ tzdata && \
     gradle bootRepackage && \
 
     # Copy WAR into Tomcat
-    mv build/libs/app*?.war /opt/app.war && \
+    mv build/libs/engine.war /opt/app.war && \
 
     # Remove Gradle and working directory
     rm /usr/local/gradle && \

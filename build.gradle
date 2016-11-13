@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version = '3.2.0'
+version = '3.2.1'
 group "engine"
 
 apply plugin:"eclipse"
@@ -97,4 +97,8 @@ sourceSets {
             srcDir 'grails-app/migrations'
         }
     }
+}
+
+war {
+    archiveName 'engine.war'
 }
