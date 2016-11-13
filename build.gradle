@@ -98,3 +98,7 @@ sourceSets {
         }
     }
 }
+
+war {
+    archiveName 'engine.war'
+}
