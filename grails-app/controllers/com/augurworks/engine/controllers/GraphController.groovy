@@ -23,10 +23,10 @@ class GraphController {
 				Collection<RequestValueSet> data = dataRetrievalService.smartSpline(splineRequest)
 				render([ok: true, data: data*.toMap()] as JSON)
 			} catch (AugurWorksException e) {
-				log.error e
+				log.error('An error occurred during graph rendering', e)
 				render([ok: false, error: e.getMessage()] as JSON)
 			} catch (e) {
-				log.error e
+				log.error('An error occurred during graph rendering', e)
 				render([ok: false, error: e.getMessage()] as JSON)
 			}
 		} else {
@@ -49,10 +49,10 @@ class GraphController {
 				data.push(prediction)
 				render([ok: true, data: data] as JSON)
 			} catch (AugurWorksException e) {
-				log.error e
+				log.error('An error occurred during graph rendering', e)
 				render([ok: false, error: e.getMessage()] as JSON)
 			} catch (e) {
-				log.error e
+				log.error('An error occurred during graph rendering', e)
 				render([ok: false, error: e.getMessage()] as JSON)
 			}
 		} else {

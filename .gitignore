@@ -7,3 +7,8 @@ cobertura.ser
 UserConfig.groovy
 *.db
 *.db.old
+.idea
+gradle/
+gradlew*
+build
+.gradle

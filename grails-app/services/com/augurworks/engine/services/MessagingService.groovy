@@ -1,28 +1,21 @@
 package com.augurworks.engine.services
 
-import grails.transaction.Transactional
-
-import javax.annotation.PostConstruct
-
-import org.codehaus.groovy.grails.commons.GrailsApplication
-import org.slf4j.MDC
-
 import com.amazonaws.services.sns.AmazonSNSClient
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rabbitmq.client.AMQP
-import com.rabbitmq.client.Channel
-import com.rabbitmq.client.Connection
-import com.rabbitmq.client.ConnectionFactory
-import com.rabbitmq.client.Consumer
-import com.rabbitmq.client.DefaultConsumer
-import com.rabbitmq.client.Envelope
-import com.rabbitmq.client.ShutdownListener
-import com.rabbitmq.client.ShutdownSignalException
+import com.rabbitmq.client.*
+import grails.core.GrailsApplication
+import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+import javax.annotation.PostConstruct
 
 @Transactional
 class MessagingService {
+
+	private static final Logger log = LoggerFactory.getLogger(MessagingService)
 
 	private static final String SQS_NAME_KEY = 'sqsName'
 	private static final String FLUENT_HOST_KEY = 'fluentHost'
@@ -94,7 +87,7 @@ class MessagingService {
 						TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
 						alfredService.processResult(message)
 					} catch (Exception e) {
-						log.error e
+						log.error(e.getMessage(), e)
 					}
 				}
 			}

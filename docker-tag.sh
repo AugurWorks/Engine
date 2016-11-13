@@ -1,7 +1,6 @@
 #!/bin/sh
 
-dos2unix application.properties
-version=`cat application.properties | grep "^app.version=" | sed -r 's/.*app.version=(.*).*$/\1/'`
+version=`cat build.gradle | grep "^version " | sed -r "s/.*version = '(.*)'$/\1/"`
 
 echo "Building container v$version$1"
 docker build -t engine .

@@ -9,7 +9,7 @@ class AugurworksTagLib {
 	/**
 	 * Renders the user's avatar image.
 	 */
-	def avatar = { attrs ->
-		out << '<img class="' + attrs['class'] + '" style="' + attrs['style'] + '" src="' + springSecurityService.currentUser.avatarUrl + '" />'
+	def avatar = { attributes ->
+		out << '<img class="' + attributes['class'] + '" style="' + attributes['style'] + '" src="' + springSecurityService.currentUser.avatarUrl + '" />'
 	}
 }

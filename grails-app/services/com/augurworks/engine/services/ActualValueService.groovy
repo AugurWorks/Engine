@@ -9,20 +9,23 @@ import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
-import com.augurworks.engine.model.RequestValueSet
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 @Transactional
 class ActualValueService {
 
+	private static final Logger log = LoggerFactory.getLogger(ActualValueService)
+
 	void fillOutPredictedValues() {
 		Date yesterday = new Date(new Date().getTime() - 24 * 3600 * 1000)
 		List<PredictedValue> predictedValues = PredictedValue.findAllByActualIsNullAndDateLessThan(yesterday)
-		log.info 'Filling out ' + predictedValues.size() + ' predicted values'
+		log.info('Filling out ' + predictedValues.size() + ' predicted values')
 		predictedValues.each { PredictedValue predictedValue ->
 			try {
 				RequestDataSet requestDataSet = predictedValue.algorithmResult.algorithmRequest.getDependentRequestDataSet()
 				Date startDate = DateUtils.truncate(predictedValue.date, Calendar.DATE)
-				Date endDate = startDate.next()
+				Date endDate = ++startDate
 				SingleDataRequest dataRequest = new SingleDataRequest(
 					symbolResult: requestDataSet.toSymbolResult(),
 					offset: requestDataSet.offset,
@@ -42,12 +45,12 @@ class ActualValueService {
 					predictedValue.actual = actualValue.value
 					predictedValue.save()
 				} else {
-					log.warn 'No actual value found for predicted value ' + predictedValue.id
+					log.warn('No actual value found for predicted value ' + predictedValue.id)
 				}
 			} catch(Exception e) {
-				log.error 'Error getting actual value', e
+				log.error('Error getting actual value', e)
 			}
 		}
-		log.info 'Finished filling out predicted values'
+		log.info('Finished filling out predicted values')
 	}
 }

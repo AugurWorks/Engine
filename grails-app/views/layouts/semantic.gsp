@@ -90,7 +90,7 @@
 
 		<div class="menu-wrapper">
 			<div class="ui segment" style="margin-bottom: 15px;">
-				<b>AugurWorks Engine ${ grailsApplication.metadata['app.version'] }</b>
+				<b>AugurWorks Engine v${ grailsApplication.config.version }</b>
 			</div>
 		</div>
 

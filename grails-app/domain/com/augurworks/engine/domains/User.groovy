@@ -18,7 +18,6 @@ class User {
 
 	static constraints = {
 		username unique: true
-		password()
 		avatarUrl nullable: true
 	}
 

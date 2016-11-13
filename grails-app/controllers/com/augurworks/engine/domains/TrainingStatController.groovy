@@ -2,5 +2,5 @@ package com.augurworks.engine.domains
 
 class TrainingStatController {
 
-	static scaffold = true
+	static scaffold = TrainingStat
 }

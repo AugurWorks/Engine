@@ -1,6 +1,5 @@
 package com.augurworks.engine.controllers
 
-import org.codehaus.groovy.grails.commons.GrailsApplication
 
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.exceptions.AugurWorksException
@@ -9,6 +8,7 @@ import com.augurworks.engine.services.ApiService
 import com.augurworks.engine.services.AutomatedService
 import com.augurworks.engine.slack.Attachment
 import com.augurworks.engine.slack.SlashMessage
+import grails.core.GrailsApplication
 
 class ApiController {
 
@@ -83,7 +83,7 @@ class ApiController {
 			}
 		} catch (e) {
 			log.warn(e)
-			render(status: 500, text: 'An error occured')
+			render(status: 500, text: 'An error occurred')
 		}
 	}
 }
