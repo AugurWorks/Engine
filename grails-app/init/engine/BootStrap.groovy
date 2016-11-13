@@ -1,5 +1,6 @@
 package engine
 
+import grails.core.GrailsApplication
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -15,6 +16,7 @@ class BootStrap {
 
 	private static final Logger log = LoggerFactory.getLogger(BootStrap)
 
+    GrailsApplication grailsApplication
 	DataGeneratorService dataGeneratorService
 	AutoKickoffService autoKickoffService
 
@@ -24,22 +26,25 @@ class BootStrap {
 	}
 
 	def init = { servletContext ->
-		log.info('Starting bootstrap')
+        log.info('Starting bootstrap')
 
-		SqsPollingJob.triggerNow()
+        SqsPollingJob.triggerNow()
 
-		if (Role.count() == 0) {
-			Role adminRole = new Role(authority: "ROLE_ADMIN").save()
-			createUser('TheConnMan', adminRole)
-			createUser('safreiberg', adminRole)
-			createUser('augurworks1', adminRole)
-			createUser('gbcolema11', adminRole)
+        if (Role.count() == 0) {
+            Role adminRole = new Role(authority: "ROLE_ADMIN").save()
+            createUser('TheConnMan', adminRole)
+            createUser('safreiberg', adminRole)
+            createUser('augurworks1', adminRole)
+            createUser('gbcolema11', adminRole)
 
-			dataGeneratorService.bootstrapDefaultRequests()
-		}
-		AlgorithmRequest.findAllByCronExpressionIsNotNull().each { AlgorithmRequest algorithmRequest ->
-			autoKickoffService.scheduleKickoffJob(algorithmRequest)
-		}
+            dataGeneratorService.bootstrapDefaultRequests()
+        }
+
+        if (grailsApplication.config.cron.requests.on.toBoolean()) {
+            AlgorithmRequest.findAllByCronExpressionIsNotNull().each { AlgorithmRequest algorithmRequest ->
+                autoKickoffService.scheduleKickoffJob(algorithmRequest)
+            }
+        }
 
 		log.info('Finished bootstrapping')
 	}
