@@ -1,5 +1,6 @@
 package com.augurworks.engine.services
 
+import com.augurworks.engine.model.RequestValueSet
 import grails.transaction.Transactional
 
 import org.apache.commons.lang.time.DateUtils
@@ -25,7 +26,7 @@ class ActualValueService {
 			try {
 				RequestDataSet requestDataSet = predictedValue.algorithmResult.algorithmRequest.getDependentRequestDataSet()
 				Date startDate = DateUtils.truncate(predictedValue.date, Calendar.DATE)
-				Date endDate = ++startDate
+				Date endDate = startDate.next()
 				SingleDataRequest dataRequest = new SingleDataRequest(
 					symbolResult: requestDataSet.toSymbolResult(),
 					offset: requestDataSet.offset,
@@ -37,8 +38,8 @@ class ActualValueService {
 					aggregation: requestDataSet.aggregation,
 					dataType: requestDataSet.dataType
 				)
-				Collection<DataSetValue> dataSetValues = dataRequest.getHistory()
-				DataSetValue actualValue = dataSetValues.find { DataSetValue value ->
+				RequestValueSet requestValueSet = new RequestValueSet(dataRequest.symbolResult.symbol, dataRequest.dataType, dataRequest.offset, dataRequest.getHistory()).aggregateValues(requestDataSet.aggregation)
+				DataSetValue actualValue = requestValueSet.getValues().find { DataSetValue value ->
 					return value.date == predictedValue.date
 				}
 				if (actualValue) {
