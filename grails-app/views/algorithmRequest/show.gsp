@@ -35,10 +35,10 @@
 			<button onclick="deleteRequest()" class="ui negative button">Delete</button>
 			<g:link controller="graph" action="line" id="${ algorithm.id }" class="ui button">Graph</g:link>
 			<h3 class="ui header">Statistics - Threshold: ${ threshold }</h3>
-            <table class="ui small celled table">
+            <table class="ui small striped compact celled table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th></th>
                         <th>Total</th>
                         <th>Correct Direction</th>
                         <th>Correct Direction %</th>
@@ -46,7 +46,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>All</td>
+                        <td>All Predictions</td>
                         <td>${ predictions.size() }</td>
                         <td>${ cdAll.size() }</td>
                         <td>
