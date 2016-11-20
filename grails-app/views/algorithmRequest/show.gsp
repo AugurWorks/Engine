@@ -14,7 +14,7 @@
 	<body>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
 		<div class="ui segment">
-		    <g:set var="threshold" value="${ grailsApplication.config.augurworks.prediction.threshold }" />
+		    <g:set var="threshold" value="${ grailsApplication.config.augurworks.threshold[algorithm.unit.name().toLowerCase()] }" />
             <g:set var="predictions" value="${ request.algorithmResults*.predictedValues.flatten().grep { it.actual != null } }" />
             <g:set var="cdAll" value="${ predictions.grep { it.actual * it.value >= 0 } }" />
             <g:set var="allPct" value="${ predictions.size() == 0 ? null : Math.round(10000 * cdAll.size() / predictions.size()) / 100 }" />
@@ -34,7 +34,7 @@
 			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button">Edit</g:link>
 			<button onclick="deleteRequest()" class="ui negative button">Delete</button>
 			<g:link controller="graph" action="line" id="${ algorithm.id }" class="ui button">Graph</g:link>
-			<h3 class="ui header">Statistics</h3>
+			<h3 class="ui header">Statistics - Threshold: ${ threshold }</h3>
             <table class="ui small celled table">
                 <thead>
                     <tr>
