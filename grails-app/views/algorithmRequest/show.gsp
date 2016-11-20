@@ -14,6 +14,14 @@
 	<body>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
 		<div class="ui segment">
+            <g:set var="predictions" value="${ request.algorithmResults*.predictedValues.flatten().grep { it.actual != null } }" />
+            <g:set var="cdAll" value="${ predictions.grep { it.actual * it.value >= 0 } }" />
+            <g:set var="overThreshold" value="${ predictions.grep { Math.abs(it.value) >= 0.3 } }" />
+            <g:set var="cdOverThreshold" value="${ overThreshold.grep { it.actual * it.value >= 0 } }" />
+            <g:set var="actualOverThreshold" value="${ predictions.grep { Math.abs(it.actual) >= 0.3 } }" />
+            <g:set var="cdActualOverThreshold" value="${ actualOverThreshold.grep { it.actual * it.value >= 0 } }" />
+            <g:set var="bothOverThreshold" value="${ predictions.grep { Math.abs(it.value) >= 0.3 && Math.abs(it.actual) >= 0.3 } }" />
+            <g:set var="cdBothOverThreshold" value="${ bothOverThreshold.grep { it.actual * it.value >= 0 } }" />
 			<h1 class="ui header">${ algorithm.name }</h1>
 			<input type="hidden" id="id" value="${ algorithm.id }" />
 			<g:select name="modelType" class="ui dropdown" from="${ AlgorithmType.values()*.name }"></g:select>
@@ -21,6 +29,43 @@
 			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button">Edit</g:link>
 			<button onclick="deleteRequest()" class="ui negative button">Delete</button>
 			<g:link controller="graph" action="line" id="${ algorithm.id }" class="ui button">Graph</g:link>
+			<h3 class="ui header">Statistics</h3>
+            <table class="ui small celled table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Total</th>
+                        <th>Correct Direction</th>
+                        <th>Correct Direction %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>All</td>
+                        <td>${ predictions.size() }</td>
+                        <td>${ cdAll.size() }</td>
+                        <td>${ predictions.size() == 0 ? 'N/A' : Math.round(10000 * cdAll.size() / predictions.size()) / 100 + '%' }</td>
+                    </tr>
+                    <tr>
+                        <td>Prediction Over Threshold</td>
+                        <td>${ overThreshold.size() }</td>
+                        <td>${ cdOverThreshold.size() }</td>
+                        <td>${ overThreshold.size() == 0 ? 'N/A' : Math.round(10000 * cdOverThreshold.size() / overThreshold.size()) / 100 + '%' }</td>
+                    </tr>
+                    <tr>
+                        <td>Actual Over Threshold</td>
+                        <td>${ actualOverThreshold.size() }</td>
+                        <td>${ cdActualOverThreshold.size() }</td>
+                        <td>${ actualOverThreshold.size() == 0 ? 'N/A' : Math.round(10000 * cdActualOverThreshold.size() / actualOverThreshold.size()) / 100 + '%' }</td>
+                    </tr>
+                    <tr>
+                        <td>Both Over Threshold</td>
+                        <td>${ bothOverThreshold.size() }</td>
+                        <td>${ cdBothOverThreshold.size() }</td>
+                        <td>${ bothOverThreshold.size() == 0 ? 'N/A' : Math.round(10000 * cdBothOverThreshold.size() / bothOverThreshold.size()) / 100 + '%' }</td>
+                    </tr>
+                </tbody>
+            </table>
 			<h2 class="ui header" style="clear: both;">Results</h2>
 			<div id="results" class="ui one cards">
 				<g:render template="/layouts/resultCards" model="${ [results: algorithmResults] }" />
