@@ -124,6 +124,9 @@ augurworks {
 	ml {
 		max = getEnv('ML_MAX') ?: 10
 	}
+	prediction {
+		threshold = 0.3
+	}
 }
 
 rabbitmq {
