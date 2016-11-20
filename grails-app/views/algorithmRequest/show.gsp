@@ -49,25 +49,45 @@
                         <td>All</td>
                         <td>${ predictions.size() }</td>
                         <td>${ cdAll.size() }</td>
-                        <td>${ allPct == null ? 'N/A' : allPct + '%' }</td>
+                        <td>
+                            <g:if test="${ allPct != null }">
+                                <i class="icon ${ allPct > 85 ? "check green" : allPct > 70 ? "attention yellow" : "remove red" }"></i>
+                            </g:if>
+                            ${ allPct == null ? 'N/A' : allPct + '%' }
+                        </td>
                     </tr>
                     <tr>
                         <td>Prediction Over Threshold</td>
                         <td>${ overThreshold.size() }</td>
                         <td>${ cdOverThreshold.size() }</td>
-                        <td>${ valuePct == null ? 'N/A' : valuePct + '%' }</td>
+                        <td>
+                            <g:if test="${ valuePct != null }">
+                                <i class="icon ${ valuePct > 85 ? "check green" : valuePct > 70 ? "attention yellow" : "remove red" }"></i>
+                            </g:if>
+                            ${ valuePct == null ? 'N/A' : valuePct + '%' }
+                        </td>
                     </tr>
                     <tr>
                         <td>Actual Over Threshold</td>
                         <td>${ actualOverThreshold.size() }</td>
                         <td>${ cdActualOverThreshold.size() }</td>
-                        <td>${ actualPct == null ? 'N/A' : actualPct + '%' }</td>
+                        <td>
+                            <g:if test="${ actualPct != null }">
+                                <i class="icon ${ actualPct > 85 ? "check green" : actualPct > 70 ? "attention yellow" : "remove red" }"></i>
+                            </g:if>
+                            ${ actualPct == null ? 'N/A' : actualPct + '%' }
+                        </td>
                     </tr>
                     <tr>
                         <td>Both Over Threshold</td>
                         <td>${ bothOverThreshold.size() }</td>
                         <td>${ cdBothOverThreshold.size() }</td>
-                        <td>${ bothPct == null ? 'N/A' : bothPct + '%' }</td>
+                        <td>
+                            <g:if test="${ bothPct != null }">
+                                <i class="icon ${ bothPct > 85 ? "check green" : bothPct > 70 ? "attention yellow" : "remove red" }"></i>
+                            </g:if>
+                            ${ bothPct == null ? 'N/A' : bothPct + '%' }
+                        </td>
                     </tr>
                 </tbody>
             </table>
