@@ -124,6 +124,12 @@ augurworks {
 	ml {
 		max = getEnv('ML_MAX') ?: 10
 	}
+	threshold {
+		day = 0.3
+		hour = 0.15
+		half_hour = 0.1
+		fifteen_minutes = 0.05
+	}
 }
 
 rabbitmq {
