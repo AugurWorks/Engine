@@ -25,11 +25,15 @@ class AlgorithmResult {
 		predictedValues cascade: 'all-delete-orphan'
 	}
 
-	PredictedValue getFutureValue() {
+	List<PredictedValue> getFutureValues() {
 		Date endDate = this.algorithmRequest.getEndDate(this.dateCreated)
-		Collection<PredictedValue> filtered = this.predictedValues.sort { it.date }.grep { PredictedValue value ->
+		return this.predictedValues.sort { it.date }.grep { PredictedValue value ->
 			value.date > endDate
 		}
+	}
+
+	PredictedValue getFutureValue() {
+		Collection<PredictedValue> filtered = getFutureValues()
 		if (filtered.size() >= 1) {
 			return filtered.first()
 		}

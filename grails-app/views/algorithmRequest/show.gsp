@@ -15,7 +15,7 @@
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
 		<div class="ui segment">
 		    <g:set var="threshold" value="${ grailsApplication.config.augurworks.threshold[algorithm.unit.name().toLowerCase()] }" />
-            <g:set var="predictions" value="${ request.algorithmResults*.predictedValues.flatten().grep { it.actual != null } }" />
+            <g:set var="predictions" value="${ request.algorithmResults*.getFutureValues().flatten().grep { it.actual != null } }" />
             <g:set var="cdAll" value="${ predictions.grep { it.actual * it.value >= 0 } }" />
             <g:set var="allPct" value="${ predictions.size() == 0 ? null : Math.round(10000 * cdAll.size() / predictions.size()) / 100 }" />
             <g:set var="overThreshold" value="${ predictions.grep { Math.abs(it.value) >= threshold } }" />
