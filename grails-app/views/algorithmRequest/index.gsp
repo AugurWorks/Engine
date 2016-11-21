@@ -13,9 +13,18 @@
 			<div class="ui input" style="float: right; margin-right: 1em;">
 				<input id="filter" type="text" placeholder="Filter">
 			</div>
-			<div class="ui two doubling cards" style="clear: both;">
+			<div class="ui divider" style="clear: both;"></div>
+            <h4 class="ui floated left header">
+                <span id="request-count">${ requests.size() }</span> Request(s)
+            </h3>
+            <div class="ui toggle checkbox" style="float: right;">
+                <input type="checkbox" id="hideNoResults">
+                <label>Hide requests with no results</label>
+            </div>
+            <div class="ui divider" style="clear: both;"></div>
+			<div class="ui two doubling cards">
 				<g:each in="${ requests }" var="request">
-					<g:link controller="algorithmRequest" action="show" id="${ request.id }" class="card" name="${ request.toString() }">
+					<g:link controller="algorithmRequest" action="show" id="${ request.id }" class="card results-${ request.algorithmResults.size() }" name="${ request.toString() }">
 						<div class="content">
 							<div class="header">${ request.toString() }</div>
 							<div class="meta">
@@ -48,6 +57,16 @@
 							$(c).hide();
 						}
 					});
+				});
+				$('.ui.toggle').checkbox({
+				    onChecked: function() {
+				        $('.results-0').hide();
+				        $('#request-count').text($('.card:visible').length);
+				    },
+				    onUnchecked: function() {
+				        $('.results-0').show();
+				        $('#request-count').text($('.card:visible').length);
+				    }
 				});
 			});
 		</script>
