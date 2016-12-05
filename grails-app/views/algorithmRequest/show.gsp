@@ -34,6 +34,12 @@
 			<g:link controller="algorithmRequest" action="create" id="${ algorithm.id }" class="ui positive button">Edit</g:link>
 			<button onclick="deleteRequest()" class="ui negative button">Delete</button>
 			<g:link controller="graph" action="line" id="${ algorithm.id }" class="ui button">Graph</g:link>
+			<h3 class="ui header">Tags</h3>
+			<div class="ui labels">
+				<g:each in="${ algorithm.tags.sort() }" var="tag">
+					<div class="ui basic label">${ tag }</div>
+				</g:each>
+			</div>
 			<h3 class="ui header">Statistics - Threshold: ${ threshold }</h3>
             <table class="ui small striped compact celled table">
                 <thead>
