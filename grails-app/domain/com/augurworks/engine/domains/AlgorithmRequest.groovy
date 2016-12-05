@@ -18,7 +18,7 @@ class AlgorithmRequest {
 	AlfredEnvironment alfredEnvironment = AlfredEnvironment.LAMBDA
 	SplineType splineType = SplineType.FILL
 
-	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType]
+	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType, tags: String]
 
 	static constraints = {
 		name unique: true

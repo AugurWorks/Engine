@@ -1,7 +1,7 @@
 package com.augurworks.engine.controllers
 
 import grails.converters.JSON
-
+import org.apache.commons.lang.StringUtils
 import org.quartz.CronExpression
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -83,6 +83,7 @@ class AlgorithmRequestController {
 			algorithmRequest.name = name
 			algorithmRequest.alfredEnvironment = AlfredEnvironment.findByName(alfredEnvironment)
 			algorithmRequest.cronExpression = cronExpression
+			algorithmRequest.tags = JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique()
 			algorithmRequest.save()
 			autoKickoffService.clearJob(algorithmRequest)
 			if (algorithmRequest.cronExpression) {
@@ -110,6 +111,7 @@ class AlgorithmRequestController {
 				deleteRequest?.delete(flush: true)
 			}
 			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], SplineType[splineType], AlfredEnvironment.findByName(alfredEnvironment), cronExpression, cronAlgorithms, dependantSymbol)
+			algorithmRequest.tags = JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique()
 			algorithmRequest.save()
 			if (algorithmRequest.hasErrors()) {
 				throw new AugurWorksException('The request could not be created, please check that the name is unique.')

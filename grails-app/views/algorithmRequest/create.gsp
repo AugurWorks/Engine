@@ -45,7 +45,7 @@
 			<div class="ui form" style="clear: both;">
 				<h3 class="ui dividing header">Info</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
-				<div class="five fields">
+				<div class="three fields">
 					<div class="field">
 						<label>Name</label>
 						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
@@ -58,6 +58,8 @@
 						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
 						<g:field type="text" name="cronExpression" value="${ algorithmRequest ? algorithmRequest?.cronExpression : '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
 					</div>
+				</div>
+				<div class="three fields">
 					<div class="field">
 						<label>Alfred Environment</label>
 						<g:select from="${ AlfredEnvironment.values()*.name }" name="alfredEnvironment" class="ui search dropdown" value="${ algorithmRequest?.alfredEnvironment?.name }" />
@@ -65,6 +67,10 @@
 					<div class="field">
 						<label>Cron Algorithms</label>
 						<g:select from="${ AlgorithmType.values()*.name }" name="cronAlgorithms" class="ui search dropdown" multiple="true" value="${ algorithmRequest?.cronAlgorithms*.name }" />
+					</div>
+					<div class="field">
+						<label>Tags</label>
+						<g:field type="text" name="tags" value="${ algorithmRequest?.tags?.join(', ') }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Boundary Dates</h3>
@@ -198,7 +204,7 @@
 					}
 				});
                 <g:if test="${ algorithmRequest }">
-                    $('#name, #alfredEnvironment, #cronExpression').change(function() {
+                    $('#name, #alfredEnvironment, #cronExpression, #tags').change(function() {
                         saveRequest();
                         $('#info-check').show();
                         setTimeout(function() {
