@@ -133,14 +133,20 @@
 					</div>
 				</div>
 				<div class="fields">
+					<g:if test="${ algorithmRequest }">
+						<div class="field">
+							<label>Save Name, Cron, and Env</label>
+							<button onclick="saveRequest()" class="ui green button">Save Request</button>
+						</div>
+					</g:if>
 					<div class="field">
 						<label>Submit</label>
-						<button onclick="submitRequest(false)" class="ui positive button">${ algorithmRequest ? 'Update' : 'Create' } Request</button>
+						<button onclick="submitRequest(false)" class="ui primary button">${ algorithmRequest ? 'Copy' : 'Create' } Request</button>
 					</div>
 					<g:if test="${ algorithmRequest }">
 						<div class="field">
 							<label>Overwrite</label>
-							<button onclick="submitRequest(true)" class="ui primary button">Overwrite Request</button>
+							<button onclick="submitRequest(true)" class="ui yellow button">Overwrite Request</button>
 						</div>
 						<div class="field">
 							<label>Delete</label>

@@ -27,6 +27,30 @@ function removeRow(me) {
 	$(me).parents('tr').remove();
 }
 
+function saveRequest() {
+	$.ajax({
+		url: '/algorithmRequest/saveRequest',
+		data: {
+			id: $('#id').val(),
+			name: $('#name').val(),
+			alfredEnvironment: $('#alfredEnvironment').val(),
+			cronExpression: $('#cronExpression').val()
+		},
+		success: function(data) {
+			if (data.ok) {
+				window.location.href = '/algorithmRequest/show/' + data.id
+			} else {
+				swal({
+					title: 'Error',
+					text: data.error,
+					type: 'error',
+					html: true
+				});
+			}
+		}
+	});
+}
+
 function submitRequest(overwrite) {
 	$.ajax({
 		url: '/algorithmRequest/submitRequest',

@@ -77,6 +77,22 @@ class AlgorithmRequestController {
 		[algorithmRequest: algorithmRequest]
 	}
 
+	def saveRequest(String name, String alfredEnvironment, String cronExpression, Long id) {
+		try {
+			AlgorithmRequest algorithmRequest = AlgorithmRequest.get(id)
+			algorithmRequest.name = name
+			algorithmRequest.alfredEnvironment = AlfredEnvironment.findByName(alfredEnvironment)
+			algorithmRequest.cronExpression = cronExpression
+			algorithmRequest.save()
+			autoKickoffService.clearJob(algorithmRequest)
+			autoKickoffService.scheduleKickoffJob(algorithmRequest)
+			render([ok: true, id: algorithmRequest.id] as JSON)
+		} catch (e) {
+			log.error(e.getMessage(), e)
+			render([ok: false, error: e.getMessage()] as JSON)
+		}
+	}
+
 	def submitRequest(String name, int startOffset, int endOffset, String unit, String splineType, String alfredEnvironment, String cronExpression, Long id, boolean overwrite) {
 		try {
 			Collection<String> cronAlgorithms = JSON.parse(params.cronAlgorithms)
