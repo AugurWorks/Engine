@@ -85,7 +85,9 @@ class AlgorithmRequestController {
 			algorithmRequest.cronExpression = cronExpression
 			algorithmRequest.save()
 			autoKickoffService.clearJob(algorithmRequest)
-			autoKickoffService.scheduleKickoffJob(algorithmRequest)
+			if (algorithmRequest.cronExpression) {
+				autoKickoffService.scheduleKickoffJob(algorithmRequest)
+			}
 			render([ok: true, id: algorithmRequest.id] as JSON)
 		} catch (e) {
 			log.error(e.getMessage(), e)
