@@ -15,33 +15,34 @@
 		<%@ page import="com.augurworks.engine.helper.Unit" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
-				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
+				<h1 class="ui floated left header">Edit: ${ algorithmRequest.toString() }</h1>
+				<i id="info-check" class="big green check circle icon" style="display: none; float: right;"></i>
 			</g:if>
 			<g:else>
 				<h1 class="ui header">Create Algorithm Request</h1>
 			</g:else>
-			<div id="checking" class="ui icon message" style="display: none;">
+			<div id="checking" class="ui icon message" style="display: none; clear: both;">
 				<i class="notched circle loading icon"></i>
 				<div class="content">
 					<div class="header">Checking Request Validity</div>
 					<p>Checking to see if the new Algorithm Request has valid data</p>
 				</div>
 			</div>
-			<div id="valid" class="ui positive icon message" style="display: none;">
+			<div id="valid" class="ui positive icon message" style="display: none; clear: both;">
 				<i class="positive check icon"></i>
 				<div class="content">
 					<div class="header">Valid</div>
 					<p>The current request contains valid data for the selected input and date range</p>
 				</div>
 			</div>
-			<div id="invalid" class="ui negative icon message" style="display: none;">
+			<div id="invalid" class="ui negative icon message" style="display: none; clear: both;">
 				<i class="negative remove icon"></i>
 				<div class="content">
 					<div class="header">Invalid</div>
 					<p></p>
 				</div>
 			</div>
-			<div class="ui form">
+			<div class="ui form" style="clear: both;">
 				<h3 class="ui dividing header">Info</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
 				<div class="five fields">
@@ -133,12 +134,6 @@
 					</div>
 				</div>
 				<div class="fields">
-					<g:if test="${ algorithmRequest }">
-						<div class="field">
-							<label>Save Name, Cron, and Env</label>
-							<button onclick="saveRequest()" class="ui green button">Save Request</button>
-						</div>
-					</g:if>
 					<div class="field">
 						<label>Submit</label>
 						<button onclick="submitRequest(false)" class="ui primary button">${ algorithmRequest ? 'Copy' : 'Create' } Request</button>
@@ -202,6 +197,15 @@
 						url: '/algorithmRequest/searchSymbol?keyword={query}'
 					}
 				});
+                <g:if test="${ algorithmRequest }">
+                    $('#name, #alfredEnvironment, #cronExpression').change(function() {
+                        saveRequest();
+                        $('#info-check').show();
+                        setTimeout(function() {
+                            $('#info-check').fadeOut();
+                        }, 1000);
+                    });
+                </g:if>
 			});
 		</script>
 	</body>

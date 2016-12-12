@@ -37,9 +37,7 @@ function saveRequest() {
 			cronExpression: $('#cronExpression').val()
 		},
 		success: function(data) {
-			if (data.ok) {
-				window.location.href = '/algorithmRequest/show/' + data.id
-			} else {
+			if (!data.ok) {
 				swal({
 					title: 'Error',
 					text: data.error,
