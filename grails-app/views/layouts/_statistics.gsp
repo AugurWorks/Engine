@@ -11,7 +11,7 @@
 <g:set var="bothOverThreshold" value="${ predictions.grep { Math.abs(it.value) >= threshold && Math.abs(it.actual) >= threshold } }" />
 <g:set var="cdBothOverThreshold" value="${ bothOverThreshold.grep { it.actual * it.value >= 0 } }" />
 <g:set var="bothPct" value="${ bothOverThreshold.size() == 0 ? null : Math.round(10000 * cdBothOverThreshold.size() / bothOverThreshold.size()) / 100 }" />
-<h3 class="ui header">Statistics - Threshold: ${ threshold }</h3>
+<h3 class="ui header">${ title ? title + ': ' : '' }Statistics - Threshold: ${ threshold }</h3>
 <table class="ui small striped compact celled table">
     <thead>
         <tr>
