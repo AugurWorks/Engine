@@ -70,7 +70,7 @@
 					</div>
 					<div class="field">
 						<label>Tags</label>
-						<g:field type="text" name="tags" value="${ algorithmRequest?.tags?.join(', ') }" />
+						<g:field type="text" name="tags" value="${ algorithmRequest?.tags*.name?.join(', ') }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Boundary Dates</h3>

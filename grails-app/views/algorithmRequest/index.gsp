@@ -40,7 +40,7 @@
 						</div>
 						<div class="extra content">
 							<div class="ui labels">
-								<g:each in="${ request.tags.sort() }" var="tag">
+								<g:each in="${ request.tags*.name.sort() }" var="tag">
 									<div class="ui blue basic label">${ tag }</div>
 								</g:each>
 							</div>
