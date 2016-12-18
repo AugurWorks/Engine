@@ -34,7 +34,8 @@ function saveRequest() {
 			id: $('#id').val(),
 			name: $('#name').val(),
 			alfredEnvironment: $('#alfredEnvironment').val(),
-			cronExpression: $('#cronExpression').val()
+			cronExpression: $('#cronExpression').val(),
+			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : [])
 		},
 		success: function(data) {
 			if (!data.ok) {
@@ -63,6 +64,7 @@ function submitRequest(overwrite) {
 			alfredEnvironment: $('#alfredEnvironment').val(),
 			cronExpression: $('#cronExpression').val(),
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
+			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : []),
 			overwrite: overwrite
 		},
 		success: function(data) {
