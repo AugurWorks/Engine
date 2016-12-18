@@ -43,6 +43,9 @@
 					<g:link controller="algorithmRequest" class="item">
 						<i class="icon cubes"></i> List Data Sets
 					</g:link>
+					<g:link controller="tag" class="item">
+						<i class="icon tag"></i> Tag Stats
+					</g:link>
 					<div class="ui dropdown item">
 						<i class="icon line chart"></i>
 						Graphs <i class="icon dropdown"></i>
