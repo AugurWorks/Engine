@@ -9,10 +9,10 @@ class UrlMappings {
 
 		"/"(controller:'home')
 		"/dashboard"(controller:'home',action:'dashboard')
-		"/"(controller:'home')
 		"/controllers"(view:'/index')
 		"500"(view:'/error')
 		"403"(view: '/login/denied')
 		"404"(view:'/404')
+		"/tag/$tag"(controller:'tag', action:'show')
 	}
 }

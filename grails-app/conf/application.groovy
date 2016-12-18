@@ -156,6 +156,7 @@ grails.plugin.springsecurity.authority.className = 'com.augurworks.engine.domain
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 		[pattern: '/**',               access: ['permitAll']],
 		[pattern: '/home/dashboard',               access: ['ROLE_ADMIN']],
+		[pattern: '/tags/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/graph/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/algorithmRequest/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/algorithmResult/**',               access: ['ROLE_ADMIN']],
