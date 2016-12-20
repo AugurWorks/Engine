@@ -32,7 +32,6 @@ function saveRequest() {
 		url: '/algorithmRequest/saveRequest',
 		data: {
 			id: $('#id').val(),
-			name: $('#name').val(),
 			alfredEnvironment: $('#alfredEnvironment').val(),
 			cronExpression: $('#cronExpression').val(),
 			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : [])

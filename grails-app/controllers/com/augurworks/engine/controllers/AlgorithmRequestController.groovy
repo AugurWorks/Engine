@@ -78,10 +78,9 @@ class AlgorithmRequestController {
 		[algorithmRequest: algorithmRequest]
 	}
 
-	def saveRequest(String name, String alfredEnvironment, String cronExpression, Long id) {
+	def saveRequest(String alfredEnvironment, String cronExpression, Long id) {
 		try {
 			AlgorithmRequest algorithmRequest = AlgorithmRequest.get(id)
-			algorithmRequest.name = name
 			algorithmRequest.alfredEnvironment = AlfredEnvironment.findByName(alfredEnvironment)
 			algorithmRequest.cronExpression = cronExpression
 			algorithmRequest.tags.clear()
