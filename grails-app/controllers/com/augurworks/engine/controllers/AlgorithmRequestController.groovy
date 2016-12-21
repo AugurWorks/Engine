@@ -1,7 +1,8 @@
 package com.augurworks.engine.controllers
 
+import com.augurworks.engine.domains.RequestTag
 import grails.converters.JSON
-
+import org.apache.commons.lang.StringUtils
 import org.quartz.CronExpression
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -77,6 +78,25 @@ class AlgorithmRequestController {
 		[algorithmRequest: algorithmRequest]
 	}
 
+	def saveRequest(String alfredEnvironment, String cronExpression, Long id) {
+		try {
+			AlgorithmRequest algorithmRequest = AlgorithmRequest.get(id)
+			algorithmRequest.alfredEnvironment = AlfredEnvironment.findByName(alfredEnvironment)
+			algorithmRequest.cronExpression = cronExpression
+			algorithmRequest.tags.clear()
+			List<RequestTag> requestTags = JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique().collect { new RequestTag(name: it, algorithmRequest: algorithmRequest).save() }
+			algorithmRequest.save()
+			autoKickoffService.clearJob(algorithmRequest)
+			if (algorithmRequest.cronExpression) {
+				autoKickoffService.scheduleKickoffJob(algorithmRequest)
+			}
+			render([ok: true, id: algorithmRequest.id] as JSON)
+		} catch (e) {
+			log.error(e.getMessage(), e)
+			render([ok: false, error: e.getMessage()] as JSON)
+		}
+	}
+
 	def submitRequest(String name, int startOffset, int endOffset, String unit, String splineType, String alfredEnvironment, String cronExpression, Long id, boolean overwrite) {
 		try {
 			Collection<String> cronAlgorithms = JSON.parse(params.cronAlgorithms)
@@ -93,6 +113,7 @@ class AlgorithmRequestController {
 			}
 			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], SplineType[splineType], AlfredEnvironment.findByName(alfredEnvironment), cronExpression, cronAlgorithms, dependantSymbol)
 			algorithmRequest.save()
+			JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique().collect { new RequestTag(name: it, algorithmRequest: algorithmRequest).save() }
 			if (algorithmRequest.hasErrors()) {
 				throw new AugurWorksException('The request could not be created, please check that the name is unique.')
 			}

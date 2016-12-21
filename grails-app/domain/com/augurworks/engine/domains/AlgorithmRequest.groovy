@@ -18,7 +18,7 @@ class AlgorithmRequest {
 	AlfredEnvironment alfredEnvironment = AlfredEnvironment.LAMBDA
 	SplineType splineType = SplineType.FILL
 
-	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType]
+	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType, tags: RequestTag]
 
 	static constraints = {
 		name unique: true
@@ -28,6 +28,7 @@ class AlgorithmRequest {
 	static mapping = {
 		requestDataSets cascade: 'all-delete-orphan'
 		algorithmResults cascade: 'all-delete-orphan'
+		tags cascade: 'all-delete-orphan'
 	}
 
 	String toString() {

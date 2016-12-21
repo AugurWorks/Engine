@@ -27,6 +27,28 @@ function removeRow(me) {
 	$(me).parents('tr').remove();
 }
 
+function saveRequest() {
+	$.ajax({
+		url: '/algorithmRequest/saveRequest',
+		data: {
+			id: $('#id').val(),
+			alfredEnvironment: $('#alfredEnvironment').val(),
+			cronExpression: $('#cronExpression').val(),
+			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : [])
+		},
+		success: function(data) {
+			if (!data.ok) {
+				swal({
+					title: 'Error',
+					text: data.error,
+					type: 'error',
+					html: true
+				});
+			}
+		}
+	});
+}
+
 function submitRequest(overwrite) {
 	$.ajax({
 		url: '/algorithmRequest/submitRequest',
@@ -41,6 +63,7 @@ function submitRequest(overwrite) {
 			alfredEnvironment: $('#alfredEnvironment').val(),
 			cronExpression: $('#cronExpression').val(),
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
+			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : []),
 			overwrite: overwrite
 		},
 		success: function(data) {

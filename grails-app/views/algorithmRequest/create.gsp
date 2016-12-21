@@ -15,36 +15,37 @@
 		<%@ page import="com.augurworks.engine.helper.Unit" %>
 		<div class="ui segment">
 			<g:if test="${ algorithmRequest }">
-				<h1 class="ui header">Edit: ${ algorithmRequest.toString() }</h1>
+				<h1 class="ui floated left header">Edit: ${ algorithmRequest.toString() }</h1>
+				<i id="info-check" class="big green check circle icon" style="display: none; float: right;"></i>
 			</g:if>
 			<g:else>
 				<h1 class="ui header">Create Algorithm Request</h1>
 			</g:else>
-			<div id="checking" class="ui icon message" style="display: none;">
+			<div id="checking" class="ui icon message" style="display: none; clear: both;">
 				<i class="notched circle loading icon"></i>
 				<div class="content">
 					<div class="header">Checking Request Validity</div>
 					<p>Checking to see if the new Algorithm Request has valid data</p>
 				</div>
 			</div>
-			<div id="valid" class="ui positive icon message" style="display: none;">
+			<div id="valid" class="ui positive icon message" style="display: none; clear: both;">
 				<i class="positive check icon"></i>
 				<div class="content">
 					<div class="header">Valid</div>
 					<p>The current request contains valid data for the selected input and date range</p>
 				</div>
 			</div>
-			<div id="invalid" class="ui negative icon message" style="display: none;">
+			<div id="invalid" class="ui negative icon message" style="display: none; clear: both;">
 				<i class="negative remove icon"></i>
 				<div class="content">
 					<div class="header">Invalid</div>
 					<p></p>
 				</div>
 			</div>
-			<div class="ui form">
+			<div class="ui form" style="clear: both;">
 				<h3 class="ui dividing header">Info</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
-				<div class="five fields">
+				<div class="three fields">
 					<div class="field">
 						<label>Name</label>
 						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
@@ -57,6 +58,8 @@
 						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
 						<g:field type="text" name="cronExpression" value="${ algorithmRequest ? algorithmRequest?.cronExpression : '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
 					</div>
+				</div>
+				<div class="three fields">
 					<div class="field">
 						<label>Alfred Environment</label>
 						<g:select from="${ AlfredEnvironment.values()*.name }" name="alfredEnvironment" class="ui search dropdown" value="${ algorithmRequest?.alfredEnvironment?.name }" />
@@ -64,6 +67,10 @@
 					<div class="field">
 						<label>Cron Algorithms</label>
 						<g:select from="${ AlgorithmType.values()*.name }" name="cronAlgorithms" class="ui search dropdown" multiple="true" value="${ algorithmRequest?.cronAlgorithms*.name }" />
+					</div>
+					<div class="field">
+						<label>Tags</label>
+						<g:field type="text" name="tags" value="${ algorithmRequest?.tags*.name?.join(', ') }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Boundary Dates</h3>
@@ -135,12 +142,12 @@
 				<div class="fields">
 					<div class="field">
 						<label>Submit</label>
-						<button onclick="submitRequest(false)" class="ui positive button">${ algorithmRequest ? 'Update' : 'Create' } Request</button>
+						<button onclick="submitRequest(false)" class="ui primary button">${ algorithmRequest ? 'Copy' : 'Create' } Request</button>
 					</div>
 					<g:if test="${ algorithmRequest }">
 						<div class="field">
 							<label>Overwrite</label>
-							<button onclick="submitRequest(true)" class="ui primary button">Overwrite Request</button>
+							<button onclick="submitRequest(true)" class="ui yellow button">Overwrite Request</button>
 						</div>
 						<div class="field">
 							<label>Delete</label>
@@ -196,6 +203,15 @@
 						url: '/algorithmRequest/searchSymbol?keyword={query}'
 					}
 				});
+                <g:if test="${ algorithmRequest }">
+                    $('#alfredEnvironment, #cronExpression, #tags').change(function() {
+                        saveRequest();
+                        $('#info-check').show();
+                        setTimeout(function() {
+                            $('#info-check').fadeOut();
+                        }, 1000);
+                    });
+                </g:if>
 			});
 		</script>
 	</body>

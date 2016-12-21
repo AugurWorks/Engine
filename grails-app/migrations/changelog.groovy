@@ -293,4 +293,6 @@ databaseChangeLog = {
 	include file: 'prediction-actuals-values.groovy'
 
 	include file: 'request-data-set-offset.groovy'
+
+	include file: 'request-tags.groovy'
 }
