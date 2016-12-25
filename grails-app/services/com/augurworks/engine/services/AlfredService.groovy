@@ -10,8 +10,10 @@ import com.augurworks.engine.helper.AlfredEnvironment
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
+import com.augurworks.engine.messaging.TrainingConfig
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.messaging.TrainingMessageV1
+import com.augurworks.engine.messaging.TrainingMessageV2
 import com.augurworks.engine.model.RequestValueSet
 import com.fasterxml.jackson.databind.ObjectMapper
 import grails.transaction.Transactional
@@ -84,6 +86,32 @@ class AlfredService {
 		}
 		return lines.join('\n')
 	}
+
+    TrainingMessageV2 constructTrainingMessage(String id, AlgorithmRequest algorithmRequest) {
+        SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest, prediction: true)
+        Collection<RequestValueSet> dataSets = dataRetrievalService.smartSpline(splineRequest).sort { RequestValueSet requestValueSetA, RequestValueSet requestValueSetB ->
+            Collection<String> dependantFields = algorithmRequest.dependantSymbol.split(' - ')
+            return (requestValueSetB.name == dependantFields[0] && requestValueSetB.dataType.name() == dependantFields[1]) <=> (requestValueSetA.name == dependantFields[0] && requestValueSetA.dataType.name() == dependantFields[1]) ?: requestValueSetA.name <=> requestValueSetB.name
+        }
+        int rowNumber = dataSets*.values*.size().max()
+        if (!automatedService.areDataSetsCorrectlySized(dataSets.tail(), rowNumber)) {
+            String dataSetLengths = dataSets.tail().collect { RequestValueSet dataSet ->
+                return dataSet.name + ' - ' + dataSet.offset + ': ' + dataSet.values.size() + ' dates'
+            }.join(', ')
+            throw new AugurWorksException('Request datasets aren\'t all the same length (' + dataSetLengths + ')')
+        }
+        TrainingConfig trainingConfig = new TrainingConfig().withDepth(5).withIterations(700).withLearningRate(0.1).withTitles(dataSets.tail()*.name)
+        List<List<String>> data = (0..(rowNumber - 1)).collect { int rowNum ->
+            // TO-DO: Will not work for predictions of more than one period
+            Date date = dataSets*.values.first()[rowNum]?.date ?: Common.calculatePredictionDate(algorithmRequest.unit, dataSets*.values.first()[rowNum - 1].date, 1)
+            List<String> row = new ArrayList<>()
+            row.add(date.format(Global.ALFRED_DATE_FORMAT))
+            row.add(dataSets.first().values[rowNum]?.value.toString() ?: 'NULL')
+            row.addAll(dataSets.tail()*.values.collect { it[rowNum].value.toString() })
+            return row
+        }
+        return new TrainingMessageV2(id).withTrainingConfig(trainingConfig).withData(data)
+    }
 
 	void processResult(TrainingMessage message) {
 		MDC.put('netId', message.getNetId())
