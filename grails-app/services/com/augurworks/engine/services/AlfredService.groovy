@@ -1,10 +1,5 @@
 package com.augurworks.engine.services
 
-import grails.transaction.Transactional
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import org.slf4j.MDC
-
 import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
@@ -16,8 +11,13 @@ import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.messaging.TrainingMessage
+import com.augurworks.engine.messaging.TrainingMessageV1
 import com.augurworks.engine.model.RequestValueSet
 import com.fasterxml.jackson.databind.ObjectMapper
+import grails.transaction.Transactional
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 
 @Transactional
 class AlfredService {
@@ -37,7 +37,7 @@ class AlfredService {
 		MDC.put('netId', netId)
 		log.info('Created Alfred algorithm run for ' + algorithmRequest.name)
 		String postBody = constructPostBody(algorithmRequest)
-		TrainingMessage message = new TrainingMessage(netId, postBody)
+		TrainingMessage message = new TrainingMessageV1(netId).withData(postBody)
 		messagingService.sendTrainingMessage(message, algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
