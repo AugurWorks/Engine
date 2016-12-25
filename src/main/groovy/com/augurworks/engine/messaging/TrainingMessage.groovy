@@ -1,8 +1,10 @@
 package com.augurworks.engine.messaging
 
+import com.augurworks.engine.domains.AlgorithmResult
+import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.TrainingStat
 
-public class TrainingMessage implements Serializable {
+public abstract class TrainingMessage implements Serializable {
 
     TrainingMessage() { }
 
@@ -10,7 +12,7 @@ public class TrainingMessage implements Serializable {
         this.netId = netId
     }
 
-    private final String netId
+    private String netId
 
     private Map<String, String> metadata
     private List<TrainingStat> trainingStats
@@ -31,4 +33,18 @@ public class TrainingMessage implements Serializable {
     public Map<String, String> getMetadata() {
         return this.metadata
     }
+
+    public void setNetId(String netId) {
+        this.netId = netId
+    }
+
+    public void setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata
+    }
+
+    public void setTrainingStats(List<TrainingStat> trainingStats) {
+        this.trainingStats = trainingStats
+    }
+
+    abstract List<PredictedValue> processResults(AlgorithmResult algorithmResult)
 }

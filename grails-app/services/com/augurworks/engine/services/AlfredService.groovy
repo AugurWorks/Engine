@@ -3,7 +3,6 @@ package com.augurworks.engine.services
 import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.TrainingStat
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlfredEnvironment
@@ -127,7 +126,7 @@ class AlfredService {
 		log.debug('Received results message from net ' + algorithmResult.alfredModelId)
 
 		algorithmResult.complete = true
-		processResponse(algorithmResult, message.getData())
+		message.processResults(algorithmResult)
 		algorithmResult.save(flush: true)
 
 		List<TrainingStat> trainingStats = message.getTrainingStats()
@@ -142,17 +141,5 @@ class AlfredService {
 		MDC.remove('netId')
 		MDC.remove('algorithmRequestId')
 		MDC.remove('algorithmResultId')
-	}
-
-	void processResponse(AlgorithmResult algorithmResult, String text) {
-		Collection<String> lines = text.split('\n')
-		lines[0..(lines.size() - 1)].each { String line ->
-			Collection<String> cols = line.split(' ')
-			new PredictedValue(
-				date: Date.parse(Global.ALFRED_DATE_FORMAT, cols[0]),
-				value: cols[2].toDouble(),
-				algorithmResult: algorithmResult
-			).save()
-		}
 	}
 }
