@@ -1,8 +1,11 @@
 package com.augurworks.engine.messaging
 
+import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
+import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
+import com.augurworks.engine.model.RequestValueSet
 
 public class TrainingMessageV2 extends TrainingMessage {
 
@@ -51,5 +54,20 @@ public class TrainingMessageV2 extends TrainingMessage {
                 algorithmResult: algorithmResult
             ).save()
         }
+    }
+
+    public static TrainingMessageV2 constructTrainingMessage(String id, AlgorithmRequest algorithmRequest, List<RequestValueSet> dataSets) {
+        int rowNumber = dataSets*.values*.size().max()
+        TrainingConfig trainingConfig = new TrainingConfig().withTitles(dataSets.tail()*.name)
+        List<List<String>> data = (0..(rowNumber - 1)).collect { int rowNum ->
+            // TO-DO: Will not work for predictions of more than one period
+            Date date = dataSets*.values.first()[rowNum]?.date ?: Common.calculatePredictionDate(algorithmRequest.unit, dataSets*.values.first()[rowNum - 1].date, 1)
+            List<String> row = new ArrayList<>()
+            row.add(date.format(Global.ALFRED_DATE_FORMAT))
+            row.add(dataSets.first().values[rowNum]?.value.toString() ?: 'NULL')
+            row.addAll(dataSets.tail()*.values.collect { it[rowNum].value.toString() })
+            return row
+        }
+        return new TrainingMessageV2(id).withTrainingConfig(trainingConfig).withData(data)
     }
 }
