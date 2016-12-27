@@ -3,6 +3,7 @@ package com.augurworks.engine.services
 import com.amazonaws.services.sns.AmazonSNSClient
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
+import com.augurworks.engine.messaging.TrainingMessageV2
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.*
@@ -85,7 +86,7 @@ class MessagingService {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 					try {
-						TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
+						TrainingMessage message = mapper.readValue(body, TrainingMessageV2.class)
 						alfredService.processResult(message)
 					} catch (Exception e) {
 						log.error(e.getMessage(), e)

@@ -6,6 +6,7 @@ import com.amazonaws.services.sqs.model.ReceiveMessageRequest
 import com.amazonaws.services.sqs.model.ReceiveMessageResult
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
+import com.augurworks.engine.messaging.TrainingMessageV2
 import com.augurworks.engine.services.AlfredService
 import com.fasterxml.jackson.databind.ObjectMapper
 import grails.core.GrailsApplication
@@ -40,7 +41,7 @@ class SqsPollingJob {
 			ReceiveMessageResult receiveMessageResult = sqsClient.receiveMessage(receiveMessageRequest)
 			Collection<Message> messages = receiveMessageResult.getMessages()
 			messages.each { Message message ->
-				TrainingMessage trainingMessage = mapper.readValue(message.getBody(), TrainingMessage.class)
+				TrainingMessage trainingMessage = mapper.readValue(message.getBody(), TrainingMessageV2.class)
 				try {
 					alfredService.processResult(trainingMessage)
 				} catch (AugurWorksException e) {
