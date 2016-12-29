@@ -4,6 +4,7 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.TrainingStat
+import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.model.RequestValueSet
 
 public abstract class TrainingMessage implements Serializable {
@@ -50,5 +51,7 @@ public abstract class TrainingMessage implements Serializable {
 
     abstract List<PredictedValue> processResults(AlgorithmResult algorithmResult)
 
-    abstract static TrainingMessage constructTrainingMessage(String id, AlgorithmRequest algorithmRequest, List<RequestValueSet> dataSets)
+    static TrainingMessage constructTrainingMessage(String id, AlgorithmRequest algorithmRequest, List<RequestValueSet> dataSets) {
+        throw new AugurWorksException('Training Message construction not implemented for the abstract Training Message class')
+    }
 }

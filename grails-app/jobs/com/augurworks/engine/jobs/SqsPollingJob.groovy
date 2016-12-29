@@ -6,7 +6,6 @@ import com.amazonaws.services.sqs.model.ReceiveMessageRequest
 import com.amazonaws.services.sqs.model.ReceiveMessageResult
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
-import com.augurworks.engine.messaging.TrainingMessageV2
 import com.augurworks.engine.services.AlfredService
 import com.fasterxml.jackson.databind.ObjectMapper
 import grails.core.GrailsApplication
@@ -33,6 +32,7 @@ class SqsPollingJob {
 	}
 
 	void pollSqs(String queueName) {
+		Class<TrainingMessage> trainingMessageVersion = grailsApplication.config.messaging.version
 		try {
 			ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest()
 				.withQueueUrl(queueName)
@@ -41,7 +41,7 @@ class SqsPollingJob {
 			ReceiveMessageResult receiveMessageResult = sqsClient.receiveMessage(receiveMessageRequest)
 			Collection<Message> messages = receiveMessageResult.getMessages()
 			messages.each { Message message ->
-				TrainingMessage trainingMessage = mapper.readValue(message.getBody(), TrainingMessageV2.class)
+				TrainingMessage trainingMessage = mapper.readValue(message.getBody(), trainingMessageVersion)
 				try {
 					alfredService.processResult(trainingMessage)
 				} catch (AugurWorksException e) {

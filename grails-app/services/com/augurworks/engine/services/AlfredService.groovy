@@ -10,9 +10,9 @@ import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.messaging.TrainingMessage
-import com.augurworks.engine.messaging.TrainingMessageV2
 import com.augurworks.engine.model.RequestValueSet
 import com.fasterxml.jackson.databind.ObjectMapper
+import grails.core.GrailsApplication
 import grails.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -25,6 +25,7 @@ class AlfredService {
 
 	private final ObjectMapper mapper = new ObjectMapper()
 
+	GrailsApplication grailsApplication
 	DataRetrievalService dataRetrievalService
 	AutomatedService automatedService
 	MessagingService messagingService
@@ -36,7 +37,8 @@ class AlfredService {
 		MDC.put('netId', netId)
 		log.info('Created Alfred algorithm run for ' + algorithmRequest.name)
         List<RequestValueSet> dataSets = getDataSets(algorithmRequest)
-		TrainingMessage message = TrainingMessageV2.constructTrainingMessage(netId, algorithmRequest, dataSets)
+		Class<TrainingMessage> trainingMessageVersion = grailsApplication.config.messaging.version
+		TrainingMessage message = trainingMessageVersion.constructTrainingMessage(netId, algorithmRequest, dataSets)
 		messagingService.sendTrainingMessage(message, algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
 			algorithmRequest: algorithmRequest,
