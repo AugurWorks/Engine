@@ -3,6 +3,7 @@ package com.augurworks.engine.services
 import com.amazonaws.services.sns.AmazonSNSClient
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.messaging.TrainingMessage
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.*
 import grails.core.GrailsApplication
@@ -27,7 +28,7 @@ class MessagingService {
 	public String trainingChannelName
 	public String resultsChannelName
 
-	private final ObjectMapper mapper = new ObjectMapper()
+	private final ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
 
 	GrailsApplication grailsApplication
 	AlfredService alfredService
@@ -79,12 +80,13 @@ class MessagingService {
 	}
 
 	private void initResultConsumer(Channel resultChannel) {
+		Class<TrainingMessage> trainingMessageVersion = grailsApplication.config.messaging.version
 		log.debug("Starting results consumer")
 		Consumer consumer = new DefaultConsumer(resultChannel) {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 					try {
-						TrainingMessage message = mapper.readValue(body, TrainingMessage.class)
+						TrainingMessage message = mapper.readValue(body, trainingMessageVersion)
 						alfredService.processResult(message)
 					} catch (Exception e) {
 						log.error(e.getMessage(), e)
