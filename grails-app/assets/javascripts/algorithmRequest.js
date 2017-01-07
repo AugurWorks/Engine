@@ -33,6 +33,7 @@ function saveRequest() {
 		data: {
 			id: $('#id').val(),
 			alfredEnvironment: $('#alfredEnvironment').val(),
+			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val()),
 			cronExpression: $('#cronExpression').val(),
 			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : [])
 		},

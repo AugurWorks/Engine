@@ -204,7 +204,7 @@
 					}
 				});
                 <g:if test="${ algorithmRequest }">
-                    $('#alfredEnvironment, #cronExpression, #tags').change(function() {
+                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #tags').change(function() {
                         saveRequest();
                         $('#info-check').show();
                         setTimeout(function() {
