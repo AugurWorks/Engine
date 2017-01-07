@@ -4,6 +4,7 @@
 		<title>Requests</title>
 		<meta name="layout" content="semantic">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.1/jquery.timeago.min.js"></script>
+		<asset:javascript src="tablesort.min.js"/>
 	</head>
 	<body>
 		<%@ page import="com.augurworks.engine.helper.Global" %>
@@ -22,7 +23,7 @@
                 <label>Hide requests with no results</label>
             </div>
             <div class="ui divider" style="clear: both;"></div>
-            <table class="ui celled table">
+            <table class="ui sortable celled table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -51,6 +52,7 @@
 		</div>
 		<script>
 			$(function() {
+                $('table').tablesort();
 				$('#filter').focus();
 				$('.timeago').timeago();
 				$('span[data-title]').popup({
