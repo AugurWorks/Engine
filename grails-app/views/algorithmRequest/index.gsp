@@ -22,32 +22,32 @@
                 <label>Hide requests with no results</label>
             </div>
             <div class="ui divider" style="clear: both;"></div>
-			<div class="ui two doubling cards">
-				<g:each in="${ requests }" var="request">
-					<g:link controller="algorithmRequest" action="show" id="${ request.id }" class="card results-${ request.algorithmResults.size() }" name="${ request.toString() }">
-						<div class="content">
-							<div class="header">${ request.toString() }</div>
-							<div class="meta">
-								<span data-title="Date Created"><i class="plus icon"></i> <abbr class="timeago" title="${ request.dateCreated }"></abbr></span>
-								<span data-title="Request Start Date"><i class="green calendar icon"></i> ${ request.startDate.format(Global.DATE_FORMAT) }</span>
-								<span data-title="Request End Date"><i class="red calendar icon"></i> ${ request.endDate.format(Global.DATE_FORMAT) }</span>
-							</div>
-							<div class="meta">
-								<span data-title="Result Set Count"><i class="cubes icon"></i> ${ request.algorithmResults.size() }</span>
-								<span data-title="Time Period"><i class="wait icon"></i> ${ request.unit.name }</span>
-								<span data-title="Cron Expression"><i class="repeat icon"></i> ${ request.cronExpression ?: 'None' }</span>
-							</div>
-						</div>
-						<div class="extra content">
-							<div class="ui labels">
-								<g:each in="${ request.tags*.name.sort() }" var="tag">
-									<div class="ui blue basic label">${ tag }</div>
-								</g:each>
-							</div>
-						</div>
-					</g:link>
-				</g:each>
-			</div>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th><i class="plus icon"></i> Created</th>
+                        <th><i class="green calendar icon"></i> Start Date</th>
+                        <th><i class="red calendar icon"></i> End Date</th>
+                        <th><i class="wait icon"></i> Period</th>
+                        <th><i class="repeat icon"></i> Cron</th>
+                        <th><i class="tag icon"></i> Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <g:each in="${ requests }" var="request">
+                        <tr class="row results-${ request.algorithmResults.size() }" name="${ request.toString() }">
+                            <td><g:link controller="algorithmRequest" action="show" id="${ request.id }">${ request.toString() }</g:link></td>
+                            <td><abbr class="timeago" title="${ request.dateCreated }"></abbr></td>
+                            <td>${ request.startDate.format(Global.DATE_FORMAT) }</td>
+                            <td>${ request.endDate.format(Global.DATE_FORMAT) }</td>
+                            <td>${ request.unit.name }</td>
+                            <td>${ request.cronExpression ?: 'None' }</td>
+                            <td>${ request.tags*.name.sort().join(', ') }</td>
+                        </tr>
+                    </g:each>
+                </tbody>
+            </table>
 		</div>
 		<script>
 			$(function() {
@@ -58,8 +58,8 @@
 				});
 				$('#filter').keyup(function() {
 					var val = $('#filter').val().toLowerCase();
-					$('.card').show();
-					$('.card').toArray().forEach(function(c) {
+					$('.row').show();
+					$('.row').toArray().forEach(function(c) {
 						if ($(c).attr('name').toLowerCase().indexOf(val) == -1) {
 							$(c).hide();
 						}
@@ -68,11 +68,11 @@
 				$('.ui.toggle').checkbox({
 				    onChecked: function() {
 				        $('.results-0').hide();
-				        $('#request-count').text($('.card:visible').length);
+				        $('#request-count').text($('.row:visible').length);
 				    },
 				    onUnchecked: function() {
 				        $('.results-0').show();
-				        $('#request-count').text($('.card:visible').length);
+				        $('#request-count').text($('.row:visible').length);
 				    }
 				});
 			});
