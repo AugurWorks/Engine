@@ -28,8 +28,8 @@
                     <tr>
                         <th>Name</th>
                         <th><i class="plus icon"></i> Created</th>
-                        <th><i class="green calendar icon"></i> Start Date</th>
-                        <th><i class="red calendar icon"></i> End Date</th>
+                        <th><i class="green calendar icon"></i> Start Offset</th>
+                        <th><i class="red calendar icon"></i> End Offset</th>
                         <th><i class="wait icon"></i> Period</th>
                         <th><i class="repeat icon"></i> Cron</th>
                         <th><i class="tag icon"></i> Tags</th>
@@ -40,8 +40,8 @@
                         <tr class="row results-${ request.algorithmResults.size() }" name="${ request.toString() }">
                             <td><g:link controller="algorithmRequest" action="show" id="${ request.id }">${ request.toString() }</g:link></td>
                             <td><abbr class="timeago" title="${ request.dateCreated }"></abbr></td>
-                            <td>${ request.startDate.format(Global.DATE_FORMAT) }</td>
-                            <td>${ request.endDate.format(Global.DATE_FORMAT) }</td>
+                            <td>${ request.startOffset }</td>
+                            <td>${ request.endOffset }</td>
                             <td>${ request.unit.name }</td>
                             <td>${ request.cronExpression ?: 'None' }</td>
                             <td>${ request.tags*.name.sort().join(', ') }</td>
