@@ -295,4 +295,6 @@ databaseChangeLog = {
 	include file: 'request-data-set-offset.groovy'
 
 	include file: 'request-tags.groovy'
+
+	include file: 'slack-channel-override.groovy'
 }
