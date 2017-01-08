@@ -27,23 +27,29 @@
             </div>
 			<div class="ui form" style="clear: both;">
 				<h3 class="ui dividing header">Edit Info</h3>
-				<g:field type="hidden" name="id" value="${ algorithm?.id }" />
-				<div class="four fields">
+				<g:field type="hidden" name="id" value="${ algorithm.id }" />
+				<div class="two fields">
 					<div class="field">
 						<label>Alfred Environment</label>
-						<g:select from="${ AlfredEnvironment.values()*.name }" name="alfredEnvironment" class="ui search dropdown" value="${ algorithm?.alfredEnvironment?.name }" />
-					</div>
-					<div class="field">
-						<label>Cron Algorithms</label>
-						<g:select from="${ AlgorithmType.values()*.name }" name="cronAlgorithms" class="ui search dropdown" multiple="true" value="${ algorithm?.cronAlgorithms*.name }" />
-					</div>
-					<div class="field">
-						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
-						<g:field type="text" name="cronExpression" value="${ algorithm ? algorithm?.cronExpression : '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
+						<g:select from="${ AlfredEnvironment.values()*.name }" name="alfredEnvironment" class="ui search dropdown" value="${ algorithm.alfredEnvironment?.name }" />
 					</div>
 					<div class="field">
 						<label>Tags</label>
-						<g:field type="text" name="tags" value="${ algorithm?.tags*.name?.join(', ') }" />
+						<g:field type="text" name="tags" value="${ algorithm.tags*.name?.join(', ') }" />
+					</div>
+				</div>
+				<div class="three fields">
+					<div class="field">
+						<label>Cron Algorithms</label>
+						<g:select from="${ AlgorithmType.values()*.name }" name="cronAlgorithms" class="ui search dropdown" multiple="true" value="${ algorithm.cronAlgorithms*.name }" />
+					</div>
+					<div class="field">
+						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
+						<g:field type="text" name="cronExpression" value="${ algorithm.cronExpression ?: '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
+					</div>
+					<div class="field">
+						<label>Channel</label>
+						<g:field type="text" name="channel" value="${ algorithm.slackChannel }" />
 					</div>
 				</div>
             </div>
@@ -65,7 +71,7 @@
 				initCharts();
 				setInterval(refreshAllResultCards, 30000);
 				$('#cronAlgorithms').dropdown();
-                $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #tags').change(function() {
+                $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags').change(function() {
                     saveRequest();
                     $('#info-check').show();
                     setTimeout(function() {

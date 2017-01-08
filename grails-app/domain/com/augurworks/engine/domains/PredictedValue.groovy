@@ -39,7 +39,7 @@ class PredictedValue {
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }
 		return [
 			message: 'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actual != null ? ' with an un-aggregated value of ' + actual : '') + '\nRun in ' + runTime.toString(),
-			channel: Holders.config.augurworks.predictions.channel,
+			channel: this.algorithmResult.algorithmRequest.slackChannel ?: Holders.config.augurworks.predictions.channel,
 			color: this.value >= 0 ? '#4DBD33' : '#ff4444',
 			title: this.algorithmResult.algorithmRequest.stringify(),
 			link: Holders.config.grails.serverURL + '/algorithmRequest/show/' + this.algorithmResult.algorithmRequest.id
