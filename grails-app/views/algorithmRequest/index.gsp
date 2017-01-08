@@ -6,6 +6,11 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.1/jquery.timeago.min.js"></script>
 		<asset:javascript src="tablesort.min.js"/>
 		<asset:javascript src="algorithmRequest.js" />
+		<style>
+		    body > .content {
+		        max-width: 1200px;
+		    }
+		</style>
 	</head>
 	<body>
 		<%@ page import="com.augurworks.engine.helper.Global" %>
@@ -28,9 +33,9 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th><i class="green calendar icon"></i> Start</th>
-                        <th><i class="red calendar icon"></i> End</th>
-                        <th><i class="wait icon"></i> Period</th>
+                        <th class="collapsing"><i class="green calendar icon"></i> Start</th>
+                        <th class="collapsing"><i class="red calendar icon"></i> End</th>
+                        <th class="collapsing"><i class="wait icon"></i> Period</th>
                         <th><i class="repeat icon"></i> Cron</th>
                         <th><i class="tag icon"></i> Tags</th>
                         <th><i class="slack icon"></i> Channel</th>
@@ -49,7 +54,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="ui small fluid input">
+                                <div class="ui small input" style="width: 100%;">
                                     <g:field type="text" name="tags" class="tags" value="${ request.tags*.name?.join(', ') }" />
                                 </div>
                             </td>
