@@ -27,6 +27,27 @@ function removeRow(me) {
 	$(me).parents('tr').remove();
 }
 
+function saveRequestReduced(id) {
+	$.ajax({
+		url: '/algorithmRequest/saveRequest',
+		data: {
+			id: id.split('-')[1],
+			cronExpression: $(id + ' .cronExpression').val(),
+			tags: JSON.stringify($(id + ' .tags').val() ? $(id + ' .tags').val().split(',') : [])
+		},
+		success: function(data) {
+			if (!data.ok) {
+				swal({
+					title: 'Error',
+					text: data.error,
+					type: 'error',
+					html: true
+				});
+			}
+		}
+	});
+}
+
 function saveRequest() {
 	$.ajax({
 		url: '/algorithmRequest/saveRequest',

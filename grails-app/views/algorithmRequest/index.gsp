@@ -5,6 +5,7 @@
 		<meta name="layout" content="semantic">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.1/jquery.timeago.min.js"></script>
 		<asset:javascript src="tablesort.min.js"/>
+		<asset:javascript src="algorithmRequest.js" />
 	</head>
 	<body>
 		<%@ page import="com.augurworks.engine.helper.Global" %>
@@ -28,8 +29,8 @@
                     <tr>
                         <th>Name</th>
                         <th><i class="plus icon"></i> Created</th>
-                        <th><i class="green calendar icon"></i> Start Offset</th>
-                        <th><i class="red calendar icon"></i> End Offset</th>
+                        <th><i class="green calendar icon"></i> Start</th>
+                        <th><i class="red calendar icon"></i> End</th>
                         <th><i class="wait icon"></i> Period</th>
                         <th><i class="repeat icon"></i> Cron</th>
                         <th><i class="tag icon"></i> Tags</th>
@@ -37,14 +38,22 @@
                 </thead>
                 <tbody>
                     <g:each in="${ requests }" var="request">
-                        <tr class="row results-${ request.algorithmResults.size() }" name="${ request.toString() }">
-                            <td><g:link controller="algorithmRequest" action="show" id="${ request.id }">${ request.toString() }</g:link></td>
+                        <tr id="request-${ request.id }" class="row results-${ request.algorithmResults.size() }" name="${ request.toString() }">
+                            <td><g:link controller="algorithmRequest" action="show" id="${ request.id }">${ request.toString() }</g:link> <i class="green check success circle icon" style="display: none;"></i></td>
                             <td><abbr class="timeago" title="${ request.dateCreated }"></abbr></td>
                             <td>${ request.startOffset }</td>
                             <td>${ request.endOffset }</td>
                             <td>${ request.unit.name }</td>
-                            <td>${ request.cronExpression ?: 'None' }</td>
-                            <td>${ request.tags*.name.sort().join(', ') }</td>
+                            <td>
+                                <div class="ui small fluid input">
+                                    <g:field type="text" name="cronExpression" class="cronExpression" value="${ request ? request?.cronExpression : '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui small fluid input">
+                                    <g:field type="text" name="tags" class="tags" value="${ request?.tags*.name?.join(', ') }" />
+                                </div>
+                            </td>
                         </tr>
                     </g:each>
                 </tbody>
@@ -77,6 +86,14 @@
 				        $('#request-count').text($('.row:visible').length);
 				    }
 				});
+                $('.cronExpression, .tags').change(function(e) {
+                    var id = '#' + $(e.target).parents('tr').attr('id');
+                    saveRequestReduced(id);
+                    $(id + ' .success').show();
+                    setTimeout(function() {
+                        $(id + ' .success').fadeOut();
+                    }, 1000);
+                });
 			});
 		</script>
 	</body>

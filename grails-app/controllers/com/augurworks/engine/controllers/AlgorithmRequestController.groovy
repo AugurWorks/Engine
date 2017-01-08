@@ -81,8 +81,14 @@ class AlgorithmRequestController {
 	def saveRequest(String alfredEnvironment, String cronExpression, Long id) {
 		try {
 			AlgorithmRequest algorithmRequest = AlgorithmRequest.get(id)
-			algorithmRequest.alfredEnvironment = AlfredEnvironment.findByName(alfredEnvironment)
-			algorithmRequest.cronAlgorithms = JSON.parse(params.cronAlgorithms).collect { AlgorithmType.findByName(it) }
+			if (alfredEnvironment) {
+				algorithmRequest.alfredEnvironment = AlfredEnvironment.findByName(alfredEnvironment)
+			}
+			if (params.cronAlgorithms) {
+				algorithmRequest.cronAlgorithms = JSON.parse(params.cronAlgorithms).collect {
+					AlgorithmType.findByName(it)
+				}
+			}
 			algorithmRequest.cronExpression = cronExpression
 			algorithmRequest.tags.clear()
 			List<RequestTag> requestTags = JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique().collect { new RequestTag(name: it, algorithmRequest: algorithmRequest).save() }
