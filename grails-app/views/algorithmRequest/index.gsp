@@ -26,7 +26,7 @@
             </h3>
             <div class="ui toggle checkbox" style="float: right;">
                 <input type="checkbox" id="hideNoResults">
-                <label>Hide requests with no results</label>
+                <label>Hide requests with no cron expression</label>
             </div>
             <div class="ui divider" style="clear: both;"></div>
             <table class="ui small compact sortable celled table">
@@ -80,11 +80,11 @@
 				});
 				$('.ui.toggle').checkbox({
 				    onChecked: function() {
-				        $('.results-0').hide();
+				        $('.cronExpression').filter(function() { return $(this).val() == ""; }).parents('tr').hide();
 				        $('#request-count').text($('.row:visible').length);
 				    },
 				    onUnchecked: function() {
-				        $('.results-0').show();
+				        $('tr').show();
 				        $('#request-count').text($('.row:visible').length);
 				    }
 				});
