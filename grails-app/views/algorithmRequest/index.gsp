@@ -49,7 +49,7 @@
                             <td>${ request.unit.name }</td>
                             <td>
                                 <div class="ui small input" style="width: 100%;">
-                                    <g:field type="text" name="cronExpression" class="cronExpression" value="${ request.cronExpression ?: '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
+                                    <g:field type="text" name="cronExpression" class="cronExpression" value="${ request.cronExpression }" placeholder="0 0 3 ? * *" />
                                 </div>
                             </td>
                             <td>
