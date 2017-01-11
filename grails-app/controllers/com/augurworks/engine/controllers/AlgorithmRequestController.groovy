@@ -78,7 +78,7 @@ class AlgorithmRequestController {
 		[algorithmRequest: algorithmRequest]
 	}
 
-	def saveRequest(String alfredEnvironment, String cronExpression, Long id) {
+	def saveRequest(String alfredEnvironment, String cronExpression, String slackChannel, Long id) {
 		try {
 			AlgorithmRequest algorithmRequest = AlgorithmRequest.get(id)
 			if (alfredEnvironment) {
@@ -90,6 +90,9 @@ class AlgorithmRequestController {
 				}
 			}
 			algorithmRequest.cronExpression = cronExpression
+			if (slackChannel != null) {
+				algorithmRequest.slackChannel = slackChannel ? '#' + slackChannel.replaceAll('#', '') : null
+			}
 			algorithmRequest.tags.clear()
 			List<RequestTag> requestTags = JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique().collect { new RequestTag(name: it, algorithmRequest: algorithmRequest).save() }
 			algorithmRequest.save()
