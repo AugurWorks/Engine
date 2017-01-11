@@ -29,7 +29,7 @@
                 <label>Hide requests with no results</label>
             </div>
             <div class="ui divider" style="clear: both;"></div>
-            <table class="ui sortable celled table">
+            <table class="ui small compact sortable celled table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -38,7 +38,6 @@
                         <th class="collapsing"><i class="wait icon"></i> Period</th>
                         <th><i class="repeat icon"></i> Cron</th>
                         <th><i class="tag icon"></i> Tags</th>
-                        <th><i class="slack icon"></i> Channel</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,18 +48,13 @@
                             <td>${ request.endOffset }</td>
                             <td>${ request.unit.name }</td>
                             <td>
-                                <div class="ui small fluid input">
+                                <div class="ui small input" style="width: 100%;">
                                     <g:field type="text" name="cronExpression" class="cronExpression" value="${ request.cronExpression ?: '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
                                 </div>
                             </td>
                             <td>
                                 <div class="ui small input" style="width: 100%;">
                                     <g:field type="text" name="tags" class="tags" value="${ request.tags*.name?.join(', ') }" />
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ui small fluid input">
-                                    <g:field type="text" name="channel" class="channel" value="${ request.slackChannel }" />
                                 </div>
                             </td>
                         </tr>
@@ -94,7 +88,7 @@
 				        $('#request-count').text($('.row:visible').length);
 				    }
 				});
-                $('.cronExpression, .tags, .channel').change(function(e) {
+                $('.cronExpression, .tags').change(function(e) {
                     var id = '#' + $(e.target).parents('tr').attr('id');
                     saveRequestReduced(id);
                     $(id + ' .success').show();

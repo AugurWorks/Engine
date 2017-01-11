@@ -33,7 +33,6 @@ function saveRequestReduced(id) {
 		data: {
 			id: id.split('-')[1],
 			cronExpression: $(id + ' .cronExpression').val(),
-			slackChannel: $(id + ' .channel').val(),
 			tags: JSON.stringify($(id + ' .tags').val() ? $(id + ' .tags').val().split(',') : [])
 		},
 		success: function(data) {
