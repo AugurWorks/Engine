@@ -17,12 +17,14 @@ class AlgorithmRequest {
 	String cronExpression
 	AlfredEnvironment alfredEnvironment = AlfredEnvironment.LAMBDA
 	SplineType splineType = SplineType.FILL
+	String slackChannel
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType, tags: RequestTag]
 
 	static constraints = {
 		name unique: true
 		cronExpression nullable: true
+		slackChannel nullable: true
 	}
 
 	static mapping = {

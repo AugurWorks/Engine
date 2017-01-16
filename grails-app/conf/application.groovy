@@ -67,6 +67,7 @@ grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
 messaging {
 	sqsName = getEnv('SQS_NAME') ?: 'Training-Results-Local'
 	snsTopicArn = getEnv('SNS_TOPIC_ARN') ?: 'arn:aws:sns:us-east-1:274685854631:Alfred-Training-Local'
+	version = getEnv('MESSAGE_VERSION') == 'V2' ? com.augurworks.engine.messaging.TrainingMessageV2 : com.augurworks.engine.messaging.TrainingMessageV1
 }
 
 logging {

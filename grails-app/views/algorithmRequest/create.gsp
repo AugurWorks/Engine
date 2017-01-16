@@ -45,7 +45,7 @@
 			<div class="ui form" style="clear: both;">
 				<h3 class="ui dividing header">Info</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
-				<div class="three fields">
+				<div class="four fields">
 					<div class="field">
 						<label>Name</label>
 						<g:field type="text" name="name" value="${ algorithmRequest?.name ?: 'New Request' }" />
@@ -57,6 +57,10 @@
 					<div class="field">
 						<label>Cron Expression (<a href="http://www.quartz-scheduler.org/documentation/quartz-1.x/tutorials/crontrigger" target="_blank">Help</a>)</label>
 						<g:field type="text" name="cronExpression" value="${ algorithmRequest ? algorithmRequest?.cronExpression : '0 0 3 ? * *' }" placeholder="0 0 3 ? * *" />
+					</div>
+					<div class="field">
+						<label>Channel</label>
+						<g:field type="text" name="channel" value="${ algorithmRequest?.slackChannel }" />
 					</div>
 				</div>
 				<div class="three fields">
@@ -204,7 +208,7 @@
 					}
 				});
                 <g:if test="${ algorithmRequest }">
-                    $('#alfredEnvironment, #cronExpression, #tags').change(function() {
+                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags').change(function() {
                         saveRequest();
                         $('#info-check').show();
                         setTimeout(function() {

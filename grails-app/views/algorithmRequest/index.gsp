@@ -4,6 +4,13 @@
 		<title>Requests</title>
 		<meta name="layout" content="semantic">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.1/jquery.timeago.min.js"></script>
+		<asset:javascript src="tablesort.min.js"/>
+		<asset:javascript src="algorithmRequest.js" />
+		<style>
+		    body > .content {
+		        max-width: 1200px;
+		    }
+		</style>
 	</head>
 	<body>
 		<%@ page import="com.augurworks.engine.helper.Global" %>
@@ -19,63 +26,83 @@
             </h3>
             <div class="ui toggle checkbox" style="float: right;">
                 <input type="checkbox" id="hideNoResults">
-                <label>Hide requests with no results</label>
+                <label>Hide requests with no cron expression</label>
             </div>
             <div class="ui divider" style="clear: both;"></div>
-			<div class="ui two doubling cards">
-				<g:each in="${ requests }" var="request">
-					<g:link controller="algorithmRequest" action="show" id="${ request.id }" class="card results-${ request.algorithmResults.size() }" name="${ request.toString() }">
-						<div class="content">
-							<div class="header">${ request.toString() }</div>
-							<div class="meta">
-								<span data-title="Date Created"><i class="plus icon"></i> <abbr class="timeago" title="${ request.dateCreated }"></abbr></span>
-								<span data-title="Request Start Date"><i class="green calendar icon"></i> ${ request.startDate.format(Global.DATE_FORMAT) }</span>
-								<span data-title="Request End Date"><i class="red calendar icon"></i> ${ request.endDate.format(Global.DATE_FORMAT) }</span>
-							</div>
-							<div class="meta">
-								<span data-title="Result Set Count"><i class="cubes icon"></i> ${ request.algorithmResults.size() }</span>
-								<span data-title="Time Period"><i class="wait icon"></i> ${ request.unit.name }</span>
-								<span data-title="Cron Expression"><i class="repeat icon"></i> ${ request.cronExpression ?: 'None' }</span>
-							</div>
-						</div>
-						<div class="extra content">
-							<div class="ui labels">
-								<g:each in="${ request.tags*.name.sort() }" var="tag">
-									<div class="ui blue basic label">${ tag }</div>
-								</g:each>
-							</div>
-						</div>
-					</g:link>
-				</g:each>
-			</div>
+            <table class="ui small compact sortable celled table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th class="collapsing"><i class="green calendar icon"></i> Start</th>
+                        <th class="collapsing"><i class="red calendar icon"></i> End</th>
+                        <th class="collapsing"><i class="wait icon"></i> Period</th>
+                        <th><i class="repeat icon"></i> Cron</th>
+                        <th><i class="tag icon"></i> Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <g:each in="${ requests }" var="request">
+                        <tr id="request-${ request.id }" class="row results-${ request.algorithmResults.size() }" name="${ request.toString() }">
+                            <td><g:link controller="algorithmRequest" action="show" id="${ request.id }">${ request.toString() }</g:link> <i class="green check success circle icon" style="display: none;"></i></td>
+                            <td>${ request.startOffset }</td>
+                            <td>${ request.endOffset }</td>
+                            <td>${ request.unit.name }</td>
+                            <td>
+                                <div class="ui small input" style="width: 100%;">
+                                    <g:field type="text" name="cronExpression" class="cronExpression" value="${ request.cronExpression }" placeholder="0 0 3 ? * *" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui small input" style="width: 100%;">
+                                    <g:field type="text" name="tags" class="tags" value="${ request.tags*.name?.join(', ') }" />
+                                </div>
+                            </td>
+                        </tr>
+                    </g:each>
+                </tbody>
+            </table>
 		</div>
 		<script>
 			$(function() {
+                $('table').tablesort();
 				$('#filter').focus();
-				$('.timeago').timeago();
 				$('span[data-title]').popup({
 					position: 'top center'
 				});
 				$('#filter').keyup(function() {
-					var val = $('#filter').val().toLowerCase();
-					$('.card').show();
-					$('.card').toArray().forEach(function(c) {
-						if ($(c).attr('name').toLowerCase().indexOf(val) == -1) {
+					var vals = $('#filter').val().toLowerCase().split(' ');
+					$('.row').show();
+					$('.row').toArray().forEach(function(c) {
+						if (!matchTagFilters(vals, $(c).attr('name').toLowerCase())) {
 							$(c).hide();
 						}
 					});
 				});
 				$('.ui.toggle').checkbox({
 				    onChecked: function() {
-				        $('.results-0').hide();
-				        $('#request-count').text($('.card:visible').length);
+				        $('.cronExpression').filter(function() { return $(this).val() == ""; }).parents('tr').hide();
+				        $('#request-count').text($('.row:visible').length);
 				    },
 				    onUnchecked: function() {
-				        $('.results-0').show();
-				        $('#request-count').text($('.card:visible').length);
+				        $('tr').show();
+				        $('#request-count').text($('.row:visible').length);
 				    }
 				});
+                $('.cronExpression, .tags').change(function(e) {
+                    var id = '#' + $(e.target).parents('tr').attr('id');
+                    saveRequestReduced(id);
+                    $(id + ' .success').show();
+                    setTimeout(function() {
+                        $(id + ' .success').fadeOut();
+                    }, 1000);
+                });
 			});
+
+			function matchTagFilters(tags, name) {
+			    return tags.reduce((matches, tag) => {
+			        return matches && name.indexOf(tag) != -1;
+			    }, true);
+			}
 		</script>
 	</body>
 </html>
