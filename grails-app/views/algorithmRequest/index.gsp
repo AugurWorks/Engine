@@ -70,10 +70,10 @@
 					position: 'top center'
 				});
 				$('#filter').keyup(function() {
-					var val = $('#filter').val().toLowerCase();
+					var vals = $('#filter').val().toLowerCase().split(' ');
 					$('.row').show();
 					$('.row').toArray().forEach(function(c) {
-						if ($(c).attr('name').toLowerCase().indexOf(val) == -1) {
+						if (!matchTagFilters(vals, $(c).attr('name').toLowerCase())) {
 							$(c).hide();
 						}
 					});
@@ -97,6 +97,12 @@
                     }, 1000);
                 });
 			});
+
+			function matchTagFilters(tags, name) {
+			    return tags.reduce((matches, tag) => {
+			        return matches && name.indexOf(tag) != -1;
+			    }, true);
+			}
 		</script>
 	</body>
 </html>
