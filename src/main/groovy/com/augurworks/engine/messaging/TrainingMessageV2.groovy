@@ -58,7 +58,11 @@ public class TrainingMessageV2 extends TrainingMessage {
 
     public static TrainingMessageV2 constructTrainingMessage(String id, AlgorithmRequest algorithmRequest, List<RequestValueSet> dataSets) {
         int rowNumber = dataSets*.values*.size().max()
-        TrainingConfig trainingConfig = new TrainingConfig().withTitles(dataSets.tail()*.name)
+        TrainingConfig trainingConfig = new TrainingConfig()
+                .withTitles(dataSets.tail()*.name)
+                .withIterations(algorithmRequest.trainingRounds)
+                .withLearningRate(algorithmRequest.learningConstant)
+                .withDepth(algorithmRequest.depth)
         List<List<String>> data = (0..(rowNumber - 1)).collect { int rowNum ->
             // TO-DO: Will not work for predictions of more than one period
             Date date = dataSets*.values.first()[rowNum]?.date ?: Common.calculatePredictionDate(algorithmRequest.unit, dataSets*.values.first()[rowNum - 1].date, 1)

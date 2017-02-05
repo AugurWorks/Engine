@@ -52,6 +52,20 @@
 						<g:field type="text" name="channel" value="${ algorithm.slackChannel }" />
 					</div>
 				</div>
+				<div class="three fields">
+					<div class="field">
+						<label>Training Rounds</label>
+						<g:field type="text" name="trainingRounds" value="${ algorithm.trainingRounds }" />
+					</div>
+					<div class="field">
+						<label>Learning Constant</label>
+						<g:field type="text" name="learningConstant" value="${ algorithm.learningConstant }" />
+					</div>
+					<div class="field">
+						<label>Net Depth</label>
+						<g:field type="text" name="depth" value="${ algorithm.depth }" />
+					</div>
+				</div>
             </div>
 			<g:render template="/layouts/statistics" model="${ [unit: algorithm.unit.name().toLowerCase(), predictedValues: request.algorithmResults*.getFutureValues().flatten()] }" />
 			<h2 class="ui header" style="clear: both;">Results</h2>
@@ -71,7 +85,7 @@
 				initCharts();
 				setInterval(refreshAllResultCards, 30000);
 				$('#cronAlgorithms').dropdown();
-                $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags').change(function() {
+                $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags, #learningConstant, #trainingRounds, #depth').change(function() {
                     saveRequest();
                     $('#info-check').show();
                     setTimeout(function() {

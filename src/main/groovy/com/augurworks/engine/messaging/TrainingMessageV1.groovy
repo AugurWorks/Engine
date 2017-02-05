@@ -45,7 +45,10 @@ public class TrainingMessageV1 extends TrainingMessage {
         /*if (dataSets.first().values.size() != rowNumber - 1) {
          throw new AugurWorksException('Dependant data set not sized correctly compared to independent data sets')
          }*/
-        Collection<String> lines = ['net ' + (dataSets.size() - 1) + ',5', 'train 1,700,0.1,700,0.000001', 'TITLES ' + dataSets.tail()*.name.join(',')
+        Integer trainingRounds = algorithmRequest.trainingRounds ?: 700
+        Double learningConstant = algorithmRequest.learningConstant ?: 0.1
+        Integer depth = algorithmRequest.depth ?: 5
+        Collection<String> lines = ['net ' + (dataSets.size() - 1) + ',' + depth, 'train 1,' + trainingRounds + ',' + learningConstant + ',' + trainingRounds + ',0.000001', 'TITLES ' + dataSets.tail()*.name.join(',')
         ] + (0..(rowNumber - 1)).collect { int row ->
             // TO-DO: Will not work for predictions of more than one period
             Date date = dataSets*.values.first()[row]?.date ?: Common.calculatePredictionDate(algorithmRequest.unit, dataSets*.values.first()[row - 1].date, 1)

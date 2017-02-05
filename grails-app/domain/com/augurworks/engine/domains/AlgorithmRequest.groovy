@@ -18,6 +18,9 @@ class AlgorithmRequest {
 	AlfredEnvironment alfredEnvironment = AlfredEnvironment.LAMBDA
 	SplineType splineType = SplineType.FILL
 	String slackChannel
+	Integer trainingRounds
+	Double learningConstant
+	Integer depth
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType, tags: RequestTag]
 
@@ -25,6 +28,9 @@ class AlgorithmRequest {
 		name unique: true
 		cronExpression nullable: true
 		slackChannel nullable: true
+		trainingRounds nullable: true
+		learningConstant nullable: true
+		depth nullable: true
 	}
 
 	static mapping = {

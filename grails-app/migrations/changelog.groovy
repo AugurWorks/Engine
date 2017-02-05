@@ -297,4 +297,6 @@ databaseChangeLog = {
 	include file: 'request-tags.groovy'
 
 	include file: 'slack-channel-override.groovy'
+
+	include file: 'net-parameters.groovy'
 }
