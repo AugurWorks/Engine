@@ -57,7 +57,10 @@ function saveRequest() {
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val()),
 			cronExpression: $('#cronExpression').val(),
 			slackChannel: $('#channel').val(),
-			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : [])
+			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : []),
+			trainingRounds: $('#trainingRounds').val(),
+			learningConstant: $('#learningConstant').val(),
+			depth: $('#depth').val()
 		},
 		success: function(data) {
 			if (!data.ok) {
@@ -88,6 +91,9 @@ function submitRequest(overwrite) {
 			slackChannel: $('#channel').val(),
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
 			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : []),
+			trainingRounds: $('#trainingRounds').val(),
+			learningConstant: $('#learningConstant').val(),
+			depth: $('#depth').val(),
 			overwrite: overwrite
 		},
 		success: function(data) {

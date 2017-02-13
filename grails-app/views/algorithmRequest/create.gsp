@@ -77,6 +77,20 @@
 						<g:field type="text" name="tags" value="${ algorithmRequest?.tags*.name?.join(', ') }" />
 					</div>
 				</div>
+				<div class="three fields">
+					<div class="field">
+						<label>Training Rounds</label>
+						<g:field type="text" name="trainingRounds" value="${ algorithmRequest?.trainingRounds }" />
+					</div>
+					<div class="field">
+						<label>Learning Constant</label>
+						<g:field type="text" name="learningConstant" value="${ algorithmRequest?.learningConstant }" />
+					</div>
+					<div class="field">
+						<label>Net Depth</label>
+						<g:field type="text" name="depth" value="${ algorithmRequest?.depth }" />
+					</div>
+				</div>
 				<h3 class="ui dividing header">Boundary Dates</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
 				<div class="three fields">
@@ -208,7 +222,7 @@
 					}
 				});
                 <g:if test="${ algorithmRequest }">
-                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags').change(function() {
+                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags, #learningConstant, #trainingRounds, #depth').change(function() {
                         saveRequest();
                         $('#info-check').show();
                         setTimeout(function() {
