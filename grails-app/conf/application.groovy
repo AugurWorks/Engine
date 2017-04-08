@@ -121,6 +121,9 @@ augurworks {
 	td {
 		key = getEnv('TD_KEY')
 	}
+	rapi {
+		location = getEnv('RAPI_URL')
+	}
 	datePathFormat = 'yyyy/MM/dd/'
 	ml {
 		max = getEnv('ML_MAX') ?: 10
