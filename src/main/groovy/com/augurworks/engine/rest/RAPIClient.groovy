@@ -26,7 +26,7 @@ class RAPIClient extends RestClient {
 		Collection<Map> results = makeRequest(historyParametersToMap(dataRequest))
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(results).toPrettyString())
 		return results.collect { Map result ->
-			Date date = new Date(result.date.toLong() * 1000)
+			Date date = new Date(result.date.toLong())
 			if (dataRequest.unit == Unit.DAY) {
 				date = DateUtils.truncate(date, Calendar.DATE)
 			}
