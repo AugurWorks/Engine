@@ -30,7 +30,7 @@ class RAPIClient extends RestClient {
 			if (dataRequest.unit == Unit.DAY) {
 				date = DateUtils.truncate(date, Calendar.DATE)
 			}
-			return new DataSetValue(date, result.val)
+			return new DataSetValue(date, Double.parseDouble(result.val))
 		}
 	}
 
