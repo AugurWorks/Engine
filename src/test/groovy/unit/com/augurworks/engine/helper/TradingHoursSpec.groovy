@@ -87,4 +87,25 @@ class TradingHoursSpec extends Specification {
         '07/03/2017 16:00' | false
         '07/03/2017 16:30' | false
     }
+
+    void "test add trading minutes"() {
+        given:
+        Date date = hourFormat.parse(time)
+
+        when:
+        Date future = TradingHours.addTradingMinutes(date, tradingMinutes)
+
+        then:
+        future == hourFormat.parse(expected)
+
+        where:
+        time               | tradingMinutes | expected
+        '01/09/2017 10:00' | 60             | '01/09/2017 11:00'
+        '01/09/2017 10:00' | 120            | '01/09/2017 12:00'
+        '01/09/2017 15:00' | 90             | '01/10/2017 10:00'
+        '01/09/2017 15:00' | 600            | '01/11/2017 12:00'
+        '01/06/2017 15:00' | 600            | '01/10/2017 12:00'
+        '01/13/2017 15:00' | 600            | '01/18/2017 12:00'
+        '06/30/2017 15:00' | 600            | '07/05/2017 15:00'
+    }
 }

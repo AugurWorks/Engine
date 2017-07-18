@@ -1,5 +1,7 @@
 package com.augurworks.engine.helper
 
+import groovy.time.TimeCategory
+
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -49,5 +51,39 @@ class TradingHours {
     private static Boolean isTradingHours(Date date) {
         Integer minutesOfDay = date[Calendar.HOUR_OF_DAY] * 60 + date[Calendar.MINUTE]
         return minutesOfDay >= DAY_OPEN_MINUTES && (minutesOfDay <= HALF_DAY_CLOSE_MINUTES || (!HALF_DAYS.contains(dayFormat.format(date)) && minutesOfDay <= DAY_CLOSE_MINUTES))
+    }
+
+    static Date addTradingMinutes(Date date, Integer minutes) {
+        if (!isTradingHours(date)) {
+            throw new RuntimeException('Bad starting date')
+        }
+        Date finalDate = date.clone()
+        Integer remainingMinutes = minutes
+        while (remainingMinutes > 0) {
+            if (!isWeekday(finalDate)) {
+                finalDate = addMinutes(finalDate, 48 * 60)
+                continue
+            }
+            if (isHoliday(finalDate)) {
+                finalDate = addMinutes(finalDate, 24 * 60)
+                continue
+            }
+            Integer endOfTradingDay = (HALF_DAYS.contains(dayFormat.format(finalDate)) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES)
+            Integer timeUntilEndOfTradingDay = endOfTradingDay - (finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE])
+            if (remainingMinutes < timeUntilEndOfTradingDay) {
+                finalDate = addMinutes(finalDate, remainingMinutes)
+                break
+            } else {
+                finalDate = addMinutes(finalDate, timeUntilEndOfTradingDay + (24 * 60 - (HALF_DAYS.contains(dayFormat.format(finalDate)) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES) + DAY_OPEN_MINUTES))
+                remainingMinutes -= timeUntilEndOfTradingDay
+            }
+        }
+        return finalDate
+    }
+
+    private static Date addMinutes(Date date, Integer minutes) {
+        use(TimeCategory) {
+            return date + minutes.minutes
+        }
     }
 }
