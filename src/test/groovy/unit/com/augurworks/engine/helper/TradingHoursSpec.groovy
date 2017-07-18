@@ -108,4 +108,24 @@ class TradingHoursSpec extends Specification {
         '01/13/2017 15:00' | 600            | '01/18/2017 12:00'
         '06/30/2017 15:00' | 600            | '07/05/2017 15:00'
     }
+
+    void "test subtract trading minutes"() {
+        given:
+        Date date = hourFormat.parse(time)
+
+        when:
+        Date past = TradingHours.subtractTradingMinutes(date, tradingMinutes)
+
+        then:
+        past == hourFormat.parse(expected)
+
+        where:
+        time               | tradingMinutes | expected
+        '01/09/2017 10:00' | 30             | '01/09/2017 09:30'
+        '01/10/2017 10:00' | 60             | '01/09/2017 15:30'
+        '01/11/2017 10:00' | 600            | '01/09/2017 13:00'
+        '01/10/2017 10:00' | 600            | '01/06/2017 13:00'
+        '01/18/2017 10:00' | 600            | '01/13/2017 13:00'
+        '07/05/2017 15:00' | 600            | '06/30/2017 15:00'
+    }
 }

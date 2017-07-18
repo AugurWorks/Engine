@@ -81,6 +81,41 @@ class TradingHours {
         return finalDate
     }
 
+    static Date subtractTradingMinutes(Date date, Integer minutes) {
+        if (!isTradingHours(date)) {
+            throw new RuntimeException('Bad starting date')
+        }
+        Date finalDate = date.clone()
+        Integer remainingMinutes = minutes
+        while (remainingMinutes > 0) {
+            if ((!isBeginningOfDay(finalDate) && !isWeekday(finalDate)) || (isBeginningOfDay(finalDate) && !isWeekday(addMinutes(finalDate, -24 * 60)))) {
+                finalDate = addMinutes(finalDate, -48 * 60)
+                continue
+            }
+            if ((!isBeginningOfDay(finalDate) && isHoliday(finalDate)) || (isBeginningOfDay(finalDate) && isHoliday(addMinutes(finalDate, -24 * 60)))) {
+                finalDate = addMinutes(finalDate, -24 * 60)
+                continue
+            }
+            if (isBeginningOfDay(finalDate)) {
+                finalDate = addMinutes(finalDate, -(24 * 60 - (HALF_DAYS.contains(dayFormat.format(addMinutes(finalDate, -24 * 60))) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES) + DAY_OPEN_MINUTES))
+                continue
+            }
+            Integer timeUntilBeginningOfTradingDay = (finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE]) - DAY_OPEN_MINUTES
+            if (remainingMinutes <= timeUntilBeginningOfTradingDay) {
+                finalDate = addMinutes(finalDate, -remainingMinutes)
+                break
+            } else {
+                finalDate = addMinutes(finalDate, -timeUntilBeginningOfTradingDay)
+                remainingMinutes -= timeUntilBeginningOfTradingDay
+            }
+        }
+        return finalDate
+    }
+
+    private static Boolean isBeginningOfDay(Date date) {
+        return date[Calendar.HOUR_OF_DAY] * 60 + date[Calendar.MINUTE] == DAY_OPEN_MINUTES
+    }
+
     private static Date addMinutes(Date date, Integer minutes) {
         use(TimeCategory) {
             return date + minutes.minutes
