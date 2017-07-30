@@ -128,4 +128,27 @@ class TradingHoursSpec extends Specification {
         '01/18/2017 10:00' | 600            | '01/13/2017 13:00'
         '07/05/2017 15:00' | 600            | '06/30/2017 15:00'
     }
+
+    void "test add trading days"() {
+        given:
+        Date date = dayFormat.parse(time)
+
+        when:
+        Date future = TradingHours.addTradingDays(date, tradingDays)
+
+        then:
+        future == dayFormat.parse(expected)
+
+        where:
+        time         | tradingDays | expected
+        '01/09/2017' | 0           | '01/09/2017'
+        '01/09/2017' | 1           | '01/10/2017'
+        '01/10/2017' | -1          | '01/09/2017'
+        '01/09/2017' | 5           | '01/17/2017'
+        '01/17/2017' | -5          | '01/09/2017'
+        '01/23/2017' | 5           | '01/30/2017'
+        '01/30/2017' | -5          | '01/23/2017'
+        '06/26/2017' | 5           | '07/03/2017'
+        '07/03/2017' | -5          | '06/26/2017'
+    }
 }

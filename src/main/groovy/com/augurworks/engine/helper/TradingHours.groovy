@@ -112,6 +112,18 @@ class TradingHours {
         return finalDate
     }
 
+    static Date addTradingDays(Date date, Integer tradingDays) {
+        Date finalDate = date.clearTime()
+        Integer remainingDays = Math.abs(tradingDays)
+        while (remainingDays > 0) {
+            finalDate = addDays(finalDate, tradingDays > 0 ? 1 : -1)
+            if (isMarketOpen(finalDate)) {
+                remainingDays--
+            }
+        }
+        return finalDate
+    }
+
     private static Boolean isBeginningOfDay(Date date) {
         return date[Calendar.HOUR_OF_DAY] * 60 + date[Calendar.MINUTE] == DAY_OPEN_MINUTES
     }
@@ -119,6 +131,12 @@ class TradingHours {
     private static Date addMinutes(Date date, Integer minutes) {
         use(TimeCategory) {
             return date + minutes.minutes
+        }
+    }
+
+    private static Date addDays(Date date, Integer days) {
+        use(TimeCategory) {
+            return date + days.days
         }
     }
 }
