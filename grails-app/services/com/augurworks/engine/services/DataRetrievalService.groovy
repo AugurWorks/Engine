@@ -8,7 +8,6 @@ import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.rest.SymbolResult
 import grails.core.GrailsApplication
-import grails.plugin.cache.GrailsCacheManager
 import grails.transaction.Transactional
 import groovyx.gpars.GParsPool
 import org.slf4j.MDC
@@ -16,13 +15,7 @@ import org.slf4j.MDC
 @Transactional
 class DataRetrievalService {
 
-	static final String QUANDL_DATE_FORMAT = 'yyyy-MM-dd'
-	static final String GOOGLE_API_ROOT = 'http://www.google.com/finance/getprices?'
-
-	@SuppressWarnings("GrailsStatelessService")
-	GrailsCacheManager grailsCacheManager
 	GrailsApplication grailsApplication
-	DataGeneratorService dataGeneratorService
 
 	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(splineRequest)
