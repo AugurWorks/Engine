@@ -128,6 +128,24 @@ class TradingHours {
         return finalDate
     }
 
+    static Date floorPeriod(Date date, Integer periodMinutes) {
+        Date finalDate = date.clone()
+        if (finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE] < DAY_OPEN_MINUTES) {
+            finalDate = addMinutes(finalDate.clearTime(), DAY_CLOSE_MINUTES - 24 * 60)
+        }
+        while (!isWeekday(finalDate) || isHoliday(finalDate)) {
+            finalDate = addMinutes(addDays(finalDate, -1).clearTime(), DAY_CLOSE_MINUTES)
+        }
+        if (finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE] > DAY_CLOSE_MINUTES) {
+            finalDate = addMinutes(finalDate.clearTime(), DAY_CLOSE_MINUTES)
+        }
+        if (HALF_DAYS.contains(dayFormat.format(finalDate)) && finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE] > HALF_DAY_CLOSE_MINUTES) {
+            finalDate = addMinutes(finalDate.clearTime(), HALF_DAY_CLOSE_MINUTES)
+        }
+        Integer minutesOffset = ((finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE]) / periodMinutes).intValue() * periodMinutes
+        return addMinutes(finalDate.clearTime(), minutesOffset)
+    }
+
     private static Boolean isBeginningOfDay(Date date) {
         return date[Calendar.HOUR_OF_DAY] * 60 + date[Calendar.MINUTE] == DAY_OPEN_MINUTES
     }
