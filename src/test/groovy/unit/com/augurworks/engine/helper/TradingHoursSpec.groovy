@@ -93,7 +93,7 @@ class TradingHoursSpec extends Specification {
         Date date = hourFormat.parse(time)
 
         when:
-        Date future = TradingHours.addTradingMinutes(date, tradingMinutes)
+        Date future = TradingHours.addPositiveTradingMinutes(date, tradingMinutes)
 
         then:
         future == hourFormat.parse(expected)
@@ -114,7 +114,7 @@ class TradingHoursSpec extends Specification {
         Date date = hourFormat.parse(time)
 
         when:
-        Date past = TradingHours.subtractTradingMinutes(date, tradingMinutes)
+        Date past = TradingHours.addNegativeTradingMinutes(date, tradingMinutes)
 
         then:
         past == hourFormat.parse(expected)

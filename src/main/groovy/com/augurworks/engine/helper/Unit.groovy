@@ -5,8 +5,6 @@ import groovy.time.TimeDuration
 
 import java.util.function.BiFunction
 
-import org.apache.commons.lang.time.DateUtils
-
 enum Unit {
 	DAY('Day', 1, filterDate('days', 1), this.&calculateDay),
 	HOUR('Hour', 60, filterDate('minutes', 60), this.&calculateHour),
@@ -35,29 +33,18 @@ enum Unit {
 	}
 
 	private static Date calculateDay(Date startDate, Integer offset) {
-		use(TimeCategory) {
-			return DateUtils.truncate(startDate, Calendar.DATE) + offset.days
-		}
+		return TradingHours.addTradingDays(startDate, offset)
 	}
 
 	private static Date calculateHour(Date startDate, Integer offset) {
-		return calculateMinuteOffset(startDate, offset, 60)
+		return TradingHours.addTradingMinutes(startDate, 60 * offset)
 	}
 
 	private static Date calculateHalfHour(Date startDate, Integer offset) {
-		return calculateMinuteOffset(startDate, offset, 30)
+		return TradingHours.addTradingMinutes(startDate, 30 * offset)
 	}
 
 	private static Date calculateFifteenMinutes(Date startDate, Integer offset) {
-		return calculateMinuteOffset(startDate, offset, 15)
-	}
-
-	private static Date calculateMinuteOffset(Date startDate, Integer offset, Integer minutes) {
-		use(TimeCategory) {
-			Date date = DateUtils.truncate(startDate, Calendar.HOUR)
-			date += (15 * (Integer) Math.floor(startDate[Calendar.MINUTE] / 15)).minutes
-			date += (minutes * offset).minutes
-			return date
-		}
+		return TradingHours.addTradingMinutes(startDate, 15 * offset)
 	}
 }

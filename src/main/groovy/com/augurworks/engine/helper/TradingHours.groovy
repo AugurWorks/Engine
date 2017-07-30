@@ -54,6 +54,10 @@ class TradingHours {
     }
 
     static Date addTradingMinutes(Date date, Integer minutes) {
+        return minutes > 0 ? addPositiveTradingMinutes(date, minutes) : addNegativeTradingMinutes(date, Math.abs(minutes))
+    }
+
+    protected static Date addPositiveTradingMinutes(Date date, Integer minutes) {
         if (!isTradingHours(date)) {
             throw new RuntimeException('Bad starting date')
         }
@@ -81,7 +85,7 @@ class TradingHours {
         return finalDate
     }
 
-    static Date subtractTradingMinutes(Date date, Integer minutes) {
+    protected static Date addNegativeTradingMinutes(Date date, Integer minutes) {
         if (!isTradingHours(date)) {
             throw new RuntimeException('Bad starting date')
         }

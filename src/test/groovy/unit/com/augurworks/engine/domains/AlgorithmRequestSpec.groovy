@@ -1,11 +1,10 @@
 package com.augurworks.engine.domains
 
 import grails.buildtestdata.mixin.Build
-import grails.test.mixin.*
+import grails.test.mixin.Mock
+import grails.test.mixin.TestFor
 import groovy.time.TimeCategory
 import spock.lang.Specification
-
-import com.augurworks.engine.helper.Unit
 
 @TestFor(AlgorithmRequest)
 @Build([AlgorithmRequest, RequestDataSet])
@@ -30,46 +29,6 @@ class AlgorithmRequestSpec extends Specification {
 		then:
 		algorithmRequest.id == 1
 		AlgorithmRequest.count() == 1
-	}
-
-	void "test truncate date (hour)"() {
-		given:
-		Date mockTime = Date.parse(DATE_TIME_FORMAT, startTime)
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: Unit.HOUR)
-
-		when:
-		Date startDate = algorithmRequest.truncateDate('startOffset', mockTime)
-
-		then:
-		startDate == Date.parse(DATE_TIME_FORMAT, expectedTime)
-
-		where:
-		startTime          | offset | expectedTime
-		'2016-01-10 14:00' | 0      | '2016-01-10 14:00'
-		'2016-01-10 14:00' | -5     | '2016-01-10 09:00'
-		'2016-01-10 14:29' | -7     | '2016-01-10 07:15'
-		'2016-01-10 14:00' | -13    | '2016-01-10 01:00'
-		'2016-01-10 14:00' | 5      | '2016-01-10 19:00'
-		'2016-01-10 14:40' | 5      | '2016-01-10 19:30'
-		'2016-01-10 14:30' | -4     | '2016-01-10 10:30'
-	}
-
-	void "test truncate date (day)"() {
-		given:
-		Date mockTime = Date.parse(DATE_FORMAT, '2016-01-10')
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(startOffset: offset, unit: Unit.DAY)
-
-		when:
-		Date startDate = algorithmRequest.truncateDate('startOffset', mockTime)
-
-		then:
-		startDate == Date.parse(DATE_FORMAT, expectedTime)
-
-		where:
-		offset | expectedTime
-		0      | '2016-01-10'
-		10     | '2016-01-20'
-		-5     | '2016-01-05'
 	}
 
 	void "test update fields algorithm request"() {
