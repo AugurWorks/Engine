@@ -33,18 +33,18 @@ enum Unit {
 	}
 
 	private static Date calculateDay(Date startDate, Integer offset) {
-		return TradingHours.addTradingDays(startDate, offset)
+		return TradingHours.addTradingDays(TradingHours.floorPeriod(startDate, 24 * 60), offset)
 	}
 
 	private static Date calculateHour(Date startDate, Integer offset) {
-		return TradingHours.addTradingMinutes(startDate, 60 * offset)
+		return TradingHours.addTradingMinutes(TradingHours.floorPeriod(startDate, 60), 60 * offset)
 	}
 
 	private static Date calculateHalfHour(Date startDate, Integer offset) {
-		return TradingHours.addTradingMinutes(startDate, 30 * offset)
+		return TradingHours.addTradingMinutes(TradingHours.floorPeriod(startDate, 30), 30 * offset)
 	}
 
 	private static Date calculateFifteenMinutes(Date startDate, Integer offset) {
-		return TradingHours.addTradingMinutes(startDate, 15 * offset)
+		return TradingHours.addTradingMinutes(TradingHours.floorPeriod(startDate, 15), 15 * offset)
 	}
 }

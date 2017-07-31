@@ -21,4 +21,12 @@ class SingleDataRequest {
 	Collection<DataSetValue> getHistory() {
 		return symbolResult.datasource.apiClient.getHistory(this)
 	}
+
+	Date getOffsetStartDate() {
+		return unit.calculateOffset.apply(startDate, minOffset)
+	}
+
+	Date getOffsetEndDate() {
+		return unit.calculateOffset.apply(endDate, maxOffset + 1)
+	}
 }
