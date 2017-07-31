@@ -4,7 +4,6 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Global
-import com.augurworks.engine.helper.Unit
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -55,10 +54,7 @@ class RequestValueSet {
 		return this
 	}
 
-	RequestValueSet filterValues(Unit unit, Date startDate, Date endDate, int minOffset, int maxOffset) {
-		Collection<DataSetValue> values = this.values.grep { DataSetValue dataSetValue ->
-			return unit.filterDates.apply(dataSetValue.date, startDate)
-		}
+	RequestValueSet filterValues(Date startDate, Date endDate, int minOffset, int maxOffset) {
 		int startIndex = values.findIndexOf { it.date == startDate }
 		int endIndex = values.findIndexOf { it.date == endDate }
 		Collection<String> errors = []
@@ -122,10 +118,10 @@ class RequestValueSet {
 		return this
 	}
 
-	RequestValueSet reduceValueRange(Unit unit, Date startDate, Date endDate, int predictionOffset = this.offset) {
+	RequestValueSet reduceValueRange(Date startDate, Date endDate, int predictionOffset = this.offset) {
 		int minOffset = Math.min(this.offset, predictionOffset)
 		int maxOffset = Math.max(this.offset, predictionOffset)
-		return this.filterValues(unit, startDate, endDate, minOffset, maxOffset)
+		return this.filterValues(startDate, endDate, minOffset, maxOffset)
 	}
 
 	String toString() {
