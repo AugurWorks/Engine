@@ -1,5 +1,6 @@
 package com.augurworks.engine.domains
 
+import com.augurworks.engine.helper.TradingHours
 import grails.buildtestdata.mixin.Build
 import grails.test.mixin.*
 import groovy.time.TimeCategory
@@ -34,7 +35,7 @@ class AlgorithmResultSpec extends Specification {
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: Unit.HOUR)
 		AlgorithmResult result = AlgorithmResult.build(algorithmRequest: algorithmRequest, endDate: new Date())
 		PredictedValue nextHour = PredictedValue.build(algorithmResult: result, date: DateUtils.ceiling(new Date(), Calendar.HOUR))
-		PredictedValue.build(algorithmResult: result, date: DateUtils.truncate(new Date(), Calendar.HOUR))
+		PredictedValue.build(algorithmResult: result, date: TradingHours.floorPeriod(new Date(), 60))
 
 		when:
 		PredictedValue actual = result.futureValue
@@ -46,7 +47,7 @@ class AlgorithmResultSpec extends Specification {
 	void "test invalid get tomorrows value"() {
 		given:
 		AlgorithmResult result = AlgorithmResult.build(endDate: new Date())
-		PredictedValue.build(algorithmResult: result, date: DateUtils.truncate(new Date(), Calendar.DATE))
+		PredictedValue.build(algorithmResult: result, date: TradingHours.floorPeriod(new Date(), 24 * 60))
 
 		when:
 		PredictedValue actual = result.futureValue
@@ -59,7 +60,7 @@ class AlgorithmResultSpec extends Specification {
 		given:
 		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: Unit.HOUR)
 		AlgorithmResult result = AlgorithmResult.build(algorithmRequest: algorithmRequest, endDate: new Date())
-		PredictedValue.build(algorithmResult: result, date: DateUtils.truncate(new Date(), Calendar.HOUR))
+		PredictedValue.build(algorithmResult: result, date: TradingHours.floorPeriod(new Date(), 60))
 
 		when:
 		PredictedValue actual = result.futureValue

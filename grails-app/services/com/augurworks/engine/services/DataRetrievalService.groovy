@@ -8,7 +8,6 @@ import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.rest.SymbolResult
 import grails.core.GrailsApplication
-import grails.plugin.cache.GrailsCacheManager
 import grails.transaction.Transactional
 import groovyx.gpars.GParsPool
 import org.slf4j.MDC
@@ -16,13 +15,7 @@ import org.slf4j.MDC
 @Transactional
 class DataRetrievalService {
 
-	static final String QUANDL_DATE_FORMAT = 'yyyy-MM-dd'
-	static final String GOOGLE_API_ROOT = 'http://www.google.com/finance/getprices?'
-
-	@SuppressWarnings("GrailsStatelessService")
-	GrailsCacheManager grailsCacheManager
 	GrailsApplication grailsApplication
-	DataGeneratorService dataGeneratorService
 
 	Collection<RequestValueSet> smartSpline(SplineRequest splineRequest) {
 		Collection<RequestValueSet> rawRequestValues = getRequestValues(splineRequest)
@@ -30,9 +23,9 @@ class DataRetrievalService {
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (splineRequest.prediction) {
 			int predictionOffset = splineRequest.algorithmRequest.predictionOffset
-			return expandedRequestValues*.reduceValueRange(splineRequest.algorithmRequest.unit, splineRequest.startDate, splineRequest.endDate, predictionOffset)
+			return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate, predictionOffset)
 		}
-		return expandedRequestValues*.reduceValueRange(splineRequest.algorithmRequest.unit, splineRequest.startDate, splineRequest.endDate)
+		return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate)
 	}
 
 	Collection<RequestValueSet> getRequestValues(SplineRequest splineRequest) {
@@ -69,7 +62,7 @@ class DataRetrievalService {
 		MDC.put('ticker', singleDataRequest.symbolResult.toString())
 		try {
 			Collection<DataSetValue> values = singleDataRequest.getHistory()
-			RequestValueSet requestValueSet = new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.unit, singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
+			RequestValueSet requestValueSet = new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
 			MDC.remove('ticker')
 			return requestValueSet
 		} catch (Exception e) {

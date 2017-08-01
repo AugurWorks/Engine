@@ -52,12 +52,11 @@ class TDClient extends RestClient {
 	}
 
 	private Map dataRequestToMap(SingleDataRequest dataRequest) {
-		Date startDate = dataRequest.unit.calculateOffset.apply(dataRequest.startDate, -3)
 		Map parameters = [
 			requestvalue: dataRequest.symbolResult.symbol,
 			intervaltype: dataRequest.unit == Unit.DAY ? 'DAILY' : 'MINUTE',
-			startdate: startDate.format(dateFormat),
-			enddate: dataRequest.endDate.format(dateFormat),
+			startdate: dataRequest.getOffsetStartDate().format(dateFormat),
+			enddate: dataRequest.getOffsetEndDate().format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
 			intervalduration: dataRequest.unit == Unit.DAY ? '1' : '15'
 		]
