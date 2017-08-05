@@ -3,7 +3,6 @@ package com.augurworks.engine.messaging
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.PredictedValue
-import com.augurworks.engine.helper.Common
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.model.RequestValueSet
 
@@ -64,8 +63,8 @@ public class TrainingMessageV2 extends TrainingMessage {
                 .withLearningRate(algorithmRequest.learningConstant)
                 .withDepth(algorithmRequest.depth)
         List<List<String>> data = (0..(rowNumber - 1)).collect { int rowNum ->
-            // TO-DO: Will not work for predictions of more than one period
-            Date date = dataSets*.values.first()[rowNum]?.date ?: Common.calculatePredictionDate(algorithmRequest.unit, dataSets*.values.first()[rowNum - 1].date, 1)
+            int predictionOffset = algorithmRequest.predictionOffset - algorithmRequest.independentRequestDataSets*.offset.max()
+            Date date = dataSets*.values.first()[rowNum]?.date ?: algorithmRequest.unit.calculateOffset.apply(dataSets*.values.first()[rowNum - predictionOffset].date, predictionOffset)
             List<String> row = new ArrayList<>()
             row.add(date.format(Global.ALFRED_DATE_FORMAT))
             row.add(dataSets.first().values[rowNum]?.value.toString() ?: 'NULL')

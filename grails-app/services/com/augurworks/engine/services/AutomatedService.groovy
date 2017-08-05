@@ -6,7 +6,6 @@ import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
-import com.augurworks.engine.helper.Common
 import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.slack.SlackMessage
 import grails.core.GrailsApplication
@@ -90,7 +89,8 @@ class AutomatedService {
 				)
 				RequestValueSet predictionActuals = dataRetrievalService.getSingleRequestValues(singleDataRequest)
 				if (algorithmResult.futureValue) {
-					Date futureDate = Common.calculatePredictionDate(algorithmResult.algorithmRequest.unit, predictionActuals.values.last().date, 1)
+					int predictionOffset = algorithmRequest.predictionOffset - algorithmRequest.independentRequestDataSets*.offset.max()
+					Date futureDate = algorithmResult.algorithmRequest.unit.calculateOffset.apply(predictionActuals.values.last().date, predictionOffset)
 					if (futureDate == algorithmResult.futureValue.date) {
 						Double actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
 						algorithmResult.futureValue?.sendToSlack(actualValue)
