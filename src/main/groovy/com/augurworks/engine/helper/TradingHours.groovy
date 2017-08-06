@@ -130,7 +130,8 @@ class TradingHours {
 
     static Date floorPeriod(Date date, Integer periodMinutes) {
         Date finalDate = date.clone()
-        if (finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE] < DAY_OPEN_MINUTES) {
+        Integer currentMinutes = finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE]
+        if (currentMinutes < DAY_OPEN_MINUTES && !(periodMinutes == 24 * 60 && currentMinutes == 0)) {
             finalDate = addMinutes(finalDate.clearTime(), DAY_CLOSE_MINUTES - 24 * 60)
         }
         while (!isWeekday(finalDate) || isHoliday(finalDate)) {
