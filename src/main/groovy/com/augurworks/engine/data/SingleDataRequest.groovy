@@ -27,6 +27,6 @@ class SingleDataRequest {
 	}
 
 	Date getOffsetEndDate() {
-		return unit.calculateOffset.apply(endDate, maxOffset + 1)
+		return unit.calculateOffset.apply(endDate, maxOffset)
 	}
 }

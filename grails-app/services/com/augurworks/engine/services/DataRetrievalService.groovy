@@ -23,9 +23,9 @@ class DataRetrievalService {
 		Collection<RequestValueSet> expandedRequestValues = rawRequestValues*.fillOutValues(allDates)
 		if (splineRequest.prediction) {
 			int predictionOffset = splineRequest.algorithmRequest.predictionOffset
-			return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate, predictionOffset)
+			return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.algorithmRequest.unit.calculateOffset.apply(splineRequest.endDate, splineRequest.algorithmRequest.predictionOffset), predictionOffset)
 		}
-		return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.endDate)
+		return expandedRequestValues*.reduceValueRange(splineRequest.startDate, splineRequest.algorithmRequest.unit.calculateOffset.apply(splineRequest.endDate, splineRequest.algorithmRequest.predictionOffset))
 	}
 
 	Collection<RequestValueSet> getRequestValues(SplineRequest splineRequest) {
@@ -62,7 +62,7 @@ class DataRetrievalService {
 		MDC.put('ticker', singleDataRequest.symbolResult.toString())
 		try {
 			Collection<DataSetValue> values = singleDataRequest.getHistory()
-			RequestValueSet requestValueSet = new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation).filterValues(singleDataRequest.startDate, singleDataRequest.endDate, singleDataRequest.minOffset, singleDataRequest.maxOffset)
+			RequestValueSet requestValueSet = new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation)
 			MDC.remove('ticker')
 			return requestValueSet
 		} catch (Exception e) {
