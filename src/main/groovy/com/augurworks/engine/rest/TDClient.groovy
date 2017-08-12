@@ -15,6 +15,7 @@ import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClientBuilder
+import org.apache.http.util.EntityUtils
 import org.joda.time.DateTime
 
 class TDClient extends RestClient {
@@ -78,6 +79,9 @@ class TDClient extends RestClient {
 		HttpGet req = new HttpGet(url)
 		HttpClient client = HttpClientBuilder.create().build()
 		HttpResponse resp = client.execute(req)
+		if (resp.getStatusLine().statusCode != 200) {
+			throw new AugurWorksException(EntityUtils.toString(resp.getEntity()))
+		}
 		return new DataInputStream(resp.getEntity().getContent())
 	}
 
