@@ -43,6 +43,10 @@ class TradingHours {
         return HOLIDAYS.contains(dayFormat.format(date))
     }
 
+    private static Boolean isHalfDay(Date date) {
+        return HALF_DAYS.contains(dayFormat.format(date))
+    }
+
     private static Boolean isDayDate(Date date) {
         Integer minutesOfDay = date[Calendar.HOUR_OF_DAY] * 60 + date[Calendar.MINUTE]
         return minutesOfDay == 0
@@ -145,6 +149,23 @@ class TradingHours {
         }
         Integer minutesOffset = ((finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE]) / periodMinutes).intValue() * periodMinutes
         return addMinutes(finalDate.clearTime(), minutesOffset)
+    }
+
+    static Integer tradingMinutesBetween(Date date1, Date date2) {
+        Date end = floorPeriod(new Date(Math.max(date1.getTime(), date2.getTime())), 1)
+        Date now = floorPeriod(new Date(Math.min(date1.getTime(), date2.getTime())), 1)
+        Integer between = 0
+        while (true) {
+            if (Math.floor(now.getTime() / (24 * 3600 * 1000)) == Math.floor(end.getTime() / (24 * 3600 * 1000))) {
+                return between + (end.getTime() - now.getTime()) / (60 * 1000)
+            }
+            if (isHalfDay(now)) {
+                between += HALF_DAY_CLOSE_MINUTES - DAY_OPEN_MINUTES
+            } else if (isWeekday(now) && !isHoliday(now)) {
+                between += DAY_CLOSE_MINUTES - DAY_OPEN_MINUTES
+            }
+            now = addDays(now, 1)
+        }
     }
 
     private static Boolean isBeginningOfDay(Date date) {

@@ -186,4 +186,24 @@ class TradingHoursSpec extends Specification {
         '07/03/2017 14:34' | 30     | '07/03/2017 13:00'
         '07/03/2017 14:34' | 60     | '07/03/2017 13:00'
     }
+
+    void "test trading minutes between"() {
+        given:
+        Date date1 = hourFormat.parse(time1)
+        Date date2 = hourFormat.parse(time2)
+
+        when:
+        Integer between = TradingHours.tradingMinutesBetween(date1, date2)
+
+        then:
+        between == minutes
+
+        where:
+        time1              | time2              | minutes
+        '01/09/2017 10:00' | '01/09/2017 10:00' | 0
+        '01/09/2017 10:00' | '01/09/2017 11:00' | 60
+        '01/09/2017 10:00' | '01/10/2017 10:00' | 375
+        '01/09/2017 10:00' | '01/11/2017 10:00' | 750
+        '01/13/2017 10:00' | '01/17/2017 10:00' | 375
+    }
 }
