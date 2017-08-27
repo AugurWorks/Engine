@@ -1,6 +1,7 @@
 package com.augurworks.engine.domains
 
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.TradingHours
 
 class AlgorithmResult {
 
@@ -26,7 +27,7 @@ class AlgorithmResult {
 	}
 
 	List<PredictedValue> getFutureValues() {
-		Date endDate = this.algorithmRequest.getEndDate(this.dateCreated)
+		Date endDate = TradingHours.floorPeriod(this.algorithmRequest.getEndDate(this.dateCreated), this.algorithmRequest.unit.interval)
 		return this.predictedValues.sort { it.date }.grep { PredictedValue value ->
 			value.date > endDate
 		}
@@ -35,7 +36,7 @@ class AlgorithmResult {
 	PredictedValue getFutureValue() {
 		Collection<PredictedValue> filtered = getFutureValues()
 		if (filtered.size() >= 1) {
-			return filtered.first()
+			return filtered.last()
 		}
 		return null
 	}

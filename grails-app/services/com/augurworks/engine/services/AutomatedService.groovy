@@ -91,7 +91,7 @@ class AutomatedService {
 				if (algorithmResult.futureValue) {
 					int predictionOffset = algorithmRequest.predictionOffset - algorithmRequest.independentRequestDataSets*.offset.max()
 					Date futureDate = algorithmResult.algorithmRequest.unit.calculateOffset.apply(predictionActuals.values.last().date, predictionOffset)
-					if (futureDate == algorithmResult.futureValue.date) {
+					if (futureDate.getTime() == algorithmResult.futureValue?.date?.getTime()) {
 						Double actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
 						algorithmResult.futureValue?.sendToSlack(actualValue)
 					} else {
