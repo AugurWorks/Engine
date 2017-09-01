@@ -29,6 +29,7 @@ A production environment can be built which uses environment variables for all c
 - **SNS_TOPIC_ARN** - SNS Topic Name, only used if **LAMBDA_ON** is true
 - **SQS_NAME** - SQS Queue Name, only used if **LAMBDA_ON** is true
 - **TD_KEY** - TD API key
+- **RAPI_URL** - RAPI server location
 
 ## Local Development
 ### Dependencies

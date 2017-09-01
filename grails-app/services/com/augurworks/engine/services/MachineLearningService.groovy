@@ -7,7 +7,6 @@ import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.*
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlgorithmType
-import com.augurworks.engine.helper.Common
 import com.augurworks.engine.model.RequestValueSet
 import grails.converters.JSON
 import grails.core.GrailsApplication
@@ -195,7 +194,7 @@ class MachineLearningService {
 
 	void createPredictedValues(AlgorithmResult algorithmResult, Collection<Date> predictionDates, Collection<Double> predictions) {
 		predictions.eachWithIndex { Double prediction, int index ->
-			Date date = index < predictionDates.size() ? predictionDates[index] : Common.calculatePredictionDate(algorithmResult.algorithmRequest.unit, predictionDates.last(), index - predictionDates.size() + 1)
+			Date date = index < predictionDates.size() ? predictionDates[index] : algorithmResult.algorithmRequest.unit.getCalculateOffset(predictionDates.last(), index - predictionDates.size() + 1)
 			new PredictedValue(date: date, value: prediction, algorithmResult: algorithmResult).save()
 		}
 	}

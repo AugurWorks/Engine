@@ -3,6 +3,7 @@ package com.augurworks.engine.rest
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.helper.TradingHours
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
 import grails.converters.JSON
@@ -15,6 +16,7 @@ import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClientBuilder
+import org.apache.http.util.EntityUtils
 import org.joda.time.DateTime
 
 class TDClient extends RestClient {
@@ -48,16 +50,17 @@ class TDClient extends RestClient {
 		}
 		return parsedResults.first().values.collect { Map result ->
 			return new DataSetValue(new DateTime(result.date).toDate(), result[dataRequest.dataType.name().toLowerCase()])
+		}.grep { DataSetValue dataSetValue ->
+			return dataRequest.unit == Unit.DAY ? true : TradingHours.tradingMinutesBetween(dataRequest.startDate, dataSetValue.date) % dataRequest.unit.interval == 0
 		}
 	}
 
 	private Map dataRequestToMap(SingleDataRequest dataRequest) {
-		Date startDate = dataRequest.unit.calculateOffset.apply(dataRequest.startDate, -3)
 		Map parameters = [
 			requestvalue: dataRequest.symbolResult.symbol,
 			intervaltype: dataRequest.unit == Unit.DAY ? 'DAILY' : 'MINUTE',
-			startdate: startDate.format(dateFormat),
-			enddate: dataRequest.endDate.format(dateFormat),
+			startdate: dataRequest.getOffsetStartDate().format(dateFormat),
+			enddate: dataRequest.getOffsetEndDate().format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
 			intervalduration: dataRequest.unit == Unit.DAY ? '1' : '15'
 		]
@@ -79,6 +82,9 @@ class TDClient extends RestClient {
 		HttpGet req = new HttpGet(url)
 		HttpClient client = HttpClientBuilder.create().build()
 		HttpResponse resp = client.execute(req)
+		if (resp.getStatusLine().statusCode != 200) {
+			throw new AugurWorksException(EntityUtils.toString(resp.getEntity()))
+		}
 		return new DataInputStream(resp.getEntity().getContent())
 	}
 
