@@ -166,6 +166,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 		[pattern: '/algorithmResult/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/dataSet/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/predictedValue/**',               access: ['ROLE_ADMIN']],
+		[pattern: '/product/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/requestDataSet/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/machineLearningModel/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/user/**',               access: ['ROLE_ADMIN']],
