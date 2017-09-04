@@ -91,6 +91,7 @@ function submitRequest(overwrite) {
 			slackChannel: $('#channel').val(),
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
 			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : []),
+			product: $('#product').val(),
 			trainingRounds: $('#trainingRounds').val(),
 			learningConstant: $('#learningConstant').val(),
 			depth: $('#depth').val(),

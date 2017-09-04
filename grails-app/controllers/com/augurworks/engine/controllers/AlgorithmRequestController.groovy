@@ -110,7 +110,7 @@ class AlgorithmRequestController {
 		}
 	}
 
-	def submitRequest(String name, int startOffset, int endOffset, String unit, String splineType, String alfredEnvironment, String cronExpression, String slackChannel, Integer trainingRounds, Double learningConstant, Integer depth, Long id, boolean overwrite) {
+	def submitRequest(String name, int startOffset, int endOffset, String unit, String splineType, String alfredEnvironment, String cronExpression, Long product, String slackChannel, Integer trainingRounds, Double learningConstant, Integer depth, Long id, boolean overwrite) {
 		try {
 			Collection<String> cronAlgorithms = JSON.parse(params.cronAlgorithms)
 			Collection<Map> rawDataSets = JSON.parse(params.dataSets)
@@ -124,7 +124,7 @@ class AlgorithmRequestController {
 				autoKickoffService.clearJob(deleteRequest)
 				deleteRequest?.delete(flush: true)
 			}
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], SplineType[splineType], AlfredEnvironment.findByName(alfredEnvironment), cronExpression, slackChannel, cronAlgorithms, dependantSymbol, trainingRounds, learningConstant, depth)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(name, startOffset, endOffset, Unit[unit], SplineType[splineType], AlfredEnvironment.findByName(alfredEnvironment), cronExpression, product, slackChannel, cronAlgorithms, dependantSymbol, trainingRounds, learningConstant, depth)
 			algorithmRequest.save()
 			JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique().collect { new RequestTag(name: it, algorithmRequest: algorithmRequest).save() }
 			if (algorithmRequest.hasErrors()) {
@@ -152,7 +152,7 @@ class AlgorithmRequestController {
 			}
 			Map dependant = rawDataSets.grep { it.dependant }.first()
 			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], null, cronExpression, null, [], dependantSymbol, null, null, null)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], null, cronExpression, null, null, [], dependantSymbol, null, null, null)
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)
@@ -174,7 +174,7 @@ class AlgorithmRequestController {
 		)
 	}
 
-	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, SplineType splineType, AlfredEnvironment alfredEnvironment, String cronExpression, String slackChannel, Collection<String> cronAlgorithms, String dependantSymbol, Integer trainingRounds, Double learningConstant, Integer depth) {
+	private AlgorithmRequest constructAlgorithmRequest(String name, int startOffset, int endOffset, Unit unit, SplineType splineType, AlfredEnvironment alfredEnvironment, String cronExpression, Long product, String slackChannel, Collection<String> cronAlgorithms, String dependantSymbol, Integer trainingRounds, Double learningConstant, Integer depth) {
 		Map parameters = [
 			name: name,
 			startOffset: startOffset,
@@ -183,6 +183,7 @@ class AlgorithmRequestController {
 			splineType: splineType,
 			alfredEnvironment: alfredEnvironment,
 			cronExpression: cronExpression,
+			product: product,
 			slackChannel: slackChannel,
 			cronAlgorithms: cronAlgorithms.collect { AlgorithmType.findByName(it) },
 			dependantSymbol: dependantSymbol,
