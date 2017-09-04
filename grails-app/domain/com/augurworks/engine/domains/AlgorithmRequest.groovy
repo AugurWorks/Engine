@@ -21,6 +21,7 @@ class AlgorithmRequest {
 	Integer trainingRounds
 	Double learningConstant
 	Integer depth
+	Product product
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType, tags: RequestTag]
 
@@ -31,6 +32,7 @@ class AlgorithmRequest {
 		trainingRounds nullable: true
 		learningConstant nullable: true
 		depth nullable: true
+		product nullable: true
 	}
 
 	static mapping = {
