@@ -10,6 +10,16 @@ class ProductController {
         [products: Product.list()]
     }
 
+    def create(String name) {
+        Product product = new Product(name: name)
+        product.save()
+        if (product.hasErrors()) {
+            render([ok: false, error: product.errors] as JSON)
+        } else {
+            render(template: '/product/productRow', model: [product: product])
+        }
+    }
+
     def delete(Long id) {
         Product product = Product.get(id)
         AlgorithmRequest.findAllByProduct(product).each { request ->

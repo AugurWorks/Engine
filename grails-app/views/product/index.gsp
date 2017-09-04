@@ -5,7 +5,6 @@
         <meta name="layout" content="semantic">
     </head>
     <body>
-        <%@ page import="com.augurworks.engine.domains.AlgorithmRequest" %>
         <div class="ui segment">
             <h1 class="ui header">Products</h1>
             <table class="ui small compact sortable celled table">
@@ -18,16 +17,17 @@
                 </thead>
                 <tbody>
                     <g:each in="${ products }" var="product">
-                        <tr id="product-${ product.id }" class="row">
-                            <td>${ product.name }</td>
-                            <td>
-                                <g:each in="${ AlgorithmRequest.findAllByProduct(product).sort { it.name } }" var="request">
-                                    <g:link controller="algorithmRequest" action="show" id="${ request.id }">${ request.name }</g:link><br />
-                                </g:each>
-                            </td>
-                            <td style="text-align: center;"><i class="large red trash link icon" onclick="deleteProduct(${ product.id })"></i></td>
-                        </tr>
+                        <g:render template="/product/productRow" model="${ [product: product] }" />
                     </g:each>
+                    <tr class="row">
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="name" placeholder="Product Name" />
+                            </div>
+                        </td>
+                        <td></td>
+                        <td><div class="ui small primary button" onclick="createProduct()">Create</div> </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -56,6 +56,27 @@
                             }
                         }
                     });
+                });
+            }
+
+            function createProduct() {
+                $.ajax({
+                    url: '/product/create',
+                    data: {
+                        name: $('#name').val()
+                    },
+                    success: function(data) {
+                        $('table > tbody tr').eq(-1).before(data);
+                        $('#name').val('');
+                    },
+                    error: function(error) {
+                        swal({
+                            title: 'Error',
+                            text: data.error,
+                            type: 'error',
+                            html: true
+                        });
+                    }
                 });
             }
         </script>
