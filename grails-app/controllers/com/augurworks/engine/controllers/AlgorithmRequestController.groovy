@@ -1,29 +1,16 @@
 package com.augurworks.engine.controllers
 
-import com.augurworks.engine.domains.RequestTag
+import com.augurworks.engine.data.SplineRequest
+import com.augurworks.engine.data.SplineType
+import com.augurworks.engine.domains.*
+import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.helper.*
+import com.augurworks.engine.services.*
 import grails.converters.JSON
 import org.apache.commons.lang.StringUtils
 import org.quartz.CronExpression
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
-import com.augurworks.engine.data.SplineRequest
-import com.augurworks.engine.data.SplineType
-import com.augurworks.engine.domains.AlgorithmRequest
-import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.domains.RequestDataSet
-import com.augurworks.engine.exceptions.AugurWorksException
-import com.augurworks.engine.helper.Aggregation
-import com.augurworks.engine.helper.AlfredEnvironment
-import com.augurworks.engine.helper.AlgorithmType
-import com.augurworks.engine.helper.DataType
-import com.augurworks.engine.helper.Datasource
-import com.augurworks.engine.helper.Unit
-import com.augurworks.engine.services.AlfredService
-import com.augurworks.engine.services.AutoKickoffService
-import com.augurworks.engine.services.AutomatedService
-import com.augurworks.engine.services.DataRetrievalService
-import com.augurworks.engine.services.MachineLearningService
 
 class AlgorithmRequestController {
 
@@ -78,7 +65,7 @@ class AlgorithmRequestController {
 		[algorithmRequest: algorithmRequest]
 	}
 
-	def saveRequest(String alfredEnvironment, String cronExpression, String slackChannel, Integer trainingRounds, Double learningConstant, Integer depth, Long id) {
+	def saveRequest(String alfredEnvironment, String cronExpression, String slackChannel, Integer trainingRounds, Double learningConstant, Integer depth, Long product, Long id) {
 		try {
 			AlgorithmRequest algorithmRequest = AlgorithmRequest.get(id)
 			if (alfredEnvironment) {
@@ -96,6 +83,7 @@ class AlgorithmRequestController {
 			algorithmRequest.trainingRounds = trainingRounds
 			algorithmRequest.learningConstant = learningConstant
 			algorithmRequest.depth = depth
+			algorithmRequest.product = product
 			algorithmRequest.tags.clear()
 			List<RequestTag> requestTags = JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique().collect { new RequestTag(name: it, algorithmRequest: algorithmRequest).save() }
 			algorithmRequest.save()
