@@ -10,6 +10,16 @@ class KeyController {
         [keys: ApiKey.list(), products: Product.list()]
     }
 
+    def create(String name) {
+        ApiKey key = new ApiKey(name: name)
+        key.save()
+        if (key.hasErrors()) {
+            render([ok: false, error: key.errors] as JSON)
+        } else {
+            render(template: '/key/keyRow', model: [key: key, products: Product.list()])
+        }
+    }
+
     def delete(Long id) {
         ApiKey key = ApiKey.get(id)
         key.delete()
