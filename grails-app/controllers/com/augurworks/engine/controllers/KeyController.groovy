@@ -20,6 +20,17 @@ class KeyController {
         }
     }
 
+    def save(Long id) {
+        ApiKey key = ApiKey.get(id)
+        key.products = JSON.parse(params.products).collect { product -> Product.get(product) }
+        key.save()
+        if (key.hasErrors()) {
+            render([ok: false, error: key.errors] as JSON)
+        } else {
+            render([ok: true] as JSON)
+        }
+    }
+
     def delete(Long id) {
         ApiKey key = ApiKey.get(id)
         key.delete()

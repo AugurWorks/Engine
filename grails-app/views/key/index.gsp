@@ -37,8 +37,17 @@
         </div>
         <script>
             $(function() {
-                $('.dropdown').dropdown();
+                init();
             });
+
+            function init() {
+                $('.dropdown').dropdown();
+                $('.dropdown').change(function(e, val) {
+                    var id = $(this).parents('.row').attr('id').split('-')[1];
+                    var products = $(this).children('select').val();
+                    saveProducts(id, products);
+                });
+            }
 
             function deleteKey(id) {
                 swal({
@@ -76,7 +85,7 @@
                     success: function(data) {
                         $('table > tbody tr').eq(-1).before(data);
                         $('#name').val('');
-                        $('.dropdown').dropdown();
+                        init();
                     },
                     error: function(error) {
                         swal({
@@ -85,6 +94,23 @@
                             type: 'error',
                             html: true
                         });
+                    }
+                });
+            }
+
+            function saveProducts(id, products) {
+                $.ajax({
+                    url: '/key/save',
+                    data: {
+                        id: id,
+                        products: JSON.stringify(products)
+                    },
+                    success: function(data) {
+                        var icon = data.ok ? '#success-' + id : '#failure-' + id;
+                        $(icon).show();
+                        setTimeout(function() {
+                            $(icon).fadeOut();
+                        }, 1000);
                     }
                 });
             }
