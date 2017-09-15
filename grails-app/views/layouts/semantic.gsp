@@ -43,9 +43,14 @@
 					<g:link controller="algorithmRequest" class="item">
 						<i class="icon cubes"></i> List Data Sets
 					</g:link>
-					<g:link controller="product" class="item">
-						<i class="icon book"></i> Products
-					</g:link>
+					<div class="ui dropdown item">
+						<i class="icon line book"></i>
+						Products <i class="icon dropdown"></i>
+						<div class="menu">
+							<g:link class="item" controller="product">List</g:link>
+							<g:link class="item" controller="key">API Keys</g:link>
+						</div>
+					</div>
 					<g:link controller="tag" class="item">
 						<i class="icon tag"></i> Tag Stats
 					</g:link>
