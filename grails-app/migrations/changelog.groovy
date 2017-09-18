@@ -301,4 +301,6 @@ databaseChangeLog = {
 	include file: 'net-parameters.groovy'
 
 	include file: 'products.groovy'
+
+	include file: 'api-keys.groovy'
 }

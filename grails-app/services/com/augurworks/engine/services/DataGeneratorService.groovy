@@ -1,6 +1,7 @@
 package com.augurworks.engine.services
 
 import com.augurworks.engine.domains.AlgorithmRequest
+import com.augurworks.engine.domains.ApiKey
 import com.augurworks.engine.domains.Product
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
@@ -27,6 +28,7 @@ class DataGeneratorService {
 	void bootstrapDefaultRequests() {
 		Product product1 = new Product(name: 'Test Product 1')
 		Product product2 = new Product(name: 'Test Product 2')
+		new ApiKey(name: 'AugurWorks', products: [product1, product2]).save()
 		['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].eachWithIndex { String day, int index ->
 			AlgorithmRequest algorithmRequest = new AlgorithmRequest(
 					name: day + ' Test',
