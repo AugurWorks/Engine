@@ -33,7 +33,6 @@ class BootStrap {
         if (Role.count() == 0) {
             Role adminRole = new Role(authority: "ROLE_ADMIN").save()
             createUser('TheConnMan', adminRole)
-            createUser('safreiberg', adminRole)
             createUser('augurworks1', adminRole)
             createUser('gbcolema11', adminRole)
 
