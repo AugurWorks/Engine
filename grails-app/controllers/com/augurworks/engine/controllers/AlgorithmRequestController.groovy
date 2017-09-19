@@ -83,7 +83,7 @@ class AlgorithmRequestController {
 			algorithmRequest.trainingRounds = trainingRounds
 			algorithmRequest.learningConstant = learningConstant
 			algorithmRequest.depth = depth
-			algorithmRequest.product = product
+			algorithmRequest.product = Product.findById(product)
 			algorithmRequest.tags.clear()
 			List<RequestTag> requestTags = JSON.parse(params.tags).grep { StringUtils.isNotBlank(it) }.collect { it.trim() }.unique().collect { new RequestTag(name: it, algorithmRequest: algorithmRequest).save() }
 			algorithmRequest.save()
@@ -171,7 +171,7 @@ class AlgorithmRequestController {
 			splineType: splineType,
 			alfredEnvironment: alfredEnvironment,
 			cronExpression: cronExpression,
-			product: product,
+			product: Product.findById(product),
 			slackChannel: slackChannel,
 			cronAlgorithms: cronAlgorithms.collect { AlgorithmType.findByName(it) },
 			dependantSymbol: dependantSymbol,
