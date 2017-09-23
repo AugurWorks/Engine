@@ -7,6 +7,8 @@ class UrlMappings {
 			constraints { }
 		}
 
+		"/rss/$apiKey/$productName"(controller: 'rss')
+
 		"/"(controller:'home')
 		"/dashboard"(controller:'home',action:'dashboard')
 		"/controllers"(view:'/index')
