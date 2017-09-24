@@ -4,18 +4,15 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.ApiKey
 import com.augurworks.engine.domains.Product
-import com.rometools.rome.feed.synd.SyndContent
-import com.rometools.rome.feed.synd.SyndContentImpl
-import com.rometools.rome.feed.synd.SyndEntry
-import com.rometools.rome.feed.synd.SyndEntryImpl
-import com.rometools.rome.feed.synd.SyndFeed
-import com.rometools.rome.feed.synd.SyndFeedImpl
+import com.augurworks.engine.services.ActualValueService
+import com.rometools.rome.feed.synd.*
 import com.rometools.rome.io.SyndFeedOutput
 import grails.core.GrailsApplication
 
 class RssController {
 
     GrailsApplication grailsApplication
+    ActualValueService actualValueService
 
     def index(String apiKey, String productName) {
         ApiKey key = ApiKey.findByKey(apiKey)
@@ -41,7 +38,7 @@ class RssController {
                 entry.setUpdatedDate(result.getDateCreated())
                 entry.setPublishedDate(result.getFutureValue().date)
                 SyndContent description = new SyndContentImpl()
-                description.setValue(result.getFutureValue().value?.round(3)?.toString())
+                description.setValue(actualValueService.getActual(result).get()?.toString())
                 entry.setDescription(description)
                 return entry
             })
