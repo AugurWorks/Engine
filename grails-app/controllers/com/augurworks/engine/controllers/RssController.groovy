@@ -15,7 +15,7 @@ class RssController {
     ActualValueService actualValueService
 
     def index(String apiKey, String productName) {
-        ApiKey key = ApiKey.findByKey(apiKey)
+        ApiKey key = ApiKey.findByApiKey(apiKey)
         Product product = Product.findByName(productName)
         if (!key || !product) {
             render(status: 404)

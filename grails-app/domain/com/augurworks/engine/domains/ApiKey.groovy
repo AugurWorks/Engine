@@ -3,7 +3,7 @@ package com.augurworks.engine.domains
 class ApiKey {
 
     String name
-    String key = UUID.randomUUID().toString()
+    String apiKey = UUID.randomUUID().toString()
     Date lastUsed
 
     static hasMany = [products: Product]

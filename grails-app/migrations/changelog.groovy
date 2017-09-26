@@ -303,4 +303,6 @@ databaseChangeLog = {
 	include file: 'products.groovy'
 
 	include file: 'api-keys.groovy'
+
+	include file: 'api-key-rename.groovy'
 }
