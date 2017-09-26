@@ -11,29 +11,41 @@ class KeyController {
     }
 
     def create(String name) {
-        ApiKey key = new ApiKey(name: name)
-        key.save()
-        if (key.hasErrors()) {
-            render([ok: false, error: key.errors] as JSON)
-        } else {
+        try {
+            ApiKey key = new ApiKey(name: name)
+            key.save()
+            if (key.hasErrors()) {
+                throw new RuntimeException(key.errors)
+            }
             render(template: '/key/keyRow', model: [key: key, products: Product.list()])
+        } catch (Exception e) {
+            log.error('Error creating an API key', e)
+            render([ok: false, error: e.getMessage()] as JSON)
         }
     }
 
     def save(Long id) {
-        ApiKey key = ApiKey.get(id)
-        key.products = JSON.parse(params.products).collect { product -> Product.get(product) }
-        key.save()
-        if (key.hasErrors()) {
-            render([ok: false, error: key.errors] as JSON)
-        } else {
+        try {
+            ApiKey key = ApiKey.get(id)
+            key.products = JSON.parse(params.products).collect { product -> Product.get(product) }
+            key.save()
+            if (key.hasErrors()) {
+                throw new RuntimeException(key.errors)
+            }
             render([ok: true] as JSON)
+        } catch (Exception e) {
+            log.error('Error creating an API key', e)
+            render([ok: false, error: e.getMessage()] as JSON)
         }
     }
 
     def delete(Long id) {
-        ApiKey key = ApiKey.get(id)
-        key.delete()
-        render([ok: true] as JSON)
+        try {
+            ApiKey key = ApiKey.get(id)
+            key.delete()
+            render([ok: true] as JSON)
+        } catch (Exception e) {
+            log.error('Error creating an API key', e)
+        }
     }
 }
