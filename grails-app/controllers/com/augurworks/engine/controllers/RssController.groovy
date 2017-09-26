@@ -25,7 +25,7 @@ class RssController {
 
                 SyndFeed feed = new SyndFeedImpl()
                 feed.setFeedType('rss_2.0')
-                feed.setTitle(product.getName())
+                feed.setTitle('AugurWorks - ' + product.getName())
                 feed.setDescription(product.getName())
                 feed.setLink(serverUrl + '/rss/' + apiKey + '/' + productName)
 
