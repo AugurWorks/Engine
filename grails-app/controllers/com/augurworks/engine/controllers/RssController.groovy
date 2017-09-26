@@ -49,6 +49,11 @@ class RssController {
                 output.output(feed, writer)
                 writer.close()
 
+                if (key.getLastUsed() == null || (new Date().getTime() - key.getLastUsed().getTime()) / 1000 >= 3600) {
+                    key.lastUsed = new Date()
+                    key.save()
+                }
+
                 render(text: writer.toString(), contentType: 'text/xml')
             }
         } catch (Exception e) {
