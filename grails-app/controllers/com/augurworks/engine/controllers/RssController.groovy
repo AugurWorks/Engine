@@ -39,7 +39,8 @@ class RssController {
                     entry.setUpdatedDate(result.getDateCreated())
                     entry.setPublishedDate(result.getFutureValue().date)
                     SyndContent description = new SyndContentImpl()
-                    description.setValue(actualValueService.getActual(result).get()?.toString())
+                    Optional<Double> actualValue = actualValueService.getActual(result)
+                    description.setValue(actualValue.isPresent() ? actualValue.get().toString() : 'N/A')
                     entry.setDescription(description)
                     return entry
                 })
