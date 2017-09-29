@@ -1,6 +1,3 @@
-/bin
-/target
-/target-eclipse
 /.settings
 /logs
 cobertura.ser
@@ -12,3 +9,4 @@ gradle/
 gradlew*
 build
 .gradle
+out/
