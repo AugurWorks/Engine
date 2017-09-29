@@ -4,7 +4,6 @@ import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.ApiKey
 import com.augurworks.engine.domains.Product
-import com.augurworks.engine.services.ActualValueService
 import com.rometools.rome.feed.synd.*
 import com.rometools.rome.io.SyndFeedOutput
 import grails.core.GrailsApplication
@@ -12,7 +11,6 @@ import grails.core.GrailsApplication
 class RssController {
 
     GrailsApplication grailsApplication
-    ActualValueService actualValueService
 
     def index(String apiKey, String productName) {
         try {
@@ -39,8 +37,7 @@ class RssController {
                     entry.setUpdatedDate(result.getDateCreated())
                     entry.setPublishedDate(result.getFutureValue().date)
                     SyndContent description = new SyndContentImpl()
-                    Optional<Double> actualValue = actualValueService.getActual(result)
-                    description.setValue(actualValue.isPresent() ? actualValue.get().toString() : 'N/A')
+                    description.setValue(result.actualValue == null ? 'N/A' : result.actualValue.toString())
                     entry.setDescription(description)
                     return entry
                 })

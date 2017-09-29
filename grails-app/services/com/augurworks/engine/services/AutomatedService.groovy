@@ -70,9 +70,11 @@ class AutomatedService {
 
 	void postProcessing(AlgorithmResult algorithmResult) {
 		try {
-			if (grailsApplication.config.slack.webhook) {
-				Optional<Double> actualValue = actualValueService.getActual(algorithmResult)
-				if (actualValue.isPresent()) {
+			Optional<Double> actualValue = actualValueService.getActual(algorithmResult)
+			if (actualValue.isPresent()) {
+				algorithmResult.actualValue = actualValue.get()
+				algorithmResult.save()
+				if (grailsApplication.config.slack.webhook) {
 					algorithmResult.futureValue?.sendToSlack(actualValue.get())
 				}
 			}
