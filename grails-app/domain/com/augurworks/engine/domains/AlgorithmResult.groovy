@@ -12,6 +12,7 @@ class AlgorithmResult {
 	AlgorithmType modelType
 	MachineLearningModel machineLearningModel
 	String alfredModelId
+	Double actualValue
 
 	static hasMany = [predictedValues: PredictedValue]
 
@@ -20,6 +21,7 @@ class AlgorithmResult {
 	static constraints = {
 		machineLearningModel nullable: true
 		alfredModelId nullable: true
+		actualValue nullable: true
 	}
 
 	static mapping = {
