@@ -29,7 +29,7 @@ class RssController {
 
                 List<AlgorithmRequest> algorithmRequests = AlgorithmRequest.findAllByProduct(product)
 
-                List<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByAlgorithmRequestInListAndComplete(algorithmRequests, true, [max: 20, sort: 'dateCreated', order: 'desc'])
+                List<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByAlgorithmRequestInListAndComplete(algorithmRequests, true, [max: 10, sort: 'dateCreated', order: 'desc'])
 
                 feed.setEntries(algorithmResults.collect { result ->
                     SyndEntry entry = new SyndEntryImpl()
