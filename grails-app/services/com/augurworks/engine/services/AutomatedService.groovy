@@ -1,5 +1,6 @@
 package com.augurworks.engine.services
 
+import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.helper.AlgorithmType
@@ -70,9 +71,10 @@ class AutomatedService {
 
 	void postProcessing(AlgorithmResult algorithmResult) {
 		try {
-			Optional<Double> actualValue = actualValueService.getActual(algorithmResult)
+			Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
 			if (actualValue.isPresent()) {
-				algorithmResult.actualValue = actualValue.get()
+				algorithmResult.actualValue = actualValue.get().value
+				algorithmResult.predictedDate = actualValue.get().date
 				algorithmResult.save()
 				if (grailsApplication.config.slack.webhook) {
 					algorithmResult.futureValue?.sendToSlack(actualValue.get())

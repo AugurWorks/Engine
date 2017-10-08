@@ -1,5 +1,6 @@
 package com.augurworks.engine.services
 
+import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
@@ -47,6 +48,7 @@ class ActualValueService {
 				}
 				if (actualValue) {
 					predictedValue.actual = actualValue.value
+					predictedValue.actual = actualValue.date
 					predictedValue.save()
 				} else {
 					log.warn('No actual value found for predicted value ' + predictedValue.id)
@@ -58,7 +60,7 @@ class ActualValueService {
 		log.info('Finished filling out predicted values')
 	}
 
-	Optional<Double> getActual(AlgorithmResult algorithmResult) {
+	Optional<ActualValue> getActual(AlgorithmResult algorithmResult) {
 		if (!algorithmResult.futureValue) {
 			return Optional.empty()
 		}
@@ -79,7 +81,11 @@ class ActualValueService {
 		int predictionOffset = algorithmRequest.predictionOffset - algorithmRequest.independentRequestDataSets*.offset.max()
 		Date futureDate = algorithmRequest.unit.calculateOffset.apply(predictionActuals.values.last().date, predictionOffset)
 		if (futureDate.getTime() == algorithmResult.futureValue?.date?.getTime()) {
-			return Optional.of(requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3))
+			ActualValue actualValue = new ActualValue(
+					value: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
+					date: futureDate
+			)
+			return Optional.of(actualValue)
 		}
 		log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
 		log.info('- Last actual date: ' + predictionActuals.values.last().date)
