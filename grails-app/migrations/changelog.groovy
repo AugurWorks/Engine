@@ -307,4 +307,6 @@ databaseChangeLog = {
 	include file: 'api-key-rename.groovy'
 
 	include file: 'algorithm-result-actuals.groovy'
+
+	include file: 'prediction-date.groovy'
 }
