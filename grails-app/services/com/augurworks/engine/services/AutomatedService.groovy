@@ -77,7 +77,7 @@ class AutomatedService {
 				algorithmResult.predictedDate = actualValue.get().date
 				algorithmResult.save()
 				if (grailsApplication.config.slack.webhook) {
-					algorithmResult.futureValue?.sendToSlack(actualValue.get())
+					algorithmResult.futureValue?.sendToSlack(actualValue.get().getValue())
 				}
 			}
 		} catch (e) {
