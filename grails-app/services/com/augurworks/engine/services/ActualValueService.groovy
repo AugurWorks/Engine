@@ -48,7 +48,7 @@ class ActualValueService {
 				}
 				if (actualValue) {
 					predictedValue.actual = actualValue.value
-					predictedValue.actual = actualValue.date
+					predictedValue.date = actualValue.date
 					predictedValue.save()
 				} else {
 					log.warn('No actual value found for predicted value ' + predictedValue.id)
