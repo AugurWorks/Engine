@@ -34,8 +34,8 @@ class RssController {
                 feed.setEntries(algorithmResults.collect { result ->
                     SyndEntry entry = new SyndEntryImpl()
                     entry.setTitle(result.algorithmRequest.name)
-                    entry.setUpdatedDate(result.getDateCreated())
-                    entry.setPublishedDate(result.predictedDate)
+                    entry.setPublishedDate(result.getDateCreated())
+                    entry.setUpdatedDate(result.predictedDate)
                     SyndContent description = new SyndContentImpl()
                     description.setValue(result.actualValue == null ? 'N/A' : result.actualValue.toString())
                     entry.setDescription(description)
