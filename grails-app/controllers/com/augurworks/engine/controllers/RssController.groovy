@@ -12,7 +12,7 @@ class RssController {
 
     GrailsApplication grailsApplication
 
-    def index(String apiKey, String productName) {
+    def index(String apiKey, String productName, Integer count) {
         try {
             ApiKey key = ApiKey.findByApiKey(apiKey)
             Product product = Product.findByName(productName)
@@ -29,7 +29,7 @@ class RssController {
 
                 List<AlgorithmRequest> algorithmRequests = AlgorithmRequest.findAllByProduct(product)
 
-                List<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByAlgorithmRequestInListAndComplete(algorithmRequests, true, [max: 10, sort: 'dateCreated', order: 'desc'])
+                List<AlgorithmResult> algorithmResults = AlgorithmResult.findAllByAlgorithmRequestInListAndComplete(algorithmRequests, true, [max: Math.min(count ?: 10, 50), sort: 'dateCreated', order: 'desc'])
 
                 feed.setEntries(algorithmResults.collect { result ->
                     SyndEntry entry = new SyndEntryImpl()
