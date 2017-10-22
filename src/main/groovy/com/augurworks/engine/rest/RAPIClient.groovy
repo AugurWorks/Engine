@@ -3,6 +3,9 @@ package com.augurworks.engine.rest
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
+import com.google.common.cache.CacheBuilder
+import com.google.common.cache.CacheLoader
+import com.google.common.cache.LoadingCache
 import grails.converters.JSON
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
@@ -10,9 +13,18 @@ import groovy.json.JsonBuilder
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.time.DateUtils
 
+import java.util.concurrent.TimeUnit
+
 class RAPIClient extends RestClient {
 
 	private final location
+
+	private final LoadingCache<String, Collection<Map>> cache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES).build(new CacheLoader<String, Collection<Map>>() {
+		@Override
+		Collection<Map> load(String key) {
+			return makeUrlRequest(key)
+		}
+	})
 
     RAPIClient() {
 		location = Holders.config.augurworks.rapi.location
@@ -49,6 +61,10 @@ class RAPIClient extends RestClient {
 		String fullUrl = location + '?' + parameters.keySet().grep { String key -> StringUtils.isNotBlank(parameters[key]) }.collect { String key ->
 			return key + '=' + URLEncoder.encode(parameters[key])
 		}.join('&')
-		return JSON.parse(new RestBuilder().get(fullUrl).text) ?: []
+		return cache.getUnchecked(fullUrl)
+	}
+
+	private Collection<Map> makeUrlRequest(String url) {
+		return JSON.parse(new RestBuilder().get(url).text) ?: []
 	}
 }

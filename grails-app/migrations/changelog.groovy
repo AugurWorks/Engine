@@ -299,4 +299,14 @@ databaseChangeLog = {
 	include file: 'slack-channel-override.groovy'
 
 	include file: 'net-parameters.groovy'
+
+	include file: 'products.groovy'
+
+	include file: 'api-keys.groovy'
+
+	include file: 'api-key-rename.groovy'
+
+	include file: 'algorithm-result-actuals.groovy'
+
+	include file: 'prediction-date.groovy'
 }

@@ -1,12 +1,12 @@
 package com.augurworks.engine.services
 
 import com.augurworks.engine.domains.AlgorithmRequest
+import com.augurworks.engine.domains.ApiKey
+import com.augurworks.engine.domains.Product
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
-import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.model.DataSetValue
-import com.augurworks.engine.model.RequestValueSet
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
 import groovy.time.TimeCategory
@@ -25,21 +25,18 @@ class DataGeneratorService {
 		endOffset: -1
 	]
 
-	static final Collection<String> VALID_TICKERS = [
-		'AAPL',
-		'GOOGL',
-		'JPM',
-		'USO',
-		'AMZN',
-		'FB',
-		'TWTR',
-		'YHOO',
-		'MSFT'
-	]
-
 	void bootstrapDefaultRequests() {
+		Product product1 = new Product(name: 'Test Product 1')
+		Product product2 = new Product(name: 'Test Product 2')
+		new ApiKey(name: 'AugurWorks', products: [product1, product2]).save()
 		['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].eachWithIndex { String day, int index ->
-			AlgorithmRequest algorithmRequest = new AlgorithmRequest(name: day + ' Test', startOffset: DEFAULT_REQUEST.startOffset - index, endOffset: DEFAULT_REQUEST.endOffset - index, dependantSymbol: DEFAULT_REQUEST.dependent + ' - CLOSE').save()
+			AlgorithmRequest algorithmRequest = new AlgorithmRequest(
+					name: day + ' Test',
+					startOffset: DEFAULT_REQUEST.startOffset - index,
+					endOffset: DEFAULT_REQUEST.endOffset - index,
+					dependantSymbol: DEFAULT_REQUEST.dependent + ' - CLOSE',
+					product: Math.random() > 0.5 ? product1 : product2
+			).save()
 			DEFAULT_REQUEST.tickers.each { String ticker ->
 				new RequestDataSet(
 					symbol: ticker,
@@ -51,13 +48,6 @@ class DataGeneratorService {
 				).save()
 			}
 		}
-	}
-
-	RequestValueSet generateRequestSet(String ticker) {
-		int days = 5
-		Date startDate = use (TimeCategory) { new Date() - days.days }
-		Collection<DataSetValue> values = generateIntraDayData(ticker, startDate, days, 15)
-		return new RequestValueSet(ticker, DataType.CLOSE, 0, values)
 	}
 
 	Collection<DataSetValue> generateIntraDayData(String ticker, Date startDate, int days, int intervalLength) {

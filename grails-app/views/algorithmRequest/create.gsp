@@ -7,6 +7,7 @@
 	</head>
 	<body>
 		<%@ page import="com.augurworks.engine.data.SplineType" %>
+		<%@ page import="com.augurworks.engine.domains.Product" %>
 		<%@ page import="com.augurworks.engine.helper.Aggregation" %>
 		<%@ page import="com.augurworks.engine.helper.AlfredEnvironment" %>
 		<%@ page import="com.augurworks.engine.helper.AlgorithmType" %>
@@ -63,7 +64,7 @@
 						<g:field type="text" name="channel" value="${ algorithmRequest?.slackChannel }" />
 					</div>
 				</div>
-				<div class="three fields">
+				<div class="four fields">
 					<div class="field">
 						<label>Alfred Environment</label>
 						<g:select from="${ AlfredEnvironment.values()*.name }" name="alfredEnvironment" class="ui search dropdown" value="${ algorithmRequest?.alfredEnvironment?.name }" />
@@ -75,6 +76,10 @@
 					<div class="field">
 						<label>Tags</label>
 						<g:field type="text" name="tags" value="${ algorithmRequest?.tags*.name?.join(', ') }" />
+					</div>
+					<div class="field">
+						<label>Product</label>
+						<g:select from="${ Product.list() }" name="product" class="ui search dropdown" value="${ algorithmRequest?.product?.id }" optionKey="id" optionValue="name" noSelection="['': 'No Product']" />
 					</div>
 				</div>
 				<div class="three fields">
@@ -222,7 +227,7 @@
 					}
 				});
                 <g:if test="${ algorithmRequest }">
-                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags, #learningConstant, #trainingRounds, #depth').change(function() {
+                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags, #learningConstant, #trainingRounds, #depth, #product').change(function() {
                         saveRequest();
                         $('#info-check').show();
                         setTimeout(function() {

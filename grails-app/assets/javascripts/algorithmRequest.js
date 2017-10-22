@@ -60,7 +60,8 @@ function saveRequest() {
 			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : []),
 			trainingRounds: $('#trainingRounds').val(),
 			learningConstant: $('#learningConstant').val(),
-			depth: $('#depth').val()
+			depth: $('#depth').val(),
+			product: $('#product').val()
 		},
 		success: function(data) {
 			if (!data.ok) {
@@ -91,6 +92,7 @@ function submitRequest(overwrite) {
 			slackChannel: $('#channel').val(),
 			cronAlgorithms: JSON.stringify($('#cronAlgorithms').val() || []),
 			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : []),
+			product: $('#product').val(),
 			trainingRounds: $('#trainingRounds').val(),
 			learningConstant: $('#learningConstant').val(),
 			depth: $('#depth').val(),

@@ -37,7 +37,7 @@ RUN apk add --no-cache wget bash libstdc++ tzdata && \
     mv build/libs/engine.war /opt/app.war && \
 
     # Remove Gradle and working directory
-    rm /usr/local/gradle && \
+    rm -rf /usr/local/gradle && \
     rm -rf /usr/local/gradle-$GRADLE_VERSION && \
     rm -rf /usr/local/share && \
     rm -rf /gradle && \

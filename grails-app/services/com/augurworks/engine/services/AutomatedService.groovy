@@ -1,12 +1,9 @@
 package com.augurworks.engine.services
 
-import com.augurworks.engine.data.SingleDataRequest
+import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.domains.RequestDataSet
-import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.AlgorithmType
-import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.slack.SlackMessage
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
@@ -23,6 +20,7 @@ class AutomatedService {
 	MachineLearningService machineLearningService
 	AlfredService alfredService
 	DataRetrievalService dataRetrievalService
+	ActualValueService actualValueService
 
 	void runAllDailyAlgorithms() {
 		log.info('Running all algorithms')
@@ -73,32 +71,13 @@ class AutomatedService {
 
 	void postProcessing(AlgorithmResult algorithmResult) {
 		try {
-			if (grailsApplication.config.slack.webhook) {
-				AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
-				RequestDataSet requestDataSet = algorithmRequest.dependentRequestDataSet
-				SingleDataRequest singleDataRequest = new SingleDataRequest(
-					symbolResult: requestDataSet.toSymbolResult(),
-					offset: requestDataSet.offset,
-					startDate: algorithmResult.algorithmRequest.getStartDate(algorithmResult.dateCreated),
-					endDate: algorithmResult.algorithmRequest.getEndDate(algorithmResult.dateCreated),
-					unit: algorithmResult.algorithmRequest.unit,
-					minOffset: requestDataSet.offset,
-					maxOffset: requestDataSet.offset,
-					aggregation: Aggregation.VALUE,
-					dataType: requestDataSet.dataType
-				)
-				RequestValueSet predictionActuals = dataRetrievalService.getSingleRequestValues(singleDataRequest)
-				if (algorithmResult.futureValue) {
-					int predictionOffset = algorithmRequest.predictionOffset - algorithmRequest.independentRequestDataSets*.offset.max()
-					Date futureDate = algorithmResult.algorithmRequest.unit.calculateOffset.apply(predictionActuals.values.last().date, predictionOffset)
-					if (futureDate.getTime() == algorithmResult.futureValue?.date?.getTime()) {
-						Double actualValue = requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3)
-						algorithmResult.futureValue?.sendToSlack(actualValue)
-					} else {
-						log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
-						log.info('- Last actual date: ' + predictionActuals.values.last().date)
-						log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
-					}
+			Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
+			if (actualValue.isPresent()) {
+				algorithmResult.actualValue = actualValue.get().value
+				algorithmResult.predictedDate = actualValue.get().date
+				algorithmResult.save()
+				if (grailsApplication.config.slack.webhook) {
+					algorithmResult.futureValue?.sendToSlack(actualValue.get().getValue())
 				}
 			}
 		} catch (e) {
