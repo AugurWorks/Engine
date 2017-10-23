@@ -4,18 +4,14 @@ import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
-import com.google.common.cache.LoadingCache
 import grails.converters.JSON
+import grails.plugin.cache.Cacheable
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
 import groovy.json.JsonBuilder
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.lang.time.DateUtils
 import org.joda.time.DateTime
-
-import java.util.concurrent.TimeUnit
 
 class BarchartClient extends RestClient {
 
@@ -26,13 +22,6 @@ class BarchartClient extends RestClient {
 	private final symbolLookup = barchartRoot + '/getSymbolLookUp.json'
 
 	private final apiKey
-
-	private final LoadingCache<String, String> cache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES).build(new CacheLoader<String, String>() {
-		@Override
-		String load(String key) {
-			return barchartRequest(key)
-		}
-	})
 
 	BarchartClient() {
 		apiKey = Holders.config.augurworks.barchart.key
@@ -79,9 +68,10 @@ class BarchartClient extends RestClient {
 		String fullUrl = url + '?' + parameters.keySet().grep { String key -> StringUtils.isNotBlank(parameters[key]) }.collect { String key ->
 			return key + '=' + URLEncoder.encode(parameters[key])
 		}.join('&')
-		return JSON.parse(cache.getUnchecked(fullUrl))?.results ?: []
+		return JSON.parse(barchartRequest(fullUrl))?.results ?: []
 	}
 
+	@Cacheable('externalData')
 	private String barchartRequest(String url) {
 		return new RestBuilder().get(url).text
 	}
