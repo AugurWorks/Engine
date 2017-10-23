@@ -144,6 +144,14 @@ rabbitmq {
 	env = getEnv('ENV') ?: 'DEV'
 }
 
+grails.cache.config = {
+	cache {
+		name 'externalData'
+		overflowToDisk true
+		timeToLiveSeconds 300
+	}
+}
+
 grails.app.context = '/'
 
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.augurworks.engine.domains.User'

@@ -6,10 +6,8 @@ import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.TradingHours
 import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
-import com.google.common.cache.CacheBuilder
-import com.google.common.cache.CacheLoader
-import com.google.common.cache.LoadingCache
 import grails.converters.JSON
+import grails.plugin.cache.Cacheable
 import grails.plugins.rest.client.RestBuilder
 import grails.util.Holders
 import groovy.json.JsonBuilder
@@ -21,8 +19,6 @@ import org.apache.http.impl.client.HttpClientBuilder
 import org.apache.http.util.EntityUtils
 import org.joda.time.DateTime
 
-import java.util.concurrent.TimeUnit
-
 class TDClient extends RestClient {
 
 	private final String dateFormat = 'yyyyMMdd'
@@ -32,13 +28,6 @@ class TDClient extends RestClient {
 	private final symbolLookup = tdRoot + '/SymbolLookup'
 
 	private final sourceId
-
-	private final LoadingCache<String, String> cache = CacheBuilder.newBuilder().expireAfterWrite(15, TimeUnit.MINUTES).build(new CacheLoader<String, String>() {
-		@Override
-		String load(String key) {
-			return tdJsonResults(key)
-		}
-	})
 
 	TDClient() {
 		sourceId = Holders.config.augurworks.td.key
@@ -54,7 +43,7 @@ class TDClient extends RestClient {
 	}
 
 	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
-		Collection<Map> parsedResults = JSON.parse(cache.getUnchecked(generateUrl(historyLookup, dataRequestToMap(dataRequest))))
+		Collection<Map> parsedResults = JSON.parse(tdJsonResults(generateUrl(historyLookup, dataRequestToMap(dataRequest))))
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(parsedResults).toPrettyString())
 		if (parsedResults.size() > 1) {
 			throw new AugurWorksException('More results returned than expected')
@@ -83,6 +72,7 @@ class TDClient extends RestClient {
 		return new RestBuilder().get(fullUrl).xml
 	}
 
+	@Cacheable('externalData')
 	private String tdJsonResults(String url) {
 		DataInputStream binaryResults = makeBinaryRequest(url)
 		return new JsonBuilder(parseGetHistoryBinary(binaryResults)).toString()
