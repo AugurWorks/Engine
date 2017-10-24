@@ -3,9 +3,9 @@ import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.core.ConsoleAppender
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
-import ch.qos.logback.more.appenders.DataFluentAppender
+import ch.qos.logback.more.appenders.AugurWorksDataFluentAppender
 
-appender("FLUENTD", DataFluentAppender) {
+appender("FLUENTD", AugurWorksDataFluentAppender) {
     label = "logback"
     remoteHost = System.getProperty('FLUENTD_HOST') ?: System.getenv('FLUENTD_HOST')
     port = 24224
