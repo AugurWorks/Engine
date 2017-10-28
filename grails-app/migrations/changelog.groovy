@@ -309,4 +309,6 @@ databaseChangeLog = {
 	include file: 'algorithm-result-actuals.groovy'
 
 	include file: 'prediction-date.groovy'
+
+	include file: 'foreign-key-constraints.groovy'
 }
