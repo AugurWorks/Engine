@@ -211,8 +211,8 @@ environments {
 			driverClassName = "com.mysql.jdbc.Driver"
 			dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
 			username = System.getProperty('RDS_USERNAME') ?: (System.getenv('RDS_USERNAME') ?: 'root')
-			password = System.getProperty('RDS_PASSWORD') ?: System.getenv('RDS_PASSWORD')
-			String host = System.getProperty('RDS_HOSTNAME') ?: System.getenv('RDS_HOSTNAME')
+			password = System.getProperty('RDS_PASSWORD') ?: (System.getenv('RDS_PASSWORD') ?: 'docker')
+			String host = System.getProperty('RDS_HOSTNAME') ?: (System.getenv('RDS_HOSTNAME') ?: '127.0.0.1')
 			String port = System.getProperty('RDS_PORT') ?: (System.getenv('RDS_PORT') ?: '3306')
 			String dbName = System.getProperty('RDS_DB_NAME') ?: (System.getenv('RDS_DB_NAME') ?: 'engine')
 			url = "jdbc:mysql://$host:$port/$dbName?useUnicode=true&autoReconnect=true"
