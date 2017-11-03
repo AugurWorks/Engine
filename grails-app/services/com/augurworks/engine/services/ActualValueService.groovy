@@ -24,7 +24,8 @@ class ActualValueService {
 
 	void fillOutPredictedValues() {
 		Date yesterday = new Date(new Date().getTime() - 24 * 3600 * 1000)
-		List<PredictedValue> predictedValues = PredictedValue.findAllByActualIsNullAndDateLessThan(yesterday)
+		Date weekAgo = new Date(new Date().getTime() - 7 * 24 * 3600 * 1000)
+		List<PredictedValue> predictedValues = PredictedValue.findAllByActualIsNullAndDateLessThanAndDateGreaterThan(yesterday, weekAgo)
 		log.info('Filling out ' + predictedValues.size() + ' predicted values')
 		predictedValues.each { PredictedValue predictedValue ->
 			try {
