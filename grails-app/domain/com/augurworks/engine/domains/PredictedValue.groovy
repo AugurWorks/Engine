@@ -1,5 +1,7 @@
 package com.augurworks.engine.domains
 
+import com.augurworks.engine.instrumentation.Instrumentation
+import com.timgroup.statsd.StatsDClient
 import grails.util.Holders
 import groovy.time.TimeCategory
 import groovy.time.TimeDuration
@@ -9,6 +11,8 @@ import com.augurworks.engine.helper.Global
 import com.augurworks.engine.slack.SlackMessage
 
 class PredictedValue {
+
+	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	Date date
 	double value
@@ -47,6 +51,7 @@ class PredictedValue {
 	}
 
 	void sendToSlack(Double actual = null) {
+		statsdClient.increment('count.slack.messages.sent')
 		Map slackMap = this.getSlackMap(actual)
 		new SlackMessage(slackMap.message, slackMap.channel).withBotName('Engine Predictions').withColor(slackMap.color).withTitle(slackMap.title).withLink(slackMap.link).send()
 	}

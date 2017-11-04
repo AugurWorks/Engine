@@ -7,9 +7,11 @@ import com.augurworks.engine.domains.TrainingStat
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlfredEnvironment
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.model.RequestValueSet
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.timgroup.statsd.StatsDClient
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
 import org.slf4j.Logger
@@ -22,6 +24,8 @@ class AlfredService {
 	private static final Logger log = LoggerFactory.getLogger(AlfredService)
 
 	private final ObjectMapper mapper = new ObjectMapper()
+
+	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	GrailsApplication grailsApplication
 	DataRetrievalService dataRetrievalService
@@ -77,6 +81,7 @@ class AlfredService {
 
 	void processResult(TrainingMessage message) {
 		MDC.put('netId', message.getNetId())
+		statsdClient.increment('count.alfred.processed')
 		AlgorithmResult algorithmResult = AlgorithmResult.findByAlfredModelId(message.getNetId())
 
 		if (algorithmResult == null) {

@@ -4,9 +4,11 @@ import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.data.SplineRequest
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
 import com.augurworks.engine.rest.SymbolResult
+import com.timgroup.statsd.StatsDClient
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
 import groovyx.gpars.GParsPool
@@ -14,6 +16,8 @@ import org.slf4j.MDC
 
 @Transactional
 class DataRetrievalService {
+
+	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	GrailsApplication grailsApplication
 
@@ -32,21 +36,26 @@ class DataRetrievalService {
 		int minOffset = splineRequest.algorithmRequest.requestDataSets*.offset.min() - 1
 		int maxOffset = splineRequest.algorithmRequest.requestDataSets*.offset.max()
 		Collection<RequestDataSet> requestDataSets = splineRequest.includeDependent ? splineRequest.algorithmRequest.requestDataSets : splineRequest.algorithmRequest.independentRequestDataSets
-		GParsPool.withPool(requestDataSets.size()) {
-			return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
-				SingleDataRequest singleDataRequest = new SingleDataRequest(
-					symbolResult: requestDataSet.toSymbolResult(),
-					offset: requestDataSet.offset,
-					startDate: splineRequest.startDate,
-					endDate: splineRequest.endDate,
-					unit: splineRequest.algorithmRequest.unit,
-					minOffset: minOffset,
-					maxOffset: maxOffset,
-					aggregation: requestDataSet.aggregation,
-					dataType: requestDataSet.dataType
-				)
-				return getSingleRequestValues(singleDataRequest)
+		long startTime = System.currentTimeMillis()
+		try {
+			GParsPool.withPool(requestDataSets.size()) {
+				return requestDataSets.collectParallel { RequestDataSet requestDataSet ->
+					SingleDataRequest singleDataRequest = new SingleDataRequest(
+							symbolResult: requestDataSet.toSymbolResult(),
+							offset: requestDataSet.offset,
+							startDate: splineRequest.startDate,
+							endDate: splineRequest.endDate,
+							unit: splineRequest.algorithmRequest.unit,
+							minOffset: minOffset,
+							maxOffset: maxOffset,
+							aggregation: requestDataSet.aggregation,
+							dataType: requestDataSet.dataType
+					)
+					return getSingleRequestValues(singleDataRequest)
+				}
 			}
+		} finally {
+			statsdClient.recordHistogramValue('histogram.data.request.total', System.currentTimeMillis() - startTime, 'un:ms')
 		}
 	}
 
@@ -60,6 +69,7 @@ class DataRetrievalService {
 
 	RequestValueSet getSingleRequestValues(SingleDataRequest singleDataRequest) {
 		MDC.put('ticker', singleDataRequest.symbolResult.toString())
+		long startTime = System.currentTimeMillis()
 		try {
 			Collection<DataSetValue> values = singleDataRequest.getHistory()
 			RequestValueSet requestValueSet = new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation)
@@ -69,6 +79,8 @@ class DataRetrievalService {
 			log.error('Unable to get history for ' + singleDataRequest.symbolResult.toString(), e)
 			MDC.remove('ticker')
 			throw e
+		} finally {
+			statsdClient.recordHistogramValue('histogram.data.request.single', System.currentTimeMillis() - startTime, 'un:ms')
 		}
 	}
 }

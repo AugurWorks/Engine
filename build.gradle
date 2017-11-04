@@ -70,6 +70,8 @@ dependencies {
     compile group: 'com.rabbitmq', name: 'amqp-client', version: '3.6.2'
     compile 'com.rometools:rome:1.5.1'
 
+    compile 'com.datadoghq:java-dogstatsd-client:2.3'
+
     compile "org.grails.plugins:spring-security-core:3.1.1"
     compile 'org.grails.plugins:database-migration:3.0.0'
     compile 'org.liquibase:liquibase-core:3.5.3'
