@@ -69,6 +69,7 @@ dependencies {
     compile group: 'org.fluentd', name: 'fluent-logger', version:'0.3.2'
     compile group: 'com.rabbitmq', name: 'amqp-client', version: '3.6.2'
     compile 'com.rometools:rome:1.5.1'
+    compile group: 'com.google.guava', name: 'guava', version: '23.2-jre'
 
     compile 'com.datadoghq:java-dogstatsd-client:2.3'
 
