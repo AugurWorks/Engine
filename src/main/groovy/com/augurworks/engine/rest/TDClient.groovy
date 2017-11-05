@@ -5,7 +5,9 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.TradingHours
 import com.augurworks.engine.helper.Unit
+import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.model.DataSetValue
+import com.timgroup.statsd.StatsDClient
 import grails.converters.JSON
 import grails.plugin.cache.Cacheable
 import grails.plugins.rest.client.RestBuilder
@@ -28,6 +30,7 @@ class TDClient extends RestClient {
 	private final symbolLookup = tdRoot + '/SymbolLookup'
 
 	private final sourceId
+	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	TDClient() {
 		sourceId = Holders.config.augurworks.td.key
@@ -43,6 +46,7 @@ class TDClient extends RestClient {
 	}
 
 	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+		statsdClient.increment('count.data.td.request')
 		Collection<Map> parsedResults = JSON.parse(tdJsonResults(generateUrl(historyLookup, dataRequestToMap(dataRequest))))
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(parsedResults).toPrettyString())
 		if (parsedResults.size() > 1) {
@@ -74,8 +78,13 @@ class TDClient extends RestClient {
 
 	@Cacheable('externalData')
 	private String tdJsonResults(String url) {
-		DataInputStream binaryResults = makeBinaryRequest(url)
-		return new JsonBuilder(parseGetHistoryBinary(binaryResults)).toString()
+		long startTime = System.currentTimeMillis()
+		try {
+			DataInputStream binaryResults = makeBinaryRequest(url)
+			return new JsonBuilder(parseGetHistoryBinary(binaryResults)).toString()
+		} finally {
+			statsdClient.recordHistogramValue('histogram.data.td.request.time', System.currentTimeMillis() - startTime, 'un:ms')
+		}
 	}
 
 	private DataInputStream makeBinaryRequest(String url) {

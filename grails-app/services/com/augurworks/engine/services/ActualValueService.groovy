@@ -8,8 +8,10 @@ import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.Unit
+import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
+import com.timgroup.statsd.StatsDClient
 import grails.transaction.Transactional
 import org.apache.commons.lang.time.DateUtils
 import org.slf4j.Logger
@@ -22,10 +24,14 @@ class ActualValueService {
 
 	private static final Logger log = LoggerFactory.getLogger(ActualValueService)
 
+	private final StatsDClient statsdClient = Instrumentation.statsdClient
+
 	void fillOutPredictedValues() {
 		Date yesterday = new Date(new Date().getTime() - 24 * 3600 * 1000)
-		List<PredictedValue> predictedValues = PredictedValue.findAllByActualIsNullAndDateLessThan(yesterday)
+		Date weekAgo = new Date(new Date().getTime() - 7 * 24 * 3600 * 1000)
+		List<PredictedValue> predictedValues = PredictedValue.findAllByActualIsNullAndDateLessThanAndDateGreaterThan(yesterday, weekAgo)
 		log.info('Filling out ' + predictedValues.size() + ' predicted values')
+		statsdClient.recordHistogramValue('count.job.actual.required')
 		predictedValues.each { PredictedValue predictedValue ->
 			try {
 				RequestDataSet requestDataSet = predictedValue.algorithmResult.algorithmRequest.getDependentRequestDataSet()
@@ -50,11 +56,14 @@ class ActualValueService {
 					predictedValue.actual = actualValue.value
 					predictedValue.date = actualValue.date
 					predictedValue.save()
+					statsdClient.increment('count.job.actual.success')
 				} else {
 					log.warn('No actual value found for predicted value ' + predictedValue.id)
+					statsdClient.increment('count.job.actual.empty')
 				}
 			} catch(Exception e) {
 				log.error('Error getting actual value', e)
+				statsdClient.increment('count.job.actual.error')
 			}
 		}
 		log.info('Finished filling out predicted values')

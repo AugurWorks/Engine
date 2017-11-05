@@ -3,7 +3,9 @@ package com.augurworks.engine.rest
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.Unit
+import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.model.DataSetValue
+import com.timgroup.statsd.StatsDClient
 import grails.converters.JSON
 import grails.plugin.cache.Cacheable
 import grails.plugins.rest.client.RestBuilder
@@ -22,6 +24,7 @@ class BarchartClient extends RestClient {
 	private final symbolLookup = barchartRoot + '/getSymbolLookUp.json'
 
 	private final apiKey
+	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	BarchartClient() {
 		apiKey = Holders.config.augurworks.barchart.key
@@ -34,6 +37,7 @@ class BarchartClient extends RestClient {
 	}
 
 	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+		statsdClient.increment('count.data.barchart.request')
 		Collection<Map> results = makeRequest(dataRequest)
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(results).toPrettyString())
 		return results.collect { Map result ->
@@ -73,6 +77,11 @@ class BarchartClient extends RestClient {
 
 	@Cacheable('externalData')
 	private String barchartRequest(String url) {
-		return new RestBuilder().get(url).text
+		long startTime = System.currentTimeMillis()
+		try {
+			return new RestBuilder().get(url).text
+		} finally {
+			statsdClient.recordHistogramValue('histogram.data.barchart.request.time', System.currentTimeMillis() - startTime, 'un:ms')
+		}
 	}
 }

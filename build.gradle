@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version = '3.8.2'
+version = '3.8.3'
 group "engine"
 
 apply plugin:"eclipse"
@@ -69,6 +69,8 @@ dependencies {
     compile group: 'org.fluentd', name: 'fluent-logger', version:'0.3.2'
     compile group: 'com.rabbitmq', name: 'amqp-client', version: '3.6.2'
     compile 'com.rometools:rome:1.5.1'
+
+    compile 'com.datadoghq:java-dogstatsd-client:2.3'
 
     compile "org.grails.plugins:spring-security-core:3.1.1"
     compile 'org.grails.plugins:database-migration:3.0.0'

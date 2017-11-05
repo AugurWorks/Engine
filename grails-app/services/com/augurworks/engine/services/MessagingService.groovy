@@ -2,10 +2,12 @@ package com.augurworks.engine.services
 
 import com.amazonaws.services.sns.AmazonSNSClient
 import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.messaging.TrainingMessage
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.rabbitmq.client.*
+import com.timgroup.statsd.StatsDClient
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
 import org.slf4j.Logger
@@ -29,6 +31,8 @@ class MessagingService {
 	public String resultsChannelName
 
 	private final ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
+
+	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	GrailsApplication grailsApplication
 	AlfredService alfredService
@@ -86,6 +90,7 @@ class MessagingService {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
 					try {
+						statsdClient.increment('count.messaging.received.rabbitmq')
 						TrainingMessage message = mapper.readValue(body, trainingMessageVersion)
 						alfredService.processResult(message)
 					} catch (Exception e) {
@@ -105,9 +110,11 @@ class MessagingService {
 		metadata.put(FLUENT_HOST_KEY, grailsApplication.config.logging.fluentHost)
 		metadata.put(LOGGING_ENV_KEY, grailsApplication.config.logging.env)
 		if (useLambda) {
+			statsdClient.increment('count.messaging.sent.sns')
 			metadata.put(SQS_NAME_KEY, grailsApplication.config.messaging.sqsName)
 			sendSNSTrainingMessage(message.withMetadata(metadata))
 		} else {
+			statsdClient.increment('count.messaging.sent.rabbitmq')
 			sendRabbitMQTrainingMessage(message.withMetadata(metadata))
 		}
 	}

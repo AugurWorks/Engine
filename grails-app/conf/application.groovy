@@ -144,6 +144,14 @@ rabbitmq {
 	env = getEnv('ENV') ?: 'DEV'
 }
 
+statsd {
+	prefix = 'eng'
+	host = getEnv('STATSD_HOST') ?: 'localhost'
+	port = getEnv('STATSD_PORT') ?: 8125
+	type = "ty:" + (getEnv('STATSD_TYPE') ?: 'APP')
+	element = "h:" + (getEnv('STATSD_ELEMENT') ?: 'ENG')
+}
+
 grails.cache.config = {
 	cache {
 		name 'externalData'

@@ -5,9 +5,11 @@ import com.amazonaws.services.sqs.model.Message
 import com.amazonaws.services.sqs.model.ReceiveMessageRequest
 import com.amazonaws.services.sqs.model.ReceiveMessageResult
 import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.services.AlfredService
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.timgroup.statsd.StatsDClient
 import grails.core.GrailsApplication
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -20,6 +22,8 @@ class SqsPollingJob {
 	AlfredService alfredService
 
 	private final ObjectMapper mapper = new ObjectMapper()
+
+	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	AmazonSQSClient sqsClient = new AmazonSQSClient()
 
@@ -40,6 +44,7 @@ class SqsPollingJob {
 				.withMaxNumberOfMessages(10)
 			ReceiveMessageResult receiveMessageResult = sqsClient.receiveMessage(receiveMessageRequest)
 			Collection<Message> messages = receiveMessageResult.getMessages()
+			statsdClient.increment('count.messaging.received.sqs', messages.size())
 			messages.each { Message message ->
 				TrainingMessage trainingMessage = mapper.readValue(message.getBody(), trainingMessageVersion)
 				try {
