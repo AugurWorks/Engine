@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-version = '3.8.2'
+version = '3.8.3'
 group "engine"
 
 apply plugin:"eclipse"
