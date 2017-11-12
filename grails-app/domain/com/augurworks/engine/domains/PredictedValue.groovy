@@ -41,12 +41,43 @@ class PredictedValue {
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation.name
 		AlgorithmType modelType = this.algorithmResult.modelType
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }
+		Map<String, String> predictionAction = evaluatePredictionRules(actualValue)
+		String message = [
+				predictionAction.message,
+				'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actualValue != null ? ' with an un-aggregated value of ' + actualValue.getPredictedValue() : ''),
+				'Run in ' + runTime.toString()
+		].join('\n\n')
 		return [
-			message: 'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actualValue != null ? ' with an un-aggregated value of ' + actualValue.getPredictedValue() : '') + '\nRun in ' + runTime.toString(),
+			message: message,
 			channel: this.algorithmResult.algorithmRequest.slackChannel ?: Holders.config.augurworks.predictions.channel,
 			color: this.value >= 0 ? '#4DBD33' : '#ff4444',
-			title: this.algorithmResult.algorithmRequest.stringify(),
+			title: (predictionAction.action ? predictionAction.action + ' - ' : '') + this.algorithmResult.algorithmRequest.stringify(),
 			link: Holders.config.grails.serverURL + '/algorithmRequest/show/' + this.algorithmResult.algorithmRequest.id
+		]
+	}
+
+	Map<String, String> evaluatePredictionRules(ActualValue actualValue) {
+		if (!this.algorithmResult.algorithmRequest.upperPercentThreshold | !this.algorithmResult.algorithmRequest.lowerPercentThreshold) {
+			return [
+			        message: 'Prediction rules are not set'
+			]
+		}
+		Double changePercent = (100 * (actualValue.getPredictedValue() - actualValue.getCurrentValue()) / actualValue.getCurrentValue()).round(1)
+		if (changePercent > this.algorithmResult.algorithmRequest.upperPercentThreshold) {
+			return [
+			        action: 'BUY',
+					message: 'Predicted percent change of ' + changePercent + '% is more than upper threshold of ' + this.algorithmResult.algorithmRequest.upperPercentThreshold + '%'
+			]
+		}
+		if (changePercent < this.algorithmResult.algorithmRequest.lowerPercentThreshold) {
+			return [
+			        action: 'SELL',
+					message: 'Predicted percent change of ' + changePercent + '% is less than lower threshold of ' + this.algorithmResult.algorithmRequest.lowerPercentThreshold + '%'
+			]
+		}
+		return [
+		        action: 'HOLD',
+				message: 'Predicted percent change of ' + changePercent + '% is between lower threshold of ' + this.algorithmResult.algorithmRequest.lowerPercentThreshold + '% and upper threshold of ' + this.algorithmResult.algorithmRequest.upperPercentThreshold
 		]
 	}
 
