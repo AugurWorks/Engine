@@ -1,14 +1,14 @@
 package com.augurworks.engine.domains
 
+import com.augurworks.engine.data.ActualValue
+import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.Global
 import com.augurworks.engine.instrumentation.Instrumentation
+import com.augurworks.engine.slack.SlackMessage
 import com.timgroup.statsd.StatsDClient
 import grails.util.Holders
 import groovy.time.TimeCategory
 import groovy.time.TimeDuration
-
-import com.augurworks.engine.helper.AlgorithmType
-import com.augurworks.engine.helper.Global
-import com.augurworks.engine.slack.SlackMessage
 
 class PredictedValue {
 
@@ -35,14 +35,14 @@ class PredictedValue {
 		]
 	}
 
-	Map getSlackMap(Double actual = null) {
+	Map getSlackMap(ActualValue actualValue = null) {
 		String dateFormat = this.algorithmResult.algorithmRequest.unit == 'Day' ? Global.DATE_FORMAT : Global.DATE_TIME_FORMAT
 		String name = this.algorithmResult.algorithmRequest.dependantSymbol
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation.name
 		AlgorithmType modelType = this.algorithmResult.modelType
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }
 		return [
-			message: 'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actual != null ? ' with an un-aggregated value of ' + actual : '') + '\nRun in ' + runTime.toString(),
+			message: 'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actualValue != null ? ' with an un-aggregated value of ' + actualValue.getPredictedValue() : '') + '\nRun in ' + runTime.toString(),
 			channel: this.algorithmResult.algorithmRequest.slackChannel ?: Holders.config.augurworks.predictions.channel,
 			color: this.value >= 0 ? '#4DBD33' : '#ff4444',
 			title: this.algorithmResult.algorithmRequest.stringify(),
@@ -50,9 +50,9 @@ class PredictedValue {
 		]
 	}
 
-	void sendToSlack(Double actual = null) {
+	void sendToSlack(ActualValue actualValue = null) {
 		statsdClient.increment('count.slack.messages.sent')
-		Map slackMap = this.getSlackMap(actual)
+		Map slackMap = this.getSlackMap(actualValue)
 		new SlackMessage(slackMap.message, slackMap.channel).withBotName('Engine Predictions').withColor(slackMap.color).withTitle(slackMap.title).withLink(slackMap.link).send()
 	}
 }
