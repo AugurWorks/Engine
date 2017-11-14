@@ -115,7 +115,8 @@ class ActualValueService {
 		Date futureDate = algorithmRequest.unit.calculateOffset.apply(predictionActuals.values.last().date, predictionOffset)
 		if (futureDate.getTime() == algorithmResult.futureValue?.date?.getTime()) {
 			ActualValue actualValue = new ActualValue(
-					value: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
+					predictedValue: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
+					currentValue: predictionActuals.values.last().value?.round(3),
 					date: futureDate
 			)
 			return Optional.of(actualValue)
