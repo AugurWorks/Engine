@@ -61,7 +61,8 @@ function saveRequest() {
 			trainingRounds: $('#trainingRounds').val(),
 			learningConstant: $('#learningConstant').val(),
 			depth: $('#depth').val(),
-			product: $('#product').val()
+            upperPercentThreshold: $('#upperPercentThreshold').val(),
+            lowerPercentThreshold: $('#lowerPercentThreshold').val()
 		},
 		success: function(data) {
 			if (!data.ok) {
@@ -96,6 +97,8 @@ function submitRequest(overwrite) {
 			trainingRounds: $('#trainingRounds').val(),
 			learningConstant: $('#learningConstant').val(),
 			depth: $('#depth').val(),
+            upperPercentThreshold: $('#upperPercentThreshold').val(),
+            lowerPercentThreshold: $('#lowerPercentThreshold').val(),
 			overwrite: overwrite
 		},
 		success: function(data) {
