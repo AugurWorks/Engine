@@ -62,22 +62,22 @@ class PredictedValue {
 			        message: 'Prediction rules are not set'
 			]
 		}
-		Double changePercent = (100 * (actualValue.getPredictedValue() - actualValue.getCurrentValue()) / actualValue.getCurrentValue()).round(1)
+		Double changePercent = (100 * (actualValue.getPredictedValue() - actualValue.getCurrentValue()) / actualValue.getCurrentValue()).round(3)
 		if (changePercent > this.algorithmResult.algorithmRequest.upperPercentThreshold) {
 			return [
 			        action: 'BUY',
-					message: 'Predicted percent change of ' + changePercent + '% is more than upper threshold of ' + this.algorithmResult.algorithmRequest.upperPercentThreshold + '%'
+					message: 'Predicted percent change of ' + changePercent + '% is more than the upper threshold of ' + this.algorithmResult.algorithmRequest.upperPercentThreshold + '%'
 			]
 		}
 		if (changePercent < this.algorithmResult.algorithmRequest.lowerPercentThreshold) {
 			return [
 			        action: 'SELL',
-					message: 'Predicted percent change of ' + changePercent + '% is less than lower threshold of ' + this.algorithmResult.algorithmRequest.lowerPercentThreshold + '%'
+					message: 'Predicted percent change of ' + changePercent + '% is less than the lower threshold of ' + this.algorithmResult.algorithmRequest.lowerPercentThreshold + '%'
 			]
 		}
 		return [
 		        action: 'HOLD',
-				message: 'Predicted percent change of ' + changePercent + '% is between lower threshold of ' + this.algorithmResult.algorithmRequest.lowerPercentThreshold + '% and upper threshold of ' + this.algorithmResult.algorithmRequest.upperPercentThreshold
+				message: 'Predicted percent change of ' + changePercent + '% is between lower the threshold of ' + this.algorithmResult.algorithmRequest.lowerPercentThreshold + '% and upper threshold of ' + this.algorithmResult.algorithmRequest.upperPercentThreshold
 		]
 	}
 
