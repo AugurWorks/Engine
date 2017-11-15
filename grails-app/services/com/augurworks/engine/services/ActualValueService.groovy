@@ -11,14 +11,24 @@ import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
+import com.google.common.cache.Cache
+import com.google.common.cache.CacheBuilder
 import com.timgroup.statsd.StatsDClient
 import grails.transaction.Transactional
 import org.apache.commons.lang.time.DateUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.concurrent.TimeUnit
+
 @Transactional
 class ActualValueService {
+
+	private final DateFormat DATE_FORMAT = new SimpleDateFormat('yyyy-MM-dd-HH-mm')
+
+	private final Cache<String, DataSetValue> actualValueCache = CacheBuilder.newBuilder().expireAfterWrite(6, TimeUnit.HOURS).build()
 
 	DataRetrievalService dataRetrievalService
 
@@ -34,24 +44,7 @@ class ActualValueService {
 		statsdClient.recordHistogramValue('count.job.actual.required')
 		predictedValues.each { PredictedValue predictedValue ->
 			try {
-				RequestDataSet requestDataSet = predictedValue.algorithmResult.algorithmRequest.getDependentRequestDataSet()
-				Date startDate = DateUtils.truncate(predictedValue.date, Calendar.DATE)
-				Date endDate = startDate.next()
-				SingleDataRequest dataRequest = new SingleDataRequest(
-					symbolResult: requestDataSet.toSymbolResult(),
-					offset: requestDataSet.offset,
-					startDate: startDate,
-					endDate: endDate,
-					unit: predictedValue.algorithmResult.algorithmRequest.unit == Unit.DAY ? Unit.DAY : Unit.FIFTEEN_MINUTES,
-					minOffset: 0,
-					maxOffset: 0,
-					aggregation: requestDataSet.aggregation,
-					dataType: requestDataSet.dataType
-				)
-				RequestValueSet requestValueSet = new RequestValueSet(dataRequest.symbolResult.symbol, dataRequest.dataType, dataRequest.offset, dataRequest.getHistory()).aggregateValues(requestDataSet.aggregation)
-				DataSetValue actualValue = requestValueSet.getValues().find { DataSetValue value ->
-					return value.date == predictedValue.date
-				}
+				DataSetValue actualValue = getActualValue(predictedValue)
 				if (actualValue) {
 					predictedValue.actual = actualValue.value
 					predictedValue.date = actualValue.date
@@ -67,6 +60,37 @@ class ActualValueService {
 			}
 		}
 		log.info('Finished filling out predicted values')
+	}
+
+	private DataSetValue getActualValue(PredictedValue predictedValue) {
+		RequestDataSet requestDataSet = predictedValue.algorithmResult.algorithmRequest.getDependentRequestDataSet()
+		DataSetValue cachedValue = actualValueCache.getIfPresent(getCacheKey(predictedValue.date, requestDataSet.symbol))
+		if (cachedValue != null) {
+			statsdClient.increment('count.job.actual.cache.hit')
+			return cachedValue
+		}
+		statsdClient.increment('count.job.actual.cache.miss')
+		Date startDate = DateUtils.truncate(predictedValue.date, Calendar.DATE)
+		Date endDate = startDate.next()
+		SingleDataRequest dataRequest = new SingleDataRequest(
+				symbolResult: requestDataSet.toSymbolResult(),
+				offset: requestDataSet.offset,
+				startDate: startDate,
+				endDate: endDate,
+				unit: predictedValue.algorithmResult.algorithmRequest.unit == Unit.DAY ? Unit.DAY : Unit.FIFTEEN_MINUTES,
+				minOffset: 0,
+				maxOffset: 0,
+				aggregation: requestDataSet.aggregation,
+				dataType: requestDataSet.dataType
+		)
+		RequestValueSet requestValueSet = new RequestValueSet(dataRequest.symbolResult.symbol, dataRequest.dataType, dataRequest.offset, dataRequest.getHistory()).aggregateValues(requestDataSet.aggregation)
+		requestValueSet.getValues().each { dataSetValue ->
+			actualValueCache.put(getCacheKey(dataSetValue.date, dataRequest.symbolResult.symbol), dataSetValue)
+		}
+		statsdClient.increment('count.job.actual.cache.put', requestValueSet.getValues().size())
+		return requestValueSet.getValues().find { DataSetValue value ->
+			return value.date == predictedValue.date
+		}
 	}
 
 	Optional<ActualValue> getActual(AlgorithmResult algorithmResult) {
@@ -91,7 +115,8 @@ class ActualValueService {
 		Date futureDate = algorithmRequest.unit.calculateOffset.apply(predictionActuals.values.last().date, predictionOffset)
 		if (futureDate.getTime() == algorithmResult.futureValue?.date?.getTime()) {
 			ActualValue actualValue = new ActualValue(
-					value: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
+					predictedValue: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
+					currentValue: predictionActuals.values.last().value?.round(3),
 					date: futureDate
 			)
 			return Optional.of(actualValue)
@@ -100,5 +125,9 @@ class ActualValueService {
 		log.info('- Last actual date: ' + predictionActuals.values.last().date)
 		log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
 		return Optional.empty()
+	}
+
+	private String getCacheKey(Date date, String symbol) {
+		return DATE_FORMAT.format(date) + '-' + symbol
 	}
 }

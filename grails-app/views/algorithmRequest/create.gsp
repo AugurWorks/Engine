@@ -82,7 +82,7 @@
 						<g:select from="${ Product.list() }" name="product" class="ui search dropdown" value="${ algorithmRequest?.product?.id }" optionKey="id" optionValue="name" noSelection="['': 'No Product']" />
 					</div>
 				</div>
-				<div class="three fields">
+				<div class="five fields">
 					<div class="field">
 						<label>Training Rounds</label>
 						<g:field type="text" name="trainingRounds" value="${ algorithmRequest?.trainingRounds }" />
@@ -94,6 +94,14 @@
 					<div class="field">
 						<label>Net Depth</label>
 						<g:field type="text" name="depth" value="${ algorithmRequest?.depth }" />
+					</div>
+					<div class="field">
+						<label>Upper Percent Threshold</label>
+						<g:field type="text" name="upperPercentThreshold" value="${ algorithmRequest?.upperPercentThreshold }" />
+					</div>
+					<div class="field">
+						<label>Lower Percent Threshold</label>
+						<g:field type="text" name="lowerPercentThreshold" value="${ algorithmRequest?.lowerPercentThreshold }" />
 					</div>
 				</div>
 				<h3 class="ui dividing header">Boundary Dates</h3>
@@ -227,7 +235,7 @@
 					}
 				});
                 <g:if test="${ algorithmRequest }">
-                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags, #learningConstant, #trainingRounds, #depth, #product').change(function() {
+                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags, #learningConstant, #trainingRounds, #depth, #product, #upperPercentThreshold, #lowerPercentThreshold').change(function() {
                         saveRequest();
                         $('#info-check').show();
                         setTimeout(function() {
