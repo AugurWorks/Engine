@@ -72,15 +72,13 @@ class DataRetrievalService {
 		long startTime = System.currentTimeMillis()
 		try {
 			Collection<DataSetValue> values = singleDataRequest.getHistory()
-			RequestValueSet requestValueSet = new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation)
-			MDC.remove('ticker')
-			return requestValueSet
+			return new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation)
 		} catch (Exception e) {
 			log.error('Unable to get history for ' + singleDataRequest.symbolResult.toString(), e)
-			MDC.remove('ticker')
 			throw e
 		} finally {
 			statsdClient.recordHistogramValue('histogram.data.request.single', System.currentTimeMillis() - startTime, 'un:ms')
+			MDC.remove('ticker')
 		}
 	}
 }
