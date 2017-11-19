@@ -1,5 +1,7 @@
 package com.augurworks.engine.rest
 
+import com.augurworks.engine.instrumentation.Instrumentation
+import com.timgroup.statsd.StatsDClient
 import grails.util.Holders
 
 import com.amazonaws.services.s3.AmazonS3Client
@@ -14,9 +16,13 @@ abstract class RestClient implements ApiClient {
 	private static final String BUCKET = Holders.config.aws.bucket
 	private static final boolean LOGGING_ON = Holders.config.logging.files
 
+	protected final StatsDClient statsdClient = Instrumentation.statsdClient
+
 	protected void logStringToS3(String filename, String text) {
 		try {
 			if (LOGGING_ON) {
+				long startTime = System.currentTimeMillis()
+				statsdClient.increment('count.data.s3.uploads')
 				File file = File.createTempFile(filename, '.txt')
 				file.write(text)
 				AmazonS3Client s3 = new AmazonS3Client()
@@ -24,6 +30,7 @@ abstract class RestClient implements ApiClient {
 				String path = 'logs/' + date.format(Global.S3_DATE_FORMAT) + filename + '.txt'
 				s3.putObject(BUCKET, path, file)
 				file.delete()
+				statsdClient.recordHistogramValue('histogram.data.s3.upload.time', System.currentTimeMillis() - startTime, 'un:ms')
 			}
 		} catch (e) {
 			log.warn(e.getMessage(), e)

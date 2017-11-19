@@ -5,9 +5,7 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.TradingHours
 import com.augurworks.engine.helper.Unit
-import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.model.DataSetValue
-import com.timgroup.statsd.StatsDClient
 import grails.converters.JSON
 import grails.plugin.cache.Cacheable
 import grails.plugins.rest.client.RestBuilder
@@ -30,7 +28,6 @@ class TDClient extends RestClient {
 	private final symbolLookup = tdRoot + '/SymbolLookup'
 
 	private final sourceId
-	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	TDClient() {
 		sourceId = Holders.config.augurworks.td.key

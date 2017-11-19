@@ -3,9 +3,7 @@ package com.augurworks.engine.rest
 import com.augurworks.engine.data.SingleDataRequest
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.Unit
-import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.model.DataSetValue
-import com.timgroup.statsd.StatsDClient
 import grails.converters.JSON
 import grails.plugin.cache.Cacheable
 import grails.plugins.rest.client.RestBuilder
@@ -24,7 +22,6 @@ class BarchartClient extends RestClient {
 	private final symbolLookup = barchartRoot + '/getSymbolLookUp.json'
 
 	private final apiKey
-	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	BarchartClient() {
 		apiKey = Holders.config.augurworks.barchart.key
