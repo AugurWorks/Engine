@@ -54,7 +54,7 @@ class RAPIClient extends RestClient {
 			}.join('&')
 			return JSON.parse(new RestBuilder().get(fullUrl).text) ?: []
 		} finally {
-			statsdClient.recordHistogramValue('histogram.data.rapi.request.time', System.currentTimeMillis() - startTime, 'un:ms')
+			statsdClient.recordGaugeValue('histogram.data.rapi.request.time', System.currentTimeMillis() - startTime, 'un:ms')
 		}
 	}
 }

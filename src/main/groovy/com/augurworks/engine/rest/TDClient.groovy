@@ -80,7 +80,7 @@ class TDClient extends RestClient {
 			DataInputStream binaryResults = makeBinaryRequest(url)
 			return new JsonBuilder(parseGetHistoryBinary(binaryResults)).toString()
 		} finally {
-			statsdClient.recordHistogramValue('histogram.data.td.request.time', System.currentTimeMillis() - startTime, 'un:ms')
+			statsdClient.recordGaugeValue('histogram.data.td.request.time', System.currentTimeMillis() - startTime, 'un:ms')
 		}
 	}
 

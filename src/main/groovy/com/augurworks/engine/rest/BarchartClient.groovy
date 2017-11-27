@@ -78,7 +78,7 @@ class BarchartClient extends RestClient {
 		try {
 			return new RestBuilder().get(url).text
 		} finally {
-			statsdClient.recordHistogramValue('histogram.data.barchart.request.time', System.currentTimeMillis() - startTime, 'un:ms')
+			statsdClient.recordGaugeValue('histogram.data.barchart.request.time', System.currentTimeMillis() - startTime, 'un:ms')
 		}
 	}
 }

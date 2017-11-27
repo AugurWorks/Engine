@@ -30,7 +30,7 @@ abstract class RestClient implements ApiClient {
 				String path = 'logs/' + date.format(Global.S3_DATE_FORMAT) + filename + '.txt'
 				s3.putObject(BUCKET, path, file)
 				file.delete()
-				statsdClient.recordHistogramValue('histogram.data.s3.upload.time', System.currentTimeMillis() - startTime, 'un:ms')
+				statsdClient.recordGaugeValue('histogram.data.s3.upload.time', System.currentTimeMillis() - startTime, 'un:ms')
 			}
 		} catch (e) {
 			log.warn(e.getMessage(), e)

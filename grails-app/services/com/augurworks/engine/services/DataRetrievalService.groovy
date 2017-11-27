@@ -55,7 +55,7 @@ class DataRetrievalService {
 				}
 			}
 		} finally {
-			statsdClient.recordHistogramValue('histogram.data.request.total', System.currentTimeMillis() - startTime, 'un:ms')
+			statsdClient.recordGaugeValue('histogram.data.request.total', System.currentTimeMillis() - startTime, 'un:ms')
 		}
 	}
 
@@ -77,7 +77,7 @@ class DataRetrievalService {
 			log.error('Unable to get history for ' + singleDataRequest.symbolResult.toString(), e)
 			throw e
 		} finally {
-			statsdClient.recordHistogramValue('histogram.data.request.single', System.currentTimeMillis() - startTime, 'un:ms')
+			statsdClient.recordGaugeValue('histogram.data.request.single', System.currentTimeMillis() - startTime, 'un:ms')
 			MDC.remove('ticker')
 		}
 	}
