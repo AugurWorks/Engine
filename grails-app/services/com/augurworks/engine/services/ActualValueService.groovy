@@ -41,7 +41,7 @@ class ActualValueService {
 		Date weekAgo = new Date(new Date().getTime() - 7 * 24 * 3600 * 1000)
 		List<PredictedValue> predictedValues = PredictedValue.findAllByActualIsNullAndDateLessThanAndDateGreaterThan(yesterday, weekAgo)
 		log.info('Filling out ' + predictedValues.size() + ' predicted values')
-		statsdClient.recordHistogramValue('count.job.actual.required')
+		statsdClient.recordGaugeValue('count.job.actual.required')
 		predictedValues.each { PredictedValue predictedValue ->
 			try {
 				DataSetValue actualValue = getActualValue(predictedValue)
