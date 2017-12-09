@@ -11,6 +11,10 @@ class ActualValueJob {
 	}
 
 	void execute() {
-		actualValueService.fillOutPredictedValues()
+		try {
+			actualValueService.fillOutPredictedValues()
+		} catch (Exception e) {
+			log.error('Error running the actual value service job', e)
+		}
 	}
 }
