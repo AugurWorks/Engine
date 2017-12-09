@@ -72,6 +72,7 @@ class DataRetrievalService {
 		long startTime = System.currentTimeMillis()
 		try {
 			Collection<DataSetValue> values = singleDataRequest.getHistory()
+			statsdClient.recordGaugeValue('histogram.data.request.history', System.currentTimeMillis() - startTime, 'un:ms')
 			return new RequestValueSet(singleDataRequest.symbolResult.symbol, singleDataRequest.dataType, singleDataRequest.offset, values).aggregateValues(singleDataRequest.aggregation)
 		} catch (Exception e) {
 			log.error('Unable to get history for ' + singleDataRequest.symbolResult.toString(), e)
