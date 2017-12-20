@@ -7,6 +7,7 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.*
 import com.augurworks.engine.services.*
 import grails.converters.JSON
+import grails.core.GrailsApplication
 import org.apache.commons.lang.StringUtils
 import org.quartz.CronExpression
 import org.slf4j.Logger
@@ -18,8 +19,7 @@ class AlgorithmRequestController {
 
 	private static final Integer PAGE_SIZE = 5
 
-	MachineLearningService machineLearningService
-	AlfredService alfredService
+	GrailsApplication grailsApplication
 	DataRetrievalService dataRetrievalService
 	AutomatedService automatedService
 	AutoKickoffService autoKickoffService
@@ -32,7 +32,12 @@ class AlgorithmRequestController {
 		if (!algorithmRequest) {
 			render(view: '/404')
 		}
-		[algorithm: algorithmRequest, algorithmResults: getResults(algorithmRequest, 0), total: AlgorithmResult.countByAlgorithmRequest(algorithmRequest)]
+		[
+            algorithm: algorithmRequest,
+            algorithmResults: grailsApplication.config.graphs.on.toBoolean() ? getResults(algorithmRequest, 0) : [],
+            total: grailsApplication.config.graphs.on.toBoolean() ? AlgorithmResult.countByAlgorithmRequest(algorithmRequest) : 0,
+            graphsOn: grailsApplication.config.graphs.on.toBoolean()
+        ]
 	}
 
 	def showMore(AlgorithmRequest algorithmRequest, Integer page) {

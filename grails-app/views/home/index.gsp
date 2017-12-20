@@ -15,12 +15,20 @@
 		<div class="ui segment">
 			<h2 class="ui header">Recent Runs</h2>
 			<sec:ifLoggedIn>
-				<g:if test="${ recentRuns.size() == 0 }">
+                <g:if test="${ !graphsOn }">
+                    <h3 class="ui center aligned icon header">
+                        <i class="line graph icon"></i>
+                        <div class="content">
+                            Graphs Are Disabled
+                        </div>
+                    </h3>
+                </g:if>
+				<g:elseif test="${ recentRuns.size() == 0 }">
 					<h3 class="ui center aligned icon header">
 						<i class="wait icon"></i>
 						No Recent Runs
 					</h3>
-				</g:if>
+				</g:elseif>
 				<g:else>
 					<div class="ui one cards">
 						<g:each in="${ recentRuns.sort { it.dateCreated }.reverse() }" var="result">

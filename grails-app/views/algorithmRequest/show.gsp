@@ -77,6 +77,14 @@
 					<div id="more" class="ui primary button" onclick="getAdditional(${ algorithm.id })">More</div>
 				</div>
 			</g:if>
+            <g:if test="${ !graphsOn }">
+                <h3 class="ui center aligned icon header">
+                    <i class="line graph icon"></i>
+                    <div class="content">
+                        Graphs Are Disabled
+                    </div>
+                </h3>
+            </g:if>
 		</div>
 		<script>
 			var total = ${ total };

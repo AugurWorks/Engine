@@ -1,5 +1,6 @@
 package com.augurworks.engine.controllers
 
+import grails.core.GrailsApplication
 import groovy.time.TimeCategory
 
 import com.augurworks.engine.domains.AlgorithmResult
@@ -7,6 +8,8 @@ import com.augurworks.engine.domains.TrainingStat
 import com.augurworks.engine.stats.TrainingStage;
 
 class HomeController {
+
+	GrailsApplication grailsApplication
 
 	Map timeRanges = [
 		'Last Week': 7 * 24 * 60,
@@ -22,9 +25,12 @@ class HomeController {
 	}
 
 	def index() {
+		if (!grailsApplication.config.graphs.on.toBoolean()) {
+			return [recentRuns: [], graphsOn: false]
+		}
 		Date lastHour = use(TimeCategory) { new Date() - 1.hour }
 		Collection<AlgorithmResult> recentRuns = AlgorithmResult.findAllByDateCreatedGreaterThanOrComplete(lastHour, false, [sort: 'dateCreated', max: 10])
-		[recentRuns: recentRuns]
+		return [recentRuns: recentRuns, graphsOn: true]
 	}
 
 	def dashboard(Integer offset) {

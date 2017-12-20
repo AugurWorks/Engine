@@ -61,6 +61,7 @@ logging.files = getEnv('ENGINE_LOGGING_FILES') ?: false
 slack.slash.token = getEnv('SLASH_TOKEN')
 slack.webhook = getEnv('SLACK_WEBHOOK')
 cron.requests.on = getEnv('CRON_REQUESTS_ON') ?: true
+graphs.on = getEnv('GRAPHS_ON') ?: true
 
 grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
 
