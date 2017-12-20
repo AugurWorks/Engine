@@ -35,7 +35,8 @@ class AlgorithmRequestController {
 		[
             algorithm: algorithmRequest,
             algorithmResults: grailsApplication.config.graphs.on.toBoolean() ? getResults(algorithmRequest, 0) : [],
-            total: grailsApplication.config.graphs.on.toBoolean() ? AlgorithmResult.countByAlgorithmRequest(algorithmRequest) : 0
+            total: grailsApplication.config.graphs.on.toBoolean() ? AlgorithmResult.countByAlgorithmRequest(algorithmRequest) : 0,
+            graphsOn: grailsApplication.config.graphs.on.toBoolean()
         ]
 	}
 

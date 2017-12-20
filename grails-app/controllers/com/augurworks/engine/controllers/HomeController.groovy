@@ -26,11 +26,11 @@ class HomeController {
 
 	def index() {
 		if (!grailsApplication.config.graphs.on.toBoolean()) {
-			return [recentRuns: []]
+			return [recentRuns: [], graphsOn: false]
 		}
 		Date lastHour = use(TimeCategory) { new Date() - 1.hour }
 		Collection<AlgorithmResult> recentRuns = AlgorithmResult.findAllByDateCreatedGreaterThanOrComplete(lastHour, false, [sort: 'dateCreated', max: 10])
-		return [recentRuns: recentRuns]
+		return [recentRuns: recentRuns, graphsOn: true]
 	}
 
 	def dashboard(Integer offset) {
