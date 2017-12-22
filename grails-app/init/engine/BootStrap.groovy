@@ -1,6 +1,7 @@
 package engine
 
 import grails.core.GrailsApplication
+import org.apache.commons.lang.StringUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -40,7 +41,9 @@ class BootStrap {
         }
 
         if (grailsApplication.config.cron.requests.on.toBoolean()) {
-            AlgorithmRequest.findAllByCronExpressionIsNotNull().each { AlgorithmRequest algorithmRequest ->
+            AlgorithmRequest.findAllByCronExpressionIsNotNull().filter { algorithmRequest ->
+                return StringUtils.isNotBlank(algorithmRequest.cronExpression)
+            }.each { AlgorithmRequest algorithmRequest ->
                 autoKickoffService.scheduleKickoffJob(algorithmRequest)
             }
         }
