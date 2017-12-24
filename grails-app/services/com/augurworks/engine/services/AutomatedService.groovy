@@ -3,7 +3,7 @@ package com.augurworks.engine.services
 import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.exceptions.DataException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.slack.SlackMessage
 import grails.core.GrailsApplication
@@ -63,7 +63,7 @@ class AutomatedService {
 	void runAlgorithmWithRerun(AlgorithmRequest algorithmRequest, AlgorithmType algorithmType) {
 		try {
 			runAlgorithm(algorithmRequest, algorithmType)
-		} catch (AugurWorksException e) {
+		} catch (DataException e) {
 			String message = 'An error occurred when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name + '. Rerunning in ' + RETRY_MINUTES + ' minutes'
 			log.warn(message, e)
 			new SlackMessage(message, algorithmRequest.slackChannel ?: grailsApplication.config.augurworks.predictions.channel)

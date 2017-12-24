@@ -1,6 +1,6 @@
 package com.augurworks.engine.model
 
-import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.exceptions.DataAvailabilityException
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Global
@@ -92,7 +92,7 @@ class RequestValueSet {
 			log.debug(debugs.join('\n'))
 		}
 		if (errors.size() != 0) {
-			throw new AugurWorksException(errors.join('<br />'))
+			throw new DataAvailabilityException(errors.join('<br />'))
 		}
 		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)]
 		return this
@@ -101,10 +101,10 @@ class RequestValueSet {
 	RequestValueSet fillOutValues(Collection<Date> allDates) {
 		Collection<DataSetValue> values = this.values
 		if (values.size() == 0) {
-			throw new AugurWorksException(this.name + ' does not contain any values for the given range')
+			throw new DataAvailabilityException(this.name + ' does not contain any values for the given range')
 		}
 		if (allDates.size() == 0) {
-			throw new AugurWorksException('The date range provided for ' + this.name + ' does not contain any dates')
+			throw new DataAvailabilityException('The date range provided for ' + this.name + ' does not contain any dates')
 		}
 		if (allDates.size() > values.size()) {
 			allDates[1..-1].eachWithIndex { Date date, int index ->
