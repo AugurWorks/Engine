@@ -1,7 +1,7 @@
 package com.augurworks.engine.rest
 
 import com.augurworks.engine.data.SingleDataRequest
-import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.exceptions.DataAccessException
 import com.augurworks.engine.helper.Datasource
 import com.augurworks.engine.helper.TradingHours
 import com.augurworks.engine.helper.Unit
@@ -47,7 +47,7 @@ class TDClient extends RestClient {
 		Collection<Map> parsedResults = JSON.parse(tdJsonResults(generateUrl(historyLookup, dataRequestToMap(dataRequest))))
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(parsedResults).toPrettyString())
 		if (parsedResults.size() > 1) {
-			throw new AugurWorksException('More results returned than expected')
+			throw new DataAccessException('More results returned than expected')
 		}
 		return parsedResults.first().values.collect { Map result ->
 			return new DataSetValue(new DateTime(result.date).toDate(), result[dataRequest.dataType.name().toLowerCase()])
@@ -89,7 +89,7 @@ class TDClient extends RestClient {
 		HttpClient client = HttpClientBuilder.create().build()
 		HttpResponse resp = client.execute(req)
 		if (resp.getStatusLine().statusCode != 200) {
-			throw new AugurWorksException(EntityUtils.toString(resp.getEntity()))
+			throw new DataAccessException(EntityUtils.toString(resp.getEntity()))
 		}
 		return new DataInputStream(resp.getEntity().getContent())
 	}
@@ -104,7 +104,7 @@ class TDClient extends RestClient {
 	Collection<Map> parseGetHistoryBinary(DataInputStream dataInputStream) {
 		int symbolCount = dataInputStream.readInt()
 		if (symbolCount != 1) {
-			throw new AugurWorksException('Unexpected number of TD result sets: ' + symbolCount)
+			throw new DataAccessException('Unexpected number of TD result sets: ' + symbolCount)
 		}
 		return (1..symbolCount).collect {
 			Map map = [:]
