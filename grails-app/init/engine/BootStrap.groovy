@@ -41,7 +41,7 @@ class BootStrap {
         }
 
         if (grailsApplication.config.cron.requests.on.toBoolean()) {
-            AlgorithmRequest.findAllByCronExpressionIsNotNull().filter { algorithmRequest ->
+            AlgorithmRequest.findAllByCronExpressionIsNotNull().grep { algorithmRequest ->
                 return StringUtils.isNotBlank(algorithmRequest.cronExpression)
             }.each { AlgorithmRequest algorithmRequest ->
                 autoKickoffService.scheduleKickoffJob(algorithmRequest)
