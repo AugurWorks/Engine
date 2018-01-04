@@ -64,6 +64,7 @@ cron.requests.on = getEnv('CRON_REQUESTS_ON') ?: true
 graphs.on = getEnv('GRAPHS_ON') ?: true
 
 retry {
+	count = getEnv('RETRY_COUNT') ?: 2
 	seconds = getEnv('RETRY_SECONDS') ?: 60
 }
 
