@@ -63,6 +63,10 @@ slack.webhook = getEnv('SLACK_WEBHOOK')
 cron.requests.on = getEnv('CRON_REQUESTS_ON') ?: true
 graphs.on = getEnv('GRAPHS_ON') ?: true
 
+retry {
+	seconds = getEnv('RETRY_SECONDS') ?: 60
+}
+
 grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
 
 messaging {
