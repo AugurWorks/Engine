@@ -17,8 +17,6 @@ class AutomatedService {
 
 	private static final Logger log = LoggerFactory.getLogger(AutomatedService)
 
-	private static final Integer RETRY_MINUTES = 2
-
 	GrailsApplication grailsApplication
 	MachineLearningService machineLearningService
 	AlfredService alfredService
@@ -47,7 +45,7 @@ class AutomatedService {
 		log.info('Running ' + (algorithmRequest.cronAlgorithms*.name.join(', ') ?: 'no algorithms') + ' for ' + algorithmRequest + ' from a cron job')
 		algorithmRequest.cronAlgorithms.each { AlgorithmType algorithmType ->
 			try {
-				runAlgorithmWithRerun(algorithmRequest, algorithmType)
+				runAlgorithmWithRerun(algorithmRequest, algorithmType, grailsApplication.config.retry.count)
 			} catch (Exception e) {
 				String message = 'An error occurred when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name
 				log.error(message, e)
@@ -60,19 +58,23 @@ class AutomatedService {
 		}
 	}
 
-	void runAlgorithmWithRerun(AlgorithmRequest algorithmRequest, AlgorithmType algorithmType) {
+	void runAlgorithmWithRerun(AlgorithmRequest algorithmRequest, AlgorithmType algorithmType, int triesRemaining) {
 		try {
 			runAlgorithm(algorithmRequest, algorithmType)
 		} catch (DataException e) {
-			String message = 'An error occurred when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name + '. Rerunning in ' + RETRY_MINUTES + ' minutes'
+			String message = 'An error occurred when running a(n) ' + algorithmType.name() + ' cron algorithm for ' + algorithmRequest.name + '. Rerunning in ' + grailsApplication.config.retry.seconds + ' seconds'
 			log.warn(message, e)
 			new SlackMessage(message, algorithmRequest.slackChannel ?: grailsApplication.config.augurworks.predictions.channel)
 					.withBotName('Engine Predictions')
 					.withColor('warning')
 					.withTitle('Error running ' + algorithmRequest.name)
 					.send()
-			sleep(RETRY_MINUTES * 60 * 1000)
-			runAlgorithm(algorithmRequest, algorithmType)
+			sleep(grailsApplication.config.retry.seconds * 1000)
+			if (triesRemaining == 1) {
+				runAlgorithm(algorithmRequest, algorithmType)
+			} else {
+				runAlgorithmWithRerun(algorithmRequest, algorithmType, triesRemaining - 1)
+			}
 		}
 	}
 

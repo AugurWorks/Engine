@@ -63,6 +63,11 @@ slack.webhook = getEnv('SLACK_WEBHOOK')
 cron.requests.on = getEnv('CRON_REQUESTS_ON') ?: true
 graphs.on = getEnv('GRAPHS_ON') ?: true
 
+retry {
+	count = getEnv('RETRY_COUNT') ?: 2
+	seconds = getEnv('RETRY_SECONDS') ?: 60
+}
+
 grails.serverURL = getEnv('SERVER_URL') ?: 'http://localhost:8080'
 
 messaging {
@@ -180,7 +185,8 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 		[pattern: '/requestDataSet/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/machineLearningModel/**',               access: ['ROLE_ADMIN']],
 		[pattern: '/user/**',               access: ['ROLE_ADMIN']],
-		[pattern: '/role/**',               access: ['ROLE_ADMIN']]
+        [pattern: '/role/**',               access: ['ROLE_ADMIN']],
+        [pattern: '/automatedService/**',               access: ['ROLE_ADMIN']]
 ]
 
 grails.plugin.springsecurity.logout.postOnly = false

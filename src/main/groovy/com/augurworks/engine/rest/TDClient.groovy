@@ -46,8 +46,8 @@ class TDClient extends RestClient {
 		statsdClient.increment('count.data.td.request')
 		Collection<Map> parsedResults = JSON.parse(tdJsonResults(generateUrl(historyLookup, dataRequestToMap(dataRequest))))
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(parsedResults).toPrettyString())
-		if (parsedResults.size() > 1) {
-			throw new DataAccessException('More results returned than expected')
+		if (parsedResults.size() != 1) {
+			throw new DataAccessException('More results returned than expected: ' + parsedResults.size())
 		}
 		return parsedResults.first().values.collect { Map result ->
 			return new DataSetValue(new DateTime(result.date).toDate(), result[dataRequest.dataType.name().toLowerCase()])
