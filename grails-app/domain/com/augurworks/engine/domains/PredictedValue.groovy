@@ -1,5 +1,6 @@
 package com.augurworks.engine.domains
 
+import com.amazonaws.services.sns.AmazonSNSClient
 import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Global
@@ -56,6 +57,11 @@ class PredictedValue {
 		]
 	}
 
+	String getSnsMessage(ActualValue actualValue = null) {
+		Map slackMap = getSlackMap(actualValue)
+		return slackMap.title + '\n\n' + slackMap.message
+	}
+
 	Map<String, String> evaluatePredictionRules(ActualValue actualValue) {
 		if (!this.algorithmResult.algorithmRequest.upperPercentThreshold | !this.algorithmResult.algorithmRequest.lowerPercentThreshold) {
 			return [
@@ -85,5 +91,17 @@ class PredictedValue {
 		statsdClient.increment('count.slack.messages.sent')
 		Map slackMap = this.getSlackMap(actualValue)
 		new SlackMessage(slackMap.message, slackMap.channel).withBotName('Engine Predictions').withColor(slackMap.color).withTitle(slackMap.title).withLink(slackMap.link).send()
+	}
+
+	void sendToSns(ActualValue actualValue = null) {
+		try {
+			Product product = this.algorithmResult.algorithmRequest.product
+			if (product) {
+				AmazonSNSClient snsClient = new AmazonSNSClient()
+				snsClient.publish(product.getSnsTopicArn(), getSnsMessage(actualValue))
+			}
+		} catch (Exception e) {
+			log.error('Unable to send SNS message', e)
+		}
 	}
 }
