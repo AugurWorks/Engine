@@ -11,6 +11,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>SNS Topic ARN</th>
                         <th>Requests</th>
                         <th class="collapsing">Delete</th>
                     </tr>
