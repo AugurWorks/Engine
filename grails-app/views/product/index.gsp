@@ -27,6 +27,7 @@
                             </div>
                         </td>
                         <td></td>
+                        <td></td>
                         <td><div class="ui small primary button" onclick="createProduct()">Create</div> </td>
                     </tr>
                 </tbody>
