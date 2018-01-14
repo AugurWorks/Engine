@@ -91,6 +91,12 @@ class AlfredService {
 		MDC.put('algorithmRequestId', algorithmResult.algorithmRequest.id.toString())
 		MDC.put('algorithmResultId', algorithmResult.id.toString())
 
+		if (algorithmResult.getComplete()) {
+			log.warn('Algorithm result has already been processed, skipping result')
+			MDC.clear()
+			return
+		}
+
 		log.debug('Received results message from net ' + algorithmResult.alfredModelId)
 
 		algorithmResult.complete = true
@@ -105,9 +111,6 @@ class AlfredService {
 		automatedService.postProcessing(algorithmResult)
 
 		log.info('Finished processing message from net ' + algorithmResult.alfredModelId)
-		
-		MDC.remove('netId')
-		MDC.remove('algorithmRequestId')
-		MDC.remove('algorithmResultId')
+		MDC.clear()
 	}
 }
