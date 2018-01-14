@@ -11,6 +11,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>SNS Topic ARN</th>
                         <th>Requests</th>
                         <th class="collapsing">Delete</th>
                     </tr>
@@ -25,6 +26,7 @@
                                 <g:field name="name" placeholder="Product Name" />
                             </div>
                         </td>
+                        <td></td>
                         <td></td>
                         <td><div class="ui small primary button" onclick="createProduct()">Create</div> </td>
                     </tr>

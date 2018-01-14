@@ -100,6 +100,7 @@ class AutomatedService {
 				if (grailsApplication.config.slack.webhook) {
 					algorithmResult.futureValue?.sendToSlack(actualValue.get())
 				}
+				algorithmResult.futureValue?.sendToSns(actualValue.get())
 			}
 		} catch (e) {
 			log.error('Post processing failed', e)

@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat
 
 class TradingHours {
 
-    private static final DateFormat dayFormat = new SimpleDateFormat('MM/dd/yyyy')
+    private static DateFormat getDayFormat() {
+        return new SimpleDateFormat('MM/dd/yyyy')
+    }
 
     private static final List<String> HOLIDAYS = [
             '01/02/2017',
@@ -64,11 +66,11 @@ class TradingHours {
     }
 
     private static Boolean isHoliday(Date date) {
-        return HOLIDAYS.contains(dayFormat.format(date))
+        return HOLIDAYS.contains(getDayFormat().format(date))
     }
 
     private static Boolean isHalfDay(Date date) {
-        return HALF_DAYS.contains(dayFormat.format(date))
+        return HALF_DAYS.contains(getDayFormat().format(date))
     }
 
     private static Boolean isDayDate(Date date) {
@@ -78,7 +80,7 @@ class TradingHours {
 
     private static Boolean isTradingHours(Date date) {
         Integer minutesOfDay = date[Calendar.HOUR_OF_DAY] * 60 + date[Calendar.MINUTE]
-        return minutesOfDay >= DAY_OPEN_MINUTES && (minutesOfDay <= HALF_DAY_CLOSE_MINUTES || (!HALF_DAYS.contains(dayFormat.format(date)) && minutesOfDay <= DAY_CLOSE_MINUTES))
+        return minutesOfDay >= DAY_OPEN_MINUTES && (minutesOfDay <= HALF_DAY_CLOSE_MINUTES || (!HALF_DAYS.contains(getDayFormat().format(date)) && minutesOfDay <= DAY_CLOSE_MINUTES))
     }
 
     static Date addTradingMinutes(Date date, Integer minutes) {
@@ -100,13 +102,13 @@ class TradingHours {
                 finalDate = addMinutes(finalDate, 24 * 60)
                 continue
             }
-            Integer endOfTradingDay = (HALF_DAYS.contains(dayFormat.format(finalDate)) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES)
+            Integer endOfTradingDay = (HALF_DAYS.contains(getDayFormat().format(finalDate)) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES)
             Integer timeUntilEndOfTradingDay = endOfTradingDay - (finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE])
             if (remainingMinutes < timeUntilEndOfTradingDay) {
                 finalDate = addMinutes(finalDate, remainingMinutes)
                 break
             } else {
-                finalDate = addMinutes(finalDate, timeUntilEndOfTradingDay + (24 * 60 - (HALF_DAYS.contains(dayFormat.format(finalDate)) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES) + DAY_OPEN_MINUTES))
+                finalDate = addMinutes(finalDate, timeUntilEndOfTradingDay + (24 * 60 - (HALF_DAYS.contains(getDayFormat().format(finalDate)) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES) + DAY_OPEN_MINUTES))
                 remainingMinutes -= timeUntilEndOfTradingDay
             }
         }
@@ -129,7 +131,7 @@ class TradingHours {
                 continue
             }
             if (isBeginningOfDay(finalDate)) {
-                finalDate = addMinutes(finalDate, -(24 * 60 - (HALF_DAYS.contains(dayFormat.format(addMinutes(finalDate, -24 * 60))) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES) + DAY_OPEN_MINUTES))
+                finalDate = addMinutes(finalDate, -(24 * 60 - (HALF_DAYS.contains(getDayFormat().format(addMinutes(finalDate, -24 * 60))) ? HALF_DAY_CLOSE_MINUTES : DAY_CLOSE_MINUTES) + DAY_OPEN_MINUTES))
                 continue
             }
             Integer timeUntilBeginningOfTradingDay = (finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE]) - DAY_OPEN_MINUTES
@@ -168,7 +170,7 @@ class TradingHours {
         if (finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE] > DAY_CLOSE_MINUTES) {
             finalDate = addMinutes(finalDate.clearTime(), DAY_CLOSE_MINUTES)
         }
-        if (HALF_DAYS.contains(dayFormat.format(finalDate)) && finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE] > HALF_DAY_CLOSE_MINUTES) {
+        if (HALF_DAYS.contains(getDayFormat().format(finalDate)) && finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE] > HALF_DAY_CLOSE_MINUTES) {
             finalDate = addMinutes(finalDate.clearTime(), HALF_DAY_CLOSE_MINUTES)
         }
         Integer minutesOffset = ((finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE]) / periodMinutes).intValue() * periodMinutes

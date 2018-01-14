@@ -46,7 +46,6 @@ class AutoKickoffService {
 			Trigger trigger = createTrigger(algorithmRequest)
 			Runnable job = new AlgorithmRequestJob(algorithmRequest.id)
 			runningJobs[algorithmRequest.id] = executor.schedule(job, trigger)
-			log.info(runningJobs.keySet().size() + ' total jobs scheduled')
 		} catch (AugurWorksException e) {
 			log.warn(e.getMessage())
 		} catch (e) {

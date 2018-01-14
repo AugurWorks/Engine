@@ -76,6 +76,10 @@ messaging {
 	version = getEnv('MESSAGE_VERSION') == 'V2' ? com.augurworks.engine.messaging.TrainingMessageV2 : com.augurworks.engine.messaging.TrainingMessageV1
 }
 
+sns {
+	prefix = 'arn:aws:sns:us-east-1:274685854631:'
+}
+
 logging {
 	fluentHost = getEnv('FLUENTD_HOST')
 	env = getEnv('ENV') ?: 'LOCAL'

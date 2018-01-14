@@ -58,6 +58,7 @@ function saveRequest() {
 			cronExpression: $('#cronExpression').val(),
 			slackChannel: $('#channel').val(),
 			tags: JSON.stringify($('#tags').val() ? $('#tags').val().split(',') : []),
+			product: $('#product').val(),
 			trainingRounds: $('#trainingRounds').val(),
 			learningConstant: $('#learningConstant').val(),
 			depth: $('#depth').val(),

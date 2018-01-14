@@ -48,10 +48,6 @@ databaseChangeLog = {
 		addForeignKeyConstraint(baseColumnNames: "product_id", baseTableName: "api_key_product", constraintName: "FKn9hskjysfw6fd8rccksluqyak", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "product")
 	}
 
-	changeSet(author: "TheConnMan (generated)", id: "1509227665879-13") {
-		addForeignKeyConstraint(baseColumnNames: "product_id", baseTableName: "algorithm_request", constraintName: "FKo8q8bgslwu9h1o0eomm92xxrw", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "product")
-	}
-
 	changeSet(author: "TheConnMan (generated)", id: "1509227665879-14") {
 		dropTable(tableName: "registration_code")
 	}
