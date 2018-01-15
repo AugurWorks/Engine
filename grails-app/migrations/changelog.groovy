@@ -313,4 +313,6 @@ databaseChangeLog = {
 	include file: 'foreign-key-constraints.groovy'
 
 	include file: 'request-trade-thresholds.groovy'
+
+	include file: 'prediction-request-trade-thresholds.groovy'
 }
