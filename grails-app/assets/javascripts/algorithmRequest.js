@@ -63,7 +63,9 @@ function saveRequest() {
 			learningConstant: $('#learningConstant').val(),
 			depth: $('#depth').val(),
             upperPercentThreshold: $('#upperPercentThreshold').val(),
-            lowerPercentThreshold: $('#lowerPercentThreshold').val()
+            lowerPercentThreshold: $('#lowerPercentThreshold').val(),
+            upperPredictionPercentThreshold: $('#upperPredictionPercentThreshold').val(),
+            lowerPredictionPercentThreshold: $('#lowerPredictionPercentThreshold').val()
 		},
 		success: function(data) {
 			if (!data.ok) {
@@ -100,6 +102,8 @@ function submitRequest(overwrite) {
 			depth: $('#depth').val(),
             upperPercentThreshold: $('#upperPercentThreshold').val(),
             lowerPercentThreshold: $('#lowerPercentThreshold').val(),
+            upperPredictionPercentThreshold: $('#upperPredictionPercentThreshold').val(),
+            lowerPredictionPercentThreshold: $('#lowerPredictionPercentThreshold').val(),
 			overwrite: overwrite
 		},
 		success: function(data) {
