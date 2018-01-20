@@ -26,6 +26,7 @@ class AlgorithmRequest {
 	Double upperPercentThreshold
 	Double lowerPercentThreshold
 
+	// These are not used as percentages
 	Double upperPredictionPercentThreshold
 	Double lowerPredictionPercentThreshold
 

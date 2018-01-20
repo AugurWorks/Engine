@@ -3,7 +3,6 @@ package com.augurworks.engine.services
 import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.domains.AlgorithmRequest
 import com.augurworks.engine.domains.AlgorithmResult
-import com.augurworks.engine.domains.PredictedValue
 import com.augurworks.engine.exceptions.DataException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.slack.SlackMessage
@@ -93,19 +92,19 @@ class AutomatedService {
 
 	void postProcessing(AlgorithmResult algorithmResult) {
 		try {
+			List<AlgorithmResult> previousAlgorithmResult = AlgorithmResult.findAllByAlgorithmRequest(algorithmResult.algorithmRequest, [
+					max: 2, sort: 'dateCreated', order: 'desc'
+			])
 			Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
+			Optional<ActualValue> previousActualValue = previousAlgorithmResult.size() != 2 ? Optional.empty() : actualValueService.getActual(previousAlgorithmResult.get(1))
 			if (actualValue.isPresent()) {
 				algorithmResult.actualValue = actualValue.get().predictedValue
 				algorithmResult.predictedDate = actualValue.get().date
 				algorithmResult.save()
-				List<AlgorithmResult> previousAlgorithmResult = AlgorithmResult.findAllByAlgorithmRequest(algorithmResult.algorithmRequest, [
-					max: 2, sort: 'dateCreated', order: 'desc'
-				])
-				PredictedValue previousPredictedValue = previousAlgorithmResult.size() != 2 ? null : previousAlgorithmResult.get(1).getFutureValue()
 				if (grailsApplication.config.slack.webhook) {
-					algorithmResult.futureValue?.sendToSlack(actualValue.get(), previousPredictedValue)
+					algorithmResult.futureValue?.sendToSlack(actualValue.get(), previousActualValue)
 				}
-				algorithmResult.futureValue?.sendToSns(actualValue.get(), previousPredictedValue)
+				algorithmResult.futureValue?.sendToSns(actualValue.get(), previousActualValue)
 			}
 		} catch (e) {
 			log.error('Post processing failed', e)

@@ -106,11 +106,11 @@
 						<g:field type="text" name="lowerPercentThreshold" value="${ algorithmRequest?.lowerPercentThreshold }" />
 					</div>
 					<div class="field">
-						<label>Prediction Upper Percent Threshold</label>
+						<label>Prediction Upper Change Threshold</label>
 						<g:field type="text" name="upperPredictionPercentThreshold" value="${ algorithmRequest?.upperPredictionPercentThreshold }" />
 					</div>
 					<div class="field">
-						<label>Prediction Lower Percent Threshold</label>
+						<label>Prediction Lower Change Threshold</label>
 						<g:field type="text" name="lowerPredictionPercentThreshold" value="${ algorithmRequest?.lowerPredictionPercentThreshold }" />
 					</div>
 				</div>
