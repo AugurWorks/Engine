@@ -57,8 +57,8 @@ class PredictedValue {
 		]
 	}
 
-	String getSnsMessage(ActualValue actualValue = null) {
-		Map slackMap = getSlackMap(actualValue)
+	String getSnsMessage(ActualValue actualValue = null, PredictedValue previousPredictedValue = null) {
+		Map slackMap = getSlackMap(actualValue, previousPredictedValue)
 		return slackMap.title + '\n\n' + slackMap.message
 	}
 
@@ -112,7 +112,7 @@ class PredictedValue {
 			Product product = this.algorithmResult.algorithmRequest.product
 			if (product) {
 				AmazonSNSClient snsClient = new AmazonSNSClient()
-				snsClient.publish(product.getSnsTopicArn(), getSnsMessage(actualValue))
+				snsClient.publish(product.getSnsTopicArn(), getSnsMessage(actualValue, previousPredictedValue))
 			}
 		} catch (Exception e) {
 			log.error('Unable to send SNS message', e)
