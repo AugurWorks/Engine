@@ -6,7 +6,8 @@ enum Unit {
 	DAY('Day', 1, this.&calculateDay),
 	HOUR('Hour', 60, this.&calculateHour),
 	HALF_HOUR('Half Hour', 30, this.&calculateHalfHour),
-	FIFTEEN_MINUTES('Fifteen Minutes', 15, this.&calculateFifteenMinutes)
+	FIFTEEN_MINUTES('Fifteen Minutes', 15, this.&calculateFifteenMinutes),
+	FIVE_MINUTES('Five Minutes', 5, this.&calculateFiveMinutes)
 
 	String name
 	int interval
@@ -32,5 +33,9 @@ enum Unit {
 
 	private static Date calculateFifteenMinutes(Date startDate, Integer offset) {
 		return TradingHours.addTradingMinutes(TradingHours.floorPeriod(startDate, 15), 15 * offset)
+	}
+
+	private static Date calculateFiveMinutes(Date startDate, Integer offset) {
+		return TradingHours.addTradingMinutes(TradingHours.floorPeriod(startDate, 5), 5 * offset)
 	}
 }

@@ -42,7 +42,7 @@ class RAPIClient extends RestClient {
 				type: dataRequest.unit == Unit.DAY ? 'DAY' : 'MINUTE',
 				start: (dataRequest.getOffsetStartDate().getTime() / 1000).toString(),
 				end: (dataRequest.getOffsetEndDate().getTime() / 1000).toString(),
-				period: (dataRequest.unit == Unit.DAY ? 24 * 60 : 15).toString()
+				period: (dataRequest.unit == Unit.DAY ? 24 * 60 : 5).toString()
 		]
 	}
 
