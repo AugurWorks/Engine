@@ -12,6 +12,7 @@ A production environment can be built which uses environment variables for all c
 - **CHANNEL** (default: #testing) - Slack channel for prediction output
 - **ENV** (default: DEV) - Environment field for logging and RabbitMQ channel postfix
 - **FLUENTD_HOST** - Fluentd host for centralized logging
+- **LOGDNA_INGEST_KEY** - LogDNA API key
 - **HOSTNAME** - Hostname for Fluentd logs
 - **ML_MAX** (default: 10) - Maximum simultaneous machine learning runs
 - **OAUTH_KEY** - GitHub OAuth key

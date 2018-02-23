@@ -2,6 +2,9 @@ buildscript {
     repositories {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
+        maven {
+            url "http://dl.bintray.com/robshep/oss"
+        }
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
@@ -80,6 +83,8 @@ dependencies {
     compile 'org.grails.plugins:quartz:2.0.9'
     compile 'org.grails:grails-datastore-rest-client'
     compile 'org.grails.plugins:oauth:3.0.0'
+
+    compile 'net._95point2.utils:logback-logdna:1.1.0'
 
     testCompile 'org.grails.plugins:build-test-data:3.0.1'
 }
