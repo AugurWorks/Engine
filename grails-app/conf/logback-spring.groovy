@@ -3,7 +3,7 @@ import ch.qos.logback.core.ConsoleAppender
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
 import ch.qos.logback.more.appenders.AugurWorksDataFluentAppender
-import net._95point2.utils.LogDNAAppender
+import net._95point2.utils.AugurWorksLogDNAAppender
 
 appender("FLUENTD", AugurWorksDataFluentAppender) {
     label = "logback"
@@ -17,9 +17,13 @@ appender("FLUENTD", AugurWorksDataFluentAppender) {
     ]
 }
 
-appender("LOGDNA", LogDNAAppender) {
+appender("LOGDNA", AugurWorksLogDNAAppender) {
     appName = "Engine"
     ingestKey = System.getProperty("LOGDNA_INGEST_KEY") ?: System.getenv('LOGDNA_INGEST_KEY')
+    additionalFields = [
+        function: "ENG",
+        env: System.getProperty('ENV') ?: (System.getenv('ENV') ?: 'LOCAL')
+    ]
 }
 
 appender("STDOUT", ConsoleAppender) {
