@@ -69,7 +69,6 @@ dependencies {
     runtime 'mysql:mysql-connector-java:5.1.22'
     compile group: 'ch.qos.logback', name: 'logback-classic', version:'1.1.7'
     compile group: 'com.sndyuk', name: 'logback-more-appenders', version:'1.2.0'
-    compile group: 'org.fluentd', name: 'fluent-logger', version:'0.3.2'
     compile group: 'com.rabbitmq', name: 'amqp-client', version: '3.6.2'
     compile 'com.rometools:rome:1.5.1'
     compile group: 'com.google.guava', name: 'guava', version: '23.2-jre'

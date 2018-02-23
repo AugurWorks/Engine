@@ -21,7 +21,6 @@ class MessagingService {
 	private static final Logger log = LoggerFactory.getLogger(MessagingService)
 
 	private static final String SQS_NAME_KEY = 'sqsName'
-	private static final String FLUENT_HOST_KEY = 'fluentHost'
 	private static final String LOGGING_ENV_KEY = 'loggingEnv'
 
 	public static final String ROOT_TRAINING_CHANNEL = "nets.training"
@@ -107,7 +106,6 @@ class MessagingService {
 
 	void sendTrainingMessage(TrainingMessage message, boolean useLambda) {
 		Map<String, String> metadata = [:]
-		metadata.put(FLUENT_HOST_KEY, grailsApplication.config.logging.fluentHost)
 		metadata.put(LOGGING_ENV_KEY, grailsApplication.config.logging.env)
 		if (useLambda) {
 			statsdClient.increment('count.messaging.sent.sns')
