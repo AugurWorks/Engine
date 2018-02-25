@@ -92,15 +92,19 @@ class AutomatedService {
 
 	void postProcessing(AlgorithmResult algorithmResult) {
 		try {
+			List<AlgorithmResult> previousAlgorithmResult = AlgorithmResult.findAllByAlgorithmRequest(algorithmResult.algorithmRequest, [
+					max: 2, sort: 'dateCreated', order: 'desc'
+			])
 			Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
+			Optional<ActualValue> previousActualValue = previousAlgorithmResult.size() != 2 ? Optional.empty() : actualValueService.getActual(previousAlgorithmResult.get(1))
 			if (actualValue.isPresent()) {
 				algorithmResult.actualValue = actualValue.get().predictedValue
 				algorithmResult.predictedDate = actualValue.get().date
 				algorithmResult.save()
 				if (grailsApplication.config.slack.webhook) {
-					algorithmResult.futureValue?.sendToSlack(actualValue.get())
+					algorithmResult.futureValue?.sendToSlack(actualValue.get(), previousActualValue)
 				}
-				algorithmResult.futureValue?.sendToSns(actualValue.get())
+				algorithmResult.futureValue?.sendToSns(actualValue.get(), previousActualValue)
 			}
 		} catch (e) {
 			log.error('Post processing failed', e)

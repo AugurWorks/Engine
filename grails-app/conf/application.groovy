@@ -81,7 +81,6 @@ sns {
 }
 
 logging {
-	fluentHost = getEnv('FLUENTD_HOST')
 	env = getEnv('ENV') ?: 'LOCAL'
 }
 

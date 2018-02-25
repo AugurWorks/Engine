@@ -11,11 +11,13 @@ public abstract class TrainingMessage implements Serializable {
 
     TrainingMessage() { }
 
-    TrainingMessage(String netId) {
+    TrainingMessage(String netId, Long algorithmRequestId) {
         this.netId = netId
+        this.algorithmRequestId = algorithmRequestId
     }
 
     private String netId
+    private Long algorithmRequestId
 
     private Map<String, String> metadata
     private List<TrainingStat> trainingStats

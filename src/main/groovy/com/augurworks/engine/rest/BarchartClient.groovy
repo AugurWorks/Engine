@@ -54,7 +54,7 @@ class BarchartClient extends RestClient {
 			endDate: dataRequest.getOffsetEndDate().format(dateFormat)
 		]
 		if (dataRequest.unit.interval) {
-			parameters.interval = dataRequest.unit == Unit.DAY ? '1' : '15'
+			parameters.interval = dataRequest.unit == Unit.DAY ? '1' : '5'
 		}
 		return parameters
 	}

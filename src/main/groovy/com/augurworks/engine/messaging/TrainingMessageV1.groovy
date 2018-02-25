@@ -12,8 +12,8 @@ public class TrainingMessageV1 extends TrainingMessage {
         super()
     }
 
-    TrainingMessageV1(String id) {
-        super(id)
+    TrainingMessageV1(String id, Long algorithmRequestId) {
+        super(id, algorithmRequestId)
     }
 
     private String data
@@ -55,6 +55,6 @@ public class TrainingMessageV1 extends TrainingMessage {
                 it[row].value
             }.join(',')
         }
-        return new TrainingMessageV1(id).withData(lines.join('\n'))
+        return new TrainingMessageV1(id, algorithmRequest.id).withData(lines.join('\n'))
     }
 }

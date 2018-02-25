@@ -12,8 +12,8 @@ public class TrainingMessageV2 extends TrainingMessage {
         super()
     }
 
-    TrainingMessageV2(String id) {
-        super(id)
+    TrainingMessageV2(String id, Long algorithmRequestId) {
+        super(id, algorithmRequestId)
     }
 
     private TrainingConfig trainingConfig
@@ -71,6 +71,6 @@ public class TrainingMessageV2 extends TrainingMessage {
             row.addAll(dataSets.tail()*.values.collect { it[rowNum].value.toString() })
             return row
         }
-        return new TrainingMessageV2(id).withTrainingConfig(trainingConfig).withData(data)
+        return new TrainingMessageV2(id, algorithmRequest.id).withTrainingConfig(trainingConfig).withData(data)
     }
 }

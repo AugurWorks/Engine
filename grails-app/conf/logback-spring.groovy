@@ -1,19 +1,15 @@
-import static ch.qos.logback.classic.Level.DEBUG
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.core.ConsoleAppender
 import ch.qos.logback.core.rolling.RollingFileAppender
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy
-import ch.qos.logback.more.appenders.AugurWorksDataFluentAppender
+import net._95point2.utils.AugurWorksLogDNAAppender
 
-appender("FLUENTD", AugurWorksDataFluentAppender) {
-    label = "logback"
-    remoteHost = System.getProperty('FLUENTD_HOST') ?: System.getenv('FLUENTD_HOST')
-    port = 24224
-    maxQueueSize = 999
+appender("LOGDNA", AugurWorksLogDNAAppender) {
+    appName = "Engine"
+    ingestKey = System.getProperty("LOGDNA_INGEST_KEY") ?: System.getenv('LOGDNA_INGEST_KEY')
     additionalFields = [
         function: "ENG",
-        env: System.getProperty('ENV') ?: (System.getenv('ENV') ?: 'LOCAL'),
-        hostname: System.getProperty('HOSTNAME') ?: (System.getenv('HOSTNAME') ?: InetAddress.getLocalHost().getHostName())
+        env: System.getProperty('ENV') ?: (System.getenv('ENV') ?: 'LOCAL')
     ]
 }
 
@@ -35,8 +31,8 @@ appender("ROLLING", RollingFileAppender) {
 
 Collection<String> appenders = ["STDOUT", "ROLLING"]
 
-if (System.getProperty('FLUENTD_HOST') ?: System.getenv('FLUENTD_HOST')) {
-	appenders.push("FLUENTD")
+if (System.getProperty('LOGDNA_INGEST_KEY') ?: System.getenv('LOGDNA_INGEST_KEY')) {
+    appenders.push("LOGDNA")
 }
 
 logger("grails.app.controllers.com.augurworks.engine", DEBUG, appenders)
