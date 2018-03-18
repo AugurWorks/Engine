@@ -6,6 +6,7 @@ import com.augurworks.engine.helper.TradingHours
 class AlgorithmResult {
 
 	Date dateCreated = new Date()
+	Date adjustedDateCreated
 	Date startDate
 	Date endDate
 	boolean complete = false
@@ -23,6 +24,7 @@ class AlgorithmResult {
 	List<PredictedValue> predictedValues
 
 	static constraints = {
+		adjustedDateCreated nullable: true
 		machineLearningModel nullable: true
 		alfredModelId nullable: true
 		actualValue nullable: true

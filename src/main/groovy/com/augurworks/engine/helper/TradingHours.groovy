@@ -4,6 +4,7 @@ import groovy.time.TimeCategory
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.temporal.ChronoUnit
 
 class TradingHours {
 
@@ -192,6 +193,14 @@ class TradingHours {
             }
             now = addDays(now, 1)
         }
+    }
+
+    static Date floorAnyPeriod(Date date, Integer periodMinutes) {
+        if (periodMinutes == 1440) {
+            return date.clearTime()
+        }
+        date.set(minute: Math.floor(date[Calendar.MINUTE] / periodMinutes).toInteger() * periodMinutes, second: 0)
+        return Date.from(date.toInstant().truncatedTo(ChronoUnit.SECONDS))
     }
 
     private static Boolean isBeginningOfDay(Date date) {

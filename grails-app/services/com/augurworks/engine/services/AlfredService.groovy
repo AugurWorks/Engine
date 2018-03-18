@@ -7,6 +7,7 @@ import com.augurworks.engine.domains.TrainingStat
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlfredEnvironment
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.TradingHours
 import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.model.RequestValueSet
@@ -43,6 +44,7 @@ class AlfredService {
 		TrainingMessage message = trainingMessageVersion.constructTrainingMessage(netId, algorithmRequest, dataSets)
 		messagingService.sendTrainingMessage(message, algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
+			adjustedDateCreated: TradingHours.floorAnyPeriod(new Date(), algorithmRequest.unit.minutes),
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
 			endDate: algorithmRequest.endDate,
