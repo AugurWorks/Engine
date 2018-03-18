@@ -20,8 +20,8 @@ class AutomatedService {
 	GrailsApplication grailsApplication
 	MachineLearningService machineLearningService
 	AlfredService alfredService
-	DataRetrievalService dataRetrievalService
 	ActualValueService actualValueService
+	ProductService productService
 
 	void runAllDailyAlgorithms() {
 		log.info('Running all algorithms')
@@ -105,6 +105,9 @@ class AutomatedService {
 					algorithmResult.futureValue?.sendToSlack(actualValue.get(), previousActualValue)
 				}
 				algorithmResult.futureValue?.sendToSns(actualValue.get(), previousActualValue)
+			}
+			if (algorithmResult.algorithmRequest.product) {
+				productService.runProductRules(algorithmResult)
 			}
 		} catch (e) {
 			log.error('Post processing failed', e)
