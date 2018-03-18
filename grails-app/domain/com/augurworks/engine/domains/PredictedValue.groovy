@@ -55,7 +55,7 @@ class PredictedValue {
 			message: message,
 			channel: this.algorithmResult.algorithmRequest.slackChannel ?: Holders.config.augurworks.predictions.channel,
 			color: this.value >= 0 ? '#4DBD33' : '#ff4444',
-			title: (predictionAction.action ? predictionAction.action + ' - ' : '') + this.algorithmResult.algorithmRequest.stringify(),
+			title: (predictionAction.actionMessage ? predictionAction.actionMessage + ' - ' : '') + this.algorithmResult.algorithmRequest.stringify(),
 			link: Holders.config.grails.serverURL + '/algorithmRequest/show/' + this.algorithmResult.algorithmRequest.id
 		]
 	}

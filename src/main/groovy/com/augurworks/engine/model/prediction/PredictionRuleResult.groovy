@@ -6,7 +6,8 @@ import com.augurworks.engine.domains.AlgorithmRequest
 class PredictionRuleResult {
 
     public String message
-    public String action
+    public RuleEvaluationAction action
+    public String actionMessage
 
     private PredictionRuleResult(String message) {
         this(message, null)
