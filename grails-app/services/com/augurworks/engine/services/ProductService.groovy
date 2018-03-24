@@ -3,6 +3,7 @@ package com.augurworks.engine.services
 import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.Product
+import com.augurworks.engine.domains.ProductResult
 import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.model.prediction.PredictionRuleResult
 import com.augurworks.engine.model.prediction.RuleEvaluationAction
@@ -25,29 +26,44 @@ class ProductService {
 	GrailsApplication grailsApplication
 	ActualValueService actualValueService
 
-	void runProductRules(AlgorithmResult algorithmResult) {
+	void createProductResult(AlgorithmResult algorithmResult) {
 		MDC.put('product', algorithmResult.algorithmRequest.product.id.toString())
 		log.debug('Running product post processing for algorithm request ' + algorithmResult.id + ' and product ' + algorithmResult.algorithmRequest.product.name)
 		Product product = algorithmResult.algorithmRequest.product
-		List<AlgorithmResult> algorithmResults = AlgorithmResult.executeQuery('SELECT ar FROM AlgorithmRequest as areq INNER JOIN areq.algorithmResults as ar where areq.product = :product and ar.adjustedDateCreated = :date', [
-				product: product,
-				date: algorithmResult.adjustedDateCreated
-		])
-		if (algorithmResults*.algorithmRequest.unique().size() == product.algorithmRequests.size()) {
-			List<PredictionRuleResult> results = algorithmResults.collect { result(it) }
-			if (results*.action.unique().size() == 1) {
-				if (results*.action.unique().get(0) == null) {
-					log.info('All algorithm results for product ' + product.name + ' have completed, but there are no actions')
-				} else {
-					log.info('All algorithm results for product ' + product.name + ' have completed with result ' + results*.action.unique().get(0))
-					if (grailsApplication.config.slack.webhook) {
-						sendToSlack(product, algorithmResults, results*.action.unique().get(0))
-					}
-				}
-			} else {
-				log.debug('Not all algorithm results have completed')
-			}
+		ProductResult productResult = ProductResult.findByProductAndAdjustedDateCreated(product, algorithmResult.adjustedDateCreated)
+		if (productResult) {
+			MDC.put('productResult', productResult.id.toString())
+			productResult.algorithmResults.push(algorithmResult)
+			productResult.save()
+			log.info('Processing complete product result')
+			processProductResult(productResult)
+		} else {
+			log.debug('Creating new product result')
+			List<ProductResult> previousProductResults = ProductResult.findAllByProduct(product, [sort: 'adjustedDateCreated', order: 'desc', max: 1])
+			new ProductResult(
+					product: product,
+					adjustedDateCreated: algorithmResult.adjustedDateCreated,
+					previousProductResult: previousProductResults.size() == 1 ? previousProductResults.get(0) : null,
+					algorithmResults: [algorithmResult]
+			).save()
 		}
+	}
+
+	private void processProductResult(ProductResult productResult) {
+		List<PredictionRuleResult> results = productResult.algorithmResults.collect { result(it) }
+		if (grailsApplication.config.slack.webhook) {
+			sendToSlack(productResult.product, productResult.algorithmResults, results*.action.unique().get(0))
+		}
+	}
+
+	private PredictionRuleResult processPredictionRuleResult(ProductResult productResult) {
+		if (productResult.isTooVolatile()) {
+			return new PredictionRuleResult('Current run is too volatile', RuleEvaluationAction.HOLD)
+		}
+		if (productResult.previousRun && productResult.previousRun.isTooVolatile()) {
+			return new PredictionRuleResult('Previous run is too volatile', RuleEvaluationAction.HOLD)
+		}
+
 	}
 
 	private PredictionRuleResult result(AlgorithmResult algorithmResult) {

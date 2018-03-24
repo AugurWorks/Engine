@@ -107,7 +107,7 @@ class AutomatedService {
 				algorithmResult.futureValue?.sendToSns(actualValue.get(), previousActualValue)
 			}
 			if (algorithmResult.algorithmRequest.product) {
-				productService.runProductRules(algorithmResult)
+				productService.createProductResult(algorithmResult)
 			}
 		} catch (e) {
 			log.error('Post processing failed', e)

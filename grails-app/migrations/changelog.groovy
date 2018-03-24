@@ -317,4 +317,6 @@ databaseChangeLog = {
 	include file: 'prediction-request-trade-thresholds.groovy'
 
 	include file: 'result-adjusted-date.groovy'
+
+	include file: 'product-result.groovy'
 }
