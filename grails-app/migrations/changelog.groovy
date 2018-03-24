@@ -319,4 +319,6 @@ databaseChangeLog = {
 	include file: 'result-adjusted-date.groovy'
 
 	include file: 'product-result.groovy'
+
+	include file: 'chained-algorithm-results.groovy'
 }

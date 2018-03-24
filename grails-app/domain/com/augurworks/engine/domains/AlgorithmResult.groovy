@@ -16,6 +16,8 @@ class AlgorithmResult {
 	Date predictedDate
 	Double actualValue
 
+    AlgorithmResult previousAlgorithmResult
+
 	static hasMany = [predictedValues: PredictedValue]
 
 	static belongsTo = [algorithmRequest: AlgorithmRequest]

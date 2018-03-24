@@ -93,13 +93,14 @@ class AutomatedService {
 	void postProcessing(AlgorithmResult algorithmResult) {
 		try {
 			List<AlgorithmResult> previousAlgorithmResult = AlgorithmResult.findAllByAlgorithmRequest(algorithmResult.algorithmRequest, [
-					max: 2, sort: 'dateCreated', order: 'desc'
+					max: 1, sort: 'dateCreated', order: 'desc', offset: 1
 			])
 			Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
-			Optional<ActualValue> previousActualValue = previousAlgorithmResult.size() != 2 ? Optional.empty() : actualValueService.getActual(previousAlgorithmResult.get(1))
+			Optional<ActualValue> previousActualValue = previousAlgorithmResult.size() != 1 ? Optional.empty() : actualValueService.getActual(previousAlgorithmResult.get(0))
 			if (actualValue.isPresent()) {
 				algorithmResult.actualValue = actualValue.get().predictedValue
 				algorithmResult.predictedDate = actualValue.get().date
+				algorithmResult.previousAlgorithmResult = previousAlgorithmResult.size() != 1 ? null : previousAlgorithmResult.get(0)
 				algorithmResult.save()
 				if (grailsApplication.config.slack.webhook) {
 					algorithmResult.futureValue?.sendToSlack(actualValue.get(), previousActualValue)
