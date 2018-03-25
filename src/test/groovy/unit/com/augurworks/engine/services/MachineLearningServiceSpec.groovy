@@ -29,7 +29,7 @@ class MachineLearningServiceSpec extends Specification {
 
 	void "test create predicted values"() {
 		given:
-		AlgorithmResult algorithmResult = AlgorithmResult.build()
+		AlgorithmResult algorithmResult = AlgorithmResult.build(dateCreated: new Date())
 		Collection<Date> predictionDates = ['01/01/2014', '01/02/2014', '01/03/2014'].collect { String date ->
 			return Date.parse(Global.DATE_FORMAT, date)
 		}
@@ -42,6 +42,6 @@ class MachineLearningServiceSpec extends Specification {
 		then:
 		predictedValues.size() == 4
 		predictedValues*.value.sort() == predictions.sort()
-		predictedValues*.date*.format(Global.DATE_FORMAT).contains('01/04/2014')
+		predictedValues*.date*.format(Global.DATE_FORMAT).contains('01/06/2014')
 	}
 }
