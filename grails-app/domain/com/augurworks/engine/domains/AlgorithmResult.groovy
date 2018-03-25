@@ -14,7 +14,10 @@ class AlgorithmResult {
 	MachineLearningModel machineLearningModel
 	String alfredModelId
 	Date predictedDate
-	Double actualValue
+    // Unaggregated prediction value
+    Double actualValue
+    // Unaggregated prediction minus previous unagreggated actual
+    Double predictedDifference
 
     AlgorithmResult previousAlgorithmResult
 
@@ -29,8 +32,9 @@ class AlgorithmResult {
 		adjustedDateCreated nullable: true
 		machineLearningModel nullable: true
 		alfredModelId nullable: true
-		actualValue nullable: true
 		predictedDate nullable: true
+		actualValue nullable: true
+		predictedDifference nullable: true
 	}
 
 	static mapping = {
@@ -55,4 +59,18 @@ class AlgorithmResult {
 	String toString() {
 		algorithmRequest.toString() + ': ' + dateCreated.format('MM/dd/yyyy HH:mm')
 	}
+
+    Optional<Double> getPredictionChange() {
+        if (!previousAlgorithmResult) {
+            return Optional.empty()
+        }
+        return Optional.of(actualValue - previousAlgorithmResult.actualValue)
+    }
+
+    Optional<Double> getPredictionPercentChange() {
+        if (!previousAlgorithmResult) {
+            return Optional.empty()
+        }
+        return Optional.of(100 * (actualValue - previousAlgorithmResult.actualValue) / previousAlgorithmResult.actualValue)
+    }
 }

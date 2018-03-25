@@ -321,4 +321,6 @@ databaseChangeLog = {
 	include file: 'product-result.groovy'
 
 	include file: 'chained-algorithm-results.groovy'
+
+	include file: 'algorithm-result-predicted-difference.groovy'
 }

@@ -67,15 +67,7 @@ class ProductService {
 	}
 
 	private PredictionRuleResult result(AlgorithmResult algorithmResult) {
-		List<AlgorithmResult> previousAlgorithmResult = AlgorithmResult.findAllByAlgorithmRequest(algorithmResult.algorithmRequest, [
-				max: 2, sort: 'dateCreated', order: 'desc'
-		])
-		Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
-		if (!actualValue.isPresent()) {
-			return new PredictionRuleResult('Current or previous run data is missing')
-		}
-		Optional<ActualValue> previousActualValue = previousAlgorithmResult.size() != 2 ? Optional.empty() : actualValueService.getActual(previousAlgorithmResult.get(1))
-		return PredictionRuleResult.create(algorithmResult.algorithmRequest, actualValue.get(), previousActualValue)
+		return PredictionRuleResult.create(algorithmResult)
 	}
 
 	private void sendToSlack(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {

@@ -1,7 +1,7 @@
 package com.augurworks.engine.model.prediction
 
-import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.domains.AlgorithmRequest
+import com.augurworks.engine.domains.AlgorithmResult
 
 class PredictionRuleResult {
 
@@ -18,23 +18,24 @@ class PredictionRuleResult {
         this.action = action
     }
 
-    static PredictionRuleResult create(AlgorithmRequest algorithmRequest, ActualValue actualValue, Optional<ActualValue> previousActualValue = Optional.empty()) {
-        if (actualValue == null || !previousActualValue.isPresent()) {
+    static PredictionRuleResult create(AlgorithmResult algorithmResult) {
+        AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
+        if (!algorithmResult.actualValue || !algorithmResult?.previousAlgorithmResult?.actualValue) {
             return new PredictionRuleResult('Current or previous run data is missing')
         }
-        if (algorithmRequest.upperPercentThreshold == null || algorithmRequest.lowerPercentThreshold == null || algorithmRequest.upperPredictionPercentThreshold == null || algorithmRequest.lowerPredictionPercentThreshold == null) {
+        if (!algorithmRequest.upperPercentThreshold || !algorithmRequest.lowerPercentThreshold || !algorithmRequest.upperPredictionPercentThreshold || !algorithmRequest.lowerPredictionPercentThreshold) {
             return new PredictionRuleResult('All prediction rules must be set')
         }
-        Double changePercent = (100 * (actualValue.getPredictedValue() - actualValue.getCurrentValue()) / actualValue.getCurrentValue()).round(3)
-        Double predictedChange = actualValue.predictedValue - previousActualValue.get().predictedValue
+        Double predictedDifference = algorithmResult.predictedDifference
+        Double predictedChange = algorithmResult.predictionChange
 
         List<RuleEvaluationResult> ruleEvaluations = []
-        if (changePercent > algorithmRequest.upperPercentThreshold) {
-            ruleEvaluations.push(new RuleEvaluationResult(RuleEvaluationAction.BUY, 'Predicted percent change of ' + changePercent + '% is more than the upper threshold of ' + algorithmRequest.upperPercentThreshold + '%'))
-        } else if (changePercent < algorithmRequest.lowerPercentThreshold) {
-            ruleEvaluations.push(new RuleEvaluationResult(RuleEvaluationAction.SELL, 'Predicted percent change of ' + changePercent + '% is less than the lower threshold of ' + algorithmRequest.lowerPercentThreshold + '%'))
+        if (predictedDifference > algorithmRequest.upperPercentThreshold) {
+            ruleEvaluations.push(new RuleEvaluationResult(RuleEvaluationAction.BUY, 'Predicted percent change of ' + predictedDifference + '% is more than the upper threshold of ' + algorithmRequest.upperPercentThreshold + '%'))
+        } else if (predictedDifference < algorithmRequest.lowerPercentThreshold) {
+            ruleEvaluations.push(new RuleEvaluationResult(RuleEvaluationAction.SELL, 'Predicted percent change of ' + predictedDifference + '% is less than the lower threshold of ' + algorithmRequest.lowerPercentThreshold + '%'))
         } else {
-            ruleEvaluations.push(new RuleEvaluationResult(RuleEvaluationAction.HOLD, 'Predicted percent change of ' + changePercent + '% is between lower the threshold of ' + algorithmRequest.lowerPercentThreshold + '% and upper threshold of ' + algorithmRequest.upperPercentThreshold))
+            ruleEvaluations.push(new RuleEvaluationResult(RuleEvaluationAction.HOLD, 'Predicted percent change of ' + predictedDifference + '% is between lower the threshold of ' + algorithmRequest.lowerPercentThreshold + '% and upper threshold of ' + algorithmRequest.upperPercentThreshold))
         }
 
         if (predictedChange > algorithmRequest.upperPredictionPercentThreshold) {

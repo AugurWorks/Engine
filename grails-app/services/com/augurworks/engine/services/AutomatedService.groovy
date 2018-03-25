@@ -96,16 +96,16 @@ class AutomatedService {
 					max: 1, sort: 'dateCreated', order: 'desc', offset: 1
 			])
 			Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
-			Optional<ActualValue> previousActualValue = previousAlgorithmResult.size() != 1 ? Optional.empty() : actualValueService.getActual(previousAlgorithmResult.get(0))
 			if (actualValue.isPresent()) {
-				algorithmResult.actualValue = actualValue.get().predictedValue
+                algorithmResult.actualValue = actualValue.get().predictedValue
+                algorithmResult.predictedDifference = actualValue.get().predictedValue - actualValue.get().currentValue
 				algorithmResult.predictedDate = actualValue.get().date
 				algorithmResult.previousAlgorithmResult = previousAlgorithmResult.size() != 1 ? null : previousAlgorithmResult.get(0)
 				algorithmResult.save()
 				if (grailsApplication.config.slack.webhook) {
-					algorithmResult.futureValue?.sendToSlack(actualValue.get(), previousActualValue)
+					algorithmResult.futureValue?.sendToSlack(actualValue.get())
 				}
-				algorithmResult.futureValue?.sendToSns(actualValue.get(), previousActualValue)
+				algorithmResult.futureValue?.sendToSns(actualValue.get())
 			}
 			if (algorithmResult.algorithmRequest.product) {
 				productService.createProductResult(algorithmResult)

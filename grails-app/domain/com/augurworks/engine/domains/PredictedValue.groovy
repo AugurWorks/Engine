@@ -39,13 +39,13 @@ class PredictedValue {
 		]
 	}
 
-	Map getSlackMap(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {
+	Map getSlackMap(ActualValue actualValue = null) {
 		String dateFormat = this.algorithmResult.algorithmRequest.unit == 'Day' ? Global.DATE_FORMAT : Global.DATE_TIME_FORMAT
 		String name = this.algorithmResult.algorithmRequest.dependantSymbol
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation.name
 		AlgorithmType modelType = this.algorithmResult.modelType
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }
-		PredictionRuleResult predictionAction = PredictionRuleResult.create(this.algorithmResult.algorithmRequest, actualValue, previousActualValue)
+		PredictionRuleResult predictionAction = PredictionRuleResult.create(this.algorithmResult)
 		String message = [
 				predictionAction.message,
 				'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actualValue != null ? ' with an un-aggregated value of ' + actualValue.getPredictedValue() : ''),
@@ -60,23 +60,23 @@ class PredictedValue {
 		]
 	}
 
-	String getSnsMessage(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {
-		Map slackMap = getSlackMap(actualValue, previousActualValue)
+	String getSnsMessage(ActualValue actualValue = null) {
+		Map slackMap = getSlackMap(actualValue)
 		return slackMap.title + '\n\n' + slackMap.message
 	}
 
 	void sendToSlack(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {
 		statsdClient.increment('count.slack.messages.sent')
-		Map slackMap = this.getSlackMap(actualValue, previousActualValue)
+		Map slackMap = this.getSlackMap(actualValue)
 		new SlackMessage(slackMap.message, slackMap.channel).withBotName('Engine Predictions').withColor(slackMap.color).withTitle(slackMap.title).withLink(slackMap.link).send()
 	}
 
-	void sendToSns(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {
+	void sendToSns(ActualValue actualValue = null) {
 		try {
 			Product product = this.algorithmResult.algorithmRequest.product
 			if (product) {
 				AmazonSNSClient snsClient = new AmazonSNSClient()
-				snsClient.publish(product.getSnsTopicArn(), getSnsMessage(actualValue, previousActualValue))
+				snsClient.publish(product.getSnsTopicArn(), getSnsMessage(actualValue))
 			}
 		} catch (Exception e) {
 			log.error('Unable to send SNS message', e)
