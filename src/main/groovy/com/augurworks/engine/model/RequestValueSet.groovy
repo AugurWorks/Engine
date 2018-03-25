@@ -4,16 +4,12 @@ import com.augurworks.engine.exceptions.DataAvailabilityException
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.DataType
 import com.augurworks.engine.helper.Global
-import com.augurworks.engine.instrumentation.Instrumentation
-import com.timgroup.statsd.StatsDClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class RequestValueSet {
 
 	private static final Logger log = LoggerFactory.getLogger(RequestValueSet)
-
-	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	String name
 	DataType dataType
@@ -56,7 +52,6 @@ class RequestValueSet {
 			}
 		}
 		this.values = newValues
-		statsdClient.recordGaugeValue('histogram.model.requestvalueset.aggregate', System.currentTimeMillis() - startTime, 'un:ms')
 		return this
 	}
 
