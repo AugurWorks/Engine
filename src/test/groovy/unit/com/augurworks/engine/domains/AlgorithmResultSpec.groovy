@@ -14,10 +14,9 @@ class AlgorithmResultSpec extends Specification {
 
 	void "test valid get tomorrows value (day)"() {
 		given:
-		AlgorithmResult result = AlgorithmResult.build()
+		AlgorithmResult result = AlgorithmResult.build(dateCreated: new Date())
 		PredictedValue.build(algorithmResult: result, date: Unit.DAY.calculateOffset.apply(new Date(), 0))
 		PredictedValue tomorrow = PredictedValue.build(algorithmResult: result, date: Unit.DAY.calculateOffset.apply(new Date(), 1))
-		PredictedValue.build(algorithmResult: result, date: Unit.DAY.calculateOffset.apply(new Date(), 1))
 
 		when:
 		PredictedValue actual = result.futureValue
@@ -28,10 +27,9 @@ class AlgorithmResultSpec extends Specification {
 
 	void "test valid get tomorrows value (hour)"() {
 		given:
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: Unit.HOUR)
-		AlgorithmResult result = AlgorithmResult.build(algorithmRequest: algorithmRequest, endDate: Unit.HOUR.calculateOffset.apply(new Date(), 0))
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: Unit.HOUR, dateCreated: new Date())
+		AlgorithmResult result = AlgorithmResult.build(algorithmRequest: algorithmRequest, endDate: Unit.HOUR.calculateOffset.apply(new Date(), 0), dateCreated: new Date())
 		PredictedValue nextHour = PredictedValue.build(algorithmResult: result, date: Unit.HOUR.calculateOffset.apply(new Date(), 1))
-		PredictedValue.build(algorithmResult: result, date: Unit.HOUR.calculateOffset.apply(new Date(), 1))
 
 		when:
 		PredictedValue actual = result.futureValue
@@ -40,22 +38,10 @@ class AlgorithmResultSpec extends Specification {
 		actual == nextHour
 	}
 
-	void "test invalid get tomorrows value"() {
-		given:
-		AlgorithmResult result = AlgorithmResult.build(endDate: new Date())
-		PredictedValue.build(algorithmResult: result, date: TradingHours.floorPeriod(new Date(), 24 * 60))
-
-		when:
-		PredictedValue actual = result.futureValue
-
-		then:
-		actual == null
-	}
-
 	void "test invalid get tomorrows value (hour)"() {
 		given:
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: Unit.HOUR)
-		AlgorithmResult result = AlgorithmResult.build(algorithmRequest: algorithmRequest, endDate: new Date())
+		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(unit: Unit.HOUR, dateCreated: new Date())
+		AlgorithmResult result = AlgorithmResult.build(algorithmRequest: algorithmRequest, endDate: new Date(), dateCreated: new Date())
 		PredictedValue.build(algorithmResult: result, date: TradingHours.floorPeriod(new Date(), 60))
 
 		when:
