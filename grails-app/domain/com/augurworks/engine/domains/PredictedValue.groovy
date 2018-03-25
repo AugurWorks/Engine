@@ -45,7 +45,7 @@ class PredictedValue {
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation.name
 		AlgorithmType modelType = this.algorithmResult.modelType
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }
-		PredictionRuleResult predictionAction = PredictionRuleResult.create(this.algorithmResult)
+		PredictionRuleResult predictionAction = this.algorithmResult.evaluateRules()
 		String message = [
 				predictionAction.message,
 				'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actualValue != null ? ' with an un-aggregated value of ' + actualValue.getPredictedValue() : ''),

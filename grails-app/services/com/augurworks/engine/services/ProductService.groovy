@@ -50,7 +50,7 @@ class ProductService {
 	}
 
 	private void processProductResult(ProductResult productResult) {
-		List<PredictionRuleResult> results = productResult.algorithmResults.collect { result(it) }
+		List<PredictionRuleResult> results = productResult.algorithmResults*.evaluateRules()
 		if (grailsApplication.config.slack.webhook) {
 			sendToSlack(productResult.product, productResult.algorithmResults, results*.action.unique().get(0))
 		}
@@ -64,10 +64,6 @@ class ProductService {
 			return new PredictionRuleResult('Previous run is too volatile', RuleEvaluationAction.HOLD)
 		}
 
-	}
-
-	private PredictionRuleResult result(AlgorithmResult algorithmResult) {
-		return PredictionRuleResult.create(algorithmResult)
 	}
 
 	private void sendToSlack(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {
