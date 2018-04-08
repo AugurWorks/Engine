@@ -29,7 +29,7 @@ class MachineLearningServiceSpec extends Specification {
 
 	void "test create predicted values"() {
 		given:
-		AlgorithmResult algorithmResult = AlgorithmResult.build(dateCreated: new Date())
+		AlgorithmResult algorithmResult = AlgorithmResult.build()
 		Collection<Date> predictionDates = ['01/01/2014', '01/02/2014', '01/03/2014'].collect { String date ->
 			return Date.parse(Global.DATE_FORMAT, date)
 		}

@@ -15,7 +15,7 @@ class TrainingStat {
     TrainingStopReason trainingStopReason
     TrainingStage trainingStage
 
-    Date dateCreated
+    Date dateCreated = new Date()
 
     static constraints = {
         trainingStopReason nullable: true
