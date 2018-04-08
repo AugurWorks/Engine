@@ -1,11 +1,9 @@
 package com.augurworks.engine.services
 
-import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.domains.AlgorithmResult
 import com.augurworks.engine.domains.Product
 import com.augurworks.engine.domains.ProductResult
 import com.augurworks.engine.instrumentation.Instrumentation
-import com.augurworks.engine.model.prediction.PredictionRuleResult
 import com.augurworks.engine.model.prediction.RuleEvaluationAction
 import com.augurworks.engine.slack.SlackMessage
 import com.timgroup.statsd.StatsDClient
@@ -24,7 +22,6 @@ class ProductService {
 	private final StatsDClient statsdClient = Instrumentation.statsdClient
 
 	GrailsApplication grailsApplication
-	ActualValueService actualValueService
 
 	void createProductResult(AlgorithmResult algorithmResult) {
 		MDC.put('product', algorithmResult.algorithmRequest.product.id.toString())
@@ -33,48 +30,39 @@ class ProductService {
 		ProductResult productResult = ProductResult.findByProductAndAdjustedDateCreated(product, algorithmResult.adjustedDateCreated)
 		if (productResult) {
 			MDC.put('productResult', productResult.id.toString())
-			productResult.algorithmResults.push(algorithmResult)
+
+			productResult[algorithmResult.algorithmRequest.name.toLowerCase().contains('close') ? 'closeResult' : 'realTimeResult'] = algorithmResult
 			productResult.save()
 			log.info('Processing complete product result')
 			processProductResult(productResult)
 		} else {
 			log.debug('Creating new product result')
 			List<ProductResult> previousProductResults = ProductResult.findAllByProduct(product, [sort: 'adjustedDateCreated', order: 'desc', max: 1])
-			new ProductResult(
+			productResult = new ProductResult(
 					product: product,
 					adjustedDateCreated: algorithmResult.adjustedDateCreated,
-					previousProductResult: previousProductResults.size() == 1 ? previousProductResults.get(0) : null,
-					algorithmResults: [algorithmResult]
-			).save()
+					previousProductResult: previousProductResults.size() == 1 ? previousProductResults.get(0) : null
+			)
+			productResult[algorithmResult.algorithmRequest.name.toLowerCase().contains('close') ? 'closeResult' : 'realTimeResult'] = algorithmResult
+			productResult.save()
 		}
 	}
 
 	private void processProductResult(ProductResult productResult) {
-		List<PredictionRuleResult> results = productResult.algorithmResults*.evaluateRules()
 		if (grailsApplication.config.slack.webhook) {
-			sendToSlack(productResult.product, productResult.algorithmResults, results*.action.unique().get(0))
+			sendToSlack(productResult.product, productResult.action, productResult.slackChannel)
 		}
 	}
 
-	private PredictionRuleResult processPredictionRuleResult(ProductResult productResult) {
-		if (productResult.isTooVolatile()) {
-			return new PredictionRuleResult('Current run is too volatile', RuleEvaluationAction.HOLD)
-		}
-		if (productResult.previousRun && productResult.previousRun.isTooVolatile()) {
-			return new PredictionRuleResult('Previous run is too volatile', RuleEvaluationAction.HOLD)
-		}
-
-	}
-
-	private void sendToSlack(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {
+	private void sendToSlack(Product product, RuleEvaluationAction action, String slackChannel) {
 		statsdClient.increment('count.slack.messages.sent')
-		Map slackMap = this.getSlackMap(actualValue, previousActualValue)
+		Map slackMap = this.getSlackMap(product, action, slackChannel)
 		new SlackMessage(slackMap.message, slackMap.channel).withBotName('Engine Predictions').withColor(slackMap.color).withTitle(slackMap.title).withLink(slackMap.link).send()
 	}
 
-	private Map getSlackMap(Product product, List<AlgorithmResult> algorithmResults, RuleEvaluationAction action) {
+	private Map getSlackMap(Product product, RuleEvaluationAction action, String slackChannel) {
 		return [
-				channel: algorithmResults*.algorithmRequest*.slackChannel.unique().get(0) ?: Holders.config.augurworks.predictions.channel,
+				channel: slackChannel ?: Holders.config.augurworks.predictions.channel,
 				color: action.color,
 				title: action.name() + ': ' + product.name
 		]
