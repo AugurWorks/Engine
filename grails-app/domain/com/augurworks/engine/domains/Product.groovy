@@ -6,9 +6,15 @@ import grails.util.Holders
 class Product {
 
     String name
+    Double volatilePercentLimit
+    Double realTimeDiffUpper
+    Double realTimeDiffLower
 
     static constraints = {
         name unique: true
+        volatilePercentLimit(nullable: true)
+        realTimeDiffUpper(nullable: true)
+        realTimeDiffLower(nullable: true)
     }
 
     static mapping = {

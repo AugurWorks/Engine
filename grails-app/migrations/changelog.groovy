@@ -323,4 +323,6 @@ databaseChangeLog = {
 	include file: 'chained-algorithm-results.groovy'
 
 	include file: 'algorithm-result-predicted-difference.groovy'
+
+	include file: 'product-result-thresholds.groovy'
 }

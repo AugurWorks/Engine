@@ -20,7 +20,7 @@ class ProductResult {
     }
 
     boolean isTooVolatile() {
-        return 100 * realTimeDiff.abs() / previousRun.realTimeResult.actualValue.abs() > 0.4
+        return 100 * realTimeDiff.abs() / previousRun.realTimeResult.actualValue.abs() > product.volatilePercentLimit
     }
 
     boolean isAllPositive() {
@@ -43,10 +43,10 @@ class ProductResult {
         if (!previousRun) {
             return RuleEvaluationAction.HOLD
         }
-        if (realTimeDiff > 11 && previousRun.realTimeDiff > 0) {
+        if (realTimeDiff > product.realTimeDiffUpper && previousRun.realTimeDiff > 0) {
             return RuleEvaluationAction.BUY
         }
-        if (realTimeDiff < -11 && previousRun.realTimeDiff < 0) {
+        if (realTimeDiff < product.realTimeDiffLower && previousRun.realTimeDiff < 0) {
             return RuleEvaluationAction.SELL
         }
         if (tooVolatile || previousRun.tooVolatile) {
