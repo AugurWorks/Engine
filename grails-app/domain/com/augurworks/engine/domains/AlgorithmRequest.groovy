@@ -32,6 +32,11 @@ class AlgorithmRequest {
 
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType, tags: RequestTag]
 
+	List<RequestDataSet> requestDataSets
+	List<AlgorithmResult> algorithmResults
+	List<AlgorithmType> cronAlgorithms
+	List<RequestTag> tags
+
 	static constraints = {
 		name unique: true
 		cronExpression nullable: true

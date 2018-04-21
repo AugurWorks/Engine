@@ -5,4 +5,6 @@ class RequestTag {
     String name
 
     static belongsTo = [algorithmRequest: AlgorithmRequest]
+
+    AlgorithmRequest algorithmRequest
 }

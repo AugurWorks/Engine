@@ -5,6 +5,7 @@ import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.instrumentation.Instrumentation
+import com.augurworks.engine.model.prediction.PredictionRuleResult
 import com.augurworks.engine.slack.SlackMessage
 import com.timgroup.statsd.StatsDClient
 import grails.util.Holders
@@ -20,6 +21,8 @@ class PredictedValue {
 	Double actual
 
 	static belongsTo = [algorithmResult: AlgorithmResult]
+
+	AlgorithmResult algorithmResult
 
 	static constraints = {
 		actual nullable: true
@@ -42,7 +45,7 @@ class PredictedValue {
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation.name
 		AlgorithmType modelType = this.algorithmResult.modelType
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }
-		Map<String, String> predictionAction = evaluatePredictionRules(actualValue, previousActualValue)
+		PredictionRuleResult predictionAction = PredictionRuleResult.create(this.algorithmResult.algorithmRequest, actualValue, previousActualValue)
 		String message = [
 				predictionAction.message,
 				'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actualValue != null ? ' with an un-aggregated value of ' + actualValue.getPredictedValue() : ''),
@@ -62,45 +65,6 @@ class PredictedValue {
 		return slackMap.title + '\n\n' + slackMap.message
 	}
 
-	Map<String, String> evaluatePredictionRules(ActualValue actualValue, Optional<ActualValue> previousActualValue = Optional.empty()) {
-		if (actualValue == null || !previousActualValue.isPresent()) {
-			return [
-					message: 'Current or previous run data is missing'
-			]
-		}
-		AlgorithmResult algorithmResult = this.algorithmResult
-		AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
-		if (algorithmRequest.upperPercentThreshold == null || algorithmRequest.lowerPercentThreshold == null || algorithmRequest.upperPredictionPercentThreshold == null || algorithmRequest.lowerPredictionPercentThreshold == null) {
-			return [
-			        message: 'All prediction rules must be set'
-			]
-		}
-		Double changePercent = (100 * (actualValue.getPredictedValue() - actualValue.getCurrentValue()) / actualValue.getCurrentValue()).round(3)
-		Double predictedChange = actualValue.predictedValue - previousActualValue.get().predictedValue
-
-		List<RuleEvaluation> ruleEvaluations = []
-		if (changePercent > algorithmRequest.upperPercentThreshold) {
-			ruleEvaluations.push(new RuleEvaluation(Action.BUY, 'Predicted percent change of ' + changePercent + '% is more than the upper threshold of ' + algorithmRequest.upperPercentThreshold + '%'))
-		} else if (changePercent < algorithmRequest.lowerPercentThreshold) {
-			ruleEvaluations.push(new RuleEvaluation(Action.SELL, 'Predicted percent change of ' + changePercent + '% is less than the lower threshold of ' + algorithmRequest.lowerPercentThreshold + '%'))
-		} else {
-			ruleEvaluations.push(new RuleEvaluation(Action.HOLD, 'Predicted percent change of ' + changePercent + '% is between lower the threshold of ' + algorithmRequest.lowerPercentThreshold + '% and upper threshold of ' + algorithmRequest.upperPercentThreshold))
-		}
-
-		if (predictedChange > algorithmRequest.upperPredictionPercentThreshold) {
-			ruleEvaluations.push(new RuleEvaluation(Action.BUY, 'Change in prediction of ' + predictedChange + ' is more than the upper threshold of ' + algorithmRequest.upperPredictionPercentThreshold))
-		} else if (predictedChange < algorithmRequest.lowerPredictionPercentThreshold) {
-			ruleEvaluations.push(new RuleEvaluation(Action.SELL, 'Change in prediction of ' + predictedChange + ' is less than the lower threshold of ' + algorithmRequest.lowerPredictionPercentThreshold))
-		} else {
-			ruleEvaluations.push(new RuleEvaluation(Action.HOLD, 'Change in prediction of ' + predictedChange + ' is between lower the threshold of ' + algorithmRequest.lowerPredictionPercentThreshold + ' and upper threshold of ' + algorithmRequest.upperPredictionPercentThreshold))
-		}
-
-		return [
-			action: (ruleEvaluations*.action.unique().size() == 1 ? ruleEvaluations*.action.unique().first() : Action.HOLD).name(),
-			message: ruleEvaluations*.message.join('\n')
-		]
-	}
-
 	void sendToSlack(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {
 		statsdClient.increment('count.slack.messages.sent')
 		Map slackMap = this.getSlackMap(actualValue, previousActualValue)
@@ -117,22 +81,5 @@ class PredictedValue {
 		} catch (Exception e) {
 			log.error('Unable to send SNS message', e)
 		}
-	}
-
-	private class RuleEvaluation {
-
-		RuleEvaluation(Action action, String message) {
-			this.action = action
-			this.message = message
-		}
-
-		private final Action action
-		private final String message
-	}
-
-	private enum Action {
-		BUY,
-		SELL,
-		HOLD
 	}
 }
