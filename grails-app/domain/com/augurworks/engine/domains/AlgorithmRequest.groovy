@@ -11,7 +11,7 @@ class AlgorithmRequest {
 	String name
 	int startOffset
 	int endOffset
-	Date dateCreated
+	Date dateCreated = new Date()
 	String dependantSymbol
 	Unit unit = Unit.DAY
 	String cronExpression

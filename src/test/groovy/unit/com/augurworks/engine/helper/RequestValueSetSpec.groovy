@@ -1,11 +1,10 @@
 package com.augurworks.engine.helper
 
-import groovy.time.TimeCategory
-import spock.lang.Specification
-
-import com.augurworks.engine.exceptions.AugurWorksException
+import com.augurworks.engine.exceptions.DataAvailabilityException
 import com.augurworks.engine.model.DataSetValue
 import com.augurworks.engine.model.RequestValueSet
+import groovy.time.TimeCategory
+import spock.lang.Specification
 
 class RequestValueSetSpec extends Specification {
 
@@ -98,7 +97,7 @@ class RequestValueSetSpec extends Specification {
 		set.filterValues(startDate, endDate, minOffset, maxOffset)
 
 		then:
-		thrown(AugurWorksException)
+		thrown(DataAvailabilityException)
 
 		where:
 		start        | end          | minOffset | maxOffset
@@ -128,7 +127,7 @@ class RequestValueSetSpec extends Specification {
 		set.fillOutValues([])
 
 		then:
-		thrown(AugurWorksException)
+		thrown(DataAvailabilityException)
 	}
 
 	void "test reduce value range with prediction"() {

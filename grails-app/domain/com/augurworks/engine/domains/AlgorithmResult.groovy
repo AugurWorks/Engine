@@ -5,7 +5,7 @@ import com.augurworks.engine.helper.TradingHours
 
 class AlgorithmResult {
 
-	Date dateCreated
+	Date dateCreated = new Date()
 	Date startDate
 	Date endDate
 	boolean complete = false
