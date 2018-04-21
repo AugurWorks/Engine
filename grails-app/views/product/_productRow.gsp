@@ -2,6 +2,9 @@
 <tr id="product-${ product.id }" class="row">
     <td>${ product.name }</td>
     <td>${ product.getSnsTopicArn() }</td>
+    <td>${ product.volatilePercentLimit }</td>
+    <td>${ product.realTimeDiffUpper }</td>
+    <td>${ product.realTimeDiffLower }</td>
     <td>
         <g:each in="${ AlgorithmRequest.findAllByProduct(product).sort { it.name } }" var="request">
             <g:link controller="algorithmRequest" action="show" id="${ request.id }">${ request.name }</g:link><br />

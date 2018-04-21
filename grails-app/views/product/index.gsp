@@ -12,6 +12,9 @@
                     <tr>
                         <th>Name</th>
                         <th>SNS Topic ARN</th>
+                        <th>Volatile Percent Limit</th>
+                        <th>Real Time Diff Upper</th>
+                        <th>Real Time Diff Lower</th>
                         <th>Requests</th>
                         <th class="collapsing">Delete</th>
                     </tr>
@@ -27,6 +30,21 @@
                             </div>
                         </td>
                         <td></td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="volatilePercentLimit" placeholder="Volatile Percent Limit" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="realTimeDiffUpper" placeholder="Real Time Diff Upper" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="realTimeDiffLower" placeholder="Real Time Diff lower" />
+                            </div>
+                        </td>
                         <td></td>
                         <td><div class="ui small primary button" onclick="createProduct()">Create</div> </td>
                     </tr>
@@ -65,11 +83,17 @@
                 $.ajax({
                     url: '/product/create',
                     data: {
-                        name: $('#name').val()
+                        name: $('#name').val(),
+                        volatilePercentLimit: $('#volatilePercentLimit').val(),
+                        realTimeDiffUpper: $('#realTimeDiffUpper').val(),
+                        realTimeDiffLower: $('#realTimeDiffLower').val()
                     },
                     success: function(data) {
                         $('table > tbody tr').eq(-1).before(data);
                         $('#name').val('');
+                        $('#volatilePercentLimit').val('');
+                        $('#realTimeDiffUpper').val('');
+                        $('#realTimeDiffLower').val('');
                     },
                     error: function(error) {
                         swal({
