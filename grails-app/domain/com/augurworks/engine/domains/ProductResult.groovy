@@ -1,6 +1,7 @@
 package com.augurworks.engine.domains
 
 import com.augurworks.engine.model.prediction.RuleEvaluationAction
+import org.slf4j.MDC
 
 class ProductResult {
 
@@ -40,25 +41,43 @@ class ProductResult {
     }
 
     RuleEvaluationAction getAction() {
+        MDC.put('product', product.id.toString())
+        MDC.put('productName', product.name)
+        MDC.put('productResult', id.toString())
         if (!previousRun) {
+            log.debug('HOLD: There is no previous run')
             return RuleEvaluationAction.HOLD
         }
         if (realTimeDiff > product.realTimeDiffUpper && previousRun.realTimeDiff > 0) {
+            log.debug('BUY: Real time diff upper matched, previous run is positive')
             return RuleEvaluationAction.BUY
         }
         if (realTimeDiff < product.realTimeDiffLower && previousRun.realTimeDiff < 0) {
+            log.debug('SELL: Real time diff lower matched, previous run is negative')
             return RuleEvaluationAction.SELL
         }
-        if (tooVolatile || previousRun.tooVolatile) {
+        if (tooVolatile) {
+            log.debug('HOLD: Current run is too volatile')
             return RuleEvaluationAction.HOLD
         }
-        if ((allPositive && previousRun.allNegative) || (allNegative && previousRun.allPositive)) {
+        if (previousRun.tooVolatile) {
+            log.debug('HOLD: Previous run is too volatile')
+            return RuleEvaluationAction.HOLD
+        }
+        if (allPositive && previousRun.allNegative) {
+            log.debug('HOLD: Current run is all positive, previous run is all negative')
+            return RuleEvaluationAction.HOLD
+        }
+        if (allNegative && previousRun.allPositive) {
+            log.debug('HOLD: Current run is all negative, previous run is all positive')
             return RuleEvaluationAction.HOLD
         }
         List<RuleEvaluationAction> actions = [realTimeResult, closeResult]*.evaluateRules()*.action.unique()
         if (actions.size() == 1) {
+            log.debug(actions.get(0) + ': Real time and close actions match')
             return actions.get(0)
         }
+        log.debug('HOLD: Real time and close actions did not match')
         return RuleEvaluationAction.HOLD
     }
 
