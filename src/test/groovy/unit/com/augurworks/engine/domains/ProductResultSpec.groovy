@@ -65,13 +65,13 @@ class ProductResultSpec extends Specification {
 
 	void "test both up"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
-		AlgorithmResult closeResult = AlgorithmResult.build()
-		AlgorithmResult twoPreviousRealTimeResult = AlgorithmResult.build(actualValue: 100)
-		ProductResult twoPreviousResult = ProductResult.build(realTimeResult: twoPreviousRealTimeResult, closeResult: closeResult, product: product)
-		AlgorithmResult previousRealTimeResult = AlgorithmResult.build(actualValue: 101)
-		ProductResult previousResult = ProductResult.build(previousRun: twoPreviousResult, realTimeResult: previousRealTimeResult, closeResult: closeResult, product: product)
-		AlgorithmResult realTimeResult = AlgorithmResult.build(actualValue: 115)
+		Product product = Product.build(volatilePercentLimit: 20, diffUpperThreshold: 11, diffLowerThreshold: -11)
+		AlgorithmResult twoPreviousCloseResult = AlgorithmResult.build(actualValue: 100)
+		AlgorithmResult realTimeResult = AlgorithmResult.build(actualValue: 100)
+		ProductResult twoPreviousResult = ProductResult.build(realTimeResult: realTimeResult, closeResult: twoPreviousCloseResult, product: product)
+		AlgorithmResult previousCloseResult = AlgorithmResult.build(actualValue: 101)
+		ProductResult previousResult = ProductResult.build(previousRun: twoPreviousResult, realTimeResult: realTimeResult, closeResult: previousCloseResult, product: product)
+		AlgorithmResult closeResult = AlgorithmResult.build(actualValue: 115, predictedDifference: 14)
 		ProductResult productResult = ProductResult.build(previousRun: previousResult, realTimeResult: realTimeResult, closeResult: closeResult, product: product)
 
 		when:
@@ -83,13 +83,13 @@ class ProductResultSpec extends Specification {
 
 	void "test both down"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
-		AlgorithmResult closeResult = AlgorithmResult.build()
-		AlgorithmResult twoPreviousRealTimeResult = AlgorithmResult.build(actualValue: 100)
-		ProductResult twoPreviousResult = ProductResult.build(realTimeResult: twoPreviousRealTimeResult, closeResult: closeResult, product: product)
-		AlgorithmResult previousRealTimeResult = AlgorithmResult.build(actualValue: 99)
-		ProductResult previousResult = ProductResult.build(previousRun: twoPreviousResult, realTimeResult: previousRealTimeResult, closeResult: closeResult, product: product)
-		AlgorithmResult realTimeResult = AlgorithmResult.build(actualValue: 85)
+		Product product = Product.build(volatilePercentLimit: 20, diffUpperThreshold: 11, diffLowerThreshold: -11)
+		AlgorithmResult twoPreviousCloseResult = AlgorithmResult.build(actualValue: 100)
+		AlgorithmResult realTimeResult = AlgorithmResult.build(actualValue: 100)
+		ProductResult twoPreviousResult = ProductResult.build(realTimeResult: realTimeResult, closeResult: twoPreviousCloseResult, product: product)
+		AlgorithmResult previousCloseResult = AlgorithmResult.build(actualValue: 99)
+		ProductResult previousResult = ProductResult.build(previousRun: twoPreviousResult, realTimeResult: realTimeResult, closeResult: previousCloseResult, product: product)
+		AlgorithmResult closeResult = AlgorithmResult.build(actualValue: 85, predictedDifference: -14)
 		ProductResult productResult = ProductResult.build(previousRun: previousResult, realTimeResult: realTimeResult, closeResult: closeResult, product: product)
 
 		when:

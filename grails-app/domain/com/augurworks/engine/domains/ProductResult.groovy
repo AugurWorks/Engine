@@ -48,14 +48,6 @@ class ProductResult {
             log.debug('HOLD: There is no previous run')
             return RuleEvaluationAction.HOLD
         }
-        if (closeDiff > product.diffUpperThreshold && previousRun.closeDiff > 0 && closeResult.predictedDifference > 0) {
-            log.debug('BUY: Close diff upper matched, previous run is positive')
-            return RuleEvaluationAction.BUY
-        }
-        if (closeDiff < product.diffLowerThreshold && previousRun.closeDiff < 0 && closeResult.predictedDifference < 0) {
-            log.debug('SELL: Close diff lower matched, previous run is negative')
-            return RuleEvaluationAction.SELL
-        }
         if (tooVolatile) {
             log.debug('HOLD: Current run is too volatile')
             return RuleEvaluationAction.HOLD
@@ -63,6 +55,14 @@ class ProductResult {
         if (previousRun.tooVolatile) {
             log.debug('HOLD: Previous run is too volatile')
             return RuleEvaluationAction.HOLD
+        }
+        if (closeDiff > product.diffUpperThreshold && previousRun.closeDiff > 0 && closeResult.predictedDifference > 0) {
+            log.debug('BUY: Close diff upper matched, previous run is positive')
+            return RuleEvaluationAction.BUY
+        }
+        if (closeDiff < product.diffLowerThreshold && previousRun.closeDiff < 0 && closeResult.predictedDifference < 0) {
+            log.debug('SELL: Close diff lower matched, previous run is negative')
+            return RuleEvaluationAction.SELL
         }
         if (allPositive && previousRun.allNegative) {
             log.debug('HOLD: Current run is all positive, previous run is all negative')
