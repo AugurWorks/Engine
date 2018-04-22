@@ -52,6 +52,9 @@ class AlfredService {
 			modelType: AlgorithmType.ALFRED
 		])
 		algorithmResult.save()
+		if (algorithmResult.hasErrors()) {
+			log.error('Error saving AlgorithmResult: ' + algorithmResult.errors)
+		}
 		MDC.remove('netId')
 
 		if (algorithmRequest.alfredEnvironment == AlfredEnvironment.DOCKER) {

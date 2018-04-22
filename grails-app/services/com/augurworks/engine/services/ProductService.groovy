@@ -45,6 +45,9 @@ class ProductService {
 			)
 			productResult[algorithmResult.algorithmRequest.name.toLowerCase().contains('close') ? 'closeResult' : 'realTimeResult'] = algorithmResult
 			productResult.save()
+			if (productResult.hasErrors()) {
+				log.error('Error creating Product Result: ' + productResult.errors)
+			}
 		}
 	}
 
