@@ -25,11 +25,11 @@ class ProductResult {
     }
 
     boolean isAllPositive() {
-        return [realTimeDiff, closeDiff].collect { it > 0 }.every()
+        return 100 * realTimeDiff / previousRun.realTimeResult.actualValue > product.isRealTimePositiveThresholdPercent && 100 * closeDiff / previousRun.closeResult.actualValue > product.isClosePositiveThresholdPercent
     }
 
     boolean isAllNegative() {
-        return [realTimeDiff, closeDiff].collect { it < 0 }.every()
+        return 100 * realTimeDiff / previousRun.realTimeResult.actualValue < product.isRealTimeNegativeThresholdPercent && 100 * closeDiff / previousRun.closeResult.actualValue < product.isCloseNegativeThresholdPercent
     }
 
     Double getRealTimeDiff() {
