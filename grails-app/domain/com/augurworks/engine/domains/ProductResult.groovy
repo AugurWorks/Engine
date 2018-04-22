@@ -48,12 +48,12 @@ class ProductResult {
             log.debug('HOLD: There is no previous run')
             return RuleEvaluationAction.HOLD
         }
-        if (realTimeDiff > product.realTimeDiffUpper && previousRun.realTimeDiff > 0) {
-            log.debug('BUY: Real time diff upper matched, previous run is positive')
+        if (closeDiff > product.diffUpperThreshold && previousRun.closeDiff > 0 && closeResult.predictedDifference > 0) {
+            log.debug('BUY: Close diff upper matched, previous run is positive')
             return RuleEvaluationAction.BUY
         }
-        if (realTimeDiff < product.realTimeDiffLower && previousRun.realTimeDiff < 0) {
-            log.debug('SELL: Real time diff lower matched, previous run is negative')
+        if (closeDiff < product.diffLowerThreshold && previousRun.closeDiff < 0 && closeResult.predictedDifference < 0) {
+            log.debug('SELL: Close diff lower matched, previous run is negative')
             return RuleEvaluationAction.SELL
         }
         if (tooVolatile) {

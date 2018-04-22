@@ -7,14 +7,16 @@ class Product {
 
     String name
     Double volatilePercentLimit
-    Double realTimeDiffUpper
-    Double realTimeDiffLower
+
+    Double diffUpperThreshold
+    Double diffLowerThreshold
 
     static constraints = {
         name unique: true
         volatilePercentLimit(nullable: true)
-        realTimeDiffUpper(nullable: true)
-        realTimeDiffLower(nullable: true)
+
+        diffUpperThreshold(nullable: true)
+        diffLowerThreshold(nullable: true)
     }
 
     static mapping = {

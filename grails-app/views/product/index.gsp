@@ -13,8 +13,8 @@
                         <th>Name</th>
                         <th>SNS Topic ARN</th>
                         <th>Volatile Percent Limit</th>
-                        <th>Real Time Diff Upper</th>
-                        <th>Real Time Diff Lower</th>
+                        <th>Diff Upper</th>
+                        <th>Diff Lower</th>
                         <th>Requests</th>
                         <th class="collapsing">Delete</th>
                     </tr>
@@ -37,12 +37,12 @@
                         </td>
                         <td>
                             <div class="ui fluid input">
-                                <g:field name="realTimeDiffUpper" placeholder="Real Time Diff Upper" />
+                                <g:field name="diffUpperThreshold" placeholder="Diff Upper" />
                             </div>
                         </td>
                         <td>
                             <div class="ui fluid input">
-                                <g:field name="realTimeDiffLower" placeholder="Real Time Diff lower" />
+                                <g:field name="diffLowerThreshold" placeholder="Diff Lower" />
                             </div>
                         </td>
                         <td></td>
@@ -85,15 +85,15 @@
                     data: {
                         name: $('#name').val(),
                         volatilePercentLimit: $('#volatilePercentLimit').val(),
-                        realTimeDiffUpper: $('#realTimeDiffUpper').val(),
-                        realTimeDiffLower: $('#realTimeDiffLower').val()
+                        diffUpperThreshold: $('#diffUpperThreshold').val(),
+                        diffLowerThreshold: $('#diffLowerThreshold').val()
                     },
                     success: function(data) {
                         $('table > tbody tr').eq(-1).before(data);
                         $('#name').val('');
                         $('#volatilePercentLimit').val('');
-                        $('#realTimeDiffUpper').val('');
-                        $('#realTimeDiffLower').val('');
+                        $('#diffUpperThreshold').val('');
+                        $('#diffLowerThreshold').val('');
                     },
                     error: function(error) {
                         swal({

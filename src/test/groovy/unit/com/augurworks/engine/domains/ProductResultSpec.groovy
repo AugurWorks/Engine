@@ -16,7 +16,7 @@ class ProductResultSpec extends Specification {
 
 	void "test is all positive"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, realTimeDiffUpper: 11, realTimeDiffLower: -11)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
 		AlgorithmResult previousCloseResult = AlgorithmResult.build(actualValue: 1000)
 		AlgorithmResult previousRealTimeResult = AlgorithmResult.build(actualValue: 1000)
 		ProductResult previousResult = ProductResult.build(realTimeResult: previousRealTimeResult, closeResult: previousCloseResult, product: product)
@@ -33,7 +33,7 @@ class ProductResultSpec extends Specification {
 
 	void "test is not all positive"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, realTimeDiffUpper: 11, realTimeDiffLower: -11)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
 		AlgorithmResult previousCloseResult = AlgorithmResult.build(actualValue: 1000)
 		AlgorithmResult previousRealTimeResult = AlgorithmResult.build(actualValue: 1000)
 		ProductResult previousResult = ProductResult.build(realTimeResult: previousRealTimeResult, closeResult: previousCloseResult, product: product)
@@ -50,7 +50,7 @@ class ProductResultSpec extends Specification {
 
 	void "test null previous run"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, realTimeDiffUpper: 11, realTimeDiffLower: -11)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
 		AlgorithmResult realTimeResult = AlgorithmResult.build()
 		AlgorithmResult closeResult = AlgorithmResult.build()
 		ProductResult productResult = ProductResult.build(realTimeResult: realTimeResult, closeResult: closeResult, product: product)
@@ -65,7 +65,7 @@ class ProductResultSpec extends Specification {
 
 	void "test both up"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, realTimeDiffUpper: 11, realTimeDiffLower: -11)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
 		AlgorithmResult closeResult = AlgorithmResult.build()
 		AlgorithmResult twoPreviousRealTimeResult = AlgorithmResult.build(actualValue: 100)
 		ProductResult twoPreviousResult = ProductResult.build(realTimeResult: twoPreviousRealTimeResult, closeResult: closeResult, product: product)
@@ -83,7 +83,7 @@ class ProductResultSpec extends Specification {
 
 	void "test both down"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, realTimeDiffUpper: 11, realTimeDiffLower: -11)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
 		AlgorithmResult closeResult = AlgorithmResult.build()
 		AlgorithmResult twoPreviousRealTimeResult = AlgorithmResult.build(actualValue: 100)
 		ProductResult twoPreviousResult = ProductResult.build(realTimeResult: twoPreviousRealTimeResult, closeResult: closeResult, product: product)
@@ -101,7 +101,7 @@ class ProductResultSpec extends Specification {
 
 	void "test too volatile"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, realTimeDiffUpper: 11, realTimeDiffLower: -11)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
 		AlgorithmResult closeResult = AlgorithmResult.build()
 		AlgorithmResult previousRealTimeResult = AlgorithmResult.build(actualValue: 1)
 		ProductResult previousResult = ProductResult.build(realTimeResult: previousRealTimeResult, closeResult: closeResult, product: product)
@@ -117,7 +117,7 @@ class ProductResultSpec extends Specification {
 
 	void "test previous too volatile"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, realTimeDiffUpper: 11, realTimeDiffLower: -11)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
 		AlgorithmResult closeResult = AlgorithmResult.build()
 		AlgorithmResult twoPreviousRealTimeResult = AlgorithmResult.build(actualValue: 1)
 		ProductResult twoPreviousResult = ProductResult.build(realTimeResult: twoPreviousRealTimeResult, closeResult: closeResult, product: product)
@@ -135,7 +135,7 @@ class ProductResultSpec extends Specification {
 
 	void "test all opposite"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, realTimeDiffUpper: 11, realTimeDiffLower: -11)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11)
 		AlgorithmResult twoPreviousCloseResult = AlgorithmResult.build(actualValue: 1000)
 		AlgorithmResult twoPreviousRealTimeResult = AlgorithmResult.build(actualValue: 1000)
 		ProductResult twoPreviousResult = ProductResult.build(realTimeResult: twoPreviousRealTimeResult, closeResult: twoPreviousCloseResult, product: product)

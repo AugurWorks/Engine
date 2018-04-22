@@ -325,4 +325,6 @@ databaseChangeLog = {
 	include file: 'algorithm-result-predicted-difference.groovy'
 
 	include file: 'product-result-thresholds.groovy'
+
+	include file: 'product-result-threshold-rename.groovy'
 }
