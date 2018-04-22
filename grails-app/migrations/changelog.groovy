@@ -327,4 +327,6 @@ databaseChangeLog = {
 	include file: 'product-result-thresholds.groovy'
 
 	include file: 'product-result-threshold-rename.groovy'
+
+	include file: 'product-result-threshold-additions.groovy'
 }

@@ -11,10 +11,13 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>SNS Topic ARN</th>
                         <th>Volatile Percent Limit</th>
                         <th>Diff Upper</th>
                         <th>Diff Lower</th>
+                        <th>RT Positive %</th>
+                        <th>RT Negative %</th>
+                        <th>Close Positive %</th>
+                        <th>Close Negative %</th>
                         <th>Requests</th>
                         <th class="collapsing">Delete</th>
                     </tr>
@@ -29,7 +32,6 @@
                                 <g:field name="name" placeholder="Product Name" />
                             </div>
                         </td>
-                        <td></td>
                         <td>
                             <div class="ui fluid input">
                                 <g:field name="volatilePercentLimit" placeholder="Volatile Percent Limit" />
@@ -43,6 +45,26 @@
                         <td>
                             <div class="ui fluid input">
                                 <g:field name="diffLowerThreshold" placeholder="Diff Lower" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="isRealTimePositiveThresholdPercent" placeholder="RT Positive %" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="isRealTimeNegativeThresholdPercent" placeholder="RT Negative %" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="isClosePositiveThresholdPercent" placeholder="Close Positive %" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="isCloseNegativeThresholdPercent" placeholder="Close Negative %" />
                             </div>
                         </td>
                         <td></td>
@@ -86,7 +108,11 @@
                         name: $('#name').val(),
                         volatilePercentLimit: $('#volatilePercentLimit').val(),
                         diffUpperThreshold: $('#diffUpperThreshold').val(),
-                        diffLowerThreshold: $('#diffLowerThreshold').val()
+                        diffLowerThreshold: $('#diffLowerThreshold').val(),
+                        isRealTimePositiveThresholdPercent: $('#isRealTimePositiveThresholdPercent').val(),
+                        isRealTimeNegativeThresholdPercent: $('#isRealTimeNegativeThresholdPercent').val(),
+                        isClosePositiveThresholdPercent: $('#isClosePositiveThresholdPercent').val(),
+                        isCloseNegativeThresholdPercent: $('#isCloseNegativeThresholdPercent').val(),
                     },
                     success: function(data) {
                         $('table > tbody tr').eq(-1).before(data);
@@ -94,6 +120,10 @@
                         $('#volatilePercentLimit').val('');
                         $('#diffUpperThreshold').val('');
                         $('#diffLowerThreshold').val('');
+                        $('#isRealTimePositiveThresholdPercent').val('');
+                        $('#isRealTimeNegativeThresholdPercent').val('');
+                        $('#isClosePositiveThresholdPercent').val('');
+                        $('#isCloseNegativeThresholdPercent').val('');
                     },
                     error: function(error) {
                         swal({

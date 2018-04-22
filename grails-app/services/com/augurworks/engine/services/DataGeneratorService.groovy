@@ -27,7 +27,15 @@ class DataGeneratorService {
 	]
 
 	void bootstrapDefaultRequests() {
-		Product product = new Product(name: 'Test Product 1', volatilePercentLimit: 0.1, diffUpperThreshold: 5, diffLowerThreshold: -5)
+		Product product = new Product(
+				name: 'Test Product 1',
+				volatilePercentLimit: 0.1,
+				diffUpperThreshold: 5,
+				diffLowerThreshold: -5,
+				isRealTimePositiveThresholdPercent: 1,
+				isRealTimeNegativeThresholdPercent: -1,
+				isClosePositiveThresholdPercent: 1,
+				isCloseNegativeThresholdPercent: -1)
 		new ApiKey(name: 'AugurWorks', products: [product]).save()
 		['Real Time', 'Close'].each { String name ->
 			AlgorithmRequest algorithmRequest = new AlgorithmRequest(

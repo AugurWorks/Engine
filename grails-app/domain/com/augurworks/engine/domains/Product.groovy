@@ -11,12 +11,22 @@ class Product {
     Double diffUpperThreshold
     Double diffLowerThreshold
 
+    Double isRealTimePositiveThresholdPercent
+    Double isRealTimeNegativeThresholdPercent
+    Double isClosePositiveThresholdPercent
+    Double isCloseNegativeThresholdPercent
+
     static constraints = {
         name unique: true
         volatilePercentLimit(nullable: true)
 
         diffUpperThreshold(nullable: true)
         diffLowerThreshold(nullable: true)
+
+        isRealTimePositiveThresholdPercent(nullable: true)
+        isRealTimeNegativeThresholdPercent(nullable: true)
+        isClosePositiveThresholdPercent(nullable: true)
+        isCloseNegativeThresholdPercent(nullable: true)
     }
 
     static mapping = {
