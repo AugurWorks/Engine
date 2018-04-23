@@ -20,8 +20,8 @@ class AutomatedService {
 	GrailsApplication grailsApplication
 	MachineLearningService machineLearningService
 	AlfredService alfredService
-	DataRetrievalService dataRetrievalService
 	ActualValueService actualValueService
+	ProductService productService
 
 	void runAllDailyAlgorithms() {
 		log.info('Running all algorithms')
@@ -93,18 +93,22 @@ class AutomatedService {
 	void postProcessing(AlgorithmResult algorithmResult) {
 		try {
 			List<AlgorithmResult> previousAlgorithmResult = AlgorithmResult.findAllByAlgorithmRequest(algorithmResult.algorithmRequest, [
-					max: 2, sort: 'dateCreated', order: 'desc'
+					max: 1, sort: 'dateCreated', order: 'desc', offset: 1
 			])
 			Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
-			Optional<ActualValue> previousActualValue = previousAlgorithmResult.size() != 2 ? Optional.empty() : actualValueService.getActual(previousAlgorithmResult.get(1))
 			if (actualValue.isPresent()) {
-				algorithmResult.actualValue = actualValue.get().predictedValue
+                algorithmResult.actualValue = actualValue.get().predictedValue
+                algorithmResult.predictedDifference = actualValue.get().predictedValue - actualValue.get().currentValue
 				algorithmResult.predictedDate = actualValue.get().date
+				algorithmResult.previousAlgorithmResult = previousAlgorithmResult.size() != 1 ? null : previousAlgorithmResult.get(0)
 				algorithmResult.save()
 				if (grailsApplication.config.slack.webhook) {
-					algorithmResult.futureValue?.sendToSlack(actualValue.get(), previousActualValue)
+					algorithmResult.futureValue?.sendToSlack(actualValue.get())
 				}
-				algorithmResult.futureValue?.sendToSns(actualValue.get(), previousActualValue)
+				algorithmResult.futureValue?.sendToSns(actualValue.get())
+			}
+			if (algorithmResult.algorithmRequest.product) {
+				productService.createProductResult(algorithmResult)
 			}
 		} catch (e) {
 			log.error('Post processing failed', e)

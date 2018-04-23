@@ -315,4 +315,18 @@ databaseChangeLog = {
 	include file: 'request-trade-thresholds.groovy'
 
 	include file: 'prediction-request-trade-thresholds.groovy'
+
+	include file: 'result-adjusted-date.groovy'
+
+	include file: 'product-result.groovy'
+
+	include file: 'chained-algorithm-results.groovy'
+
+	include file: 'algorithm-result-predicted-difference.groovy'
+
+	include file: 'product-result-thresholds.groovy'
+
+	include file: 'product-result-threshold-rename.groovy'
+
+	include file: 'product-result-threshold-additions.groovy'
 }
