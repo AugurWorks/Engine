@@ -22,8 +22,6 @@ class PredictedValue {
 
 	static belongsTo = [algorithmResult: AlgorithmResult]
 
-	AlgorithmResult algorithmResult
-
 	static constraints = {
 		actual nullable: true
 	}

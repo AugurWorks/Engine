@@ -8,8 +8,6 @@ class ApiKey {
 
     static hasMany = [products: Product]
 
-    List<Product> products
-
     static constraints = {
         name unique: true
         lastUsed nullable: true

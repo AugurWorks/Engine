@@ -16,8 +16,6 @@ class RequestDataSet {
 
 	static belongsTo = [algorithmRequest: AlgorithmRequest]
 
-	AlgorithmRequest algorithmRequest
-
 	static mapping = {
 		offset column: 'data_offset'
 	}

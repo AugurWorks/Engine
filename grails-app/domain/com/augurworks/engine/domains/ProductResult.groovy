@@ -12,8 +12,6 @@ class ProductResult {
 
     static belongsTo = [product: Product]
 
-    Product product
-
     static constraints = {
         previousRun nullable: true
         realTimeResult nullable: true

@@ -28,9 +28,6 @@ class AlgorithmResult {
 
 	static belongsTo = [algorithmRequest: AlgorithmRequest]
 
-	AlgorithmRequest algorithmRequest
-	List<PredictedValue> predictedValues
-
 	static constraints = {
 		adjustedDateCreated nullable: true
 		machineLearningModel nullable: true
