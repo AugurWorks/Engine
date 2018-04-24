@@ -12,6 +12,14 @@ class ProductResult {
 
     static belongsTo = [product: Product]
 
+    transient Boolean tooVolatile
+    transient Boolean allPositive
+    transient Boolean allNegative
+    transient Double realTimeDiff
+    transient Double closeDiff
+    transient RuleEvaluationAction action
+    transient String slackChannel
+
     static constraints = {
         previousRun nullable: true
         realTimeResult nullable: true

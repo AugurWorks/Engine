@@ -28,6 +28,8 @@ class AlgorithmResult {
 
 	static belongsTo = [algorithmRequest: AlgorithmRequest]
 
+    static transients = ['futureValues', 'futureValue', 'predictionChange', 'predictionPercentChange']
+
 	static constraints = {
 		adjustedDateCreated nullable: true
 		machineLearningModel nullable: true
