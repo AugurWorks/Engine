@@ -10,6 +10,8 @@ databaseChangeLog = {
 				constraints(nullable: "false")
 			}
 
+			column(name: "adjusted_date_created", type: "datetime")
+
 			column(name: "close_result_id", type: "BIGINT")
 
 			column(name: "previous_run_id", type: "BIGINT")
