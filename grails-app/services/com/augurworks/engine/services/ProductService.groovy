@@ -41,7 +41,7 @@ class ProductService {
 			productResult = new ProductResult(
 					product: product,
 					adjustedDateCreated: algorithmResult.adjustedDateCreated,
-					previousProductResult: previousProductResults.size() == 1 ? previousProductResults.get(0) : null
+					previousRun: previousProductResults.size() == 1 ? previousProductResults.get(0) : null
 			)
 			productResult[algorithmResult.algorithmRequest.name.toLowerCase().contains('close') ? 'closeResult' : 'realTimeResult'] = algorithmResult
 			productResult.save()
