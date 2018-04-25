@@ -89,7 +89,7 @@ class ProductResult {
 
     String getSlackChannel() {
         List<String> channels = [realTimeResult, closeResult]*.algorithmRequest*.slackChannel.unique()
-        return channels.size() == 0 ? channels.get(0) : null
+        return channels.size() == 1 ? channels.get(0) : null
     }
 
     private Double getDiff(Double currentValue, Double previousValue) {
