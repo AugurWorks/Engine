@@ -54,6 +54,10 @@ class ProductResult {
             log.debug('HOLD: There is no previous run')
             return RuleEvaluationAction.HOLD
         }
+        if (!previousRun.previousRun) {
+            log.debug('HOLD: The previous run has no previous run')
+            return RuleEvaluationAction.HOLD
+        }
         if (tooVolatile) {
             log.debug('HOLD: Current run is too volatile')
             return RuleEvaluationAction.HOLD
