@@ -14,12 +14,12 @@ import com.augurworks.engine.model.RequestValueSet
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.timgroup.statsd.StatsDClient
 import grails.core.GrailsApplication
-import grails.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
+import org.springframework.stereotype.Service
 
-@Transactional
+@Service
 class AlfredService {
 
 	private static final Logger log = LoggerFactory.getLogger(AlfredService)

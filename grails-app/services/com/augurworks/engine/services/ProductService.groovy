@@ -8,13 +8,12 @@ import com.augurworks.engine.model.prediction.RuleEvaluationAction
 import com.augurworks.engine.slack.SlackMessage
 import com.timgroup.statsd.StatsDClient
 import grails.core.GrailsApplication
-import grails.transaction.Transactional
-import grails.util.Holders
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
+import org.springframework.stereotype.Service
 
-@Transactional
+@Service
 class ProductService {
 
 	private static final Logger log = LoggerFactory.getLogger(ProductService)
@@ -32,7 +31,7 @@ class ProductService {
 			MDC.put('productResult', productResult.id.toString())
 
 			productResult[algorithmResult.algorithmRequest.name.toLowerCase().contains('close') ? 'closeResult' : 'realTimeResult'] = algorithmResult
-			productResult.save()
+			productResult.save(flush: true)
 			log.info('Processing complete product result')
 			processProductResult(productResult)
 		} else {
@@ -44,7 +43,7 @@ class ProductService {
 					previousRun: previousProductResults.size() == 1 ? previousProductResults.get(0) : null
 			)
 			productResult[algorithmResult.algorithmRequest.name.toLowerCase().contains('close') ? 'closeResult' : 'realTimeResult'] = algorithmResult
-			productResult.save()
+			productResult.save(flush: true)
 			if (productResult.hasErrors()) {
 				log.error('Error creating Product Result: ' + productResult.errors)
 			}

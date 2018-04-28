@@ -7,12 +7,12 @@ import com.augurworks.engine.exceptions.DataException
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.slack.SlackMessage
 import grails.core.GrailsApplication
-import grails.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
+import org.springframework.stereotype.Service
 
-@Transactional
+@Service
 class AutomatedService {
 
 	private static final Logger log = LoggerFactory.getLogger(AutomatedService)
@@ -101,7 +101,7 @@ class AutomatedService {
                 algorithmResult.predictedDifference = actualValue.get().predictedValue - actualValue.get().currentValue
 				algorithmResult.predictedDate = actualValue.get().date
 				algorithmResult.previousAlgorithmResult = previousAlgorithmResult.size() != 1 ? null : previousAlgorithmResult.get(0)
-				algorithmResult.save()
+				algorithmResult.save(flush: true)
 				if (grailsApplication.config.slack.webhook) {
 					algorithmResult.futureValue?.sendToSlack(actualValue.get())
 				}
