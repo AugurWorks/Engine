@@ -49,7 +49,6 @@ class AlgorithmRequest {
 	static mapping = {
 		requestDataSets cascade: 'all-delete-orphan'
 		algorithmResults cascade: 'all-delete-orphan'
-		cronAlgorithms cascade: 'all-delete-orphan'
 		tags cascade: 'all-delete-orphan'
 	}
 
