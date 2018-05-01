@@ -8,6 +8,7 @@ import com.augurworks.engine.model.prediction.RuleEvaluationAction
 import com.augurworks.engine.slack.SlackMessage
 import com.timgroup.statsd.StatsDClient
 import grails.core.GrailsApplication
+import grails.util.Holders
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
