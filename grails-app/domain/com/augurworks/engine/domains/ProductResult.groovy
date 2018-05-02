@@ -85,7 +85,7 @@ class ProductResult {
         List<RuleEvaluationAction> actions = [realTimeResult, closeResult]*.evaluateRules()*.action.unique()
         if (actions.size() == 1) {
             log.debug(actions.get(0) + ': Real time and close actions match')
-            return actions.get(0)
+            return actions.get(0) ?: RuleEvaluationAction.HOLD
         }
         log.debug('HOLD: Real time and close actions did not match')
         return RuleEvaluationAction.HOLD
