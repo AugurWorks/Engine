@@ -15,6 +15,10 @@ class ProductResult {
     transient Boolean tooVolatile
     transient Boolean allPositive
     transient Boolean allNegative
+    transient Boolean realTimePositive
+    transient Boolean realTimeNegative
+    transient Boolean closePositive
+    transient Boolean closeNegative
     transient Double realTimeDiff
     transient Double closeDiff
     transient RuleEvaluationAction action
@@ -31,11 +35,27 @@ class ProductResult {
     }
 
     boolean isAllPositive() {
-        return 100 * realTimeDiff / previousRun.realTimeResult.actualValue > product.isRealTimePositiveThresholdPercent && 100 * closeDiff / previousRun.closeResult.actualValue > product.isClosePositiveThresholdPercent
+        return realTimePositive && closePositive
     }
 
     boolean isAllNegative() {
-        return 100 * realTimeDiff / previousRun.realTimeResult.actualValue < product.isRealTimeNegativeThresholdPercent && 100 * closeDiff / previousRun.closeResult.actualValue < product.isCloseNegativeThresholdPercent
+        return realTimeNegative && closeNegative
+    }
+
+    boolean isRealTimePositive() {
+        return 100 * realTimeDiff / previousRun.realTimeResult.actualValue > product.isRealTimePositiveThresholdPercent
+    }
+
+    boolean isRealTimeNegative() {
+        return 100 * realTimeDiff / previousRun.realTimeResult.actualValue < product.isRealTimeNegativeThresholdPercent
+    }
+
+    boolean isClosePositive() {
+        return 100 * closeDiff / previousRun.closeResult.actualValue > product.isClosePositiveThresholdPercent
+    }
+
+    boolean isCloseNegative() {
+        return 100 * closeDiff / previousRun.closeResult.actualValue < product.isCloseNegativeThresholdPercent
     }
 
     Double getRealTimeDiff() {
@@ -66,11 +86,11 @@ class ProductResult {
             log.debug('HOLD: Previous run is too volatile')
             return RuleEvaluationAction.HOLD
         }
-        if (closeDiff > product.diffUpperThreshold && previousRun.closeDiff > 0 && closeResult.predictedDifference > 0) {
+        if (closeDiff > product.diffUpperThreshold && previousRun.closePositive && closeResult.predictedDifference > 0) {
             log.debug('BUY: Close diff upper matched, previous run is positive')
             return RuleEvaluationAction.BUY
         }
-        if (closeDiff < product.diffLowerThreshold && previousRun.closeDiff < 0 && closeResult.predictedDifference < 0) {
+        if (closeDiff < product.diffLowerThreshold && previousRun.closeNegative && closeResult.predictedDifference < 0) {
             log.debug('SELL: Close diff lower matched, previous run is negative')
             return RuleEvaluationAction.SELL
         }
