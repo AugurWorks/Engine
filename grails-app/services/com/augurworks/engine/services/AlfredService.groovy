@@ -44,7 +44,7 @@ class AlfredService {
 		TrainingMessage message = trainingMessageVersion.constructTrainingMessage(netId, algorithmRequest, dataSets)
 		messagingService.sendTrainingMessage(message, algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
-			adjustedDateCreated: TradingHours.floorAnyPeriod(new Date(), algorithmRequest.unit.minutes),
+			adjustedDateCreated: TradingHours.floorAnyPeriod(new Date(), 15),
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
 			endDate: algorithmRequest.endDate,
