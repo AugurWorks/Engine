@@ -5,7 +5,6 @@ import com.augurworks.engine.data.ActualValue
 import com.augurworks.engine.helper.AlgorithmType
 import com.augurworks.engine.helper.Global
 import com.augurworks.engine.instrumentation.Instrumentation
-import com.augurworks.engine.model.prediction.PredictionRuleResult
 import com.augurworks.engine.slack.SlackMessage
 import com.timgroup.statsd.StatsDClient
 import grails.util.Holders
@@ -43,9 +42,7 @@ class PredictedValue {
 		String aggregation = this.algorithmResult.algorithmRequest.dependentRequestDataSet.aggregation.name
 		AlgorithmType modelType = this.algorithmResult.modelType
 		TimeDuration runTime = use (TimeCategory) { new Date() - this.algorithmResult.dateCreated }
-		PredictionRuleResult predictionAction = this.algorithmResult.evaluateRules()
 		String message = [
-				predictionAction.message,
 				'The prediction for ' + name + ' (' + aggregation + ') on ' + this.date.format(dateFormat) + ' from ' + modelType.name + ' is ' + this.value.round(4) + (actualValue != null ? ' with an un-aggregated value of ' + actualValue.getPredictedValue() : ''),
 				'Run in ' + runTime.toString()
 		].join('\n\n')
@@ -53,7 +50,7 @@ class PredictedValue {
 			message: message,
 			channel: this.algorithmResult.algorithmRequest.slackChannel ?: Holders.config.augurworks.predictions.channel,
 			color: this.value >= 0 ? '#4DBD33' : '#ff4444',
-			title: (predictionAction.actionMessage ? predictionAction.actionMessage + ' - ' : '') + this.algorithmResult.algorithmRequest.stringify(),
+			title: this.algorithmResult.algorithmRequest.stringify(),
 			link: Holders.config.grails.serverURL + '/algorithmRequest/show/' + this.algorithmResult.algorithmRequest.id
 		]
 	}

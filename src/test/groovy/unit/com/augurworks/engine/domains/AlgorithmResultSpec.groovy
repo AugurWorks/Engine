@@ -2,8 +2,6 @@ package com.augurworks.engine.domains
 
 import com.augurworks.engine.helper.TradingHours
 import com.augurworks.engine.helper.Unit
-import com.augurworks.engine.model.prediction.PredictionRuleResult
-import com.augurworks.engine.model.prediction.RuleEvaluationAction
 import grails.buildtestdata.mixin.Build
 import grails.test.mixin.Mock
 import grails.test.mixin.TestFor
@@ -51,63 +49,5 @@ class AlgorithmResultSpec extends Specification {
 
 		then:
 		actual == null
-	}
-
-	void "test evaluate hold rules"() {
-		given:
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(
-				upperPercentThreshold: 1,
-				lowerPercentThreshold: -1,
-				upperPredictionPercentThreshold: 1,
-				lowerPredictionPercentThreshold: -1
-		)
-		AlgorithmResult firstResult = AlgorithmResult.build(
-				algorithmRequest: algorithmRequest,
-				actualValue: 10
-		)
-		AlgorithmResult secondResult = AlgorithmResult.build(
-				algorithmRequest: algorithmRequest,
-				actualValue: 20,
-				previousAlgorithmResult: firstResult
-		)
-
-		when:
-		PredictionRuleResult ruleResult = secondResult.evaluateRules()
-
-		then:
-		ruleResult.action == RuleEvaluationAction.HOLD
-	}
-
-	void "test evaluate buy rules"() {
-		given:
-		AlgorithmRequest algorithmRequest = AlgorithmRequest.build(
-				upperPercentThreshold: 1,
-				lowerPercentThreshold: -1,
-				upperPredictionPercentThreshold: 1,
-				lowerPredictionPercentThreshold: -1
-		)
-		AlgorithmResult firstResult = AlgorithmResult.build(
-				algorithmRequest: algorithmRequest,
-				actualValue: 10,
-				predictedDifference: 2
-		)
-		AlgorithmResult secondResult = AlgorithmResult.build(
-				algorithmRequest: algorithmRequest,
-				actualValue: 15,
-				predictedDifference: 2,
-				previousAlgorithmResult: firstResult
-		)
-		AlgorithmResult thirdResult = AlgorithmResult.build(
-				algorithmRequest: algorithmRequest,
-				actualValue: 20,
-				predictedDifference: 2,
-				previousAlgorithmResult: secondResult
-		)
-
-		when:
-		PredictionRuleResult ruleResult = thirdResult.evaluateRules()
-
-		then:
-		ruleResult.action == RuleEvaluationAction.BUY
 	}
 }

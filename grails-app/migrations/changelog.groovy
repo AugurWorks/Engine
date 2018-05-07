@@ -331,4 +331,6 @@ databaseChangeLog = {
 	include file: 'product-result-threshold-additions.groovy'
 
 	include file: 'product-threshold-refactor.groovy'
+
+	include file: 'algorithm-request-threshold-removal.groovy'
 }

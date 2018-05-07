@@ -23,13 +23,6 @@ class AlgorithmRequest {
 	Integer depth
 	Product product
 
-	// These are not used as percentages
-	Double upperPercentThreshold
-	Double lowerPercentThreshold
-
-	Double upperPredictionPercentThreshold
-	Double lowerPredictionPercentThreshold
-
 	static hasMany = [requestDataSets: RequestDataSet, algorithmResults: AlgorithmResult, cronAlgorithms: AlgorithmType, tags: RequestTag]
 
 	static constraints = {
@@ -40,10 +33,6 @@ class AlgorithmRequest {
 		learningConstant nullable: true
 		depth nullable: true
 		product nullable: true
-		upperPercentThreshold nullable: true
-		lowerPercentThreshold nullable: true
-		upperPredictionPercentThreshold nullable: true
-		lowerPredictionPercentThreshold nullable: true
 	}
 
 	static mapping = {
