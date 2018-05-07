@@ -14,10 +14,10 @@
                         <th>Volatile Percent Limit</th>
                         <th>Diff Upper</th>
                         <th>Diff Lower</th>
-                        <th>RT Positive %</th>
-                        <th>RT Negative %</th>
-                        <th>Close Positive %</th>
-                        <th>Close Negative %</th>
+                        <th>RT Diff Threshold</th>
+                        <th>RT Change Threshold</th>
+                        <th>Close Diff Threshold</th>
+                        <th>Close Change Threshold</th>
                         <th>Requests</th>
                         <th class="collapsing">Delete</th>
                     </tr>
@@ -49,22 +49,22 @@
                         </td>
                         <td>
                             <div class="ui fluid input">
-                                <g:field name="isRealTimePositiveThresholdPercent" placeholder="RT Positive %" />
+                                <g:field name="realTimeDiffThreshold" placeholder="RT Diff Threshold" />
                             </div>
                         </td>
                         <td>
                             <div class="ui fluid input">
-                                <g:field name="isRealTimeNegativeThresholdPercent" placeholder="RT Negative %" />
+                                <g:field name="realTimeChangeThreshold" placeholder="RT Change Threshold" />
                             </div>
                         </td>
                         <td>
                             <div class="ui fluid input">
-                                <g:field name="isClosePositiveThresholdPercent" placeholder="Close Positive %" />
+                                <g:field name="closeDiffThreshold" placeholder="Close Diff Threshold" />
                             </div>
                         </td>
                         <td>
                             <div class="ui fluid input">
-                                <g:field name="isCloseNegativeThresholdPercent" placeholder="Close Negative %" />
+                                <g:field name="closeChangeThreshold" placeholder="Close Change Threshold" />
                             </div>
                         </td>
                         <td></td>
@@ -109,10 +109,10 @@
                         volatilePercentLimit: $('#volatilePercentLimit').val(),
                         diffUpperThreshold: $('#diffUpperThreshold').val(),
                         diffLowerThreshold: $('#diffLowerThreshold').val(),
-                        isRealTimePositiveThresholdPercent: $('#isRealTimePositiveThresholdPercent').val(),
-                        isRealTimeNegativeThresholdPercent: $('#isRealTimeNegativeThresholdPercent').val(),
-                        isClosePositiveThresholdPercent: $('#isClosePositiveThresholdPercent').val(),
-                        isCloseNegativeThresholdPercent: $('#isCloseNegativeThresholdPercent').val(),
+                        realTimeDiffThreshold: $('#realTimeDiffThreshold').val(),
+                        realTimeChangeThreshold: $('#realTimeChangeThreshold').val(),
+                        closeDiffThreshold: $('#closeDiffThreshold').val(),
+                        closeChangeThreshold: $('#closeChangeThreshold').val(),
                     },
                     success: function(data) {
                         $('table > tbody tr').eq(-1).before(data);
@@ -120,10 +120,10 @@
                         $('#volatilePercentLimit').val('');
                         $('#diffUpperThreshold').val('');
                         $('#diffLowerThreshold').val('');
-                        $('#isRealTimePositiveThresholdPercent').val('');
-                        $('#isRealTimeNegativeThresholdPercent').val('');
-                        $('#isClosePositiveThresholdPercent').val('');
-                        $('#isCloseNegativeThresholdPercent').val('');
+                        $('#realTimeDiffThreshold').val('');
+                        $('#realTimeChangeThreshold').val('');
+                        $('#closeDiffThreshold').val('');
+                        $('#closeChangeThreshold').val('');
                     },
                     error: function(error) {
                         swal({

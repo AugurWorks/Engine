@@ -43,19 +43,19 @@ class ProductResult {
     }
 
     boolean isRealTimePositive() {
-        return 100 * realTimeChange / previousRun.realTimeResult.actualValue > product.isRealTimePositiveThresholdPercent
+        return realTimeResult.predictedDifference > product.realTimeDiffThreshold && realTimeChange > product.realTimeChangeThreshold
     }
 
     boolean isRealTimeNegative() {
-        return 100 * realTimeChange / previousRun.realTimeResult.actualValue < product.isRealTimeNegativeThresholdPercent
+        return realTimeResult.predictedDifference < -product.realTimeDiffThreshold && realTimeChange < -product.realTimeChangeThreshold
     }
 
     boolean isClosePositive() {
-        return 100 * closeChange / previousRun.closeResult.actualValue > product.isClosePositiveThresholdPercent
+        return closeResult.predictedDifference > product.closeDiffThreshold && closeChange > product.closeChangeThreshold
     }
 
     boolean isCloseNegative() {
-        return 100 * closeChange / previousRun.closeResult.actualValue < product.isCloseNegativeThresholdPercent
+        return closeResult.predictedDifference < -product.closeDiffThreshold && closeChange < -product.closeChangeThreshold
     }
 
     // aka RT Change

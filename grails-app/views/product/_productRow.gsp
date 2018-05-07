@@ -4,10 +4,10 @@
     <td>${ product.volatilePercentLimit }</td>
     <td>${ product.diffUpperThreshold }</td>
     <td>${ product.diffLowerThreshold }</td>
-    <td>${ product.isRealTimePositiveThresholdPercent }</td>
-    <td>${ product.isRealTimeNegativeThresholdPercent }</td>
-    <td>${ product.isClosePositiveThresholdPercent }</td>
-    <td>${ product.isCloseNegativeThresholdPercent }</td>
+    <td>${ product.realTimeDiffThreshold }</td>
+    <td>${ product.realTimeChangeThreshold }</td>
+    <td>${ product.closeDiffThreshold }</td>
+    <td>${ product.closeChangeThreshold }</td>
     <td>
         <g:each in="${ AlgorithmRequest.findAllByProduct(product).sort { it.name } }" var="request">
             <g:link controller="algorithmRequest" action="show" id="${ request.id }">${ request.name }</g:link><br />

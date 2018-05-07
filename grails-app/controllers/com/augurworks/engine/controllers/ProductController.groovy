@@ -15,19 +15,19 @@ class ProductController {
             Double volatilePercentLimit,
             Double diffUpperThreshold,
             Double diffLowerThreshold,
-            Double isRealTimePositiveThresholdPercent,
-            Double isRealTimeNegativeThresholdPercent,
-            Double isClosePositiveThresholdPercent,
-            Double isCloseNegativeThresholdPercent) {
+            Double realTimeDiffThreshold,
+            Double realTimeChangeThreshold,
+            Double closeDiffThreshold,
+            Double closeChangeThreshold) {
         Product product = new Product(
                 name: name,
                 volatilePercentLimit: volatilePercentLimit,
                 diffUpperThreshold: diffUpperThreshold,
                 diffLowerThreshold: diffLowerThreshold,
-                isRealTimePositiveThresholdPercent: isRealTimePositiveThresholdPercent,
-                isRealTimeNegativeThresholdPercent: isRealTimeNegativeThresholdPercent,
-                isClosePositiveThresholdPercent: isClosePositiveThresholdPercent,
-                isCloseNegativeThresholdPercent: isCloseNegativeThresholdPercent)
+                realTimeDiffThreshold: realTimeDiffThreshold,
+                realTimeChangeThreshold: realTimeChangeThreshold,
+                closeDiffThreshold: closeDiffThreshold,
+                closeChangeThreshold: closeChangeThreshold)
         product.save()
         if (product.hasErrors()) {
             render([ok: false, error: product.errors] as JSON)

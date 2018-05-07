@@ -16,7 +16,7 @@ class ProductResultSpec extends Specification {
 
 	void "test is all positive"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11, isRealTimePositiveThresholdPercent: 0.1, isClosePositiveThresholdPercent: 0.1)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11, realTimeDiffThreshold: 0.1, closeDiffThreshold: 0.1)
 		AlgorithmResult previousCloseResult = AlgorithmResult.build(actualValue: 1000)
 		AlgorithmResult previousRealTimeResult = AlgorithmResult.build(actualValue: 1000)
 		ProductResult previousResult = ProductResult.build(realTimeResult: previousRealTimeResult, closeResult: previousCloseResult, product: product)
@@ -33,7 +33,7 @@ class ProductResultSpec extends Specification {
 
 	void "test is not all positive"() {
 		given:
-		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11, isRealTimePositiveThresholdPercent: 0.1, isClosePositiveThresholdPercent: 0.1)
+		Product product = Product.build(volatilePercentLimit: 0.4, diffUpperThreshold: 11, diffLowerThreshold: -11, realTimeDiffThreshold: 0.1, closeDiffThreshold: 0.1)
 		AlgorithmResult previousCloseResult = AlgorithmResult.build(actualValue: 1000)
 		AlgorithmResult previousRealTimeResult = AlgorithmResult.build(actualValue: 1000)
 		ProductResult previousResult = ProductResult.build(realTimeResult: previousRealTimeResult, closeResult: previousCloseResult, product: product)
