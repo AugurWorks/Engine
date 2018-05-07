@@ -23,10 +23,10 @@ class AlgorithmRequest {
 	Integer depth
 	Product product
 
+	// These are not used as percentages
 	Double upperPercentThreshold
 	Double lowerPercentThreshold
 
-	// These are not used as percentages
 	Double upperPredictionPercentThreshold
 	Double lowerPredictionPercentThreshold
 

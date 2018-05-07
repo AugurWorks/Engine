@@ -58,10 +58,12 @@ class ProductResult {
         return 100 * closeDiff / previousRun.closeResult.actualValue < product.isCloseNegativeThresholdPercent
     }
 
+    // aka RT Change
     Double getRealTimeDiff() {
         return getDiff(realTimeResult.actualValue, previousRun?.realTimeResult?.actualValue)
     }
 
+    // aka Close Change
     Double getCloseDiff() {
         return getDiff(closeResult.actualValue, previousRun?.closeResult?.actualValue)
     }

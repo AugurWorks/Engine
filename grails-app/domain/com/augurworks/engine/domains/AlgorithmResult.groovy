@@ -18,8 +18,10 @@ class AlgorithmResult {
 	String alfredModelId
 	Date predictedDate
     // Unaggregated prediction value
+    // aka RT or Close
     Double actualValue
     // Unaggregated prediction minus previous unagreggated actual
+    // aka RT Diff or Close Diff
     Double predictedDifference
 
     AlgorithmResult previousAlgorithmResult
@@ -62,6 +64,7 @@ class AlgorithmResult {
 		algorithmRequest.toString() + ': ' + dateCreated.format('MM/dd/yyyy HH:mm')
 	}
 
+    // aka RT Change and Close Change
     Optional<Double> getPredictionChange() {
         if (!previousAlgorithmResult) {
             return Optional.empty()
@@ -73,7 +76,7 @@ class AlgorithmResult {
         if (!previousAlgorithmResult) {
             return Optional.empty()
         }
-        return Optional.of(100 * (actualValue - previousAlgorithmResult.actualValue) / previousAlgorithmResult.actualValue)
+        return Optional.of(100 * predictionChange.get() / previousAlgorithmResult.actualValue)
     }
 
 	PredictionRuleResult evaluateRules() {
