@@ -104,12 +104,15 @@ class ProductResult {
             log.debug('HOLD: Current run is all negative, previous run is all positive')
             return RuleEvaluationAction.HOLD
         }
-        List<RuleEvaluationAction> actions = [realTimeResult, closeResult]*.evaluateRules()*.action.unique()
-        if (actions.size() == 1) {
-            log.debug(actions.get(0) + ': Real time and close actions match')
-            return actions.get(0) ?: RuleEvaluationAction.HOLD
+        if (allPositive) {
+            log.debug('HOLD: Current run is all positive, previous run was not all negative')
+            return RuleEvaluationAction.BUY
         }
-        log.debug('HOLD: Real time and close actions did not match')
+        if (allNegative) {
+            log.debug('HOLD: Current run is all negative, previous run was not all positive')
+            return RuleEvaluationAction.SELL
+        }
+        log.debug('HOLD: No rules matched')
         return RuleEvaluationAction.HOLD
     }
 
