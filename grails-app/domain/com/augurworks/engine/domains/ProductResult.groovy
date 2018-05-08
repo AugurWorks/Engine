@@ -88,11 +88,11 @@ class ProductResult {
             log.debug('HOLD: Previous run is too volatile')
             return RuleEvaluationAction.HOLD
         }
-        if (closeChange > product.diffUpperThreshold && previousRun.closePositive && closeResult.predictedDifference > 0) {
+        if (closeChange > product.diffUpperThreshold && previousRun.closeChange > 0 && closeResult.predictedDifference > 0) {
             log.debug('BUY: Close diff upper matched, previous run is positive')
             return RuleEvaluationAction.BUY
         }
-        if (closeChange < product.diffLowerThreshold && previousRun.closeNegative && closeResult.predictedDifference < 0) {
+        if (closeChange < product.diffLowerThreshold && previousRun.closeChange < 0 && closeResult.predictedDifference < 0) {
             log.debug('SELL: Close diff lower matched, previous run is negative')
             return RuleEvaluationAction.SELL
         }
