@@ -32,7 +32,11 @@ class ProductResult {
     }
 
     boolean isTooVolatile() {
-        return 100 * realTimeResult.predictedDifference.abs() / (realTimeResult.actualValue - realTimeResult.predictedDifference).abs() > product.volatilePercentLimit
+        return volatility > product.volatilePercentLimit
+    }
+
+    Double getVolatility() {
+        return 100 * realTimeResult.predictedDifference.abs() / (realTimeResult.actualValue - realTimeResult.predictedDifference).abs()
     }
 
     boolean isAllPositive() {
@@ -83,19 +87,19 @@ class ProductResult {
                 return RuleEvaluationAction.HOLD
             }
             if (tooVolatile) {
-                log.debug('HOLD: Current run is too volatile')
+                log.debug('HOLD: Current run is too volatile (Volatility: ' + volatility + ')')
                 return RuleEvaluationAction.HOLD
             }
             if (previousRun.tooVolatile) {
-                log.debug('HOLD: Previous run is too volatile')
+                log.debug('HOLD: Previous run is too volatile (Previous volatility: ' + previousRun.volatility + ')')
                 return RuleEvaluationAction.HOLD
             }
             if (closeChange > product.diffUpperThreshold && previousRun.closeChange > 0 && closeResult.predictedDifference > 0) {
-                log.debug('BUY: Close change upper matched, previous run is close change is greater than zero, close diff greater than zero')
+                log.debug('BUY: Close change upper matched, previous run is close change is greater than zero, close diff greater than zero (Close change: ' + closeChange + ', Previous close change: ' + previousRun.closeChange + ', Predicted difference: ' + closeResult.predictedDifference)
                 return RuleEvaluationAction.BUY
             }
             if (closeChange < product.diffLowerThreshold && previousRun.closeChange < 0 && closeResult.predictedDifference < 0) {
-                log.debug('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero')
+                log.debug('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero (Close change: ' + closeChange + ', Previous close change: ' + previousRun.closeChange + ', Predicted difference: ' + closeResult.predictedDifference)
                 return RuleEvaluationAction.SELL
             }
             if (allPositive && previousRun.allNegative) {
