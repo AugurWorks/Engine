@@ -31,7 +31,7 @@ class ProductResult {
     }
 
     boolean isTooVolatile() {
-        return 100 * realTimeResult.predictedDifference / (realTimeResult.actualValue - realTimeResult.predictedDifference).abs() > product.volatilePercentLimit
+        return 100 * realTimeResult.predictedDifference.abs() / (realTimeResult.actualValue - realTimeResult.predictedDifference).abs() > product.volatilePercentLimit
     }
 
     boolean isAllPositive() {
