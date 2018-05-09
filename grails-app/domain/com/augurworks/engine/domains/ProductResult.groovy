@@ -89,11 +89,11 @@ class ProductResult {
             return RuleEvaluationAction.HOLD
         }
         if (closeChange > product.diffUpperThreshold && previousRun.closeChange > 0 && closeResult.predictedDifference > 0) {
-            log.debug('BUY: Close diff upper matched, previous run is positive')
+            log.debug('BUY: Close change upper matched, previous run is close change is greater than zero, close diff greater than zero')
             return RuleEvaluationAction.BUY
         }
         if (closeChange < product.diffLowerThreshold && previousRun.closeChange < 0 && closeResult.predictedDifference < 0) {
-            log.debug('SELL: Close diff lower matched, previous run is negative')
+            log.debug('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero')
             return RuleEvaluationAction.SELL
         }
         if (allPositive && previousRun.allNegative) {
