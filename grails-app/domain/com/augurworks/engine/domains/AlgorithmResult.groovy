@@ -21,8 +21,6 @@ class AlgorithmResult {
     // aka RT Diff or Close Diff
     Double predictedDifference
 
-    AlgorithmResult previousAlgorithmResult
-
 	static hasMany = [predictedValues: PredictedValue]
 
 	static belongsTo = [algorithmRequest: AlgorithmRequest]
@@ -60,19 +58,4 @@ class AlgorithmResult {
 	String toString() {
 		algorithmRequest.toString() + ': ' + dateCreated.format('MM/dd/yyyy HH:mm')
 	}
-
-    // aka RT Change and Close Change
-    Optional<Double> getPredictionChange() {
-        if (!previousAlgorithmResult) {
-            return Optional.empty()
-        }
-        return Optional.of(actualValue - previousAlgorithmResult.actualValue)
-    }
-
-    Optional<Double> getPredictionPercentChange() {
-        if (!previousAlgorithmResult) {
-            return Optional.empty()
-        }
-        return Optional.of(100 * predictionChange.get() / previousAlgorithmResult.actualValue)
-    }
 }
