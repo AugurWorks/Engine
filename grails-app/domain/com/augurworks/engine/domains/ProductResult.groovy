@@ -40,27 +40,27 @@ class ProductResult {
     }
 
     boolean isAllPositive() {
-        return realTimePositive && closePositive
+        return getRealTimePositive() && getClosePositive()
     }
 
     boolean isAllNegative() {
-        return realTimeNegative && closeNegative
+        return getRealTimeNegative() && getCloseNegative()
     }
 
     boolean isRealTimePositive() {
-        return realTimeResult.predictedDifference > product.realTimeDiffThreshold && realTimeChange > product.realTimeChangeThreshold
+        return realTimeResult.predictedDifference > product.realTimeDiffThreshold && getRealTimeChange() > product.realTimeChangeThreshold
     }
 
     boolean isRealTimeNegative() {
-        return realTimeResult.predictedDifference < -product.realTimeDiffThreshold && realTimeChange < -product.realTimeChangeThreshold
+        return realTimeResult.predictedDifference < -product.realTimeDiffThreshold && getRealTimeChange() < -product.realTimeChangeThreshold
     }
 
     boolean isClosePositive() {
-        return closeResult.predictedDifference > product.closeDiffThreshold && closeChange > product.closeChangeThreshold
+        return closeResult.predictedDifference > product.closeDiffThreshold && getCloseChange() > product.closeChangeThreshold
     }
 
     boolean isCloseNegative() {
-        return closeResult.predictedDifference < -product.closeDiffThreshold && closeChange < -product.closeChangeThreshold
+        return closeResult.predictedDifference < -product.closeDiffThreshold && getCloseChange() < -product.closeChangeThreshold
     }
 
     // aka RT Change
@@ -86,11 +86,11 @@ class ProductResult {
                 log.info('HOLD: The previous run has no previous run')
                 return RuleEvaluationAction.HOLD
             }
-            if (tooVolatile) {
+            if (getTooVolatile()) {
                 log.info('HOLD: Current run is too volatile (Volatility: ' + volatility + ')')
                 return RuleEvaluationAction.HOLD
             }
-            if (previousRun.tooVolatile) {
+            if (previousRun.getTooVolatile()) {
                 log.info('HOLD: Previous run is too volatile (Previous volatility: ' + previousRun.volatility + ')')
                 return RuleEvaluationAction.HOLD
             }
@@ -108,19 +108,19 @@ class ProductResult {
                 log.info('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero (Close change: ' + currentCloseChange.round(3) + ', Previous close change: ' + previousCloseChange.round(3) + ', Predicted difference: ' + closeResult.predictedDifference.round(3))
                 return RuleEvaluationAction.SELL
             }
-            if (allPositive && previousRun.allNegative) {
+            if (getAllPositive() && previousRun.getAllNegative()) {
                 log.info('HOLD: Current run is all positive, previous run is all negative')
                 return RuleEvaluationAction.HOLD
             }
-            if (allNegative && previousRun.allPositive) {
+            if (getAllNegative() && previousRun.getAllPositive()) {
                 log.info('HOLD: Current run is all negative, previous run is all positive')
                 return RuleEvaluationAction.HOLD
             }
-            if (allPositive) {
+            if (getAllPositive()) {
                 log.info('HOLD: Current run is all positive, previous run was not all negative')
                 return RuleEvaluationAction.BUY
             }
-            if (allNegative) {
+            if (getAllNegative()) {
                 log.info('HOLD: Current run is all negative, previous run was not all positive')
                 return RuleEvaluationAction.SELL
             }
