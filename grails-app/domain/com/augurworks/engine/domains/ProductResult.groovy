@@ -40,11 +40,11 @@ class ProductResult {
     }
 
     boolean isAllPositive() {
-        return getRealTimePositive() && getClosePositive()
+        return isRealTimePositive() && isClosePositive()
     }
 
     boolean isAllNegative() {
-        return getRealTimeNegative() && getCloseNegative()
+        return isRealTimeNegative() && isCloseNegative()
     }
 
     boolean isRealTimePositive() {
@@ -108,19 +108,19 @@ class ProductResult {
                 log.info('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero (Close change: ' + currentCloseChange.round(3) + ', Previous close change: ' + previousCloseChange.round(3) + ', Predicted difference: ' + closeResult.predictedDifference.round(3))
                 return RuleEvaluationAction.SELL
             }
-            if (getAllPositive() && previousRun.getAllNegative()) {
+            if (isAllPositive() && previousRun.getAllNegative()) {
                 log.info('HOLD: Current run is all positive, previous run is all negative')
                 return RuleEvaluationAction.HOLD
             }
-            if (getAllNegative() && previousRun.getAllPositive()) {
+            if (isAllNegative() && previousRun.isAllPositive()) {
                 log.info('HOLD: Current run is all negative, previous run is all positive')
                 return RuleEvaluationAction.HOLD
             }
-            if (getAllPositive()) {
+            if (isAllPositive()) {
                 log.info('HOLD: Current run is all positive, previous run was not all negative')
                 return RuleEvaluationAction.BUY
             }
-            if (getAllNegative()) {
+            if (isAllNegative()) {
                 log.info('HOLD: Current run is all negative, previous run was not all positive')
                 return RuleEvaluationAction.SELL
             }
