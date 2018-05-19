@@ -11,7 +11,13 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>SNS Topic ARN</th>
+                        <th>Volatile Percent Limit</th>
+                        <th>Diff Upper</th>
+                        <th>Diff Lower</th>
+                        <th>RT Diff Threshold</th>
+                        <th>RT Change Threshold</th>
+                        <th>Close Diff Threshold</th>
+                        <th>Close Change Threshold</th>
                         <th>Requests</th>
                         <th class="collapsing">Delete</th>
                     </tr>
@@ -26,7 +32,41 @@
                                 <g:field name="name" placeholder="Product Name" />
                             </div>
                         </td>
-                        <td></td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="volatilePercentLimit" placeholder="Volatile Percent Limit" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="diffUpperThreshold" placeholder="Diff Upper" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="diffLowerThreshold" placeholder="Diff Lower" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="realTimeDiffThreshold" placeholder="RT Diff Threshold" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="realTimeChangeThreshold" placeholder="RT Change Threshold" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="closeDiffThreshold" placeholder="Close Diff Threshold" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui fluid input">
+                                <g:field name="closeChangeThreshold" placeholder="Close Change Threshold" />
+                            </div>
+                        </td>
                         <td></td>
                         <td><div class="ui small primary button" onclick="createProduct()">Create</div> </td>
                     </tr>
@@ -65,11 +105,25 @@
                 $.ajax({
                     url: '/product/create',
                     data: {
-                        name: $('#name').val()
+                        name: $('#name').val(),
+                        volatilePercentLimit: $('#volatilePercentLimit').val(),
+                        diffUpperThreshold: $('#diffUpperThreshold').val(),
+                        diffLowerThreshold: $('#diffLowerThreshold').val(),
+                        realTimeDiffThreshold: $('#realTimeDiffThreshold').val(),
+                        realTimeChangeThreshold: $('#realTimeChangeThreshold').val(),
+                        closeDiffThreshold: $('#closeDiffThreshold').val(),
+                        closeChangeThreshold: $('#closeChangeThreshold').val(),
                     },
                     success: function(data) {
                         $('table > tbody tr').eq(-1).before(data);
                         $('#name').val('');
+                        $('#volatilePercentLimit').val('');
+                        $('#diffUpperThreshold').val('');
+                        $('#diffLowerThreshold').val('');
+                        $('#realTimeDiffThreshold').val('');
+                        $('#realTimeChangeThreshold').val('');
+                        $('#closeDiffThreshold').val('');
+                        $('#closeChangeThreshold').val('');
                     },
                     error: function(error) {
                         swal({

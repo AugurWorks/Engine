@@ -7,18 +7,19 @@ import com.augurworks.engine.domains.TrainingStat
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.helper.AlfredEnvironment
 import com.augurworks.engine.helper.AlgorithmType
+import com.augurworks.engine.helper.TradingHours
 import com.augurworks.engine.instrumentation.Instrumentation
 import com.augurworks.engine.messaging.TrainingMessage
 import com.augurworks.engine.model.RequestValueSet
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.timgroup.statsd.StatsDClient
 import grails.core.GrailsApplication
-import grails.transaction.Transactional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
+import org.springframework.stereotype.Service
 
-@Transactional
+@Service
 class AlfredService {
 
 	private static final Logger log = LoggerFactory.getLogger(AlfredService)
@@ -43,6 +44,7 @@ class AlfredService {
 		TrainingMessage message = trainingMessageVersion.constructTrainingMessage(netId, algorithmRequest, dataSets)
 		messagingService.sendTrainingMessage(message, algorithmRequest.alfredEnvironment == AlfredEnvironment.LAMBDA)
 		AlgorithmResult algorithmResult = new AlgorithmResult([
+			adjustedDateCreated: TradingHours.floorAnyPeriod(new Date(), 15),
 			algorithmRequest: algorithmRequest,
 			startDate: algorithmRequest.startDate,
 			endDate: algorithmRequest.endDate,
@@ -50,6 +52,9 @@ class AlfredService {
 			modelType: AlgorithmType.ALFRED
 		])
 		algorithmResult.save()
+		if (algorithmResult.hasErrors()) {
+			log.error('Error saving AlgorithmResult: ' + algorithmResult.errors)
+		}
 		MDC.remove('netId')
 
 		if (algorithmRequest.alfredEnvironment == AlfredEnvironment.DOCKER) {

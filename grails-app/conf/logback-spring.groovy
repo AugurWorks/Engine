@@ -41,3 +41,8 @@ logger("grails.app.conf.com.augurworks.engine", DEBUG, appenders)
 logger("grails.app.domain.com.augurworks.engine", DEBUG, appenders)
 logger("grails.app.jobs.com.augurworks.engine", DEBUG, appenders)
 logger("com.augurworks.engine", DEBUG, appenders)
+
+if (System.getProperty('SQL_LOGGING') ?: System.getenv('SQL_LOGGING')) {
+    logger("org.hibernate.SQL", DEBUG, appenders)
+    logger("org.hibernate.type.descriptor.sql.BasicBinder", TRACE, appenders)
+}

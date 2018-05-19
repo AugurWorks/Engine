@@ -5,7 +5,8 @@ import com.augurworks.engine.helper.TradingHours
 
 class AlgorithmResult {
 
-	Date dateCreated
+	Date dateCreated = new Date()
+	Date adjustedDateCreated
 	Date startDate
 	Date endDate
 	boolean complete = false
@@ -13,17 +14,26 @@ class AlgorithmResult {
 	MachineLearningModel machineLearningModel
 	String alfredModelId
 	Date predictedDate
-	Double actualValue
+    // Unaggregated prediction value
+    // aka RT or Close
+    Double actualValue
+    // Unaggregated prediction minus previous unagreggated actual
+    // aka RT Diff or Close Diff
+    Double predictedDifference
 
 	static hasMany = [predictedValues: PredictedValue]
 
 	static belongsTo = [algorithmRequest: AlgorithmRequest]
 
+    static transients = ['futureValues', 'futureValue', 'predictionChange', 'predictionPercentChange']
+
 	static constraints = {
+		adjustedDateCreated nullable: true
 		machineLearningModel nullable: true
 		alfredModelId nullable: true
-		actualValue nullable: true
 		predictedDate nullable: true
+		actualValue nullable: true
+		predictedDifference nullable: true
 	}
 
 	static mapping = {

@@ -6,6 +6,7 @@ import com.augurworks.engine.domains.Product
 import com.augurworks.engine.domains.RequestDataSet
 import com.augurworks.engine.helper.Aggregation
 import com.augurworks.engine.helper.Datasource
+import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.model.DataSetValue
 import grails.core.GrailsApplication
 import grails.transaction.Transactional
@@ -26,16 +27,24 @@ class DataGeneratorService {
 	]
 
 	void bootstrapDefaultRequests() {
-		Product product1 = new Product(name: 'Test Product 1')
-		Product product2 = new Product(name: 'Test Product 2')
-		new ApiKey(name: 'AugurWorks', products: [product1, product2]).save()
-		['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].eachWithIndex { String day, int index ->
+		Product product = new Product(
+				name: 'Test Product 1',
+				volatilePercentLimit: 0.1,
+				diffUpperThreshold: 5,
+				diffLowerThreshold: -5,
+				realTimeDiffThreshold: 1,
+				realTimeChangeThreshold: -1,
+				closeDiffThreshold: 1,
+				closeChangeThreshold: -1)
+		new ApiKey(name: 'AugurWorks', products: [product]).save()
+		['Real Time', 'Close'].each { String name ->
 			AlgorithmRequest algorithmRequest = new AlgorithmRequest(
-					name: day + ' Test',
-					startOffset: DEFAULT_REQUEST.startOffset - index,
-					endOffset: DEFAULT_REQUEST.endOffset - index,
+					name: 'Tesla - ' + name,
+					startOffset: DEFAULT_REQUEST.startOffset,
+					endOffset: DEFAULT_REQUEST.endOffset,
 					dependantSymbol: DEFAULT_REQUEST.dependent + ' - CLOSE',
-					product: Math.random() > 0.5 ? product1 : product2
+					product: product,
+					unit: Unit.FIFTEEN_MINUTES
 			).save()
 			DEFAULT_REQUEST.tickers.each { String ticker ->
 				new RequestDataSet(

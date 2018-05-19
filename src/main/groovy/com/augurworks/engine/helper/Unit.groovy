@@ -11,11 +11,13 @@ enum Unit {
 
 	String name
 	int interval
+	int minutes
 	BiFunction<Date, Integer, Date> calculateOffset
 
 	Unit(String name, int interval, BiFunction<Date, Integer, Date> calculateOffset) {
 		this.name = name
 		this.interval = interval
+		this.minutes = name == 'Day' ? 1440 : interval
 		this.calculateOffset = calculateOffset
 	}
 

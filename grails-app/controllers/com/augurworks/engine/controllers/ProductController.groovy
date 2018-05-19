@@ -10,8 +10,24 @@ class ProductController {
         [products: Product.list()]
     }
 
-    def create(String name) {
-        Product product = new Product(name: name)
+    def create(
+            String name,
+            Double volatilePercentLimit,
+            Double diffUpperThreshold,
+            Double diffLowerThreshold,
+            Double realTimeDiffThreshold,
+            Double realTimeChangeThreshold,
+            Double closeDiffThreshold,
+            Double closeChangeThreshold) {
+        Product product = new Product(
+                name: name,
+                volatilePercentLimit: volatilePercentLimit,
+                diffUpperThreshold: diffUpperThreshold,
+                diffLowerThreshold: diffLowerThreshold,
+                realTimeDiffThreshold: realTimeDiffThreshold,
+                realTimeChangeThreshold: realTimeChangeThreshold,
+                closeDiffThreshold: closeDiffThreshold,
+                closeChangeThreshold: closeChangeThreshold)
         product.save()
         if (product.hasErrors()) {
             render([ok: false, error: product.errors] as JSON)

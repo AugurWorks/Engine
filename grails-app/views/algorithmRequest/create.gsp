@@ -96,24 +96,6 @@
 						<g:field type="text" name="depth" value="${ algorithmRequest?.depth }" />
 					</div>
                 </div>
-				<div class="four fields">
-					<div class="field">
-						<label>Upper Percent Threshold</label>
-						<g:field type="text" name="upperPercentThreshold" value="${ algorithmRequest?.upperPercentThreshold }" />
-					</div>
-					<div class="field">
-						<label>Lower Percent Threshold</label>
-						<g:field type="text" name="lowerPercentThreshold" value="${ algorithmRequest?.lowerPercentThreshold }" />
-					</div>
-					<div class="field">
-						<label>Prediction Upper Change Threshold</label>
-						<g:field type="text" name="upperPredictionPercentThreshold" value="${ algorithmRequest?.upperPredictionPercentThreshold }" />
-					</div>
-					<div class="field">
-						<label>Prediction Lower Change Threshold</label>
-						<g:field type="text" name="lowerPredictionPercentThreshold" value="${ algorithmRequest?.lowerPredictionPercentThreshold }" />
-					</div>
-				</div>
 				<h3 class="ui dividing header">Boundary Dates</h3>
 				<g:field type="hidden" name="id" value="${ algorithmRequest?.id }" />
 				<div class="three fields">
@@ -245,7 +227,7 @@
 					}
 				});
                 <g:if test="${ algorithmRequest }">
-                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags, #learningConstant, #trainingRounds, #depth, #product, #upperPercentThreshold, #lowerPercentThreshold, #upperPredictionPercentThreshold, #lowerPredictionPercentThreshold').change(function() {
+                    $('#alfredEnvironment, #cronAlgorithms, #cronExpression, #channel, #tags, #learningConstant, #trainingRounds, #depth, #product').change(function() {
                         saveRequest();
                         $('#info-check').show();
                         setTimeout(function() {

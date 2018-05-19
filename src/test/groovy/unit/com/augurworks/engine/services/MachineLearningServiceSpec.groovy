@@ -42,6 +42,6 @@ class MachineLearningServiceSpec extends Specification {
 		then:
 		predictedValues.size() == 4
 		predictedValues*.value.sort() == predictions.sort()
-		predictedValues*.date*.format(Global.DATE_FORMAT).contains('01/04/2014')
+		predictedValues*.date*.format(Global.DATE_FORMAT).contains('01/06/2014')
 	}
 }
