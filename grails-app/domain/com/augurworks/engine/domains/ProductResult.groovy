@@ -1,5 +1,6 @@
 package com.augurworks.engine.domains
 
+import com.amazonaws.services.sns.AmazonSNSClient
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.model.prediction.RuleEvaluationAction
 import org.slf4j.MDC
@@ -135,6 +136,18 @@ class ProductResult {
     String getSlackChannel() {
         List<String> channels = [realTimeResult, closeResult]*.algorithmRequest*.slackChannel.unique()
         return channels.size() == 1 ? channels.get(0) : null
+    }
+
+    void sendToSns() {
+        try {
+            new AmazonSNSClient().publish(product.getSnsTopicArn(), getSnsMessage())
+        } catch (Exception e) {
+            log.error('Unable to send SNS message', e)
+        }
+    }
+
+    String getSnsMessage() {
+        return product.name + ' - ' + getAction().name()
     }
 
     private Double getDiff(Double currentValue, Double previousValue) {

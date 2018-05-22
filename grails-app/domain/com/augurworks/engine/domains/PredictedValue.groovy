@@ -55,26 +55,9 @@ class PredictedValue {
 		]
 	}
 
-	String getSnsMessage(ActualValue actualValue = null) {
-		Map slackMap = getSlackMap(actualValue)
-		return slackMap.title + '\n\n' + slackMap.message
-	}
-
 	void sendToSlack(ActualValue actualValue = null, Optional<ActualValue> previousActualValue = Optional.empty()) {
 		statsdClient.increment('count.slack.messages.sent')
 		Map slackMap = this.getSlackMap(actualValue)
 		new SlackMessage(slackMap.message, slackMap.channel).withBotName('Engine Predictions').withColor(slackMap.color).withTitle(slackMap.title).withLink(slackMap.link).send()
-	}
-
-	void sendToSns(ActualValue actualValue = null) {
-		try {
-			Product product = this.algorithmResult.algorithmRequest.product
-			if (product) {
-				AmazonSNSClient snsClient = new AmazonSNSClient()
-				snsClient.publish(product.getSnsTopicArn(), getSnsMessage(actualValue))
-			}
-		} catch (Exception e) {
-			log.error('Unable to send SNS message', e)
-		}
 	}
 }

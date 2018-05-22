@@ -55,6 +55,7 @@ class ProductService {
 		if (grailsApplication.config.slack.webhook) {
 			sendToSlack(productResult.product, productResult.action, productResult.slackChannel)
 		}
+		productResult.sendToSns()
 	}
 
 	private void sendToSlack(Product product, RuleEvaluationAction action, String slackChannel) {
