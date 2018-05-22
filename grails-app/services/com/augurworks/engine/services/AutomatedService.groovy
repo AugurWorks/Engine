@@ -101,7 +101,6 @@ class AutomatedService {
 				if (grailsApplication.config.slack.webhook) {
 					algorithmResult.futureValue?.sendToSlack(actualValue.get())
 				}
-				algorithmResult.futureValue?.sendToSns(actualValue.get())
 			}
 			if (algorithmResult.algorithmRequest.product) {
 				productService.createProductResult(algorithmResult)
