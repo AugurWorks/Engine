@@ -118,11 +118,11 @@ class ProductResult {
                 return RuleEvaluationAction.HOLD
             }
             if (isAllPositive()) {
-                log.info('HOLD: Current run is all positive, previous run was not all negative')
+                log.info('BUY: Current run is all positive, previous run was not all negative')
                 return RuleEvaluationAction.BUY
             }
             if (isAllNegative()) {
-                log.info('HOLD: Current run is all negative, previous run was not all positive')
+                log.info('SELL: Current run is all negative, previous run was not all positive')
                 return RuleEvaluationAction.SELL
             }
             log.info('HOLD: No rules matched')
