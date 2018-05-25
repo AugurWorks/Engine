@@ -87,11 +87,11 @@ class ProductResult {
                 log.info('HOLD: The previous run has no previous run')
                 return RuleEvaluationAction.HOLD
             }
-            if (getTooVolatile()) {
+            if (isTooVolatile()) {
                 log.info('HOLD: Current run is too volatile (Volatility: ' + volatility + ')')
                 return RuleEvaluationAction.HOLD
             }
-            if (previousRun.getTooVolatile()) {
+            if (previousRun.isTooVolatile()) {
                 log.info('HOLD: Previous run is too volatile (Previous volatility: ' + previousRun.volatility + ')')
                 return RuleEvaluationAction.HOLD
             }
@@ -118,11 +118,11 @@ class ProductResult {
                 return RuleEvaluationAction.HOLD
             }
             if (isAllPositive()) {
-                log.info('HOLD: Current run is all positive, previous run was not all negative')
+                log.info('BUY: Current run is all positive, previous run was not all negative')
                 return RuleEvaluationAction.BUY
             }
             if (isAllNegative()) {
-                log.info('HOLD: Current run is all negative, previous run was not all positive')
+                log.info('SELL: Current run is all negative, previous run was not all positive')
                 return RuleEvaluationAction.SELL
             }
             log.info('HOLD: No rules matched')
