@@ -5,7 +5,14 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.model.prediction.RuleEvaluationAction
 import org.slf4j.MDC
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 class ProductResult {
+
+    private static DateFormat getTimeFormat() {
+        return new SimpleDateFormat('HH:mm')
+    }
 
     Date adjustedDateCreated
     ProductResult previousRun
@@ -109,7 +116,7 @@ class ProductResult {
                 log.info('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero (Close change: ' + currentCloseChange.round(3) + ', Previous close change: ' + previousCloseChange.round(3) + ', Predicted difference: ' + closeResult.predictedDifference.round(3))
                 return RuleEvaluationAction.SELL
             }
-            if (isAllPositive() && previousRun.getAllNegative()) {
+            if (isAllPositive() && previousRun.isAllNegative()) {
                 log.info('HOLD: Current run is all positive, previous run is all negative')
                 return RuleEvaluationAction.HOLD
             }
@@ -129,7 +136,7 @@ class ProductResult {
             return RuleEvaluationAction.HOLD
         } catch (Exception e) {
             log.error('HOLD: An exception occurred', e)
-            return RuleEvaluationAction.HOLD
+            throw e
         }
     }
 
@@ -147,7 +154,12 @@ class ProductResult {
     }
 
     String getSnsMessage() {
-        return product.name + ' - ' + getAction().name()
+        String message = getTimeFormat().format(new Date()) + ' - ' + product.name + ' - '
+        try {
+            return message + getAction().name()
+        } catch (Exception e) {
+            return message + RuleEvaluationAction.HOLD.name() + ' - An exception occurred, defaulting to HOLD'
+        }
     }
 
     private Double getDiff(Double currentValue, Double previousValue) {
