@@ -116,7 +116,7 @@ class ProductResult {
                 log.info('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero (Close change: ' + currentCloseChange.round(3) + ', Previous close change: ' + previousCloseChange.round(3) + ', Predicted difference: ' + closeResult.predictedDifference.round(3))
                 return RuleEvaluationAction.SELL
             }
-            if (isAllPositive() && previousRun.getAllNegative()) {
+            if (isAllPositive() && previousRun.isAllNegative()) {
                 log.info('HOLD: Current run is all positive, previous run is all negative')
                 return RuleEvaluationAction.HOLD
             }
