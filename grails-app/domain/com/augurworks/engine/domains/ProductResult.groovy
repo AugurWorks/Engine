@@ -129,7 +129,7 @@ class ProductResult {
             return RuleEvaluationAction.HOLD
         } catch (Exception e) {
             log.error('HOLD: An exception occurred', e)
-            return RuleEvaluationAction.HOLD
+            throw e
         }
     }
 
@@ -147,7 +147,11 @@ class ProductResult {
     }
 
     String getSnsMessage() {
-        return product.name + ' - ' + getAction().name()
+        try {
+            return product.name + ' - ' + getAction().name()
+        } catch (Exception e) {
+            return product.name + ' - ' + RuleEvaluationAction.HOLD.name() + ' - An exception occurred, defaulting to HOLD'
+        }
     }
 
     private Double getDiff(Double currentValue, Double previousValue) {
