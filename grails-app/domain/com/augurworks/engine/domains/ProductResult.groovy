@@ -5,7 +5,14 @@ import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.model.prediction.RuleEvaluationAction
 import org.slf4j.MDC
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 class ProductResult {
+
+    private static DateFormat getTimeFormat() {
+        return new SimpleDateFormat('HH:mm')
+    }
 
     Date adjustedDateCreated
     ProductResult previousRun
@@ -147,10 +154,11 @@ class ProductResult {
     }
 
     String getSnsMessage() {
+        String message = getTimeFormat().format(new Date()) + ' - ' + product.name + ' - '
         try {
-            return product.name + ' - ' + getAction().name()
+            return message + getAction().name()
         } catch (Exception e) {
-            return product.name + ' - ' + RuleEvaluationAction.HOLD.name() + ' - An exception occurred, defaulting to HOLD'
+            return message + RuleEvaluationAction.HOLD.name() + ' - An exception occurred, defaulting to HOLD'
         }
     }
 
