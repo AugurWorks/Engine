@@ -8,7 +8,9 @@ class Product {
     String name
     Double volatilePercentLimit
 
+    // Diff maximum absolute value
     Double diffUpperThreshold
+    // Diff minimum absolute value
     Double diffLowerThreshold
 
     Double realTimeDiffThreshold

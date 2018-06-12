@@ -108,11 +108,11 @@ class ProductResult {
                 log.info('HOLD: Close change or previous close change is null, aborting. Close change: ' + currentCloseChange + ', previous close change: ' + previousCloseChange)
                 return RuleEvaluationAction.HOLD
             }
-            if (currentCloseChange > product.diffUpperThreshold && previousCloseChange > 0 && closeResult.predictedDifference > 0) {
+            if (currentCloseChange < product.diffUpperThreshold && currentCloseChange > product.diffLowerThreshold && previousCloseChange > 0 && closeResult.predictedDifference > 0) {
                 log.info('BUY: Close change upper matched, previous run is close change is greater than zero, close diff greater than zero (Close change: ' + currentCloseChange.round(3) + ', Previous close change: ' + previousCloseChange.round(3) + ', Predicted difference: ' + closeResult.predictedDifference.round(3))
                 return RuleEvaluationAction.BUY
             }
-            if (currentCloseChange < product.diffLowerThreshold && previousCloseChange < 0 && closeResult.predictedDifference < 0) {
+            if (currentCloseChange > -product.diffUpperThreshold && currentCloseChange < -product.diffLowerThreshold && previousCloseChange < 0 && closeResult.predictedDifference < 0) {
                 log.info('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero (Close change: ' + currentCloseChange.round(3) + ', Previous close change: ' + previousCloseChange.round(3) + ', Predicted difference: ' + closeResult.predictedDifference.round(3))
                 return RuleEvaluationAction.SELL
             }

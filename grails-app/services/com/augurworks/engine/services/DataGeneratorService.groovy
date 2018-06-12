@@ -30,8 +30,8 @@ class DataGeneratorService {
 		Product product = new Product(
 				name: 'Test Product 1',
 				volatilePercentLimit: 0.1,
-				diffUpperThreshold: 5,
-				diffLowerThreshold: -5,
+				diffUpperThreshold: 10,
+				diffLowerThreshold: 5,
 				realTimeDiffThreshold: 1,
 				realTimeChangeThreshold: -1,
 				closeDiffThreshold: 1,

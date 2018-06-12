@@ -12,8 +12,8 @@
                     <tr>
                         <th>Name</th>
                         <th>Volatile Percent Limit</th>
-                        <th>Diff Upper</th>
-                        <th>Diff Lower</th>
+                        <th>Diff Max</th>
+                        <th>Diff Min</th>
                         <th>RT Diff Threshold</th>
                         <th>RT Change Threshold</th>
                         <th>Close Diff Threshold</th>
@@ -39,12 +39,12 @@
                         </td>
                         <td>
                             <div class="ui fluid input">
-                                <g:field name="diffUpperThreshold" placeholder="Diff Upper" />
+                                <g:field name="diffUpperThreshold" placeholder="Diff Max" />
                             </div>
                         </td>
                         <td>
                             <div class="ui fluid input">
-                                <g:field name="diffLowerThreshold" placeholder="Diff Lower" />
+                                <g:field name="diffLowerThreshold" placeholder="Diff Min" />
                             </div>
                         </td>
                         <td>
