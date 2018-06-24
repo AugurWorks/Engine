@@ -113,7 +113,7 @@ class AlfredService {
 			trainingStat.save()
 		}
 
-		automatedService.postProcessing(algorithmResult)
+		automatedService.postProcessingWithRerun(algorithmResult, grailsApplication.config.retry.count)
 
 		log.info('Finished processing message from net ' + algorithmResult.alfredModelId)
 		MDC.clear()
