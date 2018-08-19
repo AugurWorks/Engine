@@ -160,7 +160,7 @@ class MachineLearningService {
 			cleanupMachineLearning(algorithmResult)
 			algorithmResult.complete = true
 			algorithmResult.save(flush: true)
-			automatedService.postProcessing(algorithmResult)
+			automatedService.postProcessingWithRerun(algorithmResult, grailsApplication.config.retry.count)
 		}
 	}
 

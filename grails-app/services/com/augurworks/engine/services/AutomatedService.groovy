@@ -90,23 +90,35 @@ class AutomatedService {
 		}
 	}
 
-	void postProcessing(AlgorithmResult algorithmResult) {
+	void postProcessingWithRerun(AlgorithmResult algorithmResult, int triesRemaining) {
 		try {
-			Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
-			if (actualValue.isPresent()) {
-                algorithmResult.actualValue = actualValue.get().predictedValue
-                algorithmResult.predictedDifference = actualValue.get().predictedValue - actualValue.get().currentValue
-				algorithmResult.predictedDate = actualValue.get().date
-				algorithmResult.save(flush: true)
-				if (grailsApplication.config.slack.webhook) {
-					algorithmResult.futureValue?.sendToSlack(actualValue.get())
-				}
+			postProcessing(algorithmResult)
+		} catch (DataException e) {
+			String message = 'An error occurred when processing algorithm result ' + algorithmResult.id + '. Rerunning in ' + grailsApplication.config.retry.seconds + ' seconds'
+			log.warn(message, e)
+
+			sleep(grailsApplication.config.retry.seconds * 1000)
+			if (triesRemaining == 1) {
+				postProcessing(algorithmResult)
+			} else {
+				postProcessingWithRerun(algorithmResult, triesRemaining - 1)
 			}
-			if (algorithmResult.algorithmRequest.product) {
-				productService.createProductResult(algorithmResult)
+		}
+	}
+
+	void postProcessing(AlgorithmResult algorithmResult) {
+		Optional<ActualValue> actualValue = actualValueService.getActual(algorithmResult)
+		if (actualValue.isPresent()) {
+			algorithmResult.actualValue = actualValue.get().predictedValue
+			algorithmResult.predictedDifference = actualValue.get().predictedValue - actualValue.get().currentValue
+			algorithmResult.predictedDate = actualValue.get().date
+			algorithmResult.save(flush: true)
+			if (grailsApplication.config.slack.webhook) {
+				algorithmResult.futureValue?.sendToSlack(actualValue.get())
 			}
-		} catch (e) {
-			log.error('Post processing failed', e)
+		}
+		if (algorithmResult.algorithmRequest.product) {
+			productService.createProductResult(algorithmResult)
 		}
 	}
 

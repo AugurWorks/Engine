@@ -153,7 +153,7 @@ class AlgorithmRequestController {
 			}
 			Map dependant = rawDataSets.grep { it.dependant }.first()
 			String dependantSymbol = dependant.symbol + ' - ' + DataType.findByName(dependant.dataType).name()
-			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], null, cronExpression, null, null, [], dependantSymbol, null, null, null, null, null, null, null)
+			AlgorithmRequest algorithmRequest = constructAlgorithmRequest(null, startOffset, endOffset, Unit[unit], SplineType[splineType], null, cronExpression, null, null, [], dependantSymbol, null, null, null)
 			algorithmRequest.updateDataSets(dataSets, false)
 			SplineRequest splineRequest = new SplineRequest(algorithmRequest: algorithmRequest)
 			dataRetrievalService.smartSpline(splineRequest)

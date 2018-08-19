@@ -26,6 +26,10 @@ public abstract class TrainingMessage implements Serializable {
         return this.netId
     }
 
+    public Long getAlgorithmRequestId() {
+        return this.algorithmRequestId
+    }
+
     public TrainingMessage withMetadata(Map<String, String> metadata) {
         this.metadata = metadata
         return this
