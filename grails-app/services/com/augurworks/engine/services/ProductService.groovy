@@ -60,7 +60,7 @@ class ProductService {
 
 	private RuleEvaluationAction getUncheckedAction(ProductResult productResult) {
 		try {
-			return productResult.getAction()
+			return productResult.getAction().getaValue()
 		} catch (Exception e) {
 			return RuleEvaluationAction.HOLD
 		}

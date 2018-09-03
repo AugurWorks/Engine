@@ -57,7 +57,7 @@ class ProductResultSpec extends Specification {
 		productResult.previousRun = null
 
 		when:
-		RuleEvaluationAction action = productResult.action
+		RuleEvaluationAction action = productResult.action.aValue
 
 		then:
 		action == RuleEvaluationAction.HOLD
@@ -77,7 +77,7 @@ class ProductResultSpec extends Specification {
 		ProductResult productResult = ProductResult.build(previousRun: previousResult, realTimeResult: realTimeResult, closeResult: closeResult, product: product)
 
 		when:
-		RuleEvaluationAction action = productResult.action
+		RuleEvaluationAction action = productResult.action.aValue
 
 		then:
 		action == RuleEvaluationAction.BUY
@@ -97,7 +97,7 @@ class ProductResultSpec extends Specification {
 		ProductResult productResult = ProductResult.build(previousRun: previousResult, realTimeResult: realTimeResult, closeResult: closeResult, product: product)
 
 		when:
-		RuleEvaluationAction action = productResult.action
+		RuleEvaluationAction action = productResult.action.aValue
 
 		then:
 		action == RuleEvaluationAction.HOLD
@@ -117,7 +117,7 @@ class ProductResultSpec extends Specification {
 		ProductResult productResult = ProductResult.build(previousRun: previousResult, realTimeResult: realTimeResult, closeResult: closeResult, product: product)
 
 		when:
-		RuleEvaluationAction action = productResult.action
+		RuleEvaluationAction action = productResult.action.aValue
 
 		then:
 		action == RuleEvaluationAction.SELL
@@ -133,7 +133,7 @@ class ProductResultSpec extends Specification {
 		ProductResult productResult = ProductResult.build(previousRun: previousResult, realTimeResult: realTimeResult, closeResult: closeResult, product: product)
 
 		when:
-		RuleEvaluationAction action = productResult.action
+		RuleEvaluationAction action = productResult.action.aValue
 
 		then:
 		action == RuleEvaluationAction.HOLD
@@ -151,7 +151,7 @@ class ProductResultSpec extends Specification {
 		ProductResult productResult = ProductResult.build(previousRun: previousResult, realTimeResult: realTimeResult, closeResult: closeResult, product: product)
 
 		when:
-		RuleEvaluationAction action = productResult.action
+		RuleEvaluationAction action = productResult.action.aValue
 
 		then:
 		action == RuleEvaluationAction.HOLD
