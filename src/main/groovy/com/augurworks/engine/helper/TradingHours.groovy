@@ -175,6 +175,9 @@ class TradingHours {
             finalDate = addMinutes(finalDate.clearTime(), HALF_DAY_CLOSE_MINUTES)
         }
         Integer minutesOffset = ((finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE]) / periodMinutes).intValue() * periodMinutes
+        if (minutesOffset < DAY_OPEN_MINUTES && periodMinutes < 1440) {
+            return addNegativeTradingMinutes(addMinutes(finalDate.clearTime(), DAY_OPEN_MINUTES), DAY_OPEN_MINUTES - minutesOffset)
+        }
         return addMinutes(finalDate.clearTime(), minutesOffset)
     }
 
