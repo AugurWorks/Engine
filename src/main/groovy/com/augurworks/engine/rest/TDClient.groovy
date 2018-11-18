@@ -52,7 +52,7 @@ class TDClient extends RestClient {
 		return parsedResults.first().values.collect { Map result ->
 			return new DataSetValue(new DateTime(result.date).toDate(), result[dataRequest.dataType.name().toLowerCase()])
 		}.grep { DataSetValue dataSetValue ->
-			return dataRequest.unit == Unit.DAY ? true : TradingHours.tradingMinutesBetween(dataRequest.startDate, dataSetValue.date) % dataRequest.unit.interval == 0
+			return dataRequest.unit == Unit.DAY ? true : TradingHours.tradingMinutesBetween(dataRequest.startDate, dataSetValue.date) % dataRequest.unit.interval == 0 && TradingHours.isMarketOpen(dataSetValue.date)
 		}
 	}
 
