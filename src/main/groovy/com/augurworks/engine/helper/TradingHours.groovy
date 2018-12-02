@@ -212,13 +212,27 @@ class TradingHours {
 
     private static Date addMinutes(Date date, Integer minutes) {
         use(TimeCategory) {
-            return date + minutes.minutes
+            Date finalDate = date + minutes.minutes
+            if (TimeZone.getDefault().inDaylightTime(date) && !TimeZone.getDefault().inDaylightTime(finalDate)) {
+                return finalDate + 60.minutes
+            }
+            if (!TimeZone.getDefault().inDaylightTime(date) && TimeZone.getDefault().inDaylightTime(finalDate)) {
+                return finalDate - 60.minutes
+            }
+            return finalDate
         }
     }
 
     private static Date addDays(Date date, Integer days) {
         use(TimeCategory) {
-            return date + days.days
+            Date finalDate = date + days.days
+            if (TimeZone.getDefault().inDaylightTime(date) && !TimeZone.getDefault().inDaylightTime(finalDate)) {
+                return finalDate + 60.minutes
+            }
+            if (!TimeZone.getDefault().inDaylightTime(date) && TimeZone.getDefault().inDaylightTime(finalDate)) {
+                return finalDate - 60.minutes
+            }
+            return finalDate
         }
     }
 }
