@@ -118,11 +118,11 @@ class ProductResult {
                 log.info('SELL: Close change lower matched, previous run close change is less than zero, close diff less than zero (Close change: ' + currentCloseChange.round(3) + ', Previous close change: ' + previousCloseChange.round(3) + ', Predicted difference: ' + closeResult.predictedDifference.round(3))
                 return new Pair<>(RuleEvaluationAction.SELL, RuleEvaluationReason.CLOSE_CHANGE_THRESHOLD)
             }
-            if (isAllPositive() && previousRun.isAllNegative() && previousRun.getAction().getbValue() != RuleEvaluationReason.PREVIOUS_RUN_MATCHED) {
+            if (isAllPositive() && previousRun.isAllNegative()) {
                 log.info('HOLD: Current run is all positive, previous run is all negative')
                 return new Pair<>(RuleEvaluationAction.HOLD, RuleEvaluationReason.PREVIOUS_RUN_MATCHED)
             }
-            if (isAllNegative() && previousRun.isAllPositive() && previousRun.getAction().getbValue() != RuleEvaluationReason.PREVIOUS_RUN_MATCHED) {
+            if (isAllNegative() && previousRun.isAllPositive()) {
                 log.info('HOLD: Current run is all negative, previous run is all positive')
                 return new Pair<>(RuleEvaluationAction.HOLD, RuleEvaluationReason.PREVIOUS_RUN_MATCHED)
             }
