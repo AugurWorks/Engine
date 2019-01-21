@@ -15,6 +15,7 @@ import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
 import com.timgroup.statsd.StatsDClient
 import grails.transaction.Transactional
+import groovy.json.JsonBuilder
 import org.apache.commons.lang.time.DateUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -124,6 +125,8 @@ class ActualValueService {
 		log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
 		log.info('- Last actual date: ' + predictionActuals.values.last().date)
 		log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
+		log.debug('Prediction actuals: ' + new JsonBuilder(predictionActuals.values).toPrettyString())
+		log.debug('Algorithm result prediction values : ' + new JsonBuilder(algorithmResult.predictedValues).toPrettyString())
 		return Optional.empty()
 	}
 
