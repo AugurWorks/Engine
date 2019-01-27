@@ -14,6 +14,7 @@ import com.augurworks.engine.model.RequestValueSet
 import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
 import com.timgroup.statsd.StatsDClient
+import grails.converters.JSON
 import grails.transaction.Transactional
 import groovy.json.JsonBuilder
 import org.apache.commons.lang.time.DateUtils
@@ -122,11 +123,12 @@ class ActualValueService {
 			)
 			return Optional.of(actualValue)
 		}
+		Collection<PredictedValue> predictedValues = algorithmResult.predictedValues
 		log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
 		log.info('- Last actual date: ' + predictionActuals.values.last().date)
 		log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
 		log.debug('Prediction actuals: ' + new JsonBuilder(predictionActuals.values).toPrettyString())
-		log.debug('Algorithm result prediction values : ' + new JsonBuilder(algorithmResult.predictedValues).toPrettyString())
+		log.debug('Algorithm result prediction values : ' + (predictedValues as JSON))
 		return Optional.empty()
 	}
 
