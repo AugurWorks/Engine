@@ -127,6 +127,8 @@ class ActualValueService {
 		log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
 		log.info('- Last actual date: ' + predictionActuals.values.last().date)
 		log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
+		log.debug('Future value: ' + (algorithmResult.futureValue as JSON))
+		log.debug('Future date: ' + futureDate)
 		log.debug('Prediction actuals: ' + new JsonBuilder(predictionActuals.values).toPrettyString())
 		log.debug('Algorithm result prediction values : ' + (predictedValues as JSON))
 		return Optional.empty()
