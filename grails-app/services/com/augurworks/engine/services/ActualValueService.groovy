@@ -123,6 +123,14 @@ class ActualValueService {
 			)
 			return Optional.of(actualValue)
 		}
+		if (predictionActuals.values.last().date == algorithmResult.futureValue?.date?.getTime()) {
+			ActualValue actualValue = new ActualValue(
+					predictedValue: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
+					currentValue: predictionActuals.values.last().value?.round(3),
+					date: futureDate
+			)
+			return Optional.of(actualValue)
+		}
 		Collection<PredictedValue> predictedValues = algorithmResult.predictedValues
 		log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
 		log.info('- Last actual date: ' + predictionActuals.values.last().date)
