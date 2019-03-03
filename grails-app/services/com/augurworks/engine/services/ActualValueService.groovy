@@ -123,7 +123,8 @@ class ActualValueService {
 			)
 			return Optional.of(actualValue)
 		}
-		if (predictionActuals.values.last().date == algorithmResult.futureValue?.date?.getTime()) {
+		if (predictionActuals.values.last().date.getTime() == algorithmResult.futureValue?.date?.getTime()) {
+			log.debug('Historical algorithm request fired, last prediction date matches the future value date')
 			ActualValue actualValue = new ActualValue(
 					predictedValue: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
 					currentValue: predictionActuals.values.last().value?.round(3),
