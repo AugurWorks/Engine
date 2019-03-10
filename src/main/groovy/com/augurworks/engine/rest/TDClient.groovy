@@ -61,7 +61,7 @@ class TDClient extends RestClient {
 			requestvalue: dataRequest.symbolResult.symbol,
 			intervaltype: dataRequest.unit == Unit.DAY ? 'DAILY' : 'MINUTE',
 			startdate: dataRequest.getOffsetStartDate().format(dateFormat),
-			enddate: dataRequest.getOffsetEndDate().format(dateFormat),
+			enddate: new Date().format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
 			intervalduration: dataRequest.unit == Unit.DAY ? '1' : '5'
 		]

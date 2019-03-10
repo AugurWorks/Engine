@@ -41,7 +41,7 @@ class RAPIClient extends RestClient {
 				ticker: dataRequest.symbolResult.symbol.split('/').last(),
 				type: dataRequest.unit == Unit.DAY ? 'DAY' : 'MINUTE',
 				start: (dataRequest.getOffsetStartDate().getTime() / 1000).toString(),
-				end: (dataRequest.getOffsetEndDate().getTime() / 1000).toString(),
+				end: (new Date().getTime() / 1000).toString(),
 				period: (dataRequest.unit == Unit.DAY ? 24 * 60 : 5).toString()
 		]
 	}
