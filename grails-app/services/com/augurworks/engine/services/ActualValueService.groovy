@@ -132,7 +132,7 @@ class ActualValueService {
 			)
 			return Optional.of(actualValue)
 		}
-		Date futureValueDate = algorithmRequest.unit.calculateOffset.apply(algorithmResult.futureValue?.date?.getTime(), predictionOffset)
+		Date futureValueDate = algorithmRequest.unit.calculateOffset.apply(algorithmResult.futureValue?.date, predictionOffset)
 		if (predictionActuals.values.last().date.getTime() == futureValueDate.getTime()) {
 			log.debug('Historical algorithm request fired, last prediction date matches the future value date offsetted')
 			ActualValue actualValue = new ActualValue(
