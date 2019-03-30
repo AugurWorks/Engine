@@ -60,4 +60,12 @@ class Product {
             log.error('Unable to delete SNS topic ' + getSnsTopicArn(), e)
         }
     }
+
+    void sendSnsMessage(String message) {
+        try {
+            new AmazonSNSClient().publish(getSnsTopicArn(), message)
+        } catch (Exception e) {
+            log.error('Unable to send SNS message', e)
+        }
+    }
 }
