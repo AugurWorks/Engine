@@ -7,7 +7,7 @@ class ActualValueJob {
 	ActualValueService actualValueService
 
 	static triggers = {
-		cron name: 'nightly', startDelay: 10000, cronExpression: '0 0 2 * * ?'
+		cron name: 'welcomeTrigger', startDelay: 10000, cronExpression: '0 0 2 * * ?'
 	}
 
 	void execute() {
