@@ -10,12 +10,12 @@ class WelcomeJob {
 	private static final Logger log = LoggerFactory.getLogger(WelcomeJob)
 
 	static triggers = {
-		cron name: 'nightly', startDelay: 10000, cronExpression: '0 0 9 * * ?'
+		cron name: 'welcomeJobTrigger', startDelay: 10000, cronExpression: '0 0 9 * * ?'
 	}
 
 	void execute() {
 		log.debug("Kicking off the Welcome job")
-		if (!TradingHours.isMarketOpen(new Date())) {
+		if (!TradingHours.isTradingDay(new Date())) {
 			log.debug("Today is not a trading day, exiting")
 			return
 		}
