@@ -10,7 +10,7 @@ class WelcomeJob {
 	private static final Logger log = LoggerFactory.getLogger(WelcomeJob)
 
 	static triggers = {
-		cron name: 'nightly', startDelay: 10000, cronExpression: '0 0 9 * * ?'
+		cron name: 'welcomeJobTrigger', startDelay: 10000, cronExpression: '0 0 9 * * ?'
 	}
 
 	void execute() {
