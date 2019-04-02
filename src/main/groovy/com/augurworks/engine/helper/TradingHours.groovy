@@ -58,7 +58,11 @@ class TradingHours {
     private static final Integer DAY_CLOSE_MINUTES = 16 * 60 - 15
 
     static Boolean isMarketOpen(Date date) {
-        return isWeekday(date) && !isHoliday(date) && (isDayDate(date) || isTradingHours(date))
+        return isTradingDay(date) && (isDayDate(date) || isTradingHours(date))
+    }
+
+    static Boolean isTradingDay(Date date) {
+        return isWeekday(date) && !isHoliday(date)
     }
 
     private static Boolean isWeekday(Date date) {

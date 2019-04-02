@@ -15,7 +15,7 @@ class WelcomeJob {
 
 	void execute() {
 		log.debug("Kicking off the Welcome job")
-		if (!TradingHours.isMarketOpen(new Date())) {
+		if (!TradingHours.isTradingDay(new Date())) {
 			log.debug("Today is not a trading day, exiting")
 			return
 		}
