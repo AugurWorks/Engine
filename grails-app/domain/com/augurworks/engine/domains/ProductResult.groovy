@@ -1,6 +1,6 @@
 package com.augurworks.engine.domains
 
-import com.amazonaws.services.sns.AmazonSNSClient
+
 import com.augurworks.engine.exceptions.AugurWorksException
 import com.augurworks.engine.model.prediction.RuleEvaluationAction
 import org.slf4j.MDC
@@ -146,11 +146,7 @@ class ProductResult {
     }
 
     void sendToSns() {
-        try {
-            new AmazonSNSClient().publish(product.getSnsTopicArn(), getSnsMessage())
-        } catch (Exception e) {
-            log.error('Unable to send SNS message', e)
-        }
+        product.sendSnsMessage(getSnsMessage())
     }
 
     String getSnsMessage() {
