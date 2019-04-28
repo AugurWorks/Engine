@@ -42,9 +42,9 @@ class TDClient extends RestClient {
 		}
 	}
 
-	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest, boolean getNowOnly) {
 		statsdClient.increment('count.data.td.request')
-		Collection<Map> parsedResults = JSON.parse(tdJsonResults(generateUrl(historyLookup, dataRequestToMap(dataRequest))))
+		Collection<Map> parsedResults = JSON.parse(tdJsonResults(generateUrl(historyLookup, dataRequestToMap(dataRequest, getNowOnly))))
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(parsedResults).toPrettyString())
 		if (parsedResults.size() != 1) {
 			throw new DataAccessException('More results returned than expected: ' + parsedResults.size())
@@ -56,12 +56,12 @@ class TDClient extends RestClient {
 		}
 	}
 
-	private Map dataRequestToMap(SingleDataRequest dataRequest) {
+	private Map dataRequestToMap(SingleDataRequest dataRequest, boolean getNowOnly) {
 		Map parameters = [
 			requestvalue: dataRequest.symbolResult.symbol,
 			intervaltype: dataRequest.unit == Unit.DAY ? 'DAILY' : 'MINUTE',
-			startdate: dataRequest.getOffsetStartDate().format(dateFormat),
-			enddate: new Date().format(dateFormat),
+			startdate: getOffsetStartDate(dataRequest, getNowOnly).format(dateFormat),
+			enddate: getOffsetEndDate(dataRequest, getNowOnly).format(dateFormat),
 			requestidentifiertype: 'SYMBOL',
 			intervalduration: dataRequest.unit == Unit.DAY ? '1' : '5'
 		]

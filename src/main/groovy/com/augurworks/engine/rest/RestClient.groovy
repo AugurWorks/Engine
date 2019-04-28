@@ -1,6 +1,10 @@
 package com.augurworks.engine.rest
 
+import com.augurworks.engine.data.SingleDataRequest
+import com.augurworks.engine.helper.TradingHours
+import com.augurworks.engine.helper.Unit
 import com.augurworks.engine.instrumentation.Instrumentation
+import com.augurworks.engine.model.DataSetValue
 import com.timgroup.statsd.StatsDClient
 import grails.util.Holders
 
@@ -35,5 +39,22 @@ abstract class RestClient implements ApiClient {
 		} catch (e) {
 			log.warn(e.getMessage(), e)
 		}
+	}
+
+	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+		return getHistory(dataRequest, false) + getHistory(dataRequest, true)
+	}
+
+	abstract Collection<DataSetValue> getHistory(SingleDataRequest dataRequest, boolean getNowOnly)
+
+	protected Date getOffsetStartDate(SingleDataRequest dataRequest, Boolean getNowOnly) {
+		if (getNowOnly) {
+			return TradingHours.floorPeriod(new Date(), dataRequest.unit == Unit.DAY ? 1440 : 5)
+		}
+		return dataRequest.getOffsetStartDate()
+	}
+
+	protected Date getOffsetEndDate(SingleDataRequest dataRequest, Boolean getNowOnly) {
+		return getNowOnly ? new Date() : dataRequest.getOffsetEndDate()
 	}
 }

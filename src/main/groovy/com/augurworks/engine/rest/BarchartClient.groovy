@@ -33,9 +33,9 @@ class BarchartClient extends RestClient {
 		}
 	}
 
-	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest, boolean getNowOnly) {
 		statsdClient.increment('count.data.barchart.request')
-		Collection<Map> results = makeRequest(dataRequest)
+		Collection<Map> results = makeRequest(dataRequest, getNowOnly)
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(results).toPrettyString())
 		return results.collect { Map result ->
 			Date date = new DateTime(result.timestamp).toDate()
@@ -46,12 +46,12 @@ class BarchartClient extends RestClient {
 		}
 	}
 
-	private Map historyParametersToMap(SingleDataRequest dataRequest) {
+	private Map historyParametersToMap(SingleDataRequest dataRequest, boolean getNowOnly) {
 		Map parameters = [
 			symbol: dataRequest.symbolResult.symbol,
 			type: dataRequest.unit == Unit.DAY ? 'daily' : 'minutes',
-			startDate: dataRequest.getOffsetStartDate().format(dateFormat),
-			endDate: new Date().format(dateFormat)
+			startDate: getOffsetStartDate(dataRequest, getNowOnly).format(dateFormat),
+			endDate: getOffsetEndDate(dataRequest, getNowOnly).format(dateFormat)
 		]
 		if (dataRequest.unit.interval) {
 			parameters.interval = dataRequest.unit == Unit.DAY ? '1' : '5'
@@ -59,8 +59,8 @@ class BarchartClient extends RestClient {
 		return parameters
 	}
 
-	private Collection<Map> makeRequest(SingleDataRequest dataRequest) {
-		Map parameters = historyParametersToMap(dataRequest)
+	private Collection<Map> makeRequest(SingleDataRequest dataRequest, boolean getNowOnly) {
+		Map parameters = historyParametersToMap(dataRequest, getNowOnly)
 		return makeRequest(historyLookup, parameters)
 	}
 
