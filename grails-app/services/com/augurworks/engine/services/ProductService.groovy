@@ -55,14 +55,14 @@ class ProductService {
 		if (grailsApplication.config.slack.webhook) {
 			sendToSlack(productResult.product, getUncheckedAction(productResult), productResult.slackChannel)
 		}
-		if (productResult.getAction() != RuleEvaluationAction.HOLD) {
+		if (productResult.getAction().getaValue() != RuleEvaluationAction.HOLD) {
 			productResult.sendToSns()
 		}
 	}
 
 	private RuleEvaluationAction getUncheckedAction(ProductResult productResult) {
 		try {
-			return productResult.getAction()
+			return productResult.getAction().getaValue()
 		} catch (Exception e) {
 			return RuleEvaluationAction.HOLD
 		}

@@ -22,9 +22,9 @@ class RAPIClient extends RestClient {
 		return []
 	}
 
-	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest) {
+	Collection<DataSetValue> getHistory(SingleDataRequest dataRequest, boolean getNowOnly) {
 		statsdClient.increment('count.data.rapi.request')
-		Collection<Map> results = makeRequest(historyParametersToMap(dataRequest))
+		Collection<Map> results = makeRequest(historyParametersToMap(dataRequest, getNowOnly))
 		logStringToS3(dataRequest.symbolResult.datasource.name() + '-' + dataRequest.symbolResult.symbol, new JsonBuilder(results).toPrettyString())
 		return results.collect { Map result ->
 			Date date = new Date(result.date.toLong())
@@ -35,13 +35,13 @@ class RAPIClient extends RestClient {
 		}
 	}
 
-	private Map historyParametersToMap(SingleDataRequest dataRequest) {
+	private Map historyParametersToMap(SingleDataRequest dataRequest, boolean getNowOnly) {
 		return [
 				exchange: dataRequest.symbolResult.symbol.split('/').first(),
 				ticker: dataRequest.symbolResult.symbol.split('/').last(),
 				type: dataRequest.unit == Unit.DAY ? 'DAY' : 'MINUTE',
-				start: (dataRequest.getOffsetStartDate().getTime() / 1000).toString(),
-				end: (dataRequest.getOffsetEndDate().getTime() / 1000).toString(),
+				start: (getOffsetStartDate(dataRequest, getNowOnly).getTime() / 1000).toString(),
+				end: (getOffsetEndDate(dataRequest, getNowOnly).getTime() / 1000).toString(),
 				period: (dataRequest.unit == Unit.DAY ? 24 * 60 : 5).toString()
 		]
 	}

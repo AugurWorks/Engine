@@ -30,6 +30,7 @@ class TradingHours {
             '07/04/2018',
             '09/03/2018',
             '11/22/2018',
+            '12/05/2018',
             '12/25/2018',
             '01/01/2019',
             '01/21/2019',
@@ -48,9 +49,11 @@ class TradingHours {
             '07/03/2018',
             '11/23/2018',
             '12/24/2018',
+            '12/31/2018',
             '07/03/2019',
             '11/29/2019',
-            '12/24/2019'
+            '12/24/2019',
+            '12/31/2019'
     ]
 
     private static final Integer DAY_OPEN_MINUTES = 9 * 60 + 30
@@ -179,6 +182,9 @@ class TradingHours {
             finalDate = addMinutes(finalDate.clearTime(), HALF_DAY_CLOSE_MINUTES)
         }
         Integer minutesOffset = ((finalDate[Calendar.HOUR_OF_DAY] * 60 + finalDate[Calendar.MINUTE]) / periodMinutes).intValue() * periodMinutes
+        if (minutesOffset < DAY_OPEN_MINUTES && periodMinutes < 1440) {
+            return addNegativeTradingMinutes(addMinutes(finalDate.clearTime(), DAY_OPEN_MINUTES), DAY_OPEN_MINUTES - minutesOffset)
+        }
         return addMinutes(finalDate.clearTime(), minutesOffset)
     }
 
@@ -213,13 +219,27 @@ class TradingHours {
 
     private static Date addMinutes(Date date, Integer minutes) {
         use(TimeCategory) {
-            return date + minutes.minutes
+            Date finalDate = date + minutes.minutes
+            if (TimeZone.getDefault().inDaylightTime(date) && !TimeZone.getDefault().inDaylightTime(finalDate)) {
+                return finalDate + 60.minutes
+            }
+            if (!TimeZone.getDefault().inDaylightTime(date) && TimeZone.getDefault().inDaylightTime(finalDate)) {
+                return finalDate - 60.minutes
+            }
+            return finalDate
         }
     }
 
     private static Date addDays(Date date, Integer days) {
         use(TimeCategory) {
-            return date + days.days
+            Date finalDate = date + days.days
+            if (TimeZone.getDefault().inDaylightTime(date) && !TimeZone.getDefault().inDaylightTime(finalDate)) {
+                return finalDate + 60.minutes
+            }
+            if (!TimeZone.getDefault().inDaylightTime(date) && TimeZone.getDefault().inDaylightTime(finalDate)) {
+                return finalDate - 60.minutes
+            }
+            return finalDate
         }
     }
 }

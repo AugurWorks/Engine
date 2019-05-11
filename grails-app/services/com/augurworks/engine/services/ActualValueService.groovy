@@ -14,7 +14,9 @@ import com.augurworks.engine.model.RequestValueSet
 import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
 import com.timgroup.statsd.StatsDClient
+import grails.converters.JSON
 import grails.transaction.Transactional
+import groovy.json.JsonBuilder
 import org.apache.commons.lang.time.DateUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -121,9 +123,33 @@ class ActualValueService {
 			)
 			return Optional.of(actualValue)
 		}
+		if (predictionActuals.values.last().date.getTime() == algorithmResult.futureValue?.date?.getTime()) {
+			log.debug('Historical algorithm request fired, last prediction date matches the future value date')
+			ActualValue actualValue = new ActualValue(
+					predictedValue: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
+					currentValue: predictionActuals.values.last().value?.round(3),
+					date: futureDate
+			)
+			return Optional.of(actualValue)
+		}
+		Date futureValueDate = algorithmRequest.unit.calculateOffset.apply(algorithmResult.futureValue?.date, predictionOffset)
+		if (predictionActuals.values.last().date.getTime() == futureValueDate.getTime()) {
+			log.debug('Historical algorithm request fired, last prediction date matches the future value date offsetted')
+			ActualValue actualValue = new ActualValue(
+					predictedValue: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
+					currentValue: predictionActuals.values.last().value?.round(3),
+					date: futureDate
+			)
+			return Optional.of(actualValue)
+		}
+		Collection<PredictedValue> predictedValues = algorithmResult.predictedValues
 		log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
 		log.info('- Last actual date: ' + predictionActuals.values.last().date)
 		log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
+		log.debug('Future value: ' + (algorithmResult.futureValue as JSON))
+		log.debug('Future date: ' + futureDate)
+		log.debug('Prediction actuals: ' + new JsonBuilder(predictionActuals.values).toPrettyString())
+		log.debug('Algorithm result prediction values : ' + (predictedValues as JSON))
 		return Optional.empty()
 	}
 

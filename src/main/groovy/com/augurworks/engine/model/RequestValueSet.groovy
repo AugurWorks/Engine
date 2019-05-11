@@ -89,7 +89,9 @@ class RequestValueSet {
 		if (errors.size() != 0) {
 			throw new DataAvailabilityException(errors.join('<br />'))
 		}
-		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset)]
+		DataSetValue last = values.last()
+		this.values = values[(startIndex + minOffset)..(endIndex + maxOffset - 1)]
+		this.values.add(last)
 		return this
 	}
 
