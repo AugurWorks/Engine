@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-version = '3.11.0'
+version = '3.11.1'
 group "engine"
 
 apply plugin:"eclipse"
