@@ -116,6 +116,8 @@ class AutomatedService {
 			if (grailsApplication.config.slack.webhook) {
 				algorithmResult.futureValue?.sendToSlack(actualValue.get())
 			}
+		} else {
+			log.warn('Algorithm result ' + algorithmResult.id + ' has no actual value')
 		}
 		try {
 			if (algorithmResult.algorithmRequest.product) {

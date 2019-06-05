@@ -97,6 +97,7 @@ class ActualValueService {
 
 	Optional<ActualValue> getActual(AlgorithmResult algorithmResult) {
 		if (!algorithmResult.futureValue) {
+			log.debug('Algorithm result is a future value, skipping')
 			return Optional.empty()
 		}
 		AlgorithmRequest algorithmRequest = algorithmResult.algorithmRequest
@@ -116,6 +117,7 @@ class ActualValueService {
 		int predictionOffset = algorithmRequest.predictionOffset - algorithmRequest.independentRequestDataSets*.offset.max()
 		Date futureDate = algorithmRequest.unit.calculateOffset.apply(predictionActuals.values.last().date, predictionOffset)
 		if (futureDate.getTime() == algorithmResult.futureValue?.date?.getTime()) {
+			log.debug('Normal algorithm request values found')
 			ActualValue actualValue = new ActualValue(
 					predictedValue: requestDataSet.aggregation.normalize.apply(predictionActuals.values.last().value, algorithmResult.futureValue.value)?.round(3),
 					currentValue: predictionActuals.values.last().value?.round(3),
