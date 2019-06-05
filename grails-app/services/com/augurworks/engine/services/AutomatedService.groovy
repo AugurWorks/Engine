@@ -117,8 +117,12 @@ class AutomatedService {
 				algorithmResult.futureValue?.sendToSlack(actualValue.get())
 			}
 		}
-		if (algorithmResult.algorithmRequest.product) {
-			productService.createProductResult(algorithmResult)
+		try {
+			if (algorithmResult.algorithmRequest.product) {
+				productService.createProductResult(algorithmResult)
+			}
+		} catch (Exception e) {
+			log.error('Error creating the product result during post processing', e)
 		}
 	}
 
