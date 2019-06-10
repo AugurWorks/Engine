@@ -125,6 +125,7 @@ class ActualValueService {
 			)
 			return Optional.of(actualValue)
 		}
+		log.debug('Normal algorithm dates didn\'t match: ' + futureDate + ' != ' + algorithmResult.futureValue?.date)
 		if (predictionActuals.values.last().date.getTime() == algorithmResult.futureValue?.date?.getTime()) {
 			log.debug('Historical algorithm request fired, last prediction date matches the future value date')
 			ActualValue actualValue = new ActualValue(
@@ -134,6 +135,7 @@ class ActualValueService {
 			)
 			return Optional.of(actualValue)
 		}
+		log.debug('Historical algorithm request dates didn\'t match: ' + predictionActuals.values.last().date + ' != ' + algorithmResult.futureValue?.date)
 		Date futureValueDate = algorithmRequest.unit.calculateOffset.apply(algorithmResult.futureValue?.date, predictionOffset)
 		if (predictionActuals.values.last().date.getTime() == futureValueDate.getTime()) {
 			log.debug('Historical algorithm request fired, last prediction date matches the future value date offsetted')
@@ -144,12 +146,11 @@ class ActualValueService {
 			)
 			return Optional.of(actualValue)
 		}
+		log.debug('Offsetted historical algorithm request dates didn\'t match: ' + predictionActuals.values.last().date + ' != ' + futureValueDate)
 		Collection<PredictedValue> predictedValues = algorithmResult.predictedValues
 		log.warn('Prediction actual and predicted date arrays for ' + algorithmRequest + ' do not match up')
 		log.info('- Last actual date: ' + predictionActuals.values.last().date)
 		log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
-		log.debug('Future value: ' + (algorithmResult.futureValue as JSON))
-		log.debug('Future date: ' + futureDate)
 		String predictionActualsPath = awsService.uploadToS3('logs', 'prediction-actuals/' + algorithmResult.alfredModelId + '.json', new JsonBuilder(predictionActuals.values).toPrettyString())
 		log.debug('Prediction actuals path: ' + predictionActualsPath)
 		String predictionValuesPath = awsService.uploadToS3('logs', 'prediction-actuals/' + algorithmResult.alfredModelId + '.json', new JsonBuilder(predictedValues).toPrettyString())
