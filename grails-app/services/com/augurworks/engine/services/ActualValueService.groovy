@@ -14,7 +14,6 @@ import com.augurworks.engine.model.RequestValueSet
 import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
 import com.timgroup.statsd.StatsDClient
-import grails.converters.JSON
 import grails.transaction.Transactional
 import groovy.json.JsonBuilder
 import org.apache.commons.lang.time.DateUtils
@@ -32,6 +31,7 @@ class ActualValueService {
 
 	private final Cache<String, DataSetValue> actualValueCache = CacheBuilder.newBuilder().expireAfterWrite(6, TimeUnit.HOURS).build()
 
+	AwsService awsService
 	DataRetrievalService dataRetrievalService
 
 	private static final Logger log = LoggerFactory.getLogger(ActualValueService)
@@ -150,8 +150,10 @@ class ActualValueService {
 		log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
 		log.debug('Future value: ' + (algorithmResult.futureValue as JSON))
 		log.debug('Future date: ' + futureDate)
-		log.debug('Prediction actuals: ' + new JsonBuilder(predictionActuals.values).toPrettyString())
-		log.debug('Algorithm result prediction values : ' + (predictedValues as JSON))
+		String predictionActualsPath = awsService.uploadToS3('logs', 'prediction-actuals/' + algorithmResult.alfredModelId + '.json', new JsonBuilder(predictionActuals.values).toPrettyString())
+		log.debug('Prediction actuals path: ' + predictionActualsPath)
+		String predictionValuesPath = awsService.uploadToS3('logs', 'prediction-actuals/' + algorithmResult.alfredModelId + '.json', new JsonBuilder(predictedValues).toPrettyString())
+		log.debug('Algorithm result prediction values path: ' + predictionValuesPath)
 		return Optional.empty()
 	}
 
