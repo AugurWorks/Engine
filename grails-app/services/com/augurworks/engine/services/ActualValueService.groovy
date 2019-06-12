@@ -14,6 +14,7 @@ import com.augurworks.engine.model.RequestValueSet
 import com.google.common.cache.Cache
 import com.google.common.cache.CacheBuilder
 import com.timgroup.statsd.StatsDClient
+import grails.converters.JSON
 import grails.transaction.Transactional
 import groovy.json.JsonBuilder
 import org.apache.commons.lang.time.DateUtils
@@ -153,7 +154,7 @@ class ActualValueService {
 		log.info('- Last prediction date: ' + algorithmResult.futureValue.date)
 		String predictionActualsPath = awsService.uploadToS3('logs', 'prediction-actuals/' + algorithmResult.alfredModelId + '.json', new JsonBuilder(predictionActuals.values).toPrettyString())
 		log.debug('Prediction actuals path: ' + predictionActualsPath)
-		String predictionValuesPath = awsService.uploadToS3('logs', 'prediction-actuals/' + algorithmResult.alfredModelId + '.json', new JsonBuilder(predictedValues).toPrettyString())
+		String predictionValuesPath = awsService.uploadToS3('logs', 'prediction-values/' + algorithmResult.alfredModelId + '.json', (predictedValues as JSON).toString())
 		log.debug('Algorithm result prediction values path: ' + predictionValuesPath)
 		return Optional.empty()
 	}
